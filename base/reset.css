@@ -1,0 +1,149 @@
+/**
+ * RESET
+ * =====
+ * Browser-Normalisierung + sensible Defaults.
+ *
+ * WICHTIG: Kein font-size auf html. Der Browser-Default (meist 16px,
+ * vom User über Browser-Settings anpassbar) bestimmt 1rem. Das ist
+ * die A11Y-Grundlage für die gesamte rem-basierte Skala.
+ */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--font-base);
+  font-weight: var(--fw-400);
+  line-height: var(--lh-normal);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: var(--lh-tight);
+  font-weight: var(--fw-600);
+  margin-block: 0;
+}
+
+p {
+  margin-block: 0;
+}
+
+a {
+  color: var(--color-interactive);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--easing-medium);
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  background-color: var(--input-bg);
+  color: var(--input-text);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--input-placeholder);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3px var(--input-focus-ring);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+code,
+pre {
+  font-family: var(--font-code);
+  font-size: 0.9em;
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+code {
+  padding: 0.2em 0.4em;
+}
+
+pre {
+  padding: var(--space-12);
+  overflow-x: auto;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-24) 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* A11Y — global, per !important gegen Component-Animationen durchgesetzt.
+   Layer-reset mit !important gewinnt gegen später-layer-normal-Regeln. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

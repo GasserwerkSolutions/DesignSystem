@@ -1,0 +1,131 @@
+/**
+ * Checkbox + Radio Components
+ * ============================
+ *
+ * Custom-styled native inputs. Behalten alle A11Y-Eigenschaften
+ * (Keyboard, Screen-Reader, Form-Submission).
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --checkbox-radius, --checkbox-size
+ *     --checkbox-bg, --checkbox-border, --checkbox-checked-bg, --checkbox-checked-border
+ *
+ * Struktur:
+ *   <label class="choice">
+ *     <input type="checkbox" class="checkbox">
+ *     <span>Newsletter abonnieren</span>
+ *   </label>
+ *
+ *   <label class="choice">
+ *     <input type="radio" name="plan" class="radio">
+ *     <span>
+ *       Basic
+ *       <span class="choice__hint">CHF 0 / Monat</span>
+ *     </span>
+ *   </label>
+ *
+ *   Checkbox-Liste als Stack:
+ *   <div class="stack">
+ *     <label class="choice">…</label>
+ *     <label class="choice">…</label>
+ *   </div>
+ */
+
+.checkbox,
+.radio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: var(--checkbox-size, 1.125rem);
+  height: var(--checkbox-size, 1.125rem);
+  padding: 0;
+  margin: 0;
+  border: 2px solid var(--checkbox-border, var(--color-border-dark));
+  background: var(--checkbox-bg, white);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color var(--duration-fast) var(--easing-fast),
+              background-color var(--duration-fast) var(--easing-fast);
+  margin-block-start: 0.125em;
+}
+
+.checkbox { border-radius: var(--checkbox-radius, var(--radius-sm)); }
+.radio    { border-radius: var(--radius-full); }
+
+.checkbox:hover:not(:disabled),
+.radio:hover:not(:disabled) {
+  border-color: var(--color-interactive);
+}
+
+.checkbox:checked,
+.radio:checked {
+  background-color: var(--checkbox-checked-bg, var(--color-interactive));
+  border-color: var(--checkbox-checked-border, var(--color-interactive));
+}
+
+.checkbox:checked::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' d='m3 8 3.5 3.5L13 5'/></svg>");
+  background-size: 80% 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.radio:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: var(--radius-full);
+  background: white;
+}
+
+.checkbox:focus-visible,
+.radio:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.checkbox:disabled,
+.radio:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--color-border);
+}
+
+/* Wrapper-Pattern: Label-Element mit konsistenter Ausrichtung zum Input */
+.choice {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--font-sm);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  font-weight: var(--fw-500);
+  margin: 0;
+}
+
+.choice:has(:disabled) {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.choice > span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.choice__hint {
+  display: block;
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary);
+  font-weight: var(--fw-400);
+  margin-top: var(--space-2);
+}

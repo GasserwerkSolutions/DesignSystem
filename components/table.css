@@ -1,0 +1,74 @@
+/**
+ * Table Component
+ * ================
+ *
+ * Data-Table für Listen (Kunden, Buchungen, Services, etc.)
+ * Mobile: horizontal scrollbar via .table-wrap.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --table-bg, --table-header-bg, --table-header-fg
+ *     --table-row-hover, --table-radius
+ *
+ * Struktur:
+ *   <div class="table-wrap">
+ *     <table class="table">
+ *       <thead><tr><th>Name</th></tr></thead>
+ *       <tbody><tr><td>Wert</td></tr></tbody>
+ *     </table>
+ *   </div>
+ *
+ * Modifier:
+ *   .table--compact   reduziertes Padding
+ */
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--table-bg, var(--color-bg-secondary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--table-radius, var(--radius-lg));
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.table th,
+.table td {
+  padding: var(--space-12) var(--space-16);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.table thead th {
+  background: var(--table-header-bg, var(--color-bg-tertiary));
+  color: var(--table-header-fg, var(--color-text-secondary));
+  font-weight: var(--fw-600);
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  border-block-end: 1px solid var(--color-border);
+}
+
+.table tbody td {
+  border-block-start: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.table tbody tr {
+  transition: background var(--duration-fast) var(--easing-fast);
+}
+
+.table tbody tr:hover {
+  background: var(--table-row-hover, var(--color-bg));
+}
+
+.table--compact th,
+.table--compact td {
+  padding: var(--space-8) var(--space-12);
+}

@@ -1,0 +1,73 @@
+/**
+ * Avatar Component
+ * =================
+ *
+ * Runder Kreis mit Initialen oder Bild. Für Staff, Kunden, User-Chips.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --avatar-size, --avatar-bg, --avatar-fg, --avatar-radius, --avatar-ring
+ *
+ * Struktur — Initialen:
+ *   <span class="avatar avatar--c3" aria-hidden="true">AB</span>
+ *
+ *   Mit Bild:
+ *   <span class="avatar">
+ *     <img src="…" alt="">
+ *   </span>
+ *
+ * Modifier:
+ *   .avatar--sm / --lg / --xl     Größen
+ *   .avatar--square               eckig (für Logos)
+ *   .avatar--c0 … .avatar--c7     Farbpalette (Staff-Color-Index)
+ *   .avatar--ring                 mit Outline-Ring (Online-Indikator)
+ */
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-size, 2.5rem);
+  height: var(--avatar-size, 2.5rem);
+  border-radius: var(--avatar-radius, var(--radius-full));
+  background: var(--avatar-bg, var(--color-interactive-light));
+  color: var(--avatar-fg, var(--color-interactive-dark));
+  font-size: calc(var(--avatar-size, 2.5rem) * 0.4);
+  font-weight: var(--fw-600);
+  font-family: var(--font-body);
+  line-height: 1;
+  flex-shrink: 0;
+  overflow: hidden;
+  user-select: none;
+  text-transform: uppercase;
+}
+
+.avatar > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar--sm { --avatar-size: 1.75rem; }
+.avatar--lg { --avatar-size: 3.5rem; }
+.avatar--xl { --avatar-size: 5rem; }
+
+.avatar--square {
+  --avatar-radius: var(--radius-md);
+}
+
+.avatar--ring {
+  box-shadow: 0 0 0 2px var(--avatar-ring, var(--color-bg)),
+              0 0 0 4px var(--color-success);
+}
+
+/* Staff-Farbpalette — konsistente Farben pro Index.
+   Akzent-Backgrounds sind absichtlich pastellig, Text-Farben dunkel genug für WCAG AA. */
+.avatar--c0 { --avatar-bg: #fee2e2; --avatar-fg: #991b1b; }
+.avatar--c1 { --avatar-bg: #fed7aa; --avatar-fg: #9a3412; }
+.avatar--c2 { --avatar-bg: #fef3c7; --avatar-fg: #854d0e; }
+.avatar--c3 { --avatar-bg: #d1fae5; --avatar-fg: #065f46; }
+.avatar--c4 { --avatar-bg: #dbeafe; --avatar-fg: #1e40af; }
+.avatar--c5 { --avatar-bg: #e9d5ff; --avatar-fg: #6b21a8; }
+.avatar--c6 { --avatar-bg: #fce7f3; --avatar-fg: #9f1239; }
+.avatar--c7 { --avatar-bg: #e5e7eb; --avatar-fg: #374151; }

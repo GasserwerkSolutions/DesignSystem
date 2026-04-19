@@ -1,0 +1,119 @@
+/**
+ * Drawer Component
+ * =================
+ *
+ * Slide-over von der Seite — für Mobile-Menüs, Side-Sheets, Detail-Panels.
+ * Auf native <dialog> aufgebaut (A11Y-safe wie Modal).
+ *
+ * CONTRACT:
+ *   Optional: --drawer-width, --drawer-bg
+ *
+ * Struktur:
+ *   <dialog class="drawer drawer--end">
+ *     <header class="drawer__header">
+ *       <h3 class="drawer__title">Einstellungen</h3>
+ *       <button class="drawer__close" aria-label="Schließen">×</button>
+ *     </header>
+ *     <div class="drawer__body">…</div>
+ *   </dialog>
+ *
+ * Modifier:
+ *   .drawer--start   slidet von links
+ *   .drawer--end     slidet von rechts (default)
+ */
+
+.drawer {
+  border: none;
+  padding: 0;
+  background: var(--drawer-bg, var(--card-bg));
+  color: var(--color-text-primary);
+  height: 100dvh;
+  max-height: 100dvh;
+  width: var(--drawer-width, min(24rem, 100vw));
+  margin-block: 0;
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.drawer::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.drawer--end {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+}
+
+.drawer--start {
+  margin-inline-start: 0;
+  margin-inline-end: auto;
+}
+
+.drawer[open] {
+  animation: drawer-slide-end var(--motion-entrance);
+}
+
+.drawer--start[open] {
+  animation-name: drawer-slide-start;
+}
+
+.drawer[open]::backdrop {
+  animation: modal-backdrop-enter var(--motion-entrance);
+}
+
+@keyframes drawer-slide-end {
+  from { transform: translateX(100%); }
+  to   { transform: none; }
+}
+
+@keyframes drawer-slide-start {
+  from { transform: translateX(-100%); }
+  to   { transform: none; }
+}
+
+.drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.drawer__title {
+  margin: 0;
+  font-size: var(--font-lg);
+}
+
+.drawer__close {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-text-tertiary);
+  border-radius: var(--radius-md);
+  transition: background var(--motion-feedback);
+}
+
+.drawer__close:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+.drawer__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--space-lg);
+}
+
+.drawer__footer {
+  padding: var(--space-lg);
+  border-block-start: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+}

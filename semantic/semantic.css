@@ -1,0 +1,186 @@
+/**
+ * Design System — Semantic Layer
+ * ==============================
+ *
+ * Maps raw tokens → Bedeutung.
+ * Liefert Defaults für alle Component-Contracts.
+ *
+ * Die Baseline hier entspricht dem trust-Tone.
+ * Themes überschreiben scoped via [data-tone~="..."].
+ */
+
+:root {
+  /* ========================================
+     SEMANTIC COLORS
+     ======================================== */
+
+  /* Backgrounds */
+  --color-bg:           var(--gray-100);
+  --color-bg-secondary: var(--gray-50);
+  --color-bg-tertiary:  var(--gray-200);
+  --color-bg-inverse:   var(--gray-900);
+
+  /* Text */
+  --color-text-primary:   var(--gray-900);
+  --color-text-secondary: var(--gray-600);
+  --color-text-tertiary:  var(--gray-500);
+  --color-text-muted:     var(--gray-500);
+  --color-text-light:     var(--gray-200);
+  --color-text-lightest:  var(--gray-100);
+  --color-text-on-dark:   var(--gray-50);
+
+  /* Interactive */
+  --color-interactive:       var(--trust-600);
+  --color-interactive-light: var(--trust-100);
+  --color-interactive-dark:  var(--trust-800);
+
+  /* UI States */
+  --color-success: var(--trust-600);
+  --color-warning: var(--playful-600);
+  --color-error:   #dc2626;
+  --color-info:    #0284c7;  /* cyan-600 — eigenständig, unabhängig von Themes */
+
+  /* Borders */
+  --color-border:       var(--gray-200);
+  --color-border-light: var(--gray-100);
+  --color-border-dark:  var(--gray-400);
+
+  /* Focus */
+  --color-focus:      var(--trust-600);
+  --color-focus-ring: var(--trust-100);
+  --focus-ring:       3px solid var(--color-focus-ring);
+
+  /* ========================================
+     SEMANTIC TYPOGRAPHY
+     ======================================== */
+
+  --font-display: var(--font-serif);
+  --font-body:    var(--font-sans);
+  --font-code:    var(--font-mono);
+
+  /* Heading sizes */
+  --text-size-h1: var(--font-6xl);
+  --text-size-h2: var(--font-4xl);
+  --text-size-h3: var(--font-2xl);
+  --text-size-h4: var(--font-xl);
+  --text-size-h5: var(--font-lg);
+  --text-size-h6: var(--font-base);
+  --text-weight-heading:      var(--fw-600);
+  --text-line-height-heading: var(--lh-tight);
+
+  /* Heading contract (Themes überschreiben) */
+  --heading-font:        var(--font-display);
+  --heading-weight:      var(--text-weight-heading);
+  --heading-line-height: var(--text-line-height-heading);
+
+  /* Body contract */
+  --body-size:        var(--font-base);
+  --body-line-height: var(--lh-normal);
+
+  /* ========================================
+     SEMANTIC SPACING
+     ======================================== */
+
+  --space-inline:  var(--space-16);
+  --space-block:   var(--space-24);
+  --space-section: var(--space-48);
+
+  /* T-Shirt Spacing-Skala (parallel zur numerischen, konsistentes Vokabular) */
+  --space-xs:  var(--space-4);
+  --space-sm:  var(--space-8);
+  --space-md:  var(--space-16);
+  --space-lg:  var(--space-24);
+  --space-xl:  var(--space-32);
+  --space-2xl: var(--space-48);
+  --space-3xl: var(--space-64);
+
+  /* ========================================
+     SEMANTIC MOTION
+     ======================================== */
+
+  --duration-fast:   var(--motion-fast);
+  --duration-medium: var(--motion-base);
+  --duration-slow:   var(--motion-slow);
+  --easing-fast:     var(--ease-in-out);
+  --easing-medium:   var(--ease-smooth);
+  --easing-slow:     var(--ease-bounce);
+
+  /* Motion-Tokens nach Zweck (shorthand: duration + easing in einem Wert) */
+  --motion-feedback:   75ms var(--ease-in-out);       /* Button-Press, Input-Focus */
+  --motion-transition: 250ms var(--ease-smooth);      /* Property-Übergänge, Hover */
+  --motion-entrance:   350ms var(--ease-smooth);      /* Modal-Open, Drawer-Slide */
+  --motion-emphasis:   350ms var(--ease-bounce);      /* Playful Accent-Animations */
+
+  /* ========================================
+     SEMANTIC BORDERS
+     ======================================== */
+
+  --radius-sm:  var(--radius-4);
+  --radius-md:  var(--radius-6);
+  --radius-lg:  var(--radius-12);
+  --radius-xl:  var(--radius-16);
+  --radius-2xl: var(--radius-20);
+
+  /* ========================================
+     SEMANTIC SHADOWS
+     ======================================== */
+
+  --shadow-card:     var(--shadow-md);
+  --shadow-elevated: var(--shadow-lg);
+  --shadow-modal:    var(--shadow-xl);
+
+  /* ========================================
+     COMPONENT CONTRACT DEFAULTS
+     ======================================== */
+
+  /* Button */
+  --btn-bg:     var(--color-interactive);
+  --btn-fg:     white;
+  --btn-radius: var(--radius-md);
+  --btn-px:     var(--space-20);
+  --btn-py:     var(--space-12);
+  --btn-weight: 600;
+
+  /* Card */
+  --card-bg:      white;
+  --card-radius:  var(--radius-lg);
+  --card-shadow:  var(--shadow-card);
+  --card-padding: var(--space-24);
+
+  /* Section */
+  --section-py: var(--space-section);
+
+  /* Container */
+  --container-max: 1280px;
+
+  /* Input */
+  --input-bg:           white;
+  --input-border:       var(--color-border);
+  --input-text:         var(--color-text-primary);
+  --input-placeholder:  var(--color-text-tertiary);
+  --input-focus-border: var(--color-interactive);
+  --input-focus-ring:   var(--color-focus-ring);
+
+  /* Nav */
+  --nav-bg:          var(--color-bg);
+  --nav-text:        var(--color-text-secondary);
+  --nav-active-bg:   var(--color-interactive-light);
+  --nav-active-text: var(--color-interactive-dark);
+  --nav-hover-bg:    var(--color-bg-secondary);
+  --nav-border:      var(--color-border);
+
+  /* Badge */
+  --badge-radius:    var(--radius-full);
+  --badge-weight:    600;
+  --badge-letter:    0;
+  --badge-transform: none;
+  --badge-px:        var(--space-8);
+  --badge-py:        var(--space-2);
+
+  /* Stat */
+  --stat-padding:      var(--space-24);
+  --stat-value-weight: var(--fw-700);
+
+  /* Callout */
+  --callout-radius: var(--radius-md);
+}

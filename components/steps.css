@@ -1,0 +1,96 @@
+/**
+ * Steps Component (Wizard Progress)
+ * ==================================
+ *
+ * Schritt-Indikator für Onboarding / Multi-Step-Forms.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --step-size, --step-active-bg, --step-active-fg
+ *     --step-done-bg, --step-idle-bg, --step-idle-fg
+ *     --step-divider-color
+ *
+ * Struktur:
+ *   <ol class="steps">
+ *     <li class="step step--done">
+ *       <span class="step__number">1</span>
+ *       <span class="step__label">Services</span>
+ *     </li>
+ *     <li class="step__divider"></li>
+ *     <li class="step step--active">
+ *       <span class="step__number">2</span>
+ *       <span class="step__label">Team</span>
+ *     </li>
+ *     <li class="step__divider"></li>
+ *     <li class="step">
+ *       <span class="step__number">3</span>
+ *       <span class="step__label">Widget</span>
+ *     </li>
+ *   </ol>
+ */
+
+.steps {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--step-idle-fg, var(--color-text-tertiary));
+  font-size: var(--font-sm);
+  font-weight: var(--fw-600);
+}
+
+.step__number {
+  width: var(--step-size, 2rem);
+  height: var(--step-size, 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--step-idle-bg, var(--color-bg-tertiary));
+  color: var(--step-idle-fg, var(--color-text-secondary));
+  font-weight: var(--fw-700);
+  font-size: var(--font-sm);
+  flex-shrink: 0;
+  transition: background var(--duration-fast) var(--easing-fast),
+              color var(--duration-fast) var(--easing-fast);
+}
+
+.step__label {
+  font-size: var(--font-sm);
+  white-space: nowrap;
+}
+
+.step--active {
+  color: var(--step-active-fg, var(--color-text-primary));
+}
+
+.step--active .step__number {
+  background: var(--step-active-bg, var(--color-interactive));
+  color: white;
+}
+
+.step--done {
+  color: var(--step-done-fg, var(--color-text-secondary));
+}
+
+.step--done .step__number {
+  background: var(--step-done-bg, var(--color-interactive));
+  color: white;
+}
+
+.step__divider {
+  flex: 1 1 2rem;
+  min-width: 2rem;
+  max-width: 6rem;
+  height: 1px;
+  background: var(--step-divider-color, var(--color-border));
+}

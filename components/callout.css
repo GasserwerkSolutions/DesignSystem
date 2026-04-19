@@ -1,0 +1,88 @@
+/**
+ * Callout Component
+ * ==================
+ *
+ * Info-/Warning-/Error-Box mit akzentuiertem Rand.
+ * Für "Automatisch einrichten"-Hinweise, Fehler-Messages, etc.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --callout-bg, --callout-fg, --callout-accent
+ *     --callout-border-width, --callout-padding, --callout-radius
+ *
+ * Struktur:
+ *   <aside class="callout callout--info">
+ *     <div>
+ *       <div class="callout__title">Auto-Setup Scan</div>
+ *       <div class="callout__body">Gib deine Website-URL ein …</div>
+ *     </div>
+ *   </aside>
+ *
+ * Modifier:
+ *   .callout--info      (cyan — default)
+ *   .callout--success   (trust/green)
+ *   .callout--warning   (playful/amber)
+ *   .callout--danger    (red)
+ *   .callout--neutral   (grau — ohne Akzent)
+ */
+
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+  padding: var(--callout-padding, var(--space-16) var(--space-20));
+  background: var(--callout-bg, color-mix(in oklch, var(--color-info) 10%, white));
+  color: var(--callout-fg, var(--color-text-primary));
+  border-inline-start: var(--callout-border-width, 4px) solid var(--callout-accent, var(--color-info));
+  border-radius: var(--callout-radius, var(--radius-md));
+}
+
+.callout__title {
+  font-size: var(--font-xs);
+  font-weight: var(--fw-700);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--callout-accent, var(--color-info));
+  margin-bottom: var(--space-4);
+}
+
+.callout__body {
+  font-size: var(--font-sm);
+  line-height: var(--lh-normal);
+  color: var(--callout-fg);
+  margin: 0;
+  max-width: none;
+}
+
+.callout__body p {
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.callout--info {
+  --callout-bg: color-mix(in oklch, var(--color-info) 10%, white);
+  --callout-accent: var(--color-info);
+}
+
+.callout--success {
+  --callout-bg: color-mix(in oklch, var(--color-success) 12%, white);
+  --callout-accent: var(--color-success);
+}
+
+.callout--warning {
+  --callout-bg: color-mix(in oklch, var(--color-warning) 14%, white);
+  --callout-accent: var(--color-warning);
+}
+
+.callout--danger {
+  --callout-bg: color-mix(in oklch, var(--color-error) 10%, white);
+  --callout-accent: var(--color-error);
+}
+
+.callout--neutral {
+  --callout-bg: var(--color-bg-secondary);
+  --callout-accent: var(--color-border-dark);
+  --callout-fg: var(--color-text-secondary);
+}

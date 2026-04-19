@@ -1,0 +1,99 @@
+/**
+ * Toast / Notification Component
+ * ================================
+ *
+ * Stapelbare Notifications unten rechts (oder konfigurierbar).
+ * Auto-Dismiss via JS, visueller Accent pro Status.
+ *
+ * CONTRACT:
+ *   Optional: --toast-bg, --toast-fg, --toast-accent
+ *
+ * Struktur — Container einmal im <body>:
+ *   <div class="toast-stack" aria-live="polite" aria-atomic="false">
+ *     <div class="toast toast--success" role="status">
+ *       <span class="toast__body">Buchung gespeichert</span>
+ *       <button class="toast__close" aria-label="Schließen">×</button>
+ *     </div>
+ *   </div>
+ *
+ * Modifier (auf .toast):
+ *   .toast--info / --success / --warning / --danger
+ */
+
+.toast-stack {
+  position: fixed;
+  inset-block-end: var(--space-lg);
+  inset-inline-end: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  z-index: var(--z-tooltip);
+  max-width: 24rem;
+  pointer-events: none;
+}
+
+.toast-stack--start {
+  inset-inline-end: auto;
+  inset-inline-start: var(--space-lg);
+}
+
+.toast-stack--top {
+  inset-block-end: auto;
+  inset-block-start: var(--space-lg);
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--toast-bg, var(--card-bg));
+  color: var(--toast-fg, var(--color-text-primary));
+  border: 1px solid var(--color-border);
+  border-inline-start: 4px solid var(--toast-accent, var(--color-interactive));
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: toast-in var(--motion-entrance);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(2rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+.toast--success { --toast-accent: var(--color-success); }
+.toast--warning { --toast-accent: var(--color-warning); }
+.toast--danger  { --toast-accent: var(--color-error); }
+.toast--info    { --toast-accent: var(--color-info); }
+
+.toast__body {
+  flex: 1 1 auto;
+  font-size: var(--font-sm);
+  line-height: var(--lh-normal);
+}
+
+.toast__body strong {
+  display: block;
+  margin-block-end: var(--space-2);
+}
+
+.toast__close {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--color-text-tertiary);
+  border-radius: var(--radius-sm);
+  margin-block-start: -0.125rem;
+  flex-shrink: 0;
+  transition: background var(--motion-feedback);
+}
+
+.toast__close:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}

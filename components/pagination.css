@@ -1,0 +1,69 @@
+/**
+ * Pagination Component
+ * =====================
+ *
+ * Seiten-Navigation für Tables / Listen.
+ *
+ * Struktur:
+ *   <nav class="pagination" aria-label="Seiten-Navigation">
+ *     <a href="?p=1" class="pagination__link" rel="prev" aria-label="Vorherige">←</a>
+ *     <a href="?p=1" class="pagination__link">1</a>
+ *     <a href="?p=2" class="pagination__link" aria-current="page">2</a>
+ *     <a href="?p=3" class="pagination__link">3</a>
+ *     <span class="pagination__ellipsis">…</span>
+ *     <a href="?p=10" class="pagination__link">10</a>
+ *     <a href="?p=3" class="pagination__link" rel="next" aria-label="Nächste">→</a>
+ *   </nav>
+ */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-sm);
+  flex-wrap: wrap;
+}
+
+.pagination__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding-inline: var(--space-sm);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: var(--fw-500);
+  font-variant-numeric: tabular-nums;
+  transition: background var(--motion-feedback), color var(--motion-feedback),
+              border-color var(--motion-feedback);
+}
+
+.pagination__link:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.pagination__link[aria-current="page"] {
+  background: var(--color-interactive);
+  color: white;
+  border-color: var(--color-interactive);
+  pointer-events: none;
+}
+
+.pagination__link[aria-disabled="true"],
+.pagination__link.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.pagination__ellipsis {
+  color: var(--color-text-tertiary);
+  padding-inline: var(--space-xs);
+  min-width: 1.5rem;
+  text-align: center;
+}

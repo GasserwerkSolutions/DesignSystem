@@ -1,0 +1,105 @@
+/**
+ * Button Component
+ * =================
+ *
+ * CONTRACT — Token-Werte, die ein Theme setzen darf:
+ *
+ * Required:
+ *   --btn-bg, --btn-fg, --btn-radius
+ *
+ * Optional (Defaults in semantic.css oder hier):
+ *   --btn-bg-hover, --btn-bg-active   (Default: color-mix-abgeleitet)
+ *   --btn-border, --btn-px, --btn-py
+ *   --btn-weight, --btn-letter, --btn-transform
+ *   --btn-hover-motion, --btn-transition
+ *
+ * Modifier:
+ *   .btn--secondary   transparent mit Border
+ *   .btn--ghost       transparent, nur Textfarbe
+ *   .btn--sm / --lg   Größenvarianten
+ *
+ * Regel: Kein Theme darf .btn selektieren — Themes setzen nur Tokens.
+ */
+
+.btn {
+  --_btn-bg-hover:   var(--btn-bg-hover, color-mix(in oklch, var(--btn-bg) 88%, black));
+  --_btn-bg-active:  var(--btn-bg-active, color-mix(in oklch, var(--btn-bg) 75%, black));
+  --_btn-border:     var(--btn-border, transparent);
+  --_btn-px:         var(--btn-px, var(--space-20));
+  --_btn-py:         var(--btn-py, var(--space-12));
+  --_btn-weight:     var(--btn-weight, 600);
+  --_btn-letter:     var(--btn-letter, 0);
+  --_btn-transform:  var(--btn-transform, none);
+  --_btn-motion:     var(--btn-hover-motion, translateY(-1px));
+  --_btn-transition: var(--btn-transition, all var(--duration-fast) var(--easing-fast));
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--_btn-border);
+  border-radius: var(--btn-radius);
+
+  padding-block: var(--_btn-py);
+  padding-inline: var(--_btn-px);
+
+  font-family: inherit;
+  font-size: var(--font-base);
+  font-weight: var(--_btn-weight);
+  letter-spacing: var(--_btn-letter);
+  text-transform: var(--_btn-transform);
+  text-decoration: none;
+  white-space: nowrap;
+
+  transition: var(--_btn-transition);
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--_btn-bg-hover);
+  transform: var(--_btn-motion);
+}
+
+.btn:active:not(:disabled) {
+  background: var(--_btn-bg-active);
+  transform: none;
+}
+
+.btn:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn--secondary {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-text-primary);
+  --btn-border: var(--color-border-dark);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-interactive);
+  --btn-border: transparent;
+}
+
+.btn--sm {
+  --btn-px: var(--space-12);
+  --btn-py: var(--space-8);
+  font-size: var(--font-sm);
+}
+
+.btn--lg {
+  --btn-px: var(--space-32);
+  --btn-py: var(--space-16);
+  font-size: var(--font-lg);
+}

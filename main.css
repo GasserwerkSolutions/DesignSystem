@@ -1,0 +1,80 @@
+/**
+ * MAIN CSS ORCHESTRATION
+ * ======================
+ *
+ * Single entry point. Cascade-Priorität ist via @layer deterministisch
+ * festgelegt — unabhängig von Selector-Spezifität.
+ *
+ * Layer-Reihenfolge (links = niedrigste Priorität, rechts = höchste):
+ *
+ *   reset  <  tokens  <  semantic  <  themes  <  base  <  state  <  components
+ *
+ * Bedeutung:
+ *   1. reset      → Browser-Normalisierung (alles darf überschreiben)
+ *   2. tokens     → Primitive Werte (nur Custom Properties)
+ *   3. semantic   → Bedeutungs-Mapping + Contract-Defaults (trust-Baseline)
+ *   4. themes     → Token-Overrides, scoped via [data-tone~="..."]
+ *   5. base       → Reset-agnostic defaults (Typography, Layout)
+ *   6. state      → Generische Interaction-Defaults (:focus-visible, etc.)
+ *   7. components → Button, Card, Section — gewinnen gegen state im Konflikt
+ *
+ * REGEL: Themes setzen nur Token-Werte. Components lesen nur Tokens.
+ * Kein Theme darf .btn, .card, .section oder h1/h2/h3 selektieren.
+ * Durchgesetzt via scripts/lint-themes.js.
+ *
+ * Ohne gesetztes [data-tone] gilt die trust-Baseline aus semantic.css.
+ * Tones dürfen verschachtelt werden (z. B. premium-Card in trust-Layout).
+ */
+
+@layer reset, tokens, semantic, themes, base, state, components;
+
+@import "./tokens/tokens.css"     layer(tokens);
+@import "./semantic/semantic.css" layer(semantic);
+@import "./semantic/dark.css"     layer(semantic);
+
+@import "./themes/trust.css"      layer(themes);
+@import "./themes/playful.css"    layer(themes);
+@import "./themes/premium.css"    layer(themes);
+@import "./themes/industrial.css" layer(themes);
+@import "./themes/modern.css"     layer(themes);
+@import "./themes/minimal.css"    layer(themes);
+
+@import "./base/reset.css"      layer(reset);
+@import "./base/typography.css" layer(base);
+@import "./base/layout.css"     layer(base);
+@import "./base/print.css"      layer(base);
+
+@import "./state/state.css" layer(state);
+
+@import "./components/button.css"  layer(components);
+@import "./components/card.css"    layer(components);
+@import "./components/section.css" layer(components);
+@import "./components/badge.css"   layer(components);
+@import "./components/stat.css"    layer(components);
+@import "./components/nav.css"     layer(components);
+@import "./components/callout.css" layer(components);
+@import "./components/steps.css"   layer(components);
+@import "./components/table.css"      layer(components);
+@import "./components/code-block.css" layer(components);
+@import "./components/progress.css"   layer(components);
+@import "./components/avatar.css"     layer(components);
+@import "./components/trend.css"      layer(components);
+@import "./components/panel-list.css" layer(components);
+@import "./components/banner.css"     layer(components);
+@import "./components/divider.css"    layer(components);
+@import "./components/list-row.css"   layer(components);
+@import "./components/funnel.css"     layer(components);
+@import "./components/checkbox.css"    layer(components);
+@import "./components/field.css"       layer(components);
+@import "./components/search.css"      layer(components);
+@import "./components/modal.css"       layer(components);
+@import "./components/drawer.css"      layer(components);
+@import "./components/tooltip.css"     layer(components);
+@import "./components/tabs.css"        layer(components);
+@import "./components/accordion.css"   layer(components);
+@import "./components/skeleton.css"    layer(components);
+@import "./components/empty-state.css" layer(components);
+@import "./components/toast.css"       layer(components);
+@import "./components/breadcrumbs.css" layer(components);
+@import "./components/pagination.css"  layer(components);
+@import "./components/range.css"       layer(components);

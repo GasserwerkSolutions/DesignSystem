@@ -1,0 +1,102 @@
+/**
+ * LAYOUT PRIMITIVES
+ * =================
+ * Container, Flex, Grid. Section lebt in components/section.css.
+ */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max, 1280px);
+  margin: 0 auto;
+  padding: 0 var(--space-inline);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap, var(--space-12));
+}
+
+.stack--sm { --stack-gap: var(--space-8); }
+.stack--md { --stack-gap: var(--space-16); }
+.stack--lg { --stack-gap: var(--space-32); }
+.stack--xl { --stack-gap: var(--space-48); }
+
+.flex {
+  display: flex;
+  gap: var(--space-inline);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-inline);
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-block);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-block);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-block);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-block);
+}
+
+@media (max-width: 1024px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aspect-square {
+  aspect-ratio: 1;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.block { display: block; }
+.inline { display: inline; }
+.inline-block { display: inline-block; }
+.hidden { display: none; }
+
+@media (max-width: 768px) {
+  .hidden-mobile { display: none; }
+}
+
+@media (min-width: 769px) {
+  .visible-mobile { display: none; }
+}
+
+.w-full { width: 100%; }
+.w-auto { width: auto; }

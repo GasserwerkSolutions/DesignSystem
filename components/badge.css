@@ -1,0 +1,88 @@
+/**
+ * Badge Component
+ * ================
+ *
+ * Für Status-Tags (Live, Kostenlos, ENTERPRISE, Industry-Labels, etc.)
+ *
+ * CONTRACT:
+ *   Required: --badge-bg, --badge-fg
+ *   Optional:
+ *     --badge-border, --badge-radius
+ *     --badge-weight, --badge-letter, --badge-transform
+ *     --badge-px, --badge-py
+ *
+ * Modifier:
+ *   .badge--strong     filled (interactive accent)
+ *   .badge--success    subtle success
+ *   .badge--warning    subtle warning
+ *   .badge--danger     subtle error
+ *   .badge--info       subtle info
+ *   .badge--neutral    subtle neutral/gray
+ *   .badge--outline    outlined (transparent bg)
+ *
+ * Child:
+ *   .badge__dot        Status-Indikator-Punkt (nutzt currentColor)
+ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--badge-py, var(--space-2)) var(--badge-px, var(--space-8));
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  border: 1px solid var(--badge-border, transparent);
+  border-radius: var(--badge-radius);
+  font-family: inherit;
+  font-size: var(--font-xs);
+  font-weight: var(--badge-weight, 600);
+  letter-spacing: var(--badge-letter, 0);
+  text-transform: var(--badge-transform, none);
+  line-height: 1.4;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.badge__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.badge--strong {
+  --badge-bg: var(--color-interactive);
+  --badge-fg: white;
+}
+
+.badge--success {
+  --badge-bg: color-mix(in oklch, var(--color-success) 15%, white);
+  --badge-fg: color-mix(in oklch, var(--color-success) 80%, black);
+}
+
+.badge--warning {
+  --badge-bg: color-mix(in oklch, var(--color-warning) 18%, white);
+  --badge-fg: color-mix(in oklch, var(--color-warning) 80%, black);
+}
+
+.badge--danger {
+  --badge-bg: color-mix(in oklch, var(--color-error) 15%, white);
+  --badge-fg: color-mix(in oklch, var(--color-error) 75%, black);
+}
+
+.badge--info {
+  --badge-bg: color-mix(in oklch, var(--color-info) 15%, white);
+  --badge-fg: color-mix(in oklch, var(--color-info) 80%, black);
+}
+
+.badge--neutral {
+  --badge-bg: var(--color-bg-tertiary);
+  --badge-fg: var(--color-text-secondary);
+}
+
+.badge--outline {
+  --badge-bg: transparent;
+  --badge-border: var(--color-border-dark);
+  --badge-fg: var(--color-text-secondary);
+}

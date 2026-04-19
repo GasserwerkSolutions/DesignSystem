@@ -1,0 +1,94 @@
+/**
+ * Tabs Component
+ * ===============
+ *
+ * Horizontale Tab-Leiste mit Panels. ARIA-Rollen liefern die A11Y
+ * (keyboard-Navigation durch JS, aber CSS ist ready).
+ *
+ * CONTRACT:
+ *   Optional: --tab-active-color, --tab-idle-color, --tab-indicator-color
+ *
+ * Struktur:
+ *   <div class="tabs" role="tablist">
+ *     <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
+ *     <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
+ *   </div>
+ *   <div id="p1" role="tabpanel" class="tab-panel">…</div>
+ *   <div id="p2" role="tabpanel" class="tab-panel" hidden>…</div>
+ *
+ * Modifier:
+ *   .tabs--pill       pill-style mit Background statt Underline
+ */
+
+.tabs {
+  display: flex;
+  gap: var(--space-xs);
+  border-block-end: 1px solid var(--color-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  padding: var(--space-sm) var(--space-md);
+  background: none;
+  border: none;
+  border-block-end: 2px solid transparent;
+  color: var(--tab-idle-color, var(--color-text-secondary));
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-sm);
+  font-weight: var(--fw-500);
+  white-space: nowrap;
+  transition: color var(--motion-feedback), border-color var(--motion-feedback);
+  margin-block-end: -1px;
+}
+
+.tab:hover:not([aria-selected="true"]) {
+  color: var(--color-text-primary);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--tab-active-color, var(--color-interactive));
+  border-block-end-color: var(--tab-indicator-color, var(--color-interactive));
+  font-weight: var(--fw-600);
+}
+
+.tab:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.tab-panel {
+  padding-block: var(--space-md);
+}
+
+.tab-panel:focus {
+  outline: none;
+}
+
+/* Pill-Variante */
+.tabs--pill {
+  border: none;
+  background: var(--color-bg-secondary);
+  padding: var(--space-xs);
+  border-radius: var(--radius-md);
+  gap: 0;
+  display: inline-flex;
+}
+
+.tabs--pill .tab {
+  border: none;
+  border-radius: var(--radius-sm);
+  margin: 0;
+}
+
+.tabs--pill .tab[aria-selected="true"] {
+  background: var(--card-bg);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
+}

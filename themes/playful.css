@@ -1,0 +1,48 @@
+/**
+ * Theme: PLAYFUL
+ * ==============
+ * Tone: Freundlich, Kreativ, Lebendig, Modern
+ * Primär für: Salons (Trend), Gym, Ecommerce
+ */
+
+[data-tone~="playful"] {
+  /* Colors */
+  --color-interactive:       var(--playful-600);
+  --color-interactive-light: var(--playful-100);
+  --color-interactive-dark:  var(--playful-700);
+  --color-focus:             var(--playful-600);
+  --color-focus-ring:        var(--playful-200);
+
+  /* Typography */
+  --heading-font:        var(--font-sans);
+  --heading-weight:      700;
+  --heading-line-height: 1.15;
+  --h1-letter:           var(--ls-tight);
+  --text-size-h1:        var(--font-5xl);
+
+  /* Spacing */
+  --space-inline:  var(--space-16);
+  --space-block:   var(--space-24);
+  --space-section: var(--space-56);
+  --section-py:    var(--space-56);
+
+  /* Motion */
+  --duration-fast:   var(--motion-fastest);
+  --duration-medium: var(--motion-fast);
+  --easing-medium:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Button */
+  --btn-bg:           var(--playful-600);
+  --btn-bg-hover:     var(--playful-700);
+  --btn-fg:           white;
+  --btn-radius:       var(--radius-20);
+  --btn-px:           var(--space-16);
+  --btn-py:           var(--space-12);
+  --btn-weight:       700;
+  --btn-hover-motion: scale(1.08);
+  --btn-transition:   all var(--motion-fastest) cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Card */
+  --card-radius: var(--radius-20);
+  --card-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
+}

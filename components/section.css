@@ -1,0 +1,37 @@
+/**
+ * Section Component
+ * ==================
+ *
+ * CONTRACT:
+ *   --section-py       Vertical padding (Default: --space-48)
+ *   --section-bg       Hintergrund (Default: transparent)
+ *   --section-divider  Top-Border, z. B. "2px solid …" (Default: none)
+ *
+ * Modifier:
+ *   .section--hero      großes padding
+ *   .section--compact   reduziertes padding
+ *
+ * Regel: Kein Theme darf .section selektieren.
+ */
+
+.section {
+  width: 100%;
+  padding-block: var(--section-py, var(--space-48));
+  background: var(--section-bg, transparent);
+  border-block-start: var(--section-divider, none);
+  /* Off-Screen-Sections werden nicht gerendert bis sichtbar \u2014 Perf-Boost */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 40rem;
+}
+
+.section:first-child {
+  padding-block-start: 0;
+  border-block-start: none;
+}
+
+.section:last-child {
+  padding-block-end: 0;
+}
+
+.section--hero    { --section-py: var(--space-96); }
+.section--compact { --section-py: var(--space-24); }

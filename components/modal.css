@@ -1,0 +1,117 @@
+/**
+ * Modal Component
+ * ================
+ *
+ * Auf native <dialog>-Element aufgebaut — bringt A11Y gratis
+ * (Focus-Trap, Escape-Close, aria-modal).
+ *
+ * CONTRACT:
+ *   Optional: --modal-bg, --modal-radius, --modal-max-width, --modal-padding
+ *
+ * Struktur:
+ *   <dialog class="modal" id="m1">
+ *     <header class="modal__header">
+ *       <h3 class="modal__title">Buchung bestätigen</h3>
+ *       <button class="modal__close" aria-label="Schließen">×</button>
+ *     </header>
+ *     <div class="modal__body">…</div>
+ *     <footer class="modal__actions">
+ *       <button class="btn btn--secondary">Abbrechen</button>
+ *       <button class="btn">Bestätigen</button>
+ *     </footer>
+ *   </dialog>
+ *
+ *   JS: document.getElementById('m1').showModal();
+ *
+ * Modifier:
+ *   .modal--sm / --lg   Größenvarianten
+ */
+
+.modal {
+  padding: 0;
+  border: none;
+  border-radius: var(--modal-radius, var(--radius-lg));
+  background: var(--modal-bg, var(--card-bg));
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-xl);
+  max-width: var(--modal-max-width, min(32rem, calc(100% - 2rem)));
+  width: 100%;
+  max-height: calc(100dvh - 2rem);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.modal[open] {
+  animation: modal-enter var(--motion-entrance);
+}
+
+.modal[open]::backdrop {
+  animation: modal-backdrop-enter var(--motion-entrance);
+}
+
+@keyframes modal-enter {
+  from { opacity: 0; transform: translateY(-1rem) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes modal-backdrop-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.modal__title {
+  margin: 0;
+  font-size: var(--font-lg);
+  color: var(--color-text-primary);
+}
+
+.modal__close {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-text-tertiary);
+  border-radius: var(--radius-md);
+  transition: background var(--motion-feedback);
+}
+
+.modal__close:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+.modal__body {
+  padding: var(--space-lg);
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.modal__actions {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  padding: var(--space-lg);
+  border-block-start: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+}
+
+.modal--sm { --modal-max-width: min(20rem, calc(100% - 2rem)); }
+.modal--lg { --modal-max-width: min(48rem, calc(100% - 2rem)); }

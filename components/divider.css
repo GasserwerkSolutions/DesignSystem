@@ -1,0 +1,71 @@
+/**
+ * Divider Component
+ * ==================
+ *
+ * Horizontale Trennlinie — mit oder ohne Text in der Mitte.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --divider-color, --divider-margin, --divider-width
+ *
+ * Struktur:
+ *   <hr class="divider">
+ *
+ *   Mit Text:
+ *   <div class="divider divider--with-text" role="separator">
+ *     <span>oder</span>
+ *   </div>
+ *
+ *   Vertikal:
+ *   <div class="divider divider--vertical" role="separator"></div>
+ *
+ * Modifier:
+ *   .divider--with-text   Linie mit zentriertem Text
+ *   .divider--vertical    vertikal (für Flex/Grid-Layouts)
+ */
+
+.divider {
+  border: none;
+  border-block-start: var(--divider-width, 1px) solid var(--divider-color, var(--color-border));
+  margin-block: var(--divider-margin, var(--space-24));
+  margin-inline: 0;
+  height: 0;
+  width: 100%;
+}
+
+.divider--with-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  border: none;
+  margin-block: var(--divider-margin, var(--space-24));
+  height: auto;
+}
+
+.divider--with-text::before,
+.divider--with-text::after {
+  content: "";
+  flex: 1 1 auto;
+  height: var(--divider-width, 1px);
+  background: var(--divider-color, var(--color-border));
+}
+
+.divider--with-text > span {
+  font-size: var(--font-xs);
+  font-weight: var(--fw-600);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.divider--vertical {
+  width: var(--divider-width, 1px);
+  height: auto;
+  min-height: 1rem;
+  align-self: stretch;
+  background: var(--divider-color, var(--color-border));
+  border: none;
+  margin-block: 0;
+  margin-inline: var(--divider-margin, var(--space-12));
+}

@@ -1,0 +1,110 @@
+/**
+ * STATE STYLES
+ * ============
+ * Interactive states: focus, hover, active, disabled.
+ * Plus zentraler A11Y-Support (prefers-contrast).
+ *
+ * Regel: Diese Layer liefert Defaults für naked Elements. Components
+ * gewinnen gegen state bei Konflikten (layer-components > layer-state).
+ */
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+*:focus-visible {
+  border-radius: 2px;
+}
+
+a:hover {
+  color: var(--color-interactive-dark);
+  text-decoration: underline;
+}
+
+a:active {
+  color: var(--color-interactive-dark);
+}
+
+a:visited {
+  color: var(--color-interactive-dark);
+}
+
+/* Generische Buttons ohne .btn-Komponente: dezentes Opacity-Feedback.
+   .btn steuert Hover/Active selbst (Background + Transform). */
+button:not(.btn):hover {
+  opacity: 0.9;
+}
+
+button:not(.btn):active {
+  opacity: 0.8;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+}
+
+input:invalid:focus,
+textarea:invalid:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* ==========================================================
+   A11Y — prefers-contrast
+   Ergänzt prefers-reduced-motion aus reset.css.
+   ========================================================== */
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-border:         var(--gray-700);
+    --color-border-dark:    var(--gray-900);
+    --color-text-secondary: var(--gray-800);
+    --color-text-tertiary:  var(--gray-700);
+  }
+}
+
+/* Windows High-Contrast-Mode / Forced-Colors-Support */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+  .btn,
+  .card,
+  .stat,
+  .callout,
+  .banner,
+  .table-wrap {
+    border: 1px solid CanvasText;
+  }
+  .btn {
+    forced-color-adjust: none;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+  .badge {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* prefers-reduced-data \u2014 Background-Images, Shadows etc. zur\u00fccknehmen */
+@media (prefers-reduced-data: reduce) {
+  .code-block,
+  .search-input {
+    background-image: none;
+  }
+  .card,
+  .stat,
+  .callout {
+    box-shadow: none;
+  }
+}

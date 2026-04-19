@@ -1,0 +1,44 @@
+/**
+ * Card Component
+ * ===============
+ *
+ * CONTRACT — Token-Werte, die ein Theme setzen darf:
+ *
+ * Required:
+ *   --card-bg
+ *
+ * Optional:
+ *   --card-border, --card-radius, --card-shadow, --card-padding
+ *   --card-hover-transform, --card-hover-shadow
+ *
+ * Modifier:
+ *   .card--flat       ohne Schatten
+ *   .card--bordered   starker Border, kein Schatten
+ *
+ * Regel: Kein Theme darf .card selektieren.
+ */
+
+.card {
+  background:    var(--card-bg);
+  border:        var(--card-border, 1px solid var(--color-border));
+  border-radius: var(--card-radius, var(--radius-lg));
+  box-shadow:    var(--card-shadow, var(--shadow-md));
+  padding:       var(--card-padding, var(--space-24));
+
+  transition: transform var(--duration-medium) var(--easing-medium),
+              box-shadow var(--duration-medium) var(--easing-medium);
+}
+
+.card:hover {
+  transform:  var(--card-hover-transform, none);
+  box-shadow: var(--card-hover-shadow, var(--card-shadow, var(--shadow-md)));
+}
+
+.card--flat {
+  --card-shadow: none;
+}
+
+.card--bordered {
+  --card-border: 2px solid var(--color-border-dark);
+  --card-shadow: none;
+}

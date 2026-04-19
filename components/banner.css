@@ -1,0 +1,81 @@
+/**
+ * Banner Component
+ * =================
+ *
+ * Horizontaler Page-Top-Alert. Unterscheidet sich vom Callout:
+ * - Banner: full-width, geringe Höhe, vom Layout am oberen Rand platziert
+ * - Callout: inline im Content, akzentuiertes Border-Left
+ *
+ * Typische Use-Cases: Grace-Period-Warnung, Maintenance-Notice, System-Status.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --banner-bg, --banner-fg, --banner-accent, --banner-border
+ *
+ * Struktur:
+ *   <div class="banner banner--warning" role="status">
+ *     <span class="banner__body">
+ *       <strong>Zahlungsproblem:</strong> Dein Abo läuft in 3 Tagen aus.
+ *     </span>
+ *     <a href="/settings" class="banner__action">Jetzt aktualisieren</a>
+ *   </div>
+ *
+ * Modifier:
+ *   .banner--info / --success / --warning / --danger
+ */
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-24);
+  background: var(--banner-bg, color-mix(in oklch, var(--color-info) 12%, white));
+  color: var(--banner-fg, var(--color-text-primary));
+  border-block-end: 1px solid var(--banner-border, transparent);
+  font-size: var(--font-sm);
+  line-height: var(--lh-normal);
+  flex-wrap: wrap;
+}
+
+.banner__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.banner__body strong {
+  color: var(--banner-accent, var(--color-info));
+  font-weight: var(--fw-700);
+}
+
+.banner__action {
+  color: var(--banner-accent, var(--color-info));
+  font-weight: var(--fw-600);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.banner__action:hover {
+  color: color-mix(in oklch, var(--banner-accent, var(--color-info)) 80%, black);
+}
+
+.banner--info {
+  --banner-bg: color-mix(in oklch, var(--color-info) 12%, white);
+  --banner-accent: var(--color-info);
+}
+
+.banner--success {
+  --banner-bg: color-mix(in oklch, var(--color-success) 12%, white);
+  --banner-accent: var(--color-success);
+}
+
+.banner--warning {
+  --banner-bg: color-mix(in oklch, var(--color-warning) 15%, white);
+  --banner-accent: color-mix(in oklch, var(--color-warning) 85%, black);
+}
+
+.banner--danger {
+  --banner-bg: color-mix(in oklch, var(--color-error) 10%, white);
+  --banner-accent: var(--color-error);
+}

@@ -1,0 +1,63 @@
+/**
+ * Theme: INDUSTRIAL
+ * =================
+ * Tone: Robust, Technisch, Direkt, Pragmatisch
+ * Primär für: Construction, Heavy Industry, Manufacturing
+ */
+
+[data-tone~="industrial"] {
+  /* Colors */
+  --color-interactive:       var(--industrial-600);
+  --color-interactive-light: var(--industrial-100);
+  --color-interactive-dark:  var(--industrial-900);
+  --color-text-primary:      var(--industrial-900);
+  --color-text-secondary:    var(--industrial-600);
+  --color-border:            var(--industrial-400);
+  --color-focus:             var(--industrial-600);
+  --color-focus-ring:        var(--industrial-400);
+
+  /* Typography */
+  --heading-font:        var(--font-sans);
+  --heading-weight:      700;
+  --heading-line-height: 1.2;
+  --h1-letter:           1px;
+  --h1-transform:        uppercase;
+  --text-size-h1:        var(--font-5xl);
+  --body-line-height:    1.6;
+
+  /* Spacing */
+  --space-inline:    var(--space-16);
+  --space-block:     var(--space-20);
+  --space-section:   var(--space-48);
+  --section-py:      var(--space-48);
+  --section-divider: 2px solid var(--color-border);
+
+  /* Motion */
+  --duration-fast:   var(--motion-fast);
+  --duration-medium: var(--motion-base);
+  --easing-medium:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Button */
+  --btn-bg:           var(--industrial-600);
+  --btn-bg-hover:     var(--industrial-900);
+  --btn-fg:           white;
+  --btn-border:       var(--industrial-600);
+  --btn-radius:       0;
+  --btn-px:           var(--space-16);
+  --btn-py:           var(--space-12);
+  --btn-weight:       700;
+  --btn-letter:       var(--ls-wide);
+  --btn-transform:    uppercase;
+  --btn-hover-motion: none;
+
+  /* Card */
+  --card-border: 2px solid var(--color-border);
+  --card-radius: var(--radius-4);
+  --card-shadow: none;
+
+  /* Badge — hart, uppercase, keine Radius */
+  --badge-radius:    0;
+  --badge-letter:    var(--ls-wide);
+  --badge-transform: uppercase;
+  --badge-weight:    700;
+}

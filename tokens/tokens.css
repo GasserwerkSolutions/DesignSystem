@@ -1,0 +1,209 @@
+/**
+ * Design Tokens — Raw Values Only
+ * ================================
+ *
+ * RULE: Keine Logik. Nur primitive Werte.
+ *
+ * Unit-Strategie:
+ *   - Spacing     → rem  (skaliert mit Browser-Font-Size → A11Y)
+ *   - Font-Sizes  → rem  (Body-Skala fix, Headings fluid via clamp())
+ *   - Radius      → rem  (konsistent mit Spacing-Skala)
+ *   - Borders     → px   (crisp Hairlines unabhängig von Font-Size)
+ *   - Motion      → ms
+ *
+ * Kein explizites font-size auf html: die User-Browser-Präferenz
+ * bestimmt 1rem (meist 16px). Siehe reset.css.
+ *
+ * Dependencies: keine
+ * Used by:      semantic.css
+ */
+
+:root {
+  /* ========================================
+     SPACING (4px-Grid in rem)
+     ======================================== */
+
+  --space-2:   0.125rem;  /*  2px @ 16px root */
+  --space-4:   0.25rem;   /*  4px */
+  --space-6:   0.375rem;  /*  6px */
+  --space-8:   0.5rem;    /*  8px */
+  --space-12:  0.75rem;   /* 12px */
+  --space-16:  1rem;      /* 16px */
+  --space-20:  1.25rem;   /* 20px */
+  --space-24:  1.5rem;    /* 24px */
+  --space-32:  2rem;      /* 32px */
+  --space-40:  2.5rem;    /* 40px */
+  --space-48:  3rem;      /* 48px */
+  --space-56:  3.5rem;    /* 56px */
+  --space-64:  4rem;      /* 64px */
+  --space-80:  5rem;      /* 80px */
+  --space-96:  6rem;      /* 96px */
+  --space-128: 8rem;      /* 128px */
+
+  /* ========================================
+     COLORS — Neutral Base
+     ======================================== */
+
+  --gray-50:  #fafafa;
+  --gray-100: #f5f5f4;
+  --gray-150: #efefed;
+  --gray-200: #e8e8e8;
+  --gray-300: #d4d4d4;
+  --gray-400: #bbbbbb;
+  --gray-500: #888888;
+  --gray-600: #666666;
+  --gray-700: #404040;
+  --gray-800: #262626;
+  --gray-900: #1a1a1a;
+  --gray-950: #0f0f0f;
+
+  /* ========================================
+     COLORS — Tone Palettes
+     (Theme-spezifische Scales. premium/minimal/modern
+      wurden entfernt — keine Verwendung.)
+     ======================================== */
+
+  /* Trust (Green) */
+  --trust-50:  #f0fdf4;
+  --trust-100: #dcfce7;
+  --trust-200: #bbf7d0;
+  --trust-300: #86efac;
+  --trust-400: #4ade80;
+  --trust-500: #22c55e;
+  --trust-600: #16a34a;
+  --trust-700: #15803d;
+  --trust-800: #166534;
+  --trust-900: #14532d;
+
+  /* Playful (Amber/Gold) */
+  --playful-50:  #fefce8;
+  --playful-100: #fef3c7;
+  --playful-200: #fde68a;
+  --playful-300: #fcd34d;
+  --playful-400: #fbbf24;
+  --playful-500: #f59e0b;
+  --playful-600: #d97706;
+  --playful-700: #b45309;
+  --playful-800: #92400e;
+  --playful-900: #78350f;
+
+  /* Industrial (Dark Gray accent) */
+  --industrial-100: #eeeeee;
+  --industrial-400: #a3a3a3;
+  --industrial-600: #525252;
+  --industrial-900: #171717;
+
+  /* Modern (Blue) */
+  --modern-50:  #f0f9ff;
+  --modern-100: #e0f2fe;
+  --modern-200: #bae6fd;
+  --modern-300: #7dd3fc;
+  --modern-400: #38bdf8;
+  --modern-500: #0ea5e9;
+  --modern-600: #0284c7;
+  --modern-700: #0369a1;
+  --modern-800: #075985;
+  --modern-900: #0c4a6e;
+
+  /* Minimal nutzt die neutrale Gray-Skala — keine eigene Palette nötig */
+
+  /* ========================================
+     TYPOGRAPHY
+     ======================================== */
+
+  /* Font Families */
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans:  "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:  "Courier New", monospace;
+
+  /* Font Sizes — Body-Skala: fix in rem */
+  --font-xs:   0.75rem;   /* 12px */
+  --font-sm:   0.875rem;  /* 14px */
+  --font-base: 1rem;      /* 16px */
+  --font-lg:   1.125rem;  /* 18px */
+  --font-xl:   1.25rem;   /* 20px */
+  --font-2xl:  1.5rem;    /* 24px */
+
+  /* Font Sizes — Headings: fluid clamp(min, preferred, max)
+     Wächst zwischen 320px und 1280px Viewport-Breite. */
+  --font-3xl: clamp(1.625rem, 1.542rem + 0.417vw, 1.875rem);  /* 26 → 30 */
+  --font-4xl: clamp(1.75rem,  1.583rem + 0.833vw, 2.25rem);   /* 28 → 36 */
+  --font-5xl: clamp(1.875rem, 1.625rem + 1.25vw,  2.625rem);  /* 30 → 42 */
+  --font-6xl: clamp(2rem,     1.667rem + 1.667vw, 3rem);      /* 32 → 48 */
+  --font-7xl: clamp(2.25rem,  1.833rem + 2.083vw, 3.5rem);    /* 36 → 56 */
+
+  /* Font Weights */
+  --fw-300: 300;
+  --fw-400: 400;
+  --fw-500: 500;
+  --fw-600: 600;
+  --fw-700: 700;
+
+  /* Line Heights */
+  --lh-tight:  1.2;
+  --lh-normal: 1.5;
+  --lh-loose:  1.75;
+
+  /* Letter Spacing (px — typografische Feinjustierung,
+     bewusst nicht in em für konsistente Wirkung) */
+  --ls-tight:  -0.5px;
+  --ls-normal: 0px;
+  --ls-wide:   1px;
+
+  /* ========================================
+     MOTION
+     ======================================== */
+
+  --motion-fastest: 75ms;
+  --motion-fast:    150ms;
+  --motion-base:    250ms;
+  --motion-slow:    350ms;
+  --motion-slower:  500ms;
+
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* ========================================
+     BORDERS & RADIUS
+     ======================================== */
+
+  /* Radius in rem (skaliert mit Spacing) */
+  --radius-0:    0;
+  --radius-2:    0.125rem;  /*  2px */
+  --radius-4:    0.25rem;   /*  4px */
+  --radius-6:    0.375rem;  /*  6px */
+  --radius-8:    0.5rem;    /*  8px */
+  --radius-12:   0.75rem;   /* 12px */
+  --radius-16:   1rem;      /* 16px */
+  --radius-20:   1.25rem;   /* 20px */
+  --radius-24:   1.5rem;    /* 24px */
+  --radius-full: 9999px;
+
+  /* Border-Widths in px — Hairlines bleiben crisp */
+  --border-1: 1px;
+  --border-2: 2px;
+  --border-3: 3px;
+  --border-4: 4px;
+
+  /* ========================================
+     SHADOWS
+     ======================================== */
+
+  --shadow-none: none;
+  --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md:   0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:   0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* ========================================
+     Z-INDEX SCALE
+     ======================================== */
+
+  --z-hide:     -1;
+  --z-base:     0;
+  --z-dropdown: 100;
+  --z-modal:    1000;
+  --z-tooltip:  1100;
+}

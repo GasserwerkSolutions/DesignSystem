@@ -1,0 +1,98 @@
+/**
+ * Accordion Component
+ * ====================
+ *
+ * Auf native <details>/<summary> aufgebaut — A11Y, Keyboard-Toggle,
+ * kein JS nötig.
+ *
+ * CONTRACT:
+ *   Optional: --accordion-bg, --accordion-border, --accordion-radius
+ *
+ * Struktur:
+ *   <details class="accordion">
+ *     <summary class="accordion__summary">Wie viele Buchungen pro Monat?</summary>
+ *     <div class="accordion__body">
+ *       <p>Im Free-Plan sind 20 Buchungen / Monat enthalten.</p>
+ *     </div>
+ *   </details>
+ *
+ * Modifier:
+ *   .accordion--flat    ohne Border/Background
+ */
+
+.accordion {
+  background: var(--accordion-bg, var(--card-bg));
+  border: 1px solid var(--accordion-border, var(--color-border));
+  border-radius: var(--accordion-radius, var(--radius-md));
+  overflow: hidden;
+}
+
+.accordion + .accordion {
+  margin-block-start: var(--space-xs);
+}
+
+.accordion__summary {
+  padding: var(--space-md) var(--space-lg);
+  cursor: pointer;
+  font-weight: var(--fw-600);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  list-style: none;
+  user-select: none;
+  transition: background var(--motion-feedback);
+}
+
+.accordion__summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordion__summary:hover {
+  background: var(--color-bg-secondary);
+}
+
+.accordion__summary::after {
+  content: "";
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m4 6 4 4 4-4'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  color: var(--color-text-secondary);
+  transition: transform var(--motion-transition);
+}
+
+.accordion[open] > .accordion__summary::after {
+  transform: rotate(180deg);
+}
+
+.accordion__summary:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.accordion__body {
+  padding: 0 var(--space-lg) var(--space-md);
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  line-height: var(--lh-normal);
+}
+
+.accordion__body > :last-child {
+  margin-bottom: 0;
+}
+
+.accordion--flat {
+  --accordion-bg: transparent;
+  --accordion-border: transparent;
+  border-block-end: 1px solid var(--color-border);
+  border-radius: 0;
+}
+
+.accordion--flat + .accordion--flat {
+  margin-block-start: 0;
+}

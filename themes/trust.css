@@ -1,0 +1,56 @@
+/**
+ * Theme: TRUST
+ * ============
+ * Tone: Sicherheit, Qualität, Etabliert
+ * Primär für: Salons (Familie), Medical, Law, Construction
+ *
+ * Setzt nur Token-Werte. Keine Selektoren für .btn/.card/.section/h1-h3.
+ */
+
+[data-tone~="trust"] {
+  /* Colors */
+  --color-interactive:       var(--trust-600);
+  --color-interactive-light: var(--trust-100);
+  --color-interactive-dark:  var(--trust-800);
+  --color-focus:             var(--trust-600);
+  --color-focus-ring:        var(--trust-100);
+
+  /* Typography */
+  --heading-font:        var(--font-serif);
+  --heading-weight:      600;
+  --heading-line-height: 1.2;
+  --h1-letter:           var(--ls-tight);
+  --body-line-height:    var(--lh-loose);
+  --body-max-width:      65ch;
+
+  /* Spacing */
+  --space-inline:  var(--space-20);
+  --space-block:   var(--space-32);
+  --space-section: var(--space-64);
+  --section-py:    var(--space-64);
+
+  /* Motion */
+  --duration-fast:   var(--motion-base);
+  --duration-medium: var(--motion-slow);
+  --easing-medium:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Button */
+  --btn-bg:           var(--trust-600);
+  --btn-bg-hover:     var(--trust-700);
+  --btn-fg:           white;
+  --btn-radius:       var(--radius-8);
+  --btn-px:           var(--space-20);
+  --btn-py:           var(--space-12);
+  --btn-weight:       600;
+  --btn-hover-motion: translateY(-1px);
+
+  /* Card */
+  --card-bg:     white;
+  --card-border: 1px solid var(--trust-100);
+  --card-radius: var(--radius-12);
+  --card-shadow: 0 1px 3px 0 rgba(22, 163, 74, 0.1);
+
+  /* Input */
+  --input-focus-border: var(--trust-600);
+  --input-focus-ring:   var(--trust-100);
+}
