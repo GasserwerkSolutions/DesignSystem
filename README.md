@@ -1,6 +1,6 @@
 # Design System
 
-Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, 29 Components, WCAG AA validated.
+Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, 33 Components, WCAG AA validated.
 
 ```html
 <link rel="stylesheet" href="main.css">
@@ -81,7 +81,7 @@ semantic/         Meaning mapping (--color-interactive, --card-bg, ...)
 themes/           6 tones, each setting only tokens
 base/             Reset, Typography, Layout, Print
 state/            Global interaction defaults, prefers-* media queries
-components/       29 components — each a contract (tokens in) + selectors (CSS out)
+components/       33 components — each a contract (tokens in) + selectors (CSS out)
 scripts/          Lint, Contrast-Check, Token-Export, Type-Generator
 dist/             Generated — tokens.json (W3C DTCG) + tokens.d.ts
 ```
@@ -100,17 +100,17 @@ dist/             Generated — tokens.json (W3C DTCG) + tokens.d.ts
 
 ## Components
 
-**Foundation**: Button, Card, Section, Badge, Stat, Nav (sidebar/topbar), Callout, Steps, Table
+**Foundation**: Button, Button-Group, Card, Section, Badge, Stat, Nav (sidebar/topbar), Callout, Steps, Table
 
 **Layout**: List-Row, Funnel, Stack, Grid, Container
 
-**Form**: Checkbox, Radio, Field, Search, Range-Slider
+**Form**: Checkbox, Radio, Field, Input, Search, Range-Slider
 
-**Overlay**: Modal, Drawer, Tooltip
+**Overlay**: Modal, Drawer, Popover, Tooltip
 
 **Content**: Tabs, Accordion, Breadcrumbs, Pagination
 
-**Feedback**: Empty-State, Skeleton, Toast, Progress, Trend
+**Feedback**: Empty-State, Skeleton, Spinner, Toast, Progress, Trend
 
 **Data**: Avatar, Code-Block, Panel-List, Divider, Banner
 

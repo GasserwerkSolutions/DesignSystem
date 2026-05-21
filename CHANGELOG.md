@@ -10,10 +10,23 @@ und das Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 ## [Unreleased]
 
 ### Hinzugefügt
-- —
+- **Components** (Phase 1 — Lücken-Füller):
+  - `input.css` — geteiltes Form-Control-Primitive mit Größen-Varianten,
+    klassen-basierten Validierungs-Zuständen (`.is-invalid`, `.is-valid`)
+    und `.input-group` für Prefix/Suffix-Adornments
+  - `button-group.css` — verbundene Button-Reihe + Segmented Control
+    (`aria-pressed="true"` als gedrückter Zustand)
+  - `popover.css` — Anchor-positioniertes Menü auf Basis der nativen
+    Popover-API (`[popover]`) mit Fallback und Menu/Separator-Pattern
+  - `spinner.css` — indeterminate Loading-Indikator, respektiert
+    `prefers-reduced-motion` (Opacity-Puls statt Rotation) und
+    Forced-Colors (System-Highlight)
+- **Table**: neue Modifier `--striped`, `--sticky-header`, `--responsive`
+  (mobile Stack-Layout via `data-label`)
+- **Tokens**: `--z-popover` (200) zwischen `--z-dropdown` und `--z-modal`
 
 ### Geändert
-- —
+- README + Component-Listing auf 33 Components erweitert
 
 ### Entfernt
 - —

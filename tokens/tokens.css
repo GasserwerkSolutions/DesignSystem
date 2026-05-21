@@ -204,6 +204,7 @@
   --z-hide:     -1;
   --z-base:     0;
   --z-dropdown: 100;
+  --z-popover:  200;
   --z-modal:    1000;
   --z-tooltip:  1100;
 }

@@ -1,0 +1,97 @@
+/**
+ * Button-Group Component
+ * =======================
+ *
+ * Verbundene Reihe von .btn-Elementen — gemeinsame Border, nur
+ * äußere Ecken gerundet. Eignet sich für Toolbars, Toggle-Sets,
+ * Segmented Controls.
+ *
+ * CONTRACT:
+ *   Keine eigenen Tokens — übernimmt vollständig den Button-Contract.
+ *
+ * Struktur:
+ *   <div class="button-group" role="group" aria-label="Sortierung">
+ *     <button class="btn btn--secondary">Neueste</button>
+ *     <button class="btn btn--secondary">Beliebt</button>
+ *     <button class="btn btn--secondary">A–Z</button>
+ *   </div>
+ *
+ *   Segmented Control mit gedrücktem Zustand:
+ *   <div class="button-group button-group--segmented" role="group">
+ *     <button class="btn btn--secondary" aria-pressed="true">Tag</button>
+ *     <button class="btn btn--secondary" aria-pressed="false">Woche</button>
+ *     <button class="btn btn--secondary" aria-pressed="false">Monat</button>
+ *   </div>
+ *
+ * Modifier:
+ *   .button-group--vertical    Vertikal statt horizontal
+ *   .button-group--segmented   Toggle-Optik — aria-pressed="true" hebt hervor
+ */
+
+.button-group {
+  display: inline-flex;
+  align-items: stretch;
+  isolation: isolate;
+}
+
+.button-group > .btn {
+  border-radius: 0;
+  margin-inline-start: calc(var(--border-1) * -1);
+}
+
+.button-group > .btn:first-child {
+  margin-inline-start: 0;
+  border-start-start-radius: var(--btn-radius);
+  border-end-start-radius: var(--btn-radius);
+}
+
+.button-group > .btn:last-child {
+  border-start-end-radius: var(--btn-radius);
+  border-end-end-radius: var(--btn-radius);
+}
+
+/* Aktiver/fokussierter Button über den Geschwistern stapeln, damit
+   Border und Focus-Ring nicht abgeschnitten werden. */
+.button-group > .btn:hover:not(:disabled),
+.button-group > .btn:focus-visible,
+.button-group > .btn[aria-pressed="true"] {
+  z-index: 1;
+}
+
+/* Vertical */
+.button-group--vertical {
+  flex-direction: column;
+}
+
+.button-group--vertical > .btn {
+  margin-inline-start: 0;
+  margin-block-start: calc(var(--border-1) * -1);
+}
+
+.button-group--vertical > .btn:first-child {
+  margin-block-start: 0;
+  border-radius: 0;
+  border-start-start-radius: var(--btn-radius);
+  border-start-end-radius: var(--btn-radius);
+}
+
+.button-group--vertical > .btn:last-child {
+  border-radius: 0;
+  border-end-start-radius: var(--btn-radius);
+  border-end-end-radius: var(--btn-radius);
+}
+
+/* ==========================================================
+   Segmented Control — aria-pressed="true" als gedrückter Zustand
+   ========================================================== */
+
+.button-group--segmented > .btn[aria-pressed="true"] {
+  background: var(--color-interactive-light);
+  color: var(--color-interactive-dark);
+  border-color: var(--color-interactive);
+}
+
+.button-group--segmented > .btn[aria-pressed="true"]:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--color-interactive-light) 80%, var(--color-interactive));
+  transform: none;
+}

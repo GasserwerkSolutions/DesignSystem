@@ -1,0 +1,97 @@
+/**
+ * Spinner Component
+ * ==================
+ *
+ * Indeterminate Loading-Indikator. Reines CSS via Conic-Gradient-Mask.
+ * Respektiert prefers-reduced-motion (zeigt dann einen statischen
+ * Punkt-Indikator statt rotierender Animation).
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --spinner-size, --spinner-thickness, --spinner-color, --spinner-track,
+ *     --spinner-duration
+ *
+ * Struktur:
+ *   <span class="spinner" role="status" aria-label="Lädt"></span>
+ *
+ *   Inline mit Text:
+ *   <button class="btn" disabled>
+ *     <span class="spinner spinner--sm" aria-hidden="true"></span>
+ *     Speichert…
+ *   </button>
+ *
+ * Modifier:
+ *   .spinner--sm / --lg              Größenvarianten (1rem / 2.5rem)
+ *   .spinner--on-dark                Spinner für dunkle Backgrounds
+ */
+
+.spinner {
+  --_spinner-size:      var(--spinner-size, 1.5rem);
+  --_spinner-thickness: var(--spinner-thickness, 2px);
+  --_spinner-color:     var(--spinner-color, var(--color-interactive));
+  --_spinner-track:     var(--spinner-track, color-mix(in oklch, var(--_spinner-color) 20%, transparent));
+  --_spinner-duration:  var(--spinner-duration, 800ms);
+
+  display: inline-block;
+  vertical-align: -0.125em;
+  width: var(--_spinner-size);
+  height: var(--_spinner-size);
+  border-radius: 50%;
+  background:
+    conic-gradient(from 0deg, var(--_spinner-track), var(--_spinner-color));
+  mask:
+    radial-gradient(
+      closest-side,
+      transparent calc(100% - var(--_spinner-thickness) - 1px),
+      black calc(100% - var(--_spinner-thickness))
+    );
+  -webkit-mask:
+    radial-gradient(
+      closest-side,
+      transparent calc(100% - var(--_spinner-thickness) - 1px),
+      black calc(100% - var(--_spinner-thickness))
+    );
+  animation: spinner-rotate var(--_spinner-duration) linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to { transform: rotate(1turn); }
+}
+
+.spinner--sm {
+  --spinner-size: 1rem;
+  --spinner-thickness: 2px;
+}
+
+.spinner--lg {
+  --spinner-size: 2.5rem;
+  --spinner-thickness: 3px;
+}
+
+.spinner--on-dark {
+  --spinner-color: var(--color-text-on-dark);
+}
+
+/* Reduced-Motion: statt Rotation einen sanften Opacity-Puls.
+   Reset.css setzt animation-duration global auf 0.01ms — der
+   Puls hier override-t das mit !important, damit zumindest
+   ein Hinweis sichtbar bleibt. */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: spinner-pulse 1.5s ease-in-out infinite !important;
+    background: var(--_spinner-color);
+  }
+
+  @keyframes spinner-pulse {
+    0%, 100% { opacity: 0.4; }
+    50%      { opacity: 1; }
+  }
+}
+
+/* Forced-Colors: System-Highlight als Spinner-Farbe */
+@media (forced-colors: active) {
+  .spinner {
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+}

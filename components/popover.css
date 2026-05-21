@@ -1,0 +1,163 @@
+/**
+ * Popover Component
+ * ==================
+ *
+ * Verankerte Overlay-Primitive für Menüs, Dropdowns, Action-Listen.
+ * Setzt auf die native Popover-API (Chrome 114+, Safari 17+, Firefox 125+)
+ * — kein JS für Open/Close/Light-Dismiss/Escape nötig.
+ *
+ * CSS-Anchor-Positioning wird genutzt wo verfügbar; ohne Support
+ * fällt das Popover auf eine absolute Positionierung relativ zum
+ * nächsten positionierten Vorfahr zurück (Wrapper-Pattern).
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --popover-bg, --popover-fg, --popover-border, --popover-radius,
+ *     --popover-shadow, --popover-padding, --popover-min-width
+ *
+ * Struktur (native API):
+ *   <button popovertarget="menu-1" style="anchor-name: --menu-1-anchor">
+ *     Optionen
+ *   </button>
+ *   <div id="menu-1" popover class="popover" style="position-anchor: --menu-1-anchor">
+ *     <ul class="popover__list" role="menu">
+ *       <li role="none">
+ *         <button class="popover__item" role="menuitem">Bearbeiten</button>
+ *       </li>
+ *       <li role="none">
+ *         <button class="popover__item" role="menuitem">Duplizieren</button>
+ *       </li>
+ *       <li class="popover__separator" role="separator"></li>
+ *       <li role="none">
+ *         <button class="popover__item popover__item--danger" role="menuitem">
+ *           Löschen
+ *         </button>
+ *       </li>
+ *     </ul>
+ *   </div>
+ *
+ * Modifier:
+ *   .popover--menu           Menu-Padding (kompakt)
+ *   .popover--start / --end  Ausrichtung relativ zum Anker
+ */
+
+.popover {
+  /* Native Popover-Element verwendet :popover-open; alte Browser
+     ignorieren das Attribut und das Element bleibt display:none
+     via inertem Default. */
+  position: fixed;
+  margin: 0;
+  inset: auto;
+  padding: var(--popover-padding, var(--space-8));
+  background: var(--popover-bg, var(--card-bg));
+  color: var(--popover-fg, var(--color-text-primary));
+  border: 1px solid var(--popover-border, var(--color-border));
+  border-radius: var(--popover-radius, var(--radius-md));
+  box-shadow: var(--popover-shadow, var(--shadow-lg));
+  min-width: var(--popover-min-width, 12rem);
+  max-width: min(20rem, calc(100vw - 2rem));
+  z-index: var(--z-popover);
+
+  /* Default-State: zu. Erst sichtbar wenn :popover-open. */
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--motion-feedback),
+    transform var(--motion-feedback),
+    overlay var(--motion-feedback) allow-discrete,
+    display var(--motion-feedback) allow-discrete;
+}
+
+.popover:popover-open {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .popover:popover-open {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.popover::backdrop {
+  background: transparent;
+}
+
+/* Anchor-Positioning — moderne Browser. Default: unter dem Anker,
+   linksbündig. Modifier verschieben die Ausrichtung. */
+@supports (anchor-name: --x) {
+  .popover {
+    position-try-fallbacks: flip-block, flip-inline;
+    inset-block-start: anchor(bottom);
+    inset-inline-start: anchor(start);
+    margin-block-start: var(--space-4);
+  }
+
+  .popover--end {
+    inset-inline-start: auto;
+    inset-inline-end: anchor(end);
+  }
+}
+
+/* ==========================================================
+   Popover-Inhalt — Menu-Pattern
+   ========================================================== */
+
+.popover__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.popover__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+  padding: var(--space-8) var(--space-12);
+  background: transparent;
+  color: var(--color-text-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  text-align: start;
+  cursor: pointer;
+  transition: background var(--motion-feedback);
+}
+
+.popover__item:hover:not(:disabled),
+.popover__item:focus-visible {
+  background: var(--color-bg-secondary);
+  outline: none;
+}
+
+.popover__item:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--color-focus);
+}
+
+.popover__item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.popover__item--danger {
+  color: var(--color-error);
+}
+
+.popover__item--danger:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--color-error) 10%, transparent);
+}
+
+.popover__separator {
+  height: 1px;
+  margin-block: var(--space-4);
+  background: var(--color-border);
+  list-style: none;
+}
+
+/* Reduced-Motion ist global im Reset gehandhabt; @starting-style
+   wird dadurch automatisch quasi-instant. */

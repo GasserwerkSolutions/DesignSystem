@@ -19,7 +19,12 @@
  *   </div>
  *
  * Modifier:
- *   .table--compact   reduziertes Padding
+ *   .table--compact          reduziertes Padding
+ *   .table--striped          Zebra-Streifen auf tbody-Zeilen
+ *   .table--sticky-header    thead bleibt beim Scrollen sichtbar
+ *                            (braucht max-height auf .table-wrap)
+ *   .table--responsive       <md: tbody td stacken vertikal mit
+ *                            data-label-Prefix; thead optisch ausgeblendet
  */
 
 .table-wrap {
@@ -71,4 +76,77 @@
 .table--compact th,
 .table--compact td {
   padding: var(--space-8) var(--space-12);
+}
+
+/* ==========================================================
+   Striped — Zebra-Streifen für lange Listen
+   ========================================================== */
+
+.table--striped tbody tr:nth-child(even) {
+  background: var(--table-row-stripe, var(--color-bg));
+}
+
+.table--striped tbody tr:nth-child(even):hover {
+  background: var(--table-row-hover, var(--color-bg-tertiary));
+}
+
+/* ==========================================================
+   Sticky-Header — bleibt beim Scrollen sichtbar.
+   Erfordert max-height auf .table-wrap, z. B. inline-style.
+   ========================================================== */
+
+.table--sticky-header thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+}
+
+/* ==========================================================
+   Responsive Stack — kollabiert <md zu Karten-Layout.
+   <td> braucht ein data-label="Spaltenname"-Attribut für den
+   Spalten-Header-Prefix.
+   ========================================================== */
+
+@media (max-width: 48rem) {
+  .table--responsive {
+    border: 0;
+  }
+
+  .table--responsive thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .table--responsive tbody tr {
+    display: block;
+    padding: var(--space-12);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .table--responsive tbody tr:first-child {
+    border-block-start: 0;
+  }
+
+  .table--responsive tbody td {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-12);
+    padding: var(--space-4) 0;
+    border: 0;
+    text-align: end;
+  }
+
+  .table--responsive tbody td::before {
+    content: attr(data-label);
+    color: var(--color-text-secondary);
+    font-size: var(--font-xs);
+    font-weight: var(--fw-600);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: start;
+  }
 }

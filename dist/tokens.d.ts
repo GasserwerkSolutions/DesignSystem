@@ -223,6 +223,7 @@ export type TokenName =
   | "--z-dropdown"
   | "--z-hide"
   | "--z-modal"
+  | "--z-popover"
   | "--z-tooltip";
 
 export type ColorToken =
@@ -405,6 +406,7 @@ export type ZIndexToken =
   | "--z-dropdown"
   | "--z-hide"
   | "--z-modal"
+  | "--z-popover"
   | "--z-tooltip";
 
 

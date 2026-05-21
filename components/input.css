@@ -1,0 +1,161 @@
+/**
+ * Input Component
+ * ================
+ *
+ * Primitive Form-Control für <input>, <textarea>, <select>.
+ * Ergänzt die Reset-Defaults um Größen-Varianten, explizite
+ * Validierungs-Zustände (klassen-basiert statt :invalid) und
+ * Prefix/Suffix-Adornments via .input-group.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --input-bg, --input-border, --input-text, --input-placeholder
+ *     --input-focus-border, --input-focus-ring
+ *     --input-radius, --input-px, --input-py
+ *
+ *   Defaults in semantic.css; Themes überschreiben nur Tokens.
+ *
+ * Struktur:
+ *   <input class="input" type="text" placeholder="…">
+ *
+ *   Mit Prefix/Suffix:
+ *   <div class="input-group">
+ *     <span class="input-group__addon">€</span>
+ *     <input class="input" type="number" inputmode="decimal">
+ *     <span class="input-group__addon">,–</span>
+ *   </div>
+ *
+ *   Validierungs-Zustände (klassen-basiert — :invalid triggert
+ *   sonst sofort auf leere Required-Felder, schlechte UX):
+ *   <input class="input is-invalid" aria-invalid="true" aria-describedby="err">
+ *   <input class="input is-valid">
+ *
+ * Modifier:
+ *   .input--sm / --lg     Größenvarianten
+ *   .is-invalid           Roter Border + Focus-Ring
+ *   .is-valid             Grüner Border (success)
+ */
+
+.input {
+  --_input-px:     var(--input-px, var(--space-12));
+  --_input-py:     var(--input-py, var(--space-8));
+  --_input-radius: var(--input-radius, var(--radius-md));
+
+  display: block;
+  width: 100%;
+  padding-block: var(--_input-py);
+  padding-inline: var(--_input-px);
+  background: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--input-border);
+  border-radius: var(--_input-radius);
+  font: inherit;
+  line-height: var(--lh-normal);
+  transition: border-color var(--motion-feedback), box-shadow var(--motion-feedback);
+}
+
+.input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.input:focus,
+.input:focus-visible {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3px var(--input-focus-ring);
+}
+
+.input:disabled,
+.input[readonly] {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+}
+
+.input.is-invalid {
+  border-color: var(--color-error);
+}
+
+.input.is-invalid:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-error) 20%, transparent);
+}
+
+.input.is-valid {
+  border-color: var(--color-success);
+}
+
+.input.is-valid:focus {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-success) 20%, transparent);
+}
+
+.input--sm {
+  --input-px: var(--space-8);
+  --input-py: var(--space-4);
+  font-size: var(--font-sm);
+}
+
+.input--lg {
+  --input-px: var(--space-16);
+  --input-py: var(--space-12);
+  font-size: var(--font-lg);
+}
+
+/* Textarea via .input: vertikales Resize, sinnvoller Min-Height. */
+textarea.input {
+  resize: vertical;
+  min-height: calc(var(--lh-normal) * 3em + var(--_input-py) * 2);
+}
+
+/* ==========================================================
+   Input-Group — Prefix/Suffix-Adornments
+   ========================================================== */
+
+.input-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  border: 1px solid var(--input-border);
+  border-radius: var(--input-radius, var(--radius-md));
+  background: var(--input-bg);
+  transition: border-color var(--motion-feedback), box-shadow var(--motion-feedback);
+  overflow: hidden;
+}
+
+.input-group:focus-within {
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3px var(--input-focus-ring);
+}
+
+.input-group > .input {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.input-group > .input:focus,
+.input-group > .input:focus-visible {
+  box-shadow: none;
+}
+
+.input-group__addon {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--space-12);
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.input-group:has(.is-invalid) {
+  border-color: var(--color-error);
+}
+
+.input-group:has(.is-invalid):focus-within {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-error) 20%, transparent);
+}
