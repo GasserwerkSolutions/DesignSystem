@@ -34,13 +34,43 @@
   const toggle = $("#nav-toggle");
   const mainNav = $("#main-nav");
 
+  // Body-Scroll-Lock mit Position-Preservation für iOS.
+  // Beim Öffnen merken wir uns scrollY und scrollen die Position
+  // beim Schliessen wieder hin — sonst springt iOS zurück nach oben.
+  let savedScrollY = 0;
+  function lockBody() {
+    savedScrollY = window.scrollY;
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.classList.add("nav-open");
+  }
+  function unlockBody() {
+    document.body.classList.remove("nav-open");
+    document.body.style.top = "";
+    window.scrollTo(0, savedScrollY);
+  }
+
+  function closeMainNav() {
+    if (!mainNav?.classList.contains("is-open")) return;
+    mainNav.classList.remove("is-open");
+    setOpen(toggle, false);
+    unlockBody();
+  }
+  function openMainNav() {
+    mainNav.classList.add("is-open");
+    setOpen(toggle, true);
+    if (window.innerWidth < 768) lockBody();
+  }
+
   if (toggle && mainNav) {
     toggle.addEventListener("click", (e) => {
       e.stopPropagation();
       const open = !mainNav.classList.contains("is-open");
-      mainNav.classList.toggle("is-open", open);
-      setOpen(toggle, open);
-      if (open) closeQuickPanels();
+      if (open) {
+        closeQuickPanels();
+        openMainNav();
+      } else {
+        closeMainNav();
+      }
     });
 
     // Submenu-Collapse innerhalb des Mobile-Drawers:
@@ -57,6 +87,13 @@
         );
         if (!wasOpen) item.classList.add("is-open");
       });
+    });
+
+    // Beim Resize über die Mobile-Breakpoint-Schwelle hinweg Lock lösen
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768 && mainNav.classList.contains("is-open")) {
+        closeMainNav();
+      }
     });
   }
 
@@ -134,33 +171,28 @@
     if (!insideQuick) closeQuickPanels();
 
     const insideNav = e.target.closest("#main-nav, #nav-toggle");
-    if (!insideNav && mainNav?.classList.contains("is-open")) {
-      mainNav.classList.remove("is-open");
-      setOpen(toggle, false);
-    }
+    if (!insideNav) closeMainNav();
   });
 
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     closeQuickPanels();
-    if (mainNav?.classList.contains("is-open")) {
-      mainNav.classList.remove("is-open");
-      setOpen(toggle, false);
-    }
+    closeMainNav();
   });
 
   // ----------------------------------------------------------------
   // Sticky-Bar — erst nach erstem Scroll einblenden
+  //
+  // Body bekommt parallel `.has-sticky-bar` → CSS schiebt das Layout
+  // unten um 4.5 rem nach oben, damit die Bar nichts überdeckt.
   // ----------------------------------------------------------------
   const stickyBar = $(".sticky-bar");
   if (stickyBar) {
     const showAfter = 200;
     const onScroll = () => {
-      if (window.scrollY > showAfter) {
-        stickyBar.classList.add("is-visible");
-      } else {
-        stickyBar.classList.remove("is-visible");
-      }
+      const visible = window.scrollY > showAfter;
+      stickyBar.classList.toggle("is-visible", visible);
+      document.body.classList.toggle("has-sticky-bar", visible);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

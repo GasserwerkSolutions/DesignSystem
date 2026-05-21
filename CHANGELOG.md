@@ -10,6 +10,44 @@ und das Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 ## [Unreleased]
 
 ### Hinzugefügt
+- **Site-Integration** (Mobile-Hardening):
+  - Eigener "Mobile / Touch Hardening"-Block in `assets/main.css`
+    und `assets/subpages.css`:
+    - `input, select, textarea { font-size: max(16px, 1rem) }` —
+      verhindert iOS-Zoom beim Fokus auf Form-Felder.
+    - `-webkit-tap-highlight-color: transparent` + `touch-action:
+      manipulation` auf allen interaktiven Controls.
+    - `@media (hover: none)`-Guard entfernt Hover-Lift +
+      Sticky-Hover-Effekt auf Touch-Geräten.
+    - Hero auf `min-height: clamp(28rem, 70dvh, 44rem)` (dvh statt
+      vh — Safari-Adressleiste schluckt sonst Höhe). Subpage-Hero
+      analog mit `50dvh`.
+    - Hero-H1 auf Viewports <480 px zurückgenommen
+      (`clamp(2.5rem, 11vw, 3.5rem)`) — vorher overflowte der Text
+      horizontal auf 320 px-Geräten.
+    - Header-Buttons auf Touch 44×44 px (statt 40×40), Nav-Links im
+      Drawer min-height 44 px, Form-Inputs min-height 44 px — WCAG
+      2.5.5 + Apple HIG.
+    - Form-`<select>`: eigenes SVG-Caret, sauberes Padding statt
+      iOS-Default-Dropdown.
+    - Auf Viewports <360 px wird das Praxis-Quick-Icon im Header
+      ausgeblendet, sonst überfüllt sich der Header.
+    - `body.has-sticky-bar` bekommt 4.5 rem Bottom-Padding — sonst
+      verdeckt die Sticky-Bar die letzten 64 px Content.
+    - `body.nav-open` lockt Body-Scroll via `overflow:hidden +
+      position:fixed` (iOS-Rubber-Band-Schutz). JS merkt sich
+      `scrollY` und stellt nach dem Schliessen die Position wieder
+      her — iOS scrollt sonst zurück nach oben.
+    - `html { scroll-padding-block-start: var(--header-h) }` →
+      Anchor-Sprünge landen nicht unter dem Sticky-Header.
+    - Subpage-spezifisch: Editorial-Layouts auf <560 px verschlankt
+      (kleinerer Tan-Frame, 4:3-Bilder, kleinerer Drop-Cap).
+  - `assets/main.js` + `assets/common.js` erweitert: lockBody /
+    unlockBody mit Scroll-Position-Preservation, body-Class-Toggle
+    für `has-sticky-bar`, Resize-Handler schliesst Drawer beim
+    Wechsel ≥768 px.
+  - Cache-Buster hochgezählt: `main.css?v=78→79`, `subpages.css?v=34→35`,
+    `main.js?v=10→11`, `common.js?v=1→2`.
 - **Site-Integration** (Phase B — Overlay):
   - `assets/main.css` (~36 KB, 212 Rule-Blöcke) — komplette Site-Layer
     auf Homepage-Markup. Eigene `@layer site` über dem DS-`components`-

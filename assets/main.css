@@ -1305,4 +1305,141 @@
     color: var(--color-interactive);
   }
 
+  /* ================================================================
+     MOBILE / TOUCH HARDENING
+     ================================================================
+     - iOS zoom-on-focus verhindern (Input-Font ≥ 16 px)
+     - Touch-Targets ≥ 44 px (WCAG 2.5.5 / Apple HIG)
+     - Hover-Effekte nur auf Hover-fähigen Geräten (kein Sticky-Hover
+       auf Touch)
+     - 100dvh statt 100vh (iOS Safari Address-Bar)
+     - body-scroll-lock wenn Mobile-Nav offen
+     - Body bekommt padding-bottom solange Sticky-Bar sichtbar ist —
+       sonst verdeckt sie die letzten ~64 px Content
+     - Tap-Highlight + touch-action für saubere Wahrnehmung
+     ================================================================ */
+
+  /* iOS zoom-on-focus: jedes Form-Field min. 16 px Schriftgrösse */
+  input, select, textarea {
+    font-size: max(16px, 1rem);
+  }
+
+  /* Native Tap-Highlight wegnehmen — Focus-Visible reicht für A11Y */
+  a, button, label, summary,
+  input, select, textarea,
+  [role="button"], [role="tab"], [role="menuitem"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* Hover-Lift nur auf Geräten mit echtem Hover. Touch-Screens haben
+     sonst einen "klebrigen" Hover-State nach dem Tap. */
+  @media (hover: none) {
+    .triage-path:hover,
+    .treat-card:hover,
+    .trustbar__item:hover,
+    .btn:hover,
+    .btn--primary:hover,
+    .btn--ghost:hover {
+      transform: none;
+      box-shadow: var(--shadow-sm);
+    }
+  }
+
+  /* Hero: dvh statt vh (Safari-Adressleiste schluckt sonst Höhe) */
+  .hero--fullbleed {
+    min-height: clamp(28rem, 70dvh, 44rem);
+  }
+
+  /* Hero-H1 auf sehr schmalen Viewports (320–375 px) ein bisschen
+     zurücknehmen, sonst overflowt der Schriftzug horizontal */
+  @media (max-width: 480px) {
+    .hero h1 { font-size: clamp(2.5rem, 11vw, 3.5rem); }
+    .hero__sub { font-size: 1rem; }
+    .hero__ctas .btn { flex: 1 1 auto; justify-content: center; }
+  }
+
+  /* Header-Buttons auf Touch breiter (44×44 statt 40×40) */
+  @media (max-width: 767.98px) {
+    .nav-quick,
+    .nav-toggle { width: 2.75rem; height: 2.75rem; }
+    .site-header__inner { gap: 0.5rem; }
+    .brand__logo { height: 2rem; }
+
+    /* Nav-Links im Drawer: 44 px Mindesthöhe */
+    .nav__list a {
+      min-height: 2.75rem;
+      align-items: center;
+    }
+
+    /* Notfall-Bar darf umbrechen, aber bleibt lesbar */
+    .notfall-bar { font-size: 0.8125rem; }
+    .notfall-bar__inner { align-items: flex-start; padding-block: 0.5rem; }
+  }
+
+  /* Sehr schmale Phones (<360 px): nur 1 Quick-Icon zeigen, sonst
+     wird der Header überfüllt */
+  @media (max-width: 359.98px) {
+    .nav-quick[data-target="praxis"] { display: none; }
+  }
+
+  /* Sticky-Bar — Items berühren-freundlich aufpolstern, Mindesthöhe 56 px */
+  .sticky-bar a {
+    min-height: 3.5rem;
+    padding-block: 0.625rem;
+  }
+
+  /* Body bekommt unten Platz, solange der Sticky-Bar sichtbar ist.
+     Class wird via JS (assets/main.js) auf <body> getoggelt. */
+  body.has-sticky-bar {
+    padding-block-end: 4.5rem;
+  }
+  @media (min-width: 768px) {
+    body.has-sticky-bar { padding-block-end: 0; }
+  }
+
+  /* Body-Scroll-Lock wenn Mobile-Nav offen — sonst scrollt der
+     Background durch den Drawer hindurch */
+  body.nav-open {
+    overflow: hidden;
+    /* Position-fixed verhindert iOS-Rubber-Band */
+    position: fixed;
+    inset-inline: 0;
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    body.nav-open { overflow: visible; position: static; }
+  }
+
+  /* Form-Selects: iOS-natives Dropdown-Arrow ist klein und schlecht
+     positioniert — eigenes Caret zeichnen, sauberes Padding */
+  .form__field select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23404040' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='4 6 8 10 12 6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem 1rem;
+    padding-inline-end: 2.25rem;
+    min-height: 2.75rem;
+  }
+
+  /* Form-Inputs auf Mobile sichtbarer aufpolstern (44 px Mindesthöhe) */
+  @media (max-width: 767.98px) {
+    .form__field input,
+    .form__field textarea {
+      min-height: 2.75rem;
+      padding-block: 0.75rem;
+    }
+    .form__field textarea { min-height: 6rem; }
+  }
+
+  /* Sticky-Bar darf den Mobile-Footer-Bottom nicht verdecken —
+     scroll-padding sorgt dafür, dass Anchor-Sprünge nicht hinter dem
+     Header / sticky-bar landen */
+  html {
+    scroll-padding-block-start: var(--header-h);
+    scroll-padding-block-end: 4rem;
+  }
+
 }  /* /@layer site */

@@ -806,4 +806,97 @@
     color: var(--color-interactive);
   }
 
+  /* ================================================================
+     MOBILE / TOUCH HARDENING — identisch zu main.css
+     ================================================================ */
+
+  input, select, textarea {
+    font-size: max(16px, 1rem);
+  }
+
+  a, button, label, summary,
+  input, select, textarea,
+  [role="button"], [role="tab"], [role="menuitem"] {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  @media (hover: none) {
+    .concept-card:hover,
+    .praxis-haltung__item:hover,
+    .praxis-praktisch__col:hover,
+    .btn:hover,
+    .btn--primary:hover,
+    .btn--ghost:hover {
+      transform: none;
+      box-shadow: var(--shadow-sm);
+    }
+  }
+
+  /* Hero (Subpage) — dvh + niedrigere Min auf Mobile */
+  .hero,
+  .praxis-hero {
+    min-height: clamp(20rem, 50dvh, 32rem);
+  }
+  @media (max-width: 480px) {
+    .hero h1,
+    .praxis-hero h1 { font-size: clamp(2rem, 9vw, 3rem); }
+  }
+
+  @media (max-width: 767.98px) {
+    .nav-quick,
+    .nav-toggle { width: 2.75rem; height: 2.75rem; }
+    .site-header__inner { gap: 0.5rem; }
+    .brand__logo { height: 2rem; }
+    .nav__list a {
+      min-height: 2.75rem;
+      align-items: center;
+    }
+    .notfall-bar { font-size: 0.8125rem; }
+    .notfall-bar__inner { align-items: flex-start; padding-block: 0.5rem; }
+  }
+
+  @media (max-width: 359.98px) {
+    .nav-quick[data-target="praxis"] { display: none; }
+  }
+
+  .sticky-bar a {
+    min-height: 3.5rem;
+    padding-block: 0.625rem;
+  }
+
+  body.has-sticky-bar {
+    padding-block-end: 4.5rem;
+  }
+  @media (min-width: 768px) {
+    body.has-sticky-bar { padding-block-end: 0; }
+  }
+
+  body.nav-open {
+    overflow: hidden;
+    position: fixed;
+    inset-inline: 0;
+    width: 100%;
+  }
+  @media (min-width: 768px) {
+    body.nav-open { overflow: visible; position: static; }
+  }
+
+  /* Editorial-Flow auf schmalen Phones — etwas weniger
+     Magazine-Layout, mehr Lesefluss */
+  @media (max-width: 560px) {
+    .flow-pair__visual,
+    .intro-spread__visual { padding: 4px; }
+    .flow-pair__visual img { aspect-ratio: 4 / 3; }
+    .flow-prose,
+    .flow-text { font-size: 1rem; line-height: 1.7; }
+    .has-dropcap::first-letter { font-size: 2.8em; }
+  }
+
+  /* Anchor-Sprünge respektieren Sticky-Header */
+  html {
+    scroll-padding-block-start: var(--header-h);
+    scroll-padding-block-end: 4rem;
+  }
+
 }  /* /@layer site */

@@ -26,12 +26,37 @@
   toggle.dataset.bound = "1";
 
   const mainNav = $("#main-nav");
+
+  // Body-Scroll-Lock mit Position-Preservation (siehe main.js für Details)
+  let savedScrollY = 0;
+  function lockBody() {
+    savedScrollY = window.scrollY;
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.classList.add("nav-open");
+  }
+  function unlockBody() {
+    document.body.classList.remove("nav-open");
+    document.body.style.top = "";
+    window.scrollTo(0, savedScrollY);
+  }
+  function closeMainNav() {
+    if (!mainNav?.classList.contains("is-open")) return;
+    mainNav.classList.remove("is-open");
+    toggle.setAttribute("aria-expanded", "false");
+    unlockBody();
+  }
+
   if (mainNav) {
     toggle.addEventListener("click", (e) => {
       e.stopPropagation();
       const open = !mainNav.classList.contains("is-open");
       mainNav.classList.toggle("is-open", open);
       toggle.setAttribute("aria-expanded", String(open));
+      if (open) {
+        if (window.innerWidth < 768) lockBody();
+      } else {
+        unlockBody();
+      }
     });
 
     $$(".nav__item--has-sub > a", mainNav).forEach((link) => {
@@ -45,6 +70,12 @@
         );
         if (!wasOpen) item.classList.add("is-open");
       });
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768 && mainNav.classList.contains("is-open")) {
+        closeMainNav();
+      }
     });
   }
 
@@ -95,26 +126,22 @@
     const insideQuick = e.target.closest(".nav-quick, .nav-quick-panel");
     if (!insideQuick) closeQuickPanels();
     const insideNav = e.target.closest("#main-nav, #nav-toggle");
-    if (!insideNav && mainNav?.classList.contains("is-open")) {
-      mainNav.classList.remove("is-open");
-      toggle.setAttribute("aria-expanded", "false");
-    }
+    if (!insideNav) closeMainNav();
   });
 
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     closeQuickPanels();
-    if (mainNav?.classList.contains("is-open")) {
-      mainNav.classList.remove("is-open");
-      toggle.setAttribute("aria-expanded", "false");
-    }
+    closeMainNav();
   });
 
-  // Sticky-Bar
+  // Sticky-Bar — body bekommt parallel `.has-sticky-bar` für Bottom-Padding
   const stickyBar = $(".sticky-bar");
   if (stickyBar) {
     const onScroll = () => {
-      stickyBar.classList.toggle("is-visible", window.scrollY > 200);
+      const visible = window.scrollY > 200;
+      stickyBar.classList.toggle("is-visible", visible);
+      document.body.classList.toggle("has-sticky-bar", visible);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
