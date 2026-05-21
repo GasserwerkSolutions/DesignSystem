@@ -10,7 +10,40 @@ und das Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 ## [Unreleased]
 
 ### Hinzugefügt
-- **Site-Integration** (Foundation):
+- **Site-Integration** (Phase B — Overlay):
+  - `assets/main.css` (~36 KB, 212 Rule-Blöcke) — komplette Site-Layer
+    auf Homepage-Markup. Eigene `@layer site` über dem DS-`components`-
+    Layer. Komponenten: site-header (sticky + backdrop-blur), notfall-bar,
+    skip-link, .nav mit Sub-Dropdowns, .nav-quick-Mobile-Panels, hero
+    (--fullbleed mit 4-Layer-Overlay-Gradient + Off-White-CTA-Invert),
+    .trustbar (5/7-Split + 4-up-Grid), .triage-path (24 px radius,
+    `--urgent`-Variante mit Tan-Wash), .treat-card, .intro-spread
+    (8/4-Magazine, --reverse-Wechsel, 6 px Tan-Frame), .team-lead +
+    .team-avatars (Ring-Shadow), .faq-stack, .form (mit honeypot,
+    Turnstile-Slot, status-feedback), .standort, .flow-closing
+    (Tan-Highlight), .sticky-bar (Mobile-Bottom), .site-footer
+    (Near-Black mit footer-grid, footer-trust, footer-bottom).
+  - `assets/subpages.css` (~25 KB, 149 Rule-Blöcke) — geteiltes Chrome
+    (Header/Nav/Notfall/Sticky/Footer) plus Subpage-Editorial-Flow:
+    .breadcrumb, .editorial-split (5/7), .flow-pair (7/5 + --reverse +
+    --accent), .flow-prose mit .has-dropcap, .marginalia, .concept-card/
+    .concept-grid, .info-box, .first-visit-list (counter-reset), .praxis-
+    haltung, .praxis-praktisch, .hero--sub-bg. Wärmere Bg-Töne
+    (`#fbf8f3`) per CLAUDE.md.
+  - `assets/main.js` (~9 KB) — Mobile-Nav-Toggle, Quick-Icon-Dropdowns
+    (Klon der .nav__sub-Liste, an `<header>` angehängt), Submenu-Inline-
+    Collapse <768 px, Click-outside + Escape schliessen, Sticky-Bar
+    zeigt sich nach 200 px Scroll, /api/contact-Submit mit Turnstile-
+    Token + Status-Feedback.
+  - `assets/common.js` (~4 KB) — gleiche Mobile-Nav-/Sticky-Logik für
+    Subpages, footer-year. Defensiv via `data-bound`-Marker, falls
+    main.js bereits gebunden hat.
+  - Logo + Icons: `assets/favicon.svg`, `assets/apple-touch-icon.svg`,
+    `assets/logo-text.svg`, `assets/logo-alb-text.svg` (Off-White-
+    Variante für Footer).
+  - Cache-Buster gemäss CLAUDE.md hochgezählt: `main.css?v=77` → `v=78`
+    (index.html), `subpages.css?v=33` → `v=34` (8 Subpages).
+- **Site-Integration** (Foundation, ein Commit zuvor):
   - Neues `themes/arch.css` — Token-Set für Zahnärztehaus Arch
     (Teal-CTA `#134e4a`, Off-White-Body, Warm-Tan-Akzent `#f0e6d3`,
     Deep-Blue Hero-Akzent `#1B5BC0` als site-spezifischer Token).

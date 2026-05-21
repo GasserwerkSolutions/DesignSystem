@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 72" role="img" aria-label="Zahnärztehaus Arch">
+  <g transform="translate(4 4)">
+    <rect width="64" height="64" rx="14" fill="#fafafa"/>
+    <path d="M32 14c-6.6 0-11 4-11 11 0 5 1 9 3.5 13 1 1.6 2.3 2.4 3.4 2.4 1.6 0 2.4-1.6 3-4 .7-2.3 1.4-3 3.1-3s2.4.7 3.1 3c.6 2.6 1.4 4 3 4 1.1 0 2.4-.8 3.4-2.4C45 34 46 30 46 25c0-7-4.4-11-14-11z" fill="#134e4a"/>
+  </g>
+  <g font-family="Iowan Old Style, Palatino Linotype, Palatino, Georgia, serif" fill="#fafafa">
+    <text x="80" y="32" font-size="20" font-weight="600" letter-spacing="-0.5">Zahnärztehaus</text>
+    <text x="80" y="56" font-size="22" font-weight="600" font-style="italic" fill="#f0e6d3">Arch</text>
+  </g>
+</svg>
