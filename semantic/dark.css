@@ -2,7 +2,11 @@
  * Dark-Mode Token-Overrides
  * ==========================
  *
- * Orthogonal zu Themes — `data-mode="dark"` kann mit jedem `data-tone` kombiniert werden.
+ * GENERIERT von scripts/build-dark.js aus scripts/dark.tokens.js.
+ * NICHT direkt editieren — Änderungen gehen beim nächsten Build verloren.
+ *
+ * Orthogonal zu Themes — `data-mode="dark"` kann mit jedem `data-tone`
+ * kombiniert werden.
  *
  * Aktivierung:
  *   1. Manuell:  <html data-mode="dark">
@@ -10,19 +14,20 @@
  *      User hat explizit <html data-mode="light"> gewählt.
  *   3. "Auto" Explicit: <html data-mode="auto"> — JS setzt dark/light dynamisch.
  *
- * Die Dark-Werte sind hier EINMAL zentral definiert — das Rule-Set wird für
- * beide Trigger (manual + auto) referenziert.
+ * Die Dark-Werte sind in scripts/dark.tokens.js EINMAL definiert; dieses
+ * File spiegelt sie für beide Trigger.
  */
 
 /* Dark-Token-Set — manuell */
 [data-mode="dark"] {
+  /* Color-Scheme — Browser-Hint für UA-Defaults */
   color-scheme: dark;
 
   /* Backgrounds */
-  --color-bg:             var(--gray-950);
-  --color-bg-secondary:   var(--gray-900);
-  --color-bg-tertiary:    var(--gray-800);
-  --color-bg-inverse:     var(--gray-100);
+  --color-bg:           var(--gray-950);
+  --color-bg-secondary: var(--gray-900);
+  --color-bg-tertiary:  var(--gray-800);
+  --color-bg-inverse:   var(--gray-100);
 
   /* Text */
   --color-text-primary:   var(--gray-50);
@@ -31,17 +36,17 @@
   --color-text-muted:     var(--gray-600);
 
   /* Borders */
-  --color-border:         var(--gray-700);
-  --color-border-dark:    var(--gray-600);
-  --color-border-light:   var(--gray-800);
+  --color-border:       var(--gray-700);
+  --color-border-dark:  var(--gray-600);
+  --color-border-light: var(--gray-800);
 
   /* Component-Contract-Defaults für Dark */
-  --card-bg:              var(--gray-900);
-  --card-border:          1px solid var(--gray-800);
-  --input-bg:             var(--gray-900);
-  --input-text:           var(--gray-50);
-  --table-bg:             var(--gray-900);
-  --table-header-bg:      var(--gray-800);
+  --card-bg:         var(--gray-900);
+  --card-border:     1px solid var(--gray-800);
+  --input-bg:        var(--gray-900);
+  --input-text:      var(--gray-50);
+  --table-bg:        var(--gray-900);
+  --table-header-bg: var(--gray-800);
 
   /* Shadows — stärker (mehr Opacity) auf dunklem BG */
   --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.4);
@@ -51,9 +56,9 @@
   --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.6);
 
   /* Code-Block bleibt dunkel (war schon invers) */
-  --code-block-bg:        var(--gray-800);
-  --code-copy-bg:         rgba(255, 255, 255, 0.06);
-  --code-copy-hover-bg:   rgba(255, 255, 255, 0.12);
+  --code-block-bg:      var(--gray-800);
+  --code-copy-bg:       rgba(255, 255, 255, 0.06);
+  --code-copy-hover-bg: rgba(255, 255, 255, 0.12);
 
   /* Focus-Ring kontrastreicher */
   --focus-ring: 3px solid var(--color-focus-ring);
@@ -62,34 +67,47 @@
 /* Auto-Dark via System — außer User hat explizit Light gewählt */
 @media (prefers-color-scheme: dark) {
   :root:not([data-mode="light"]):not([data-mode="dark"]) {
+    /* Color-Scheme — Browser-Hint für UA-Defaults */
     color-scheme: dark;
 
-    --color-bg:             var(--gray-950);
-    --color-bg-secondary:   var(--gray-900);
-    --color-bg-tertiary:    var(--gray-800);
-    --color-bg-inverse:     var(--gray-100);
+    /* Backgrounds */
+    --color-bg:           var(--gray-950);
+    --color-bg-secondary: var(--gray-900);
+    --color-bg-tertiary:  var(--gray-800);
+    --color-bg-inverse:   var(--gray-100);
 
+    /* Text */
     --color-text-primary:   var(--gray-50);
     --color-text-secondary: var(--gray-300);
     --color-text-tertiary:  var(--gray-500);
     --color-text-muted:     var(--gray-600);
 
-    --color-border:         var(--gray-700);
-    --color-border-dark:    var(--gray-600);
-    --color-border-light:   var(--gray-800);
+    /* Borders */
+    --color-border:       var(--gray-700);
+    --color-border-dark:  var(--gray-600);
+    --color-border-light: var(--gray-800);
 
-    --card-bg:              var(--gray-900);
-    --card-border:          1px solid var(--gray-800);
-    --input-bg:             var(--gray-900);
-    --input-text:           var(--gray-50);
-    --table-bg:             var(--gray-900);
-    --table-header-bg:      var(--gray-800);
+    /* Component-Contract-Defaults für Dark */
+    --card-bg:         var(--gray-900);
+    --card-border:     1px solid var(--gray-800);
+    --input-bg:        var(--gray-900);
+    --input-text:      var(--gray-50);
+    --table-bg:        var(--gray-900);
+    --table-header-bg: var(--gray-800);
 
+    /* Shadows — stärker (mehr Opacity) auf dunklem BG */
     --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.4);
     --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
     --shadow-md:   0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
     --shadow-lg:   0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+    --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.6);
 
-    --code-block-bg:        var(--gray-800);
+    /* Code-Block bleibt dunkel (war schon invers) */
+    --code-block-bg:      var(--gray-800);
+    --code-copy-bg:       rgba(255, 255, 255, 0.06);
+    --code-copy-hover-bg: rgba(255, 255, 255, 0.12);
+
+    /* Focus-Ring kontrastreicher */
+    --focus-ring: 3px solid var(--color-focus-ring);
   }
 }

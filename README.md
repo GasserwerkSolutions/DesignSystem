@@ -122,13 +122,20 @@ See [index.html](./index.html) for live demos of every component.
 
 ```bash
 npm run lint              # Contract-Enforcement (Themes only set tokens)
+npm run check:tokens      # Verifies every var() reference resolves
 npm run check:contrast    # WCAG AA for each Theme × critical pair
-npm run check             # lint + contrast
+npm run check             # lint + tokens + contrast
+npm run build:dark        # Regenerates semantic/dark.css from single source
 npm run build:tokens      # dist/tokens.json (W3C DTCG format)
 npm run build:types       # dist/tokens.d.ts (TypeScript unions)
-npm run build             # tokens + types
+npm run build             # dark + tokens + types
 npm run dev               # npx serve for local preview
 ```
+
+`semantic/dark.css` is **generated** from `scripts/dark.tokens.js` — the single
+source of truth for dark-mode token values. The build emits both the
+`[data-mode="dark"]` and the `@media (prefers-color-scheme: dark)` blocks
+from one definition, eliminating drift between the two triggers.
 
 ### Example Lint Output
 

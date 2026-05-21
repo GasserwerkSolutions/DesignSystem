@@ -10,6 +10,16 @@ und das Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 ## [Unreleased]
 
 ### Hinzugefügt
+- **Quality & DX** (Phase 3):
+  - `scripts/dark.tokens.js` — Single Source of Truth für Dark-Mode-Werte.
+  - `scripts/build-dark.js` — generiert `semantic/dark.css` aus dem
+    Source und emittiert beide Trigger-Blöcke ([data-mode="dark"] +
+    @media prefers-color-scheme) ohne Hand-Duplikation.
+  - `scripts/check-tokens.js` — validiert, dass jede `var(--x)`-Referenz
+    auf eine deklarierte Custom-Property zeigt (oder einen Fallback hat).
+    Catcht Typos und gelöschte Tokens.
+  - npm-Scripts: `check:tokens`, `build:dark`. In `check` und `build`
+    integriert; läuft auch via `prepublishOnly`.
 - **A11Y** (Phase 2 — Hardening):
   - `ARIA:`-Block in jedem interaktiven Component-File (toast, skeleton,
     tabs, modal, drawer, popover, tooltip, checkbox/radio, nav) —
@@ -37,7 +47,9 @@ und das Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 - **Tokens**: `--z-popover` (200) zwischen `--z-dropdown` und `--z-modal`
 
 ### Geändert
-- README + Component-Listing auf 33 Components erweitert
+- `semantic/dark.css` ist jetzt eine generierte Artifact-Datei. Änderungen
+  bitte in `scripts/dark.tokens.js` und mit `npm run build:dark` neu erzeugen.
+- README + Component-Listing auf 33 Components erweitert.
 
 ### Entfernt
 - —

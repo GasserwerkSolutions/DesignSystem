@@ -37,10 +37,12 @@
   "scripts": {
     "lint": "node scripts/lint-themes.js",
     "check:contrast": "node scripts/check-contrast.js",
-    "check": "npm run lint && npm run check:contrast",
+    "check:tokens": "node scripts/check-tokens.js",
+    "check": "npm run lint && npm run check:tokens && npm run check:contrast",
+    "build:dark": "node scripts/build-dark.js",
     "build:tokens": "node scripts/export-tokens.js",
     "build:types": "node scripts/generate-types.js",
-    "build": "npm run build:tokens && npm run build:types",
+    "build": "npm run build:dark && npm run build:tokens && npm run build:types",
     "dev": "npx serve .",
     "prepublishOnly": "npm run check && npm run build"
   },
