@@ -24,7 +24,7 @@ const PAIRS = [
   { fg: "--color-text-tertiary",  bg: "--color-bg",           threshold: 3.0, label: "tertiary-text (hint/meta) on body-bg" },
 ];
 
-const THEMES = ["", "trust", "playful", "premium", "industrial", "modern", "minimal"];
+const THEMES = ["", "trust", "playful", "premium", "industrial", "modern", "minimal", "arch"];
 
 // ========== Color Parsing & Contrast Math ==========
 

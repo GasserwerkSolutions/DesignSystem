@@ -10,6 +10,26 @@ und das Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 ## [Unreleased]
 
 ### Hinzugefügt
+- **Site-Integration** (Foundation):
+  - Neues `themes/arch.css` — Token-Set für Zahnärztehaus Arch
+    (Teal-CTA `#134e4a`, Off-White-Body, Warm-Tan-Akzent `#f0e6d3`,
+    Deep-Blue Hero-Akzent `#1B5BC0` als site-spezifischer Token).
+    Serif-Display + System-Sans-Body, 8 px Button-Radius, 24 px
+    Card-Radius (per CLAUDE.md "Aktuelle Design-Reality").
+  - `check-contrast.js` validiert das Theme jetzt mit — alle kritischen
+    Paare ≥ WCAG AA.
+  - 9 Production-HTML-Seiten (`index.html`, `praxis/index.html`,
+    `behandlungen/{notfall,prophylaxe,zahnerhalt,zahnersatz,implantat,
+    parodontose,kinder}/index.html`) bekommen:
+      - `data-tone="arch"` auf dem `<html>`-Element
+      - `<link rel="stylesheet" href="/main.css?v=1">` vor dem
+        bestehenden `/assets/*.css`-Link, sodass das Design-System die
+        Foundation liefert und `/assets/main.css` (sobald wieder vor-
+        handen) die site-spezifischen Komponenten on top übernimmt.
+  - Die drei Standalone-Seiten (`404.html`, `datenschutz.html`,
+    `impressum.html`) und der Redirect-Stub (`behandlungen/index.html`)
+    bleiben unberührt — sie tragen eigene Inline-Styles und brauchen
+    die Foundation nicht.
 - **Quality & DX** (Phase 3):
   - `scripts/dark.tokens.js` — Single Source of Truth für Dark-Mode-Werte.
   - `scripts/build-dark.js` — generiert `semantic/dark.css` aus dem

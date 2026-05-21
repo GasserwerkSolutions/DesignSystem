@@ -38,6 +38,7 @@
 @import "./themes/industrial.css" layer(themes);
 @import "./themes/modern.css"     layer(themes);
 @import "./themes/minimal.css"    layer(themes);
+@import "./themes/arch.css"       layer(themes);
 
 @import "./base/reset.css"      layer(reset);
 @import "./base/typography.css" layer(base);

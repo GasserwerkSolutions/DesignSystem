@@ -1,0 +1,93 @@
+/**
+ * Arch Theme — Zahnärztehaus Arch (Bern, BE)
+ * ============================================
+ *
+ * Deep-Blue Hero, Teal CTA, Off-White Sections, Warm-Tan Accents.
+ * Spiegelt die Markenwerte aus CLAUDE.md (§ "Aktuelle Design-Reality").
+ *
+ * Aktivierung: <html data-tone="arch">
+ *
+ * Farben:
+ *   --color-interactive   Teal #134e4a   (CTA)
+ *   --color-bg            Off-White       (Sections-Default)
+ *   --color-bg-tertiary   Warm-Tan        (Closing-Highlights)
+ *   --color-text-primary  Near-Black      (Body, Footer)
+ *   --c-hero-blue         Deep-Blue       (Hero-Hintergrund, site-spezifisch)
+ *   --c-frame-warm        Off-White       (Bilderrahmen 6px)
+ *
+ * Typografie: Serif-Display (Iowan/Palatino), System-Sans-Body.
+ * Per CLAUDE.md: H1 im Hero clamp(3.2rem, 9vw, 7rem), weight 600.
+ *
+ * Hinweis: Diese Theme-Datei setzt nur Tokens — keine Selektoren.
+ * Site-spezifische Komponenten (.site-header, .hero--fullbleed,
+ * .triage-path, .treat-card, .intro-spread, .flow-closing, .faq-stack,
+ * .footer-grid) leben in assets/main.css und konsumieren diese Tokens.
+ */
+
+[data-tone~="arch"] {
+  /* ----- Brand-Farben ----- */
+  --color-interactive:       #134e4a;
+  --color-interactive-light: #c9e6e0;
+  --color-interactive-dark:  #0c3531;
+
+  /* Hero-Akzent (deep blue) — site-spezifischer Token,
+     für .hero--fullbleed in assets/main.css */
+  --c-hero-blue:    #1B5BC0;
+  --c-hero-blue-2:  #0f3f8e;
+
+  /* Warm-Tan-Akzent (Off-White für Frames + Closing-Highlights) */
+  --c-frame-warm:   #f0e6d3;
+
+  /* ----- Backgrounds ----- */
+  --color-bg:           #fafafa;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary:  #f0e6d3;   /* Warm-Tan für Highlights */
+  --color-bg-inverse:   #0d0d0d;
+
+  /* ----- Text ----- */
+  --color-text-primary:   #0d0d0d;
+  --color-text-secondary: #404040;
+  --color-text-tertiary:  #666666;
+  --color-text-muted:     #888888;
+
+  /* ----- Borders ----- */
+  --color-border:       #e8e8e8;
+  --color-border-light: #f5f5f4;
+  --color-border-dark:  #bbbbbb;
+
+  /* ----- Focus ----- */
+  --color-focus:      #134e4a;
+  --color-focus-ring: color-mix(in oklch, #134e4a 25%, transparent);
+
+  /* ----- Typografie ----- */
+  --heading-font:        "Iowan Old Style", "Palatino Linotype", Palatino,
+                         "Book Antiqua", Georgia, serif;
+  --heading-weight:      600;
+  --heading-line-height: 1.1;
+
+  --font-display: var(--heading-font);
+  --font-body:    system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+                  Helvetica, Arial, sans-serif;
+
+  /* ----- Button-Contract (per CLAUDE.md: 8px radius, Teal, Off-White-FG) ----- */
+  --btn-bg:           var(--color-interactive);
+  --btn-fg:           #fafafa;
+  --btn-bg-hover:     var(--color-interactive-dark);
+  --btn-bg-active:    var(--color-interactive-dark);
+  --btn-radius:       0.5rem;     /* 8px */
+  --btn-hover-motion: translateY(-1px);
+
+  /* ----- Card-Contract ----- */
+  --card-bg:      #ffffff;
+  --card-radius:  1.5rem;          /* 24px für Cards mit Hervorhebung */
+  --card-padding: 1.5rem;
+
+  /* ----- Input-Contract ----- */
+  --input-bg:           #ffffff;
+  --input-border:       #d4d4d4;
+  --input-focus-border: var(--color-interactive);
+  --input-radius:       0.5rem;
+
+  /* ----- Container — per CLAUDE.md max 1184px ----- */
+  --container-max: 1184px;
+}
