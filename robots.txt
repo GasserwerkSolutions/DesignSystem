@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /_workshop/
+
+Sitemap: https://www.URL-DES-KUNDEN.CH // TODO/sitemap.xml

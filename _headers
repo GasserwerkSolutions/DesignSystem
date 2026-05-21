@@ -1,0 +1,36 @@
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: unsafe-none
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-src 'self' https://www.openstreetmap.org https://challenges.cloudflare.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.css
+  Cache-Control: public, max-age=300, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=300, must-revalidate
+
+/_headers
+  Cache-Control: no-store
+
+/_redirects
+  Cache-Control: no-store
+
+# Nicht indexieren: Workshop-Folder, alte Backup-Files, Typo-Files.
+# robots.txt verbietet Crawlen — X-Robots-Tag schützt zusätzlich vor
+# versehentlicher Indexierung wenn externe Links auf diese URLs zeigen.
+/_workshop/*
+  X-Robots-Tag: noindex, nofollow
+
+/index-vor-editorial-2026-05-10.html
+  X-Robots-Tag: noindex, nofollow
+
+/indes.html
+  X-Robots-Tag: noindex, nofollow
