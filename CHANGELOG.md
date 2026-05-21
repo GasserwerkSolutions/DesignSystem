@@ -10,6 +10,17 @@ und das Projekt folgt [Semantic Versioning](https://semver.org/lang/de/).
 ## [Unreleased]
 
 ### Hinzugefügt
+- **A11Y** (Phase 2 — Hardening):
+  - `ARIA:`-Block in jedem interaktiven Component-File (toast, skeleton,
+    tabs, modal, drawer, popover, tooltip, checkbox/radio, nav) —
+    dokumentiert Pflicht-Rollen, Live-Regions, Focus-Pattern,
+    Roving-Tabindex etc.
+  - `.field__error` zeigt zusätzlich ein Warn-Icon (via CSS-Mask) —
+    Fehler-Kommunikation ist nicht mehr nur farb-abhängig (WCAG 1.4.1).
+  - `.nav__item[aria-current="page"]` triggert den aktiven Style —
+    `aria-current` ist Source-of-Truth, `.nav__item--active` nur Fallback.
+  - README-Abschnitte "ARIA Contracts" und "Non-Color Affordances"
+    ergänzt.
 - **Components** (Phase 1 — Lücken-Füller):
   - `input.css` — geteiltes Form-Control-Primitive mit Größen-Varianten,
     klassen-basierten Validierungs-Zuständen (`.is-invalid`, `.is-valid`)

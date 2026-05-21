@@ -8,13 +8,27 @@
  * CONTRACT:
  *   Optional: --tab-active-color, --tab-idle-color, --tab-indicator-color
  *
+ * ARIA (Pflicht — sonst kein A11Y-konformer Tab):
+ *   - `.tabs` → `role="tablist"` (+ `aria-label` oder `aria-labelledby`,
+ *     wenn der Tab-Zweck nicht aus dem Kontext klar ist)
+ *   - `.tab` → `role="tab"`, `aria-selected="true|false"`,
+ *     `aria-controls="<panel-id>"`, `id` für tabpanel-Rückreferenz
+ *   - `.tab-panel` → `role="tabpanel"`, `aria-labelledby="<tab-id>"`,
+ *     `tabindex="0"` (damit per Tab fokussierbar), `hidden` wenn inaktiv
+ *   - Roving-Tabindex via JS: aktiver Tab `tabindex="0"`, andere `-1`.
+ *     Pfeil-Links/Rechts wechseln, Home/End springen ans Ende.
+ *
  * Struktur:
- *   <div class="tabs" role="tablist">
- *     <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
- *     <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
+ *   <div class="tabs" role="tablist" aria-label="Bereich-Wechsel">
+ *     <button id="t1" class="tab" role="tab" aria-selected="true"
+ *             aria-controls="p1" tabindex="0">Übersicht</button>
+ *     <button id="t2" class="tab" role="tab" aria-selected="false"
+ *             aria-controls="p2" tabindex="-1">Kunden</button>
  *   </div>
- *   <div id="p1" role="tabpanel" class="tab-panel">…</div>
- *   <div id="p2" role="tabpanel" class="tab-panel" hidden>…</div>
+ *   <div id="p1" role="tabpanel" aria-labelledby="t1" tabindex="0"
+ *        class="tab-panel">…</div>
+ *   <div id="p2" role="tabpanel" aria-labelledby="t2" tabindex="0"
+ *        class="tab-panel" hidden>…</div>
  *
  * Modifier:
  *   .tabs--pill       pill-style mit Background statt Underline

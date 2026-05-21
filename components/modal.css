@@ -8,13 +8,24 @@
  * CONTRACT:
  *   Optional: --modal-bg, --modal-radius, --modal-max-width, --modal-padding
  *
+ * ARIA:
+ *   - `<dialog>` setzt automatisch `role="dialog"` + `aria-modal="true"`
+ *     wenn via `showModal()` geöffnet.
+ *   - Beschriftung Pflicht: `aria-labelledby="<modal-title-id>"` auf dem
+ *     <dialog>, oder `aria-label="…"` wenn kein sichtbarer Titel.
+ *   - Bestätigungs-Dialoge zusätzlich `aria-describedby="<body-id>"`
+ *     für die Erklärung.
+ *   - Close-Button braucht `aria-label="Schließen"`.
+ *   - Form-Modal: <form method="dialog"> liefert Submit→Close gratis.
+ *
  * Struktur:
- *   <dialog class="modal" id="m1">
+ *   <dialog class="modal" id="m1" aria-labelledby="m1-title"
+ *           aria-describedby="m1-body">
  *     <header class="modal__header">
- *       <h3 class="modal__title">Buchung bestätigen</h3>
+ *       <h3 id="m1-title" class="modal__title">Buchung bestätigen</h3>
  *       <button class="modal__close" aria-label="Schließen">×</button>
  *     </header>
- *     <div class="modal__body">…</div>
+ *     <div id="m1-body" class="modal__body">…</div>
  *     <footer class="modal__actions">
  *       <button class="btn btn--secondary">Abbrechen</button>
  *       <button class="btn">Bestätigen</button>

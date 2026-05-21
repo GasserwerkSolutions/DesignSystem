@@ -8,10 +8,24 @@
  * CONTRACT:
  *   Optional: --skeleton-bg, --skeleton-highlight
  *
+ * ARIA:
+ *   - Skeletons sind dekorativ → `aria-hidden="true"` auf jedem
+ *     einzelnen .skeleton, damit Screen-Reader sie nicht vorlesen.
+ *   - Der UMSCHLIESSENDE Container kommuniziert den Lade-Status via
+ *     `aria-busy="true"` und (optional) `aria-live="polite"`. Wenn
+ *     der echte Content nachgeladen wird, `aria-busy` auf `false`
+ *     setzen — Screen-Reader wechseln vom "wird geladen"-Hinweis
+ *     auf den neuen Inhalt.
+ *   - Bei längeren Wartezeiten zusätzlich ein sichtbarer Hinweis
+ *     ("Lade Buchungen…") via .sr-only ergänzen.
+ *
  * Struktur:
- *   <div class="skeleton skeleton--line"></div>
- *   <div class="skeleton skeleton--avatar"></div>
- *   <div class="skeleton" style="height: 4rem"></div>
+ *   <div aria-busy="true" aria-live="polite">
+ *     <div class="skeleton skeleton--heading" aria-hidden="true"></div>
+ *     <div class="skeleton skeleton--line"    aria-hidden="true"></div>
+ *     <div class="skeleton skeleton--line-sm" aria-hidden="true"></div>
+ *     <span class="sr-only">Lade Inhalt…</span>
+ *   </div>
  *
  * Modifier (Größen-Presets):
  *   .skeleton--line       1 Zeile Text

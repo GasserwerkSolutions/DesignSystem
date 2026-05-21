@@ -236,6 +236,38 @@ Themes override only what they care about:
 - **Skip-to-Content** link pattern in demo.
 - Logical properties (`padding-inline`, `margin-block`) → RTL-ready.
 
+### ARIA Contracts
+
+Every interactive component documents its required ARIA attributes in an
+`ARIA:` block at the top of its CSS file. The CSS styles a component
+correctly even when ARIA is missing, but Screen-Reader support requires
+the documented roles/attributes.
+
+Highlights:
+
+- **Toast** — `.toast-stack` is the Live-Region (`aria-live="polite"`
+  for `status`, `assertive` for `alert`). Danger-Toasts use
+  `role="alert"`, others `role="status"`.
+- **Skeleton** — Wrapper carries `aria-busy="true"`; every `.skeleton`
+  is `aria-hidden="true"` (purely decorative).
+- **Tabs** — Full Roving-Tabindex pattern documented; CSS reacts to
+  `aria-selected="true"`, no `.is-active` class needed.
+- **Nav** — `aria-current="page"` triggers the active style. The
+  `.nav__item--active` class is a visual fallback.
+- **Modal / Drawer** — Built on native `<dialog>`; require
+  `aria-labelledby` referencing the title's `id`.
+- **Tooltip** — Trigger uses `aria-describedby`; tooltip-content must
+  never be the only label (Touch/Keyboard users miss hover).
+
+### Non-Color Affordances (WCAG 1.4.1)
+
+Error states never rely on color alone:
+
+- `.field__error` prepends a warning-icon glyph (CSS mask, inherits color).
+- `.toast--danger` uses `role="alert"` + an accent border. Recommended
+  copy pattern: `<strong>Fehler</strong> Beschreibung…` so the status
+  is announced as text, not just visually marked.
+
 ---
 
 ## TypeScript

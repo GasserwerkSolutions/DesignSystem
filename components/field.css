@@ -57,12 +57,29 @@
   margin: 0;
 }
 
+/* Non-Color-Affordance: Fehler-Text bekommt ein Warn-Icon-Prefix.
+   Damit ist die Fehler-Kommunikation nicht ausschließlich farb-
+   abhängig (WCAG 1.4.1). */
 .field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
   font-size: var(--font-xs);
   color: var(--color-error);
   font-weight: var(--fw-500);
   line-height: var(--lh-normal);
   margin: 0;
+}
+
+.field__error::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  margin-block-start: 0.15em;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='black' d='M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm-.75 4a.75.75 0 1 1 1.5 0v4a.75.75 0 0 1-1.5 0V5Zm.75 7.25a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8Z'/></svg>") center / contain no-repeat;
+  -webkit-mask: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='black' d='M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm-.75 4a.75.75 0 1 1 1.5 0v4a.75.75 0 0 1-1.5 0V5Zm.75 7.25a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8Z'/></svg>") center / contain no-repeat;
 }
 
 /* Error-Zustand: Input/Textarea bekommt roten Border */

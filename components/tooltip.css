@@ -9,10 +9,24 @@
  * CONTRACT:
  *   Optional: --tooltip-bg, --tooltip-fg
  *
+ * ARIA:
+ *   - `.tooltip` braucht `role="tooltip"` und eine `id`.
+ *   - Der Trigger referenziert den Tooltip via `aria-describedby="<id>"`
+ *     (Tooltip ergänzt nur, ersetzt nicht den Trigger-Namen).
+ *   - Tooltip-Content sollte KEINE interaktiven Elemente enthalten
+ *     (sind nicht erreichbar — kein Fokus-Trap). Für Inhalt mit Aktionen
+ *     stattdessen `popover` verwenden.
+ *   - NIEMALS Tooltip als einzige Beschriftung verwenden — Touch- und
+ *     Keyboard-Nutzer ohne Hover sehen ihn nicht. Icon-Buttons brauchen
+ *     zusätzlich `aria-label`.
+ *
  * Struktur:
  *   <span class="tooltip-host">
- *     <button class="btn btn--ghost">Info</button>
- *     <span class="tooltip" role="tooltip">Erklärung zum Button</span>
+ *     <button class="btn btn--ghost" aria-label="Info"
+ *             aria-describedby="tip-1">i</button>
+ *     <span id="tip-1" class="tooltip" role="tooltip">
+ *       Diese Aktion löscht keine Daten.
+ *     </span>
  *   </span>
  *
  * Modifier (auf .tooltip):

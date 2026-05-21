@@ -8,10 +8,17 @@
  * CONTRACT:
  *   Optional: --drawer-width, --drawer-bg
  *
+ * ARIA:
+ *   - `<dialog>` liefert `role="dialog"` + `aria-modal="true"`.
+ *   - `aria-labelledby="<drawer-title-id>"` Pflicht (oder `aria-label`).
+ *   - Close-Button: `aria-label="Schließen"`.
+ *   - Drawer mit Navigation: zusätzlich `<nav aria-label="Hauptmenü">`
+ *     im body, damit Screen-Reader die Sektion benennen können.
+ *
  * Struktur:
- *   <dialog class="drawer drawer--end">
+ *   <dialog class="drawer drawer--end" id="d1" aria-labelledby="d1-title">
  *     <header class="drawer__header">
- *       <h3 class="drawer__title">Einstellungen</h3>
+ *       <h3 id="d1-title" class="drawer__title">Einstellungen</h3>
  *       <button class="drawer__close" aria-label="Schließen">×</button>
  *     </header>
  *     <div class="drawer__body">…</div>

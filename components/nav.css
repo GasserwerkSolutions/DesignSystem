@@ -20,6 +20,15 @@
  *     <div class="nav__footer">user@example.com</div>
  *   </nav>
  *
+ * ARIA:
+ *   - <nav> mit `aria-label="…"` (mehrere Nav-Regionen pro Seite
+ *     unterscheiden, z. B. "Hauptnavigation" vs. "Footer-Links").
+ *   - Aktiver Eintrag: `aria-current="page"` auf dem <a>. Die
+ *     `.nav__item--active`-Klasse ist nur die visuelle Spiegelung —
+ *     `aria-current` ist die Source-of-Truth für Screen-Reader.
+ *   - Branding-Logo: wenn nur Bild, `aria-label="<Markenname>"` auf
+ *     dem umschließenden Link.
+ *
  * Modifier:
  *   .nav--sidebar     vertikal, sticky
  *   .nav--topbar      horizontal, am oberen Rand
@@ -106,7 +115,9 @@
   text-decoration: none;
 }
 
-.nav__item--active {
+.nav__item--active,
+.nav__item[aria-current="page"],
+.nav__item[aria-current="true"] {
   background: var(--nav-active-bg);
   color: var(--nav-active-text);
   font-weight: var(--fw-600);

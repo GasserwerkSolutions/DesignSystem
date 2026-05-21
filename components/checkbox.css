@@ -10,25 +10,37 @@
  *     --checkbox-radius, --checkbox-size
  *     --checkbox-bg, --checkbox-border, --checkbox-checked-bg, --checkbox-checked-border
  *
+ * ARIA:
+ *   - Beschriftung über <label class="choice"> (umschließendes Label
+ *     verbindet Input + Text → keine `for`/`id`-Paarung nötig).
+ *   - RADIO-GRUPPEN brauchen <fieldset> + <legend> für die Gruppen-
+ *     Bezeichnung. Sonst hört der Screen-Reader nur die einzelnen
+ *     Optionen ohne Kontext.
+ *   - Required: `<input required>` auf dem Input.
+ *   - Indeterminate-Checkbox: nur per JS (`.indeterminate = true`).
+ *   - Error: `aria-invalid="true"` auf dem Input + `aria-describedby`
+ *     auf einen Fehler-Hint (.field--error-Pattern).
+ *
  * Struktur:
  *   <label class="choice">
  *     <input type="checkbox" class="checkbox">
  *     <span>Newsletter abonnieren</span>
  *   </label>
  *
- *   <label class="choice">
- *     <input type="radio" name="plan" class="radio">
- *     <span>
- *       Basic
- *       <span class="choice__hint">CHF 0 / Monat</span>
- *     </span>
- *   </label>
- *
- *   Checkbox-Liste als Stack:
- *   <div class="stack">
- *     <label class="choice">…</label>
- *     <label class="choice">…</label>
- *   </div>
+ *   Radio-Gruppe mit Gruppen-Label:
+ *   <fieldset>
+ *     <legend>Plan auswählen</legend>
+ *     <div class="stack">
+ *       <label class="choice">
+ *         <input type="radio" name="plan" class="radio" value="basic">
+ *         <span>Basic<span class="choice__hint">CHF 0 / Monat</span></span>
+ *       </label>
+ *       <label class="choice">
+ *         <input type="radio" name="plan" class="radio" value="pro">
+ *         <span>Pro<span class="choice__hint">CHF 12 / Monat</span></span>
+ *       </label>
+ *     </div>
+ *   </fieldset>
  */
 
 .checkbox,

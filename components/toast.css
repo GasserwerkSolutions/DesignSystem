@@ -8,11 +8,29 @@
  * CONTRACT:
  *   Optional: --toast-bg, --toast-fg, --toast-accent
  *
+ * ARIA:
+ *   - `.toast-stack` ist die Live-Region — `aria-live="polite"` und
+ *     `aria-atomic="false"` sind Pflicht. Screen-Reader lesen neue
+ *     Toasts beim Einfügen vor; entfernte Toasts triggern nichts.
+ *   - Info/Success/Warning: `role="status"` (polite).
+ *   - Danger: `role="alert"` (assertive — Screen-Reader unterbricht
+ *     den aktuellen Fluss). Bei Toasts mit kritischer Fehlermeldung
+ *     zusätzlich `aria-live="assertive"` auf der Stack-Region.
+ *   - Close-Button braucht `aria-label="Schließen"`.
+ *   - Non-Color-Affordance: Status wird sowohl über die Accent-Border
+ *     ALS AUCH über den Text (z. B. "Fehler: …") kommuniziert.
+ *
  * Struktur — Container einmal im <body>:
  *   <div class="toast-stack" aria-live="polite" aria-atomic="false">
  *     <div class="toast toast--success" role="status">
  *       <span class="toast__body">Buchung gespeichert</span>
  *       <button class="toast__close" aria-label="Schließen">×</button>
+ *     </div>
+ *     <div class="toast toast--danger" role="alert">
+ *       <span class="toast__body">
+ *         <strong>Fehler</strong>
+ *         Verbindung verloren — bitte erneut versuchen.
+ *       </span>
  *     </div>
  *   </div>
  *
