@@ -4,71 +4,24 @@ Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, 29 Components,
 
 ```html
 <link rel="stylesheet" href="main.css">
-<body data-tone="trust" data-mode="light">
-  <button class="btn">Call to action</button>
-</body>
+<html data-tone="trust" data-mode="light">
+  <body>
+    <button class="btn">Call to action</button>
+  </body>
+</html>
 ```
+
+> **Wichtig:** `data-tone` und `data-mode` müssen auf demselben Element sitzen (idiomatisch: `<html>`). Sind sie auf verschiedenen Elementen, überschreibt das innere Element via Custom-Property-Vererbung das äußere — Dark-Mode greift dann nicht für tone-spezifische Token.
 
 ---
 
 ## Core Principles
 
 1. **Contract-based** — Components define required/optional Tokens. Themes set only Tokens, never Selectors. Enforced via Lint.
-2. **`@layer`-deterministic cascade** — `reset < tokens < semantic < themes < base < state < components`. Priority is spec-level, not convention.
-3. **Tone × Mode matrix** — 6 Tones (Trust, Playful, Premium, Industrial, Modern, Minimal) × 2 Modes (Light, Dark). Nestable (`premium` inside `trust`).
-4. **A11Y by construction** — WCAG AA contrast verified per Theme × Token-Pair. `prefers-reduced-motion`, `prefers-contrast`, `forced-colors` supported.
-5. **Zero runtime** — Pure CSS. No framework dependency. Works with any stack.
-
----
-
-## Usage
-
-### Install
-
-```bash
-npm install @gasserwerksolutions/design-system
-```
-
-Or include directly:
-
-```html
-<link rel="stylesheet" href="https://unpkg.com/@gasserwerksolutions/design-system/main.css">
-```
-
-### Activate a Theme
-
-```html
-<html data-tone="trust">
-  <body>
-    <h1>Das ist Trust</h1>
-    <button class="btn">Action</button>
-  </body>
-</html>
-```
-
-Available tones: `trust`, `playful`, `premium`, `industrial`, `modern`, `minimal`.
-
-### Dark Mode
-
-```html
-<html data-mode="dark">  <!-- oder "light" oder weglassen für Auto -->
-```
-
-Without `data-mode`, the System respects `prefers-color-scheme`. `data-mode="light"` explicitly opts out of Auto-Dark.
-
-### Nested Scoping
-
-```html
-<body data-tone="trust">
-  <main>
-    <div data-tone="premium">
-      <!-- This section is premium, rest of page stays trust -->
-      <h2>Premium Feature</h2>
-      <button class="btn">Upgrade</button>
-    </div>
-  </main>
-</body>
-```
+2. **`@layer`-deterministic cascade** — `reset < tokens < semantic < themes < mode < base < state < components`.
+3. **Tone × Mode matrix** — 6 Tones × 2 Modes. Mode-Layer kommt nach Themes — Dark-Mode überschreibt destruktive Theme-Tokens (z. B. `--color-text-primary` in premium/industrial/minimal) zuverlässig.
+4. **Nested Tone-Scopes funktionieren auch im Dark-Mode** — `dark.css`-Selektoren matchen auch verschachtelte Tone-Subtrees (`[data-mode="dark"] [data-tone]`). Sonst würden destruktive Theme-Tokens im nested Scope ohne Mode-Override gelten.
+5. **A11Y by construction** — WCAG AA contrast verifiziert pro Theme × Mode × kritisches Paar, inklusive Nested-Tone-Kombinationen (336 Checks).
 
 ---
 
@@ -77,7 +30,7 @@ Without `data-mode`, the System respects `prefers-color-scheme`. `data-mode="lig
 ```
 tokens/           Primitive values (rem-based, fluid typography)
 semantic/         Meaning mapping (--color-interactive, --card-bg, ...)
-  dark.css        Dark-mode orthogonal overrides
+  dark.css        Dark-mode orthogonal overrides — lebt im 'mode'-Layer
 themes/           6 tones, each setting only tokens
 base/             Reset, Typography, Layout, Print
 state/            Global interaction defaults, prefers-* media queries
@@ -89,181 +42,66 @@ dist/             Generated — tokens.json (W3C DTCG) + tokens.d.ts
 ### Layer Order
 
 ```css
-@layer reset, tokens, semantic, themes, base, state, components;
+@layer reset, tokens, semantic, themes, mode, base, state, components;
 ```
 
-- `reset` has lowest priority — any rule overrides browser defaults
-- `components` wins against `state` — themed Buttons beat generic `button:hover`
-- `themes` only override Tokens, never Selectors (enforced by Lint)
+**Warum `mode` nach `themes`?** Themes setzen Tone-Identität für Light-Mode (z. B. premium: `--color-text-primary: var(--gray-950)`). Ohne den Mode-Layer würde diese hart gesetzte Light-Farbe auch im Dark-Mode greifen — schwarz auf schwarz. Mode-Layer-Reihenfolge stellt sicher, dass Dark-Overrides gewinnen, ohne dass jedes Theme einen Dark-Block pflegen muss.
 
----
+### Nested-Scope-Pattern in `dark.css`
 
-## Components
+Jede Mode-Rule in `dark.css` matched **zwei** Selektoren via Komma-Liste:
 
-**Foundation**: Button, Card, Section, Badge, Stat, Nav (sidebar/topbar), Callout, Steps, Table
+```css
+[data-mode="dark"],
+[data-mode="dark"] [data-tone] {
+  --color-bg: var(--gray-950);
+  /* ... */
+}
+```
 
-**Layout**: List-Row, Funnel, Stack, Grid, Container
-
-**Form**: Checkbox, Radio, Field, Search, Range-Slider
-
-**Overlay**: Modal, Drawer, Tooltip
-
-**Content**: Tabs, Accordion, Breadcrumbs, Pagination
-
-**Feedback**: Empty-State, Skeleton, Toast, Progress, Trend
-
-**Data**: Avatar, Code-Block, Panel-List, Divider, Banner
-
-See [index.html](./index.html) for live demos of every component.
+Der zweite Selektor ist nötig, weil bei `<html data-mode="dark"><div data-tone="premium">` der nested `<div>` ein eigenes Custom-Property-Setup vom themes-Layer bekommt. Ohne den Descendant-Selektor würde der premium-Token (`--color-text-primary: var(--gray-950)` = fast schwarz) im Dark-Mode greifen — wieder schwarz auf schwarz. Der Lint prüft, dass jeder Mode-Selektor einen Descendant-Partner hat.
 
 ---
 
 ## Scripts
 
 ```bash
-npm run lint              # Contract-Enforcement (Themes only set tokens)
-npm run check:contrast    # WCAG AA for each Theme × critical pair
-npm run check             # lint + contrast
-npm run build:tokens      # dist/tokens.json (W3C DTCG format)
-npm run build:types       # dist/tokens.d.ts (TypeScript unions)
-npm run build             # tokens + types
-npm run dev               # npx serve for local preview
+npm run lint                    # Contract + destruktive-Token-Warnung + nested-mode-coverage
+npm run lint:strict             # destruktive Tokens als hard-fail
+npm run check:contrast          # Static checker: 336 Tone×Mode×Pair Checks (inkl. nested)
+npm run check:contrast:browser  # Browser checker: lädt index.html, klickt durch
+npm run check:contrast:compare  # Beide + Diff
+npm run check                   # lint + static
+npm run check:full              # lint + static + browser
 ```
 
-### Example Lint Output
+### Lint
 
-```
-[ok]   industrial.css
-[ok]   minimal.css
-[ok]   modern.css
-[ok]   playful.css
-[ok]   premium.css
-[ok]   trust.css
+Drei Checks:
 
-Alle Themes erfüllen den Contract.
-```
+1. **Selector-Contract (hard-fail):** Themes dürfen nur `[data-tone~="..."]` selektieren.
+2. **Destruktive mode-sensitive Tokens (warn):** Themes, die Tokens setzen, die auch in `semantic/dark.css` stehen, werden gewarnt. Funktionieren nur wegen `mode`-Layer-Reihenfolge.
+3. **Nested-Mode-Coverage (hard-fail):** Jeder `[data-mode="X"]`-Selektor in `dark.css` braucht einen `[data-mode="X"] [data-tone]`-Descendant-Partner. Sonst verlieren nested Tone-Scopes ihren Dark-Mode.
 
-### Example Contrast-Check Output
+### Static-Contrast-Checker
 
-```
-=== premium ===
-  [ok]   body-text on body-bg: 17.57:1  (threshold 4.5:1)  #0f0f0f / #f5f5f4
-  [ok]   secondary-text on body-bg: 9.50:1  (threshold 4.5:1)  #404040 / #f5f5f4
-  [ok]   body-text on card-bg: 19.17:1  (threshold 4.5:1)  #0f0f0f / white
-```
+Liest Layer-Reihenfolge aus `main.css`, simuliert die Kaskade, resolved Token-References + `color-mix(in oklch, …)`. Prüft:
 
----
+- **Root-Scope (96 Checks):** 6 Tones × 4 Modi (light/dark/auto-light/auto-dark) × 4 Pairs
+- **Nested-Scope (240 Checks):** Jedes verschachtelte `<div data-tone="X">` innerhalb von jedem anderen Tone, in Light + Dark, × 4 Pairs
 
-## Creating a Theme
+### Browser-Checker
 
-Themes are pure Token-Overrides scoped via `[data-tone~="…"]`. No selectors allowed:
-
-```css
-/* themes/sunset.css */
-[data-tone~="sunset"] {
-  --color-interactive:       #f97316;
-  --color-interactive-light: #ffedd5;
-  --color-interactive-dark:  #9a3412;
-
-  --heading-font:        "Crimson Pro", Georgia, serif;
-  --heading-weight:      600;
-  --h1-letter:           -0.01em;
-
-  --btn-bg:           #f97316;
-  --btn-bg-hover:     #ea580c;
-  --btn-radius:       var(--radius-8);
-  --btn-hover-motion: translateY(-1px);
-}
-```
-
-Then:
-
-```css
-/* main.css */
-@import "./themes/sunset.css" layer(themes);
-```
-
-Run `npm run lint` — if your Theme has any selector other than `[data-tone~="sunset"]`, it fails.
-
----
-
-## Creating a Component
-
-Every component has a **Contract**: the Tokens a Theme may override. Tokens with fallbacks are optional; without fallback are required.
-
-```css
-/* components/chip.css */
-/**
- * CONTRACT:
- *   Required: --chip-bg, --chip-fg
- *   Optional: --chip-radius, --chip-px, --chip-py
- */
-.chip {
-  display: inline-flex;
-  gap: var(--space-xs);
-  padding: var(--chip-py, var(--space-2)) var(--chip-px, var(--space-8));
-  background: var(--chip-bg);
-  color: var(--chip-fg);
-  border-radius: var(--chip-radius, var(--radius-full));
-  font-size: var(--font-xs);
-}
-```
-
-Add defaults in `semantic.css`:
-
-```css
---chip-bg: var(--color-interactive-light);
---chip-fg: var(--color-interactive-dark);
-```
-
-Themes override only what they care about:
-
-```css
-[data-tone~="industrial"] {
-  --chip-radius: 0;
-}
-```
-
----
-
-## Accessibility
-
-- **WCAG AA contrast** validated via `npm run check:contrast` for every Theme × critical pair (primary/secondary text on background, text on card).
-- **`prefers-reduced-motion`** globally disables animations.
-- **`prefers-contrast: more`** boosts borders and text colors.
-- **`forced-colors: active`** (Windows HCM) — Focus-Ring uses `Highlight`, components inherit system borders.
-- **`prefers-reduced-data`** drops shadows and background-images.
-- **Skip-to-Content** link pattern in demo.
-- Logical properties (`padding-inline`, `margin-block`) → RTL-ready.
-
----
-
-## TypeScript
-
-Auto-generated `dist/tokens.d.ts` exposes:
-
-```ts
-import type { TokenName, ColorToken, Tone, Mode } from "@gasserwerksolutions/design-system/dist/tokens";
-
-const tone: Tone = "trust";
-const style: Record<Exclude<TokenName, never>, string> = {
-  "--color-bg": "white",
-  // ... autocomplete for all 221 tokens
-};
-```
-
----
-
-## Browser Support
-
-Modern browsers: Chrome 114+, Firefox 115+, Safari 16.4+.
-
-Uses: `@layer`, `color-mix(in oklch, …)`, `:has()`, `text-wrap: balance`, `content-visibility`, CSS nesting in some examples.
-
-Graceful degradation — older browsers lose progressive features (fluid typography falls back to min size, color-mix requires polyfill, etc.) but core styling remains intact.
+Lädt die echte `index.html` in headless Chromium, klickt sich durch alle Theme-Buttons + Dark-Toggle, misst `getComputedStyle()` auf echten DOM-Elementen — inklusive der `.scoped-demo[data-tone~=premium]`-Section. Damit ist die Demo selbst Teil der Validierung: ändert jemand die DOM-Konvention falsch, schreit der Browser-Check.
 
 ---
 
 ## License
 
 [MIT](./LICENSE)
+
+---
+
+## Architektur-Entscheidungen
+
+- [ADR-001 — Container-Width-Inheritance bei tone-spezifischen Overrides](./docs/ADR-001-container-max-inheritance.md)

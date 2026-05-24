@@ -1,19 +1,14 @@
 <!DOCTYPE html>
-<html lang="de" data-mode="light">
+<html lang="de" data-tone="trust" data-mode="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Design System — Demo</title>
-  <!-- Variable Fonts (70 % kleinerer Payload als multiple Weights) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&family=Playfair+Display:wght@400..900&display=swap">
   <link rel="stylesheet" href="main.css">
   <style>
-    /* ===== DEMO-ONLY STYLES =====
-       Nutzt bewusst nur die Design-System-Tokens —
-       kein einziger hardcoded Wert außerhalb der Dekoration. */
-
     .topbar {
       position: sticky;
       top: 0;
@@ -23,151 +18,24 @@
       padding-block: var(--space-12);
       backdrop-filter: blur(8px);
       background: color-mix(in oklch, var(--color-bg) 85%, transparent);
-      /* Topbar darf nie durch Theme-spezifische --container-max verengt werden
-         (Premium setzt 80ch für Content — Switcher soll aber alle Buttons zeigen) */
       --container-max: 1280px;
     }
+    .topbar__inner { display: flex; gap: var(--space-12); align-items: center; flex-wrap: wrap; }
+    .topbar__label { font-size: var(--font-sm); font-weight: var(--fw-600); color: var(--color-text-secondary); margin-right: auto; }
+    .topbar__label strong { font-family: var(--font-mono); font-weight: var(--fw-700); color: var(--color-interactive); }
 
-    .topbar__inner {
-      display: flex;
-      gap: var(--space-12);
-      align-items: center;
-      flex-wrap: wrap;
-    }
+    .demo-grid { display: grid; gap: var(--space-16); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+    .demo-block { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-24); background: var(--color-bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--color-border); }
+    .demo-label { font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
+    .demo-row { display: flex; gap: var(--space-12); flex-wrap: wrap; align-items: center; }
 
-    .topbar__label {
-      font-size: var(--font-sm);
-      font-weight: var(--fw-600);
-      color: var(--color-text-secondary);
-      margin-right: auto;
-    }
-
-    .topbar__label strong {
-      font-family: var(--font-mono);
-      font-weight: var(--fw-700);
-      color: var(--color-interactive);
-    }
-
-    .demo-grid {
-      display: grid;
-      gap: var(--space-16);
-      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    }
-
-    .demo-block {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-12);
-      padding: var(--space-24);
-      background: var(--color-bg-secondary);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--color-border);
-    }
-
-    .demo-label {
-      font-family: var(--font-mono);
-      font-size: var(--font-xs);
-      color: var(--color-text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .demo-row {
-      display: flex;
-      gap: var(--space-12);
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .type-scale {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-8);
-    }
-
+    .type-scale { display: flex; flex-direction: column; gap: var(--space-8); }
     .type-scale > * { margin: 0; }
 
-    .scoped-demo {
-      margin-top: var(--space-24);
-      padding: var(--space-32);
-      border-radius: var(--radius-lg);
-      background: var(--color-bg-secondary);
-      border: 1px solid var(--color-border);
-    }
+    .scoped-demo { margin-top: var(--space-24); padding: var(--space-32); border-radius: var(--radius-lg); background: var(--color-bg-secondary); border: 1px solid var(--color-border); }
 
-    .footer {
-      padding-block: var(--space-32);
-      text-align: center;
-      color: var(--color-text-tertiary);
-      font-size: var(--font-sm);
-      border-top: 1px solid var(--color-border);
-      margin-top: var(--space-48);
-    }
+    .footer { padding-block: var(--space-32); text-align: center; color: var(--color-text-tertiary); font-size: var(--font-sm); border-top: 1px solid var(--color-border); margin-top: var(--space-48); }
 
-    .footer code {
-      color: var(--color-text-secondary);
-    }
-
-    /* Funnel-Flow Preview (stat cards + Pfeile) */
-    .funnel-preview {
-      display: flex;
-      align-items: stretch;
-      gap: var(--space-12);
-      flex-wrap: wrap;
-    }
-
-    .funnel-preview > .stat {
-      flex: 1 1 10rem;
-      min-width: 8rem;
-    }
-
-    .funnel-arrow {
-      display: flex;
-      align-items: center;
-      color: var(--color-text-tertiary);
-      font-family: var(--font-mono);
-      font-size: var(--font-xs);
-      font-weight: var(--fw-600);
-    }
-
-    /* App-Shell Preview (Sidebar + Content in Box) */
-    .appshell-preview {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      background: var(--color-bg);
-      min-height: 20rem;
-    }
-
-    .appshell-preview .nav--sidebar {
-      min-height: 0;
-      position: static;
-      width: 14rem;
-    }
-
-    .appshell-preview__content {
-      padding: var(--space-24);
-    }
-
-    .appshell-preview__content h3 {
-      margin-block-start: 0;
-    }
-
-    @media (max-width: 640px) {
-      .appshell-preview {
-        grid-template-columns: 1fr;
-      }
-
-      .appshell-preview .nav--sidebar {
-        width: 100%;
-        border-inline-end: none;
-        border-block-end: 1px solid var(--nav-border, var(--color-border));
-      }
-    }
-
-    /* Skip-to-Content-Link — wird bei Tab-Fokus sichtbar */
     .skip-link {
       position: absolute;
       top: var(--space-8);
@@ -182,21 +50,8 @@
       transform: translateY(-200%);
       transition: transform var(--motion-feedback);
     }
-    .skip-link:focus-visible {
-      transform: translateY(0);
-    }
+    .skip-link:focus-visible { transform: translateY(0); }
 
-    /* Utility-Klassen für Demo-spezifische Layouts
-       (ersetzen Inline-Styles) */
-    .demo-row--spacious { gap: var(--space-24); }
-    .demo-row--stacked  { margin-top: var(--space-16); align-items: center; }
-    .banner-bleed       { margin-inline: calc(-1 * var(--space-inline)); }
-    .mt-lg              { margin-top: var(--space-24); }
-    .mt-sm              { margin-top: var(--space-8); }
-    .max-w-sm           { max-width: 24rem; }
-    .flex-1             { flex: 1 1 auto; }
-
-    /* Kleine Toggle-Visualisierung des aktiven Tones */
     .tone-pill {
       display: inline-flex;
       align-items: center;
@@ -211,55 +66,38 @@
     }
   </style>
 </head>
-<body data-tone="trust">
+<body>
 
   <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
 
   <header class="topbar">
     <div class="container topbar__inner">
-      <span class="topbar__label">
-        Aktiver Tone: <strong id="tone-readout">trust</strong>
-      </span>
+      <span class="topbar__label">Aktiver Tone: <strong id="tone-readout">trust</strong></span>
       <button class="btn btn--sm btn--ghost" data-set-tone="trust">Trust</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="playful">Playful</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="premium">Premium</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="industrial">Industrial</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="modern">Modern</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="minimal">Minimal</button>
-      <div class="divider divider--vertical" role="separator"></div>
       <button class="btn btn--sm btn--secondary" data-toggle-mode aria-pressed="false">Dark</button>
     </div>
   </header>
 
   <main class="container" id="main-content">
 
-    <!-- HERO -->
     <section class="section section--hero">
       <span class="tone-pill">data-tone × data-mode</span>
       <h1>Design System</h1>
-      <p class="lead">
-        Contract-basiertes Multi-Tone-System. 6 Tones × 2 Modes (Dark/Light), 29 Components,
-        WCAG-AA validiert. Wechsel oben — alles passt sich an, ohne einzelnen Component-Re-Render.
-      </p>
+      <p class="lead">Contract-basiertes Multi-Tone-System. 6 Tones × 2 Modes, 29 Components, WCAG-AA validiert.</p>
       <div class="demo-row">
         <button class="btn">Primary Action</button>
         <button class="btn btn--secondary">Secondary</button>
         <button class="btn btn--ghost">Ghost</button>
       </div>
-      <div class="demo-row mt-sm">
-        <span class="badge badge--success"><span class="badge__dot"></span> Contract-Lint passt</span>
-        <span class="badge badge--info"><span class="badge__dot"></span> WCAG AA</span>
-        <span class="badge badge--neutral">rem-basiert · fluid typo</span>
-      </div>
     </section>
 
-    <!-- TYPOGRAFIE -->
     <section class="section">
       <h2>Typografie</h2>
-      <p>
-        Headings sind fluid — sie wachsen stufenlos zwischen 320 und 1280 Viewport-Breite.
-        Body-Text bleibt fix in rem und skaliert mit der Browser-Font-Size-Präferenz.
-      </p>
       <div class="demo-grid">
         <div class="demo-block">
           <span class="demo-label">Heading Scale</span>
@@ -267,193 +105,77 @@
             <h1>Heading 1</h1>
             <h2>Heading 2</h2>
             <h3>Heading 3</h3>
-            <h4>Heading 4</h4>
-            <h5>Heading 5</h5>
-            <h6>Heading 6</h6>
           </div>
         </div>
         <div class="demo-block">
           <span class="demo-label">Body</span>
-          <p class="lead">
-            Lead-Paragraph — etwas größer, signalisiert Eingang in einen Abschnitt.
-          </p>
-          <p>
-            Normal paragraph text. Hier ist <strong>fett</strong>, <em>kursiv</em>,
-            <a href="#">verlinkt</a> und <mark>markiert</mark>. Typografie reagiert
-            auf den Tone — trust &amp; premium nutzen Serif, playful &amp; industrial
-            nutzen Sans.
-          </p>
-          <blockquote>
-            „Ein gutes System fällt nicht auf — bis man es abschaltet."
-            <cite>— Irgendein Designer</cite>
-          </blockquote>
+          <p class="lead">Lead-Paragraph.</p>
+          <p>Normal paragraph text. <strong>fett</strong>, <em>kursiv</em>, <a href="#">verlinkt</a>.</p>
         </div>
       </div>
     </section>
 
-    <!-- BUTTONS -->
     <section class="section">
       <h2>Buttons</h2>
-      <p>Alle Varianten leben in <code>components/button.css</code>. Themes setzen nur Tokens.</p>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Primary / Secondary / Ghost</span>
-          <div class="demo-row">
-            <button class="btn">Primary</button>
-            <button class="btn btn--secondary">Secondary</button>
-            <button class="btn btn--ghost">Ghost</button>
-          </div>
-        </div>
-        <div class="demo-block">
-          <span class="demo-label">Größen</span>
-          <div class="demo-row">
-            <button class="btn btn--sm">Small</button>
-            <button class="btn">Medium</button>
-            <button class="btn btn--lg">Large</button>
-          </div>
-        </div>
-        <div class="demo-block">
-          <span class="demo-label">Disabled</span>
-          <div class="demo-row">
-            <button class="btn" disabled>Disabled Primary</button>
-            <button class="btn btn--secondary" disabled>Disabled Secondary</button>
-          </div>
-        </div>
+      <div class="demo-row">
+        <button class="btn">Primary</button>
+        <button class="btn btn--secondary">Secondary</button>
+        <button class="btn btn--ghost">Ghost</button>
+        <button class="btn btn--sm">Small</button>
+        <button class="btn btn--lg">Large</button>
+        <button class="btn" disabled>Disabled</button>
       </div>
     </section>
 
-    <!-- CARDS -->
     <section class="section">
       <h2>Cards</h2>
-      <p>Default / Flat / Bordered. Hover macht einen dezenten Shadow-Lift.</p>
       <div class="grid-3">
         <article class="card">
           <h3>Standard Card</h3>
-          <p>Default variant. Border, Shadow, Radius — alles aus dem Theme.</p>
+          <p>Default variant.</p>
           <button class="btn btn--sm">Mehr</button>
         </article>
         <article class="card card--flat">
           <h3>Flat Card</h3>
-          <p>Gleicher Contract, aber ohne Shadow. <code>.card--flat</code>.</p>
-          <button class="btn btn--sm btn--ghost">Mehr</button>
+          <p>Ohne Shadow.</p>
         </article>
         <article class="card card--bordered">
           <h3>Bordered Card</h3>
-          <p>Starker Border statt Shadow. <code>.card--bordered</code>.</p>
-          <button class="btn btn--sm btn--secondary">Details</button>
+          <p>Starker Border.</p>
         </article>
       </div>
     </section>
 
-    <!-- NESTED SCOPING -->
     <section class="section">
       <h2>Verschachtelte Tones</h2>
-      <p>
-        Das ist der Grund, warum Themes <em>gescoped</em> sind statt global. Eine Section
-        kann einen eigenen Tone tragen — unabhängig vom Rest der Seite.
-      </p>
-
       <div class="scoped-demo" data-tone="premium">
         <span class="tone-pill">scoped: premium</span>
         <h3>Premium-Sektion innerhalb von <span id="outer-tone">trust</span></h3>
-        <p>
-          Diese Box hat <code>data-tone="premium"</code> direkt auf dem Element.
-          Alles innerhalb (Typografie, Buttons, Farben) rendert premium, egal
-          welchen Tone die Seite sonst trägt.
-        </p>
+        <p>Diese Box hat <code>data-tone="premium"</code>.</p>
         <div class="grid-2">
           <article class="card">
             <h4>Premium Card</h4>
-            <p>Serif, ruhige Motion, subtiler Shadow.</p>
+            <p>Serif, ruhige Motion.</p>
             <button class="btn btn--sm">Action</button>
           </article>
-          <article class="card">
-            <h4>Noch eine</h4>
-            <p>Selber Component-Contract, andere Tokens.</p>
-            <button class="btn btn--sm btn--ghost">Ghost</button>
-          </article>
         </div>
       </div>
     </section>
 
-    <!-- FORMS -->
-    <section class="section">
-      <h2>Form-Primitives</h2>
-      <p>Inputs nutzen den Input-Contract — Focus-Border und Focus-Ring kommen vom Theme.</p>
-      <div class="demo-grid">
-        <div class="stack">
-          <label for="email">E-Mail <span class="required">*</span></label>
-          <input id="email" type="email" placeholder="name@example.com">
-        </div>
-        <div class="stack">
-          <label for="msg">Nachricht</label>
-          <textarea id="msg" rows="3" placeholder="Hallo …"></textarea>
-        </div>
-        <div class="stack">
-          <label for="dis">Disabled</label>
-          <input id="dis" type="text" disabled value="Nicht bearbeitbar">
-        </div>
-        <div class="stack">
-          <label for="inv">Invalid (focus mich)</label>
-          <input id="inv" type="email" required value="kein-email">
-        </div>
-      </div>
-    </section>
-
-    <!-- BADGES -->
     <section class="section">
       <h2>Badges</h2>
-      <p>Status-Tags und Kategorie-Labels. Varianten über <code>.badge--strong/success/warning/danger/info/neutral/outline</code>.</p>
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Semantische Varianten</span>
-          <div class="demo-row">
-            <span class="badge badge--strong">ENTERPRISE</span>
-            <span class="badge badge--success">Live</span>
-            <span class="badge badge--warning">Beta</span>
-            <span class="badge badge--danger">Error</span>
-            <span class="badge badge--info">Info</span>
-            <span class="badge badge--neutral">Entwurf</span>
-            <span class="badge badge--outline">Kategorie</span>
-          </div>
-        </div>
-        <div class="demo-block">
-          <span class="demo-label">Mit Status-Dot</span>
-          <div class="demo-row">
-            <span class="badge badge--success"><span class="badge__dot"></span> Online</span>
-            <span class="badge badge--warning"><span class="badge__dot"></span> Ausstehend</span>
-            <span class="badge badge--danger"><span class="badge__dot"></span> Fehler</span>
-            <span class="badge badge--neutral"><span class="badge__dot"></span> Offline</span>
-          </div>
-        </div>
+      <div class="demo-row">
+        <span class="badge badge--strong">ENTERPRISE</span>
+        <span class="badge badge--success">Live</span>
+        <span class="badge badge--warning">Beta</span>
+        <span class="badge badge--danger">Error</span>
+        <span class="badge badge--info">Info</span>
+        <span class="badge badge--neutral">Entwurf</span>
       </div>
     </section>
 
-    <!-- STATS / DASHBOARD -->
     <section class="section">
-      <h2>Stats — Dashboard</h2>
-      <p>Metric-Cards für Analytics, Funnels, KPIs.</p>
-
-      <h3>Funnel-Flow</h3>
-      <div class="funnel-preview">
-        <div class="stat stat--compact">
-          <span class="stat__label">Besucher</span>
-          <span class="stat__value">1'247</span>
-        </div>
-        <span class="funnel-arrow">→ 42%</span>
-        <div class="stat stat--compact">
-          <span class="stat__label">Interesse</span>
-          <span class="stat__value">524</span>
-        </div>
-        <span class="funnel-arrow">→ 18%</span>
-        <div class="stat stat--compact stat--emphasis">
-          <span class="stat__label">Buchungen</span>
-          <span class="stat__value">94</span>
-        </div>
-      </div>
-
-      <h3>KPI-Grid</h3>
+      <h2>Stats</h2>
       <div class="grid-4">
         <div class="stat">
           <span class="stat__label">Termine</span>
@@ -465,10 +187,10 @@
           <span class="stat__value">CHF 2'840</span>
           <span class="stat__sub">erwartet</span>
         </div>
-        <div class="stat">
-          <span class="stat__label">Erinnerungen</span>
-          <span class="stat__value">7</span>
-          <span class="stat__sub">ausstehend</span>
+        <div class="stat stat--emphasis">
+          <span class="stat__label">Bookings</span>
+          <span class="stat__value">94</span>
+          <span class="stat__sub">diese Woche</span>
         </div>
         <div class="stat">
           <span class="stat__label">No-Shows</span>
@@ -478,1157 +200,38 @@
       </div>
     </section>
 
-    <!-- CALLOUTS -->
     <section class="section">
       <h2>Callouts</h2>
-      <p>Kontextuelle Hinweise, Alerts. Varianten über semantische Farben.</p>
-      <div class="stack">
-        <aside class="callout callout--info">
-          <div>
-            <div class="callout__title">Auto-Setup Scan</div>
-            <p class="callout__body">Gib deine Website-URL ein und wir importieren deine Services und dein Team automatisch.</p>
-          </div>
-        </aside>
-        <aside class="callout callout--success">
-          <div>
-            <div class="callout__title">Import abgeschlossen</div>
-            <p class="callout__body">16 Services und 11 Team-Mitglieder wurden erfolgreich übernommen.</p>
-          </div>
-        </aside>
-        <aside class="callout callout--warning">
-          <div>
-            <div class="callout__title">Keine Email erhalten?</div>
-            <p class="callout__body">Pruefe deinen Spam-Ordner oder fordere einen neuen Link an.</p>
-          </div>
-        </aside>
-        <aside class="callout callout--danger">
-          <div>
-            <div class="callout__title">Website nicht erreichbar</div>
-            <p class="callout__body">Die URL konnte nicht gescannt werden. Prüfe die Schreibweise oder richte manuell ein.</p>
-          </div>
-        </aside>
-        <aside class="callout callout--neutral">
-          <div>
-            <div class="callout__title">Hinweis</div>
-            <p class="callout__body">Änderungen werden automatisch gespeichert.</p>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- STEPS / WIZARD -->
-    <section class="section">
-      <h2>Steps — Wizard Progress</h2>
-      <p>Multi-Step-Indikator für Onboarding und Formular-Flows.</p>
-      <div class="demo-block">
-        <ol class="steps">
-          <li class="step step--done">
-            <span class="step__number">1</span>
-            <span class="step__label">Services</span>
-          </li>
-          <li class="step__divider"></li>
-          <li class="step step--active">
-            <span class="step__number">2</span>
-            <span class="step__label">Team</span>
-          </li>
-          <li class="step__divider"></li>
-          <li class="step">
-            <span class="step__number">3</span>
-            <span class="step__label">Widget</span>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- NAV — APP SHELL PREVIEW -->
-    <section class="section">
-      <h2>Navigation</h2>
-      <p>Sidebar (Admin-App) und Topbar (Marketing / Content-Seiten).</p>
-
-      <h3>Sidebar</h3>
-      <div class="appshell-preview">
-        <nav class="nav nav--sidebar" aria-label="Demo Sidebar">
-          <div class="nav__brand">
-            UserFlow
-            <span class="nav__brand-badge">Enterprise</span>
-          </div>
-          <ul class="nav__items">
-            <li><a href="#" class="nav__item nav__item--active">Uebersicht</a></li>
-            <li><a href="#" class="nav__item">Woche</a></li>
-            <li><a href="#" class="nav__item">Buchungen</a></li>
-            <li><a href="#" class="nav__item">Analytics</a></li>
-            <li><a href="#" class="nav__item">Funnel</a></li>
-            <li><a href="#" class="nav__item">Kunden</a></li>
-            <li><a href="#" class="nav__item">Einstellungen</a></li>
-          </ul>
-          <div class="nav__footer">
-            <span>user@example.com</span>
-            <a href="#">Abmelden</a>
-          </div>
-        </nav>
-        <div class="appshell-preview__content">
-          <h3>Inhalt</h3>
-          <p>Die Sidebar ist sticky und erbt Farben vom aktuellen Tone. Wechsle oben — die Sidebar passt sich an.</p>
-        </div>
-      </div>
-
-      <h3>Topbar</h3>
-      <nav class="nav nav--topbar" aria-label="Demo Topbar">
-        <div class="nav__brand">sites.gasserwerk.ch</div>
-        <ul class="nav__items">
-          <li><a href="#" class="nav__item nav__item--active">Websites</a></li>
-          <li><a href="#" class="nav__item">Analytics</a></li>
-          <li><a href="#" class="nav__item">Billing</a></li>
-        </ul>
-        <span class="badge badge--success"><span class="badge__dot"></span> 3 Sites online</span>
-      </nav>
-    </section>
-
-    <!-- CODE BLOCK -->
-    <section class="section">
-      <h2>Code-Blocks</h2>
-      <p>Für Embed-Snippets, API-Keys, Widget-Code. Dark default, <code>.code-block--light</code> für hellen Look.</p>
-
-      <div class="stack stack--md">
-        <pre class="code-block"><code>&lt;script src="https://sites.gasserwerk.ch/widget.js"
-        data-tenant="abc123"&gt;&lt;/script&gt;</code></pre>
-
-        <div class="code-block">
-          <pre><code>curl -X POST https://api.example.com/bookings \
-     -H "Authorization: Bearer sk_live_…" \
-     -d '{"service":"haircut","staff":"anna"}'</code></pre>
-          <button class="code-block__copy" type="button">Copy</button>
-        </div>
-
-        <pre class="code-block code-block--light"><code>npm install @gasserwerk/design-system</code></pre>
-      </div>
-    </section>
-
-    <!-- PROGRESS -->
-    <section class="section">
-      <h2>Progress</h2>
-      <p>Usage-Limits, Upload, generischer Fortschritt. Mit optionalem Label-Header.</p>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Basis + Varianten</span>
-          <div class="stack stack--md">
-            <div class="progress-group">
-              <div class="progress-group__header"><span>Bookings</span><span>45 / 100</span></div>
-              <div class="progress" role="progressbar" aria-label="Bookings" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress__fill" style="width: 45%"></div>
-              </div>
-            </div>
-            <div class="progress-group">
-              <div class="progress-group__header"><span>Umsatz-Ziel</span><span>CHF 2'840 / 5'000</span></div>
-              <div class="progress progress--success" role="progressbar" aria-label="Umsatz-Ziel" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress__fill" style="width: 57%"></div>
-              </div>
-            </div>
-            <div class="progress-group">
-              <div class="progress-group__header"><span>Storage</span><span>8.4 / 10 GB</span></div>
-              <div class="progress progress--warning" role="progressbar" aria-label="Storage" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress__fill" style="width: 84%"></div>
-              </div>
-            </div>
-            <div class="progress-group">
-              <div class="progress-group__header"><span>Plan-Limit</span><span>97 / 100</span></div>
-              <div class="progress progress--danger" role="progressbar" aria-label="Plan-Limit" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress__fill" style="width: 97%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Größen</span>
-          <div class="stack stack--md">
-            <div class="progress progress--thin">
-              <div class="progress__fill" style="width: 40%"></div>
-            </div>
-            <div class="progress">
-              <div class="progress__fill" style="width: 60%"></div>
-            </div>
-            <div class="progress progress--thick">
-              <div class="progress__fill" style="width: 80%"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- AVATAR -->
-    <section class="section">
-      <h2>Avatar</h2>
-      <p>Initialen-Kreise mit konsistenter Farbpalette (Staff-Color-Index). Optional Bild, quadratisch, mit Online-Ring.</p>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Farbpalette (c0 – c7)</span>
-          <div class="demo-row">
-            <span class="avatar avatar--c0">AL</span>
-            <span class="avatar avatar--c1">BR</span>
-            <span class="avatar avatar--c2">CM</span>
-            <span class="avatar avatar--c3">DN</span>
-            <span class="avatar avatar--c4">EO</span>
-            <span class="avatar avatar--c5">FP</span>
-            <span class="avatar avatar--c6">GQ</span>
-            <span class="avatar avatar--c7">HR</span>
-          </div>
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Größen</span>
-          <div class="demo-row">
-            <span class="avatar avatar--sm avatar--c3">SM</span>
-            <span class="avatar avatar--c3">MD</span>
-            <span class="avatar avatar--lg avatar--c3">LG</span>
-            <span class="avatar avatar--xl avatar--c3">XL</span>
-          </div>
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Square &amp; Ring</span>
-          <div class="demo-row">
-            <span class="avatar avatar--square avatar--c4">LG</span>
-            <span class="avatar avatar--square avatar--lg avatar--c1">UF</span>
-            <span class="avatar avatar--ring avatar--c3">ON</span>
-            <span class="avatar avatar--ring avatar--lg avatar--c5">VI</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TREND -->
-    <section class="section">
-      <h2>Trend</h2>
-      <p>Richtungs-Indikator für KPI-Änderungen.</p>
-      <div class="demo-block">
-        <div class="demo-row demo-row--spacious">
-          <span class="trend trend--up"><span class="trend__icon">↑</span>+12 %</span>
-          <span class="trend trend--down"><span class="trend__icon">↓</span>-4.3 %</span>
-          <span class="trend trend--flat"><span class="trend__icon">→</span>±0</span>
-          <span class="trend trend--up"><span class="trend__icon">↑</span>CHF +284</span>
-          <span class="trend trend--down"><span class="trend__icon">↓</span>8 No-Shows</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- PANEL LIST -->
-    <section class="section">
-      <h2>Panel-List</h2>
-      <p>Key-Value-Reihen mit Trennlinien. Für Analytics-Panels (Top Pages, Devices, Traffic Sources).</p>
-
-      <div class="grid-3">
-        <div class="card">
-          <h3>Top Pages</h3>
-          <ul class="panel-list">
-            <li class="panel-list__row"><span class="panel-list__key">/home</span><span class="panel-list__value">2'431</span></li>
-            <li class="panel-list__row"><span class="panel-list__key">/services</span><span class="panel-list__value">1'247</span></li>
-            <li class="panel-list__row"><span class="panel-list__key">/kontakt</span><span class="panel-list__value">892</span></li>
-            <li class="panel-list__row"><span class="panel-list__key">/preise</span><span class="panel-list__value">456</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Traffic</h3>
-          <ul class="panel-list panel-list--dense">
-            <li class="panel-list__row"><span class="panel-list__key">Organic</span><span class="panel-list__value">58 %</span></li>
-            <li class="panel-list__row"><span class="panel-list__key">Direct</span><span class="panel-list__value">24 %</span></li>
-            <li class="panel-list__row"><span class="panel-list__key">Referral</span><span class="panel-list__value">12 %</span></li>
-            <li class="panel-list__row"><span class="panel-list__key">Social</span><span class="panel-list__value">6 %</span></li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Devices</h3>
-          <ul class="panel-list">
-            <li class="panel-list__row"><span class="panel-list__key">Desktop</span><span class="panel-list__value">62 %</span></li>
-            <li class="panel-list__row"><span class="panel-list__key">Mobile</span><span class="panel-list__value">34 %</span></li>
-            <li class="panel-list__row"><span class="panel-list__key">Tablet</span><span class="panel-list__value">4 %</span></li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- BANNER -->
-    <section class="section">
-      <h2>Banner</h2>
-      <p>Full-width Page-Top-Alert (z. B. Grace-Period, Maintenance). Unterscheidet sich vom Callout durch die horizontale, kompakte Form.</p>
-
-      <div class="stack stack--sm banner-bleed">
-        <div class="banner banner--info" role="status">
-          <span class="banner__body"><strong>Neu:</strong> Dark-Mode ist jetzt in allen Themes verfügbar.</span>
-          <a href="#" class="banner__action">Aktivieren</a>
-        </div>
-        <div class="banner banner--success" role="status">
-          <span class="banner__body"><strong>Import erfolgreich:</strong> 16 Services und 11 Team-Mitglieder übernommen.</span>
-        </div>
-        <div class="banner banner--warning" role="status">
-          <span class="banner__body"><strong>Zahlungsproblem:</strong> Dein Abo wird in 3 Tagen deaktiviert.</span>
-          <a href="#" class="banner__action">Jetzt aktualisieren</a>
-        </div>
-        <div class="banner banner--danger" role="status">
-          <span class="banner__body"><strong>API down:</strong> Buchungen über das Widget sind aktuell nicht möglich.</span>
-          <a href="#" class="banner__action">Status-Seite</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- DIVIDER -->
-    <section class="section">
-      <h2>Divider</h2>
-      <p>Horizontale Trennung — mit oder ohne Text, auch vertikal.</p>
-
-      <div class="demo-block">
-        <p>Über der Linie.</p>
-        <hr class="divider">
-        <p>Unter der Linie.</p>
-
-        <div class="divider divider--with-text" role="separator"><span>oder</span></div>
-
-        <p>Nach einem Text-Divider.</p>
-
-        <div class="demo-row demo-row--stacked">
-          <span>Links</span>
-          <div class="divider divider--vertical" role="separator"></div>
-          <span>Mitte</span>
-          <div class="divider divider--vertical" role="separator"></div>
-          <span>Rechts</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- LIST-ROW -->
-    <section class="section">
-      <h2>List-Row</h2>
-      <p>Flexibles rich List-Item: Lead-Slot + Body (Title/Subtitle) + Meta + Trail. Für Bookings, Customers, Activity-Feeds.</p>
-
-      <div class="demo-grid">
+      <aside class="callout callout--info">
         <div>
-          <h3>Booking-Liste</h3>
-          <ul class="list">
-            <li class="list-row list-row--interactive">
-              <div class="list-row__lead"><span class="avatar avatar--sm avatar--c3">AM</span></div>
-              <div class="list-row__body">
-                <div class="list-row__title">Anna Meier</div>
-                <div class="list-row__subtitle">09:00 – 09:45 · Haarschnitt · CHF 94</div>
-              </div>
-              <div class="list-row__trail">
-                <span class="badge badge--success">Bestätigt</span>
-              </div>
-            </li>
-            <li class="list-row list-row--interactive">
-              <div class="list-row__lead"><span class="avatar avatar--sm avatar--c1">BS</span></div>
-              <div class="list-row__body">
-                <div class="list-row__title">Beat Soltermann</div>
-                <div class="list-row__subtitle">10:00 – 11:30 · Haarfarbe · CHF 155</div>
-              </div>
-              <div class="list-row__trail">
-                <span class="badge badge--warning"><span class="badge__dot"></span>Reminder offen</span>
-              </div>
-            </li>
-            <li class="list-row list-row--interactive">
-              <div class="list-row__lead"><span class="avatar avatar--sm avatar--c4">CL</span></div>
-              <div class="list-row__body">
-                <div class="list-row__title">Clara Lüthi</div>
-                <div class="list-row__subtitle">14:30 – 15:15 · Styling · CHF 54</div>
-              </div>
-              <div class="list-row__trail">
-                <span class="badge badge--danger">No-Show-Risiko</span>
-              </div>
-            </li>
-            <li class="list-row list-row--interactive">
-              <div class="list-row__lead"><span class="avatar avatar--sm avatar--c2">DW</span></div>
-              <div class="list-row__body">
-                <div class="list-row__title">Dominique Wyss</div>
-                <div class="list-row__subtitle">16:00 – 17:00 · Balayage · CHF 155</div>
-              </div>
-              <div class="list-row__trail">
-                <span class="badge badge--neutral">Ausstehend</span>
-              </div>
-            </li>
-          </ul>
+          <div class="callout__title">Info</div>
+          <p class="callout__body">Beispiel-Callout in info-Variante.</p>
         </div>
-
+      </aside>
+      <aside class="callout callout--success" style="margin-top: 1rem">
         <div>
-          <h3>Kunden-Liste (mit Meta)</h3>
-          <ul class="list">
-            <li class="list-row">
-              <div class="list-row__lead"><span class="avatar avatar--c3">BM</span></div>
-              <div class="list-row__body">
-                <div class="list-row__title">Beni Müller</div>
-                <div class="list-row__subtitle">+41 79 123 45 67</div>
-              </div>
-              <div class="list-row__meta">
-                <span>12 Buchungen</span>
-                <span>CHF 1'440</span>
-              </div>
-              <div class="list-row__trail">
-                <span class="badge badge--success">Stammkunde</span>
-              </div>
-            </li>
-            <li class="list-row">
-              <div class="list-row__lead"><span class="avatar avatar--c4">EL</span></div>
-              <div class="list-row__body">
-                <div class="list-row__title">Emma Lehmann</div>
-                <div class="list-row__subtitle">+41 78 234 56 78</div>
-              </div>
-              <div class="list-row__meta">
-                <span>2 Buchungen</span>
-                <span>CHF 188</span>
-              </div>
-              <div class="list-row__trail">
-                <span class="badge badge--info">Neukunde</span>
-              </div>
-            </li>
-            <li class="list-row">
-              <div class="list-row__lead"><span class="avatar avatar--c0">FR</span></div>
-              <div class="list-row__body">
-                <div class="list-row__title">Fritz Ruegg</div>
-                <div class="list-row__subtitle">+41 76 345 67 89</div>
-              </div>
-              <div class="list-row__meta">
-                <span>8 Buchungen</span>
-                <span>45% No-Show</span>
-              </div>
-              <div class="list-row__trail">
-                <span class="badge badge--danger">Risiko</span>
-              </div>
-            </li>
-          </ul>
+          <div class="callout__title">Success</div>
+          <p class="callout__body">Beispiel-Callout in success-Variante.</p>
         </div>
-      </div>
-
-      <h3 class="mt-lg">Activity-Feed (compact, plain)</h3>
-      <ul class="list list--plain">
-        <li class="list-row list-row--compact">
-          <div class="list-row__lead"><span class="avatar avatar--sm avatar--c4">👁</span></div>
-          <div class="list-row__body">
-            <div class="list-row__title">Seitenaufruf</div>
-            <div class="list-row__subtitle">/services/haarschnitt · vor 2 Min</div>
-          </div>
-        </li>
-        <li class="list-row list-row--compact">
-          <div class="list-row__lead"><span class="avatar avatar--sm avatar--c3">✓</span></div>
-          <div class="list-row__body">
-            <div class="list-row__title">Neue Buchung</div>
-            <div class="list-row__subtitle">Anna Meier · Haarschnitt · CHF 94</div>
-          </div>
-        </li>
-        <li class="list-row list-row--compact">
-          <div class="list-row__lead"><span class="avatar avatar--sm avatar--c5">💬</span></div>
-          <div class="list-row__body">
-            <div class="list-row__title">Widget-Interaktion</div>
-            <div class="list-row__subtitle">Besucher öffnet Booking-Widget · vor 18 Min</div>
-          </div>
-        </li>
-      </ul>
-    </section>
-
-    <!-- FUNNEL -->
-    <section class="section">
-      <h2>Funnel</h2>
-      <p>Conversion-Funnel mit proportionalen Bars + Dropoff-Raten zwischen den Steps.</p>
-
-      <div class="demo-grid">
-        <div class="card">
-          <h3>Booking-Funnel (7 Tage)</h3>
-          <ol class="funnel">
-            <li class="funnel__step">
-              <div class="funnel__header">
-                <span class="funnel__label">Besucher</span>
-                <span class="funnel__count">1'247</span>
-              </div>
-              <div class="funnel__bar">
-                <div class="funnel__fill" style="width: 100%"></div>
-              </div>
-              <div class="funnel__dropoff">→ 42 % Conversion zu Interesse</div>
-            </li>
-            <li class="funnel__step">
-              <div class="funnel__header">
-                <span class="funnel__label">Interesse (Widget geöffnet)</span>
-                <span class="funnel__count">524</span>
-              </div>
-              <div class="funnel__bar">
-                <div class="funnel__fill" style="width: 42%"></div>
-              </div>
-              <div class="funnel__dropoff funnel__dropoff--bad">→ 18 % Conversion — hoher Dropoff</div>
-            </li>
-            <li class="funnel__step">
-              <div class="funnel__header">
-                <span class="funnel__label">Service gewählt</span>
-                <span class="funnel__count">94</span>
-              </div>
-              <div class="funnel__bar">
-                <div class="funnel__fill funnel__fill--warning" style="width: 7.5%"></div>
-              </div>
-              <div class="funnel__dropoff funnel__dropoff--good">→ 92 % schließen ab</div>
-            </li>
-            <li class="funnel__step">
-              <div class="funnel__header">
-                <span class="funnel__label">Buchung bestätigt</span>
-                <span class="funnel__count">87</span>
-              </div>
-              <div class="funnel__bar">
-                <div class="funnel__fill funnel__fill--success" style="width: 7%"></div>
-              </div>
-            </li>
-          </ol>
-        </div>
-
-        <div class="card">
-          <h3>Onboarding-Funnel</h3>
-          <ol class="funnel">
-            <li class="funnel__step">
-              <div class="funnel__header">
-                <span class="funnel__label">Signup</span>
-                <span class="funnel__count">312</span>
-              </div>
-              <div class="funnel__bar">
-                <div class="funnel__fill" style="width: 100%"></div>
-              </div>
-              <div class="funnel__dropoff funnel__dropoff--good">→ 88 % starten Onboarding</div>
-            </li>
-            <li class="funnel__step">
-              <div class="funnel__header">
-                <span class="funnel__label">Services erfasst</span>
-                <span class="funnel__count">274</span>
-              </div>
-              <div class="funnel__bar">
-                <div class="funnel__fill" style="width: 88%"></div>
-              </div>
-              <div class="funnel__dropoff">→ 76 % Team hinzugefügt</div>
-            </li>
-            <li class="funnel__step">
-              <div class="funnel__header">
-                <span class="funnel__label">Team erfasst</span>
-                <span class="funnel__count">208</span>
-              </div>
-              <div class="funnel__bar">
-                <div class="funnel__fill" style="width: 66%"></div>
-              </div>
-              <div class="funnel__dropoff funnel__dropoff--good">→ 94 % Widget installiert</div>
-            </li>
-            <li class="funnel__step">
-              <div class="funnel__header">
-                <span class="funnel__label">Widget live</span>
-                <span class="funnel__count">196</span>
-              </div>
-              <div class="funnel__bar">
-                <div class="funnel__fill funnel__fill--success" style="width: 63%"></div>
-              </div>
-            </li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- CHECKBOX + RADIO -->
-    <section class="section">
-      <h2>Checkbox &amp; Radio</h2>
-      <p>Custom-styled native Inputs. <code>.checkbox</code> eckig, <code>.radio</code> rund. <code>.choice</code>-Wrapper für saubere Label-Ausrichtung.</p>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Checkbox-Liste (z. B. Onboarding-Services)</span>
-          <div class="stack stack--sm">
-            <label class="choice">
-              <input type="checkbox" class="checkbox" checked>
-              <span>
-                Haarschnitt Damen
-                <span class="choice__hint">45 Min · CHF 94</span>
-              </span>
-            </label>
-            <label class="choice">
-              <input type="checkbox" class="checkbox" checked>
-              <span>
-                Haarschnitt Herren
-                <span class="choice__hint">30 Min · CHF 45</span>
-              </span>
-            </label>
-            <label class="choice">
-              <input type="checkbox" class="checkbox">
-              <span>
-                Haarfarbe
-                <span class="choice__hint">90 Min · CHF 74</span>
-              </span>
-            </label>
-            <label class="choice">
-              <input type="checkbox" class="checkbox" disabled>
-              <span>
-                Balayage
-                <span class="choice__hint">Nicht verfügbar — erst ab Pro-Plan</span>
-              </span>
-            </label>
-          </div>
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Radio-Gruppe (Plan-Auswahl)</span>
-          <div class="stack stack--sm">
-            <label class="choice">
-              <input type="radio" name="plan" class="radio">
-              <span>
-                Free
-                <span class="choice__hint">Bis 20 Buchungen / Monat</span>
-              </span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="plan" class="radio" checked>
-              <span>
-                Pro
-                <span class="choice__hint">CHF 29 / Monat — unlimitiert</span>
-              </span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="plan" class="radio">
-              <span>
-                Enterprise
-                <span class="choice__hint">Custom — Kontakt aufnehmen</span>
-              </span>
-            </label>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FIELD -->
-    <section class="section">
-      <h2>Field-Wrapper</h2>
-      <p>Label + Input + Hint/Error in einem konsistenten Container. Varianten: default (Stack), <code>--inline</code> (Label links), <code>--error</code>.</p>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Default (vertical)</span>
-          <div class="stack stack--md">
-            <div class="field">
-              <label class="field__label" for="f-email">
-                E-Mail <span class="required">*</span>
-              </label>
-              <input id="f-email" type="email" placeholder="name@example.com">
-              <p class="field__hint">Wir versenden keinen Spam.</p>
-            </div>
-
-            <div class="field field--error">
-              <label class="field__label" for="f-phone">Telefon</label>
-              <input id="f-phone" type="tel" value="07x 123" aria-invalid="true" aria-describedby="f-phone-err">
-              <p class="field__error" id="f-phone-err">Ungültige Schweizer Mobilnummer</p>
-            </div>
-
-            <div class="field">
-              <label class="field__label" for="f-msg">Nachricht</label>
-              <textarea id="f-msg" rows="3" placeholder="Was möchtest du buchen?"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Inline-Layout (kompakt)</span>
-          <div class="stack stack--sm">
-            <div class="field field--inline">
-              <label class="field__label" for="f-name">Name</label>
-              <input id="f-name" type="text" placeholder="Max Mustermann">
-            </div>
-            <div class="field field--inline">
-              <label class="field__label" for="f-org">Firma</label>
-              <input id="f-org" type="text" placeholder="Acme GmbH">
-            </div>
-            <div class="field field--inline">
-              <label class="field__label" for="f-role">Rolle</label>
-              <input id="f-role" type="text" placeholder="CEO">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEARCH -->
-    <section class="section">
-      <h2>Search-Input</h2>
-      <p>Input mit Leading-Lupe via background-image — kein zusätzliches Icon-Element.</p>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Standalone</span>
-          <input type="search" class="search-input" placeholder="Buchungen suchen…">
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Mit Trailing-Filter-Button</span>
-          <div class="search">
-            <input type="search" class="search-input" placeholder="Kunden filtern…">
-            <button class="btn btn--sm btn--secondary">Filter</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- OVERLAYS -->
-    <section class="section">
-      <h2>Overlays — Modal &amp; Drawer</h2>
-      <p>Beide auf native <code>&lt;dialog&gt;</code>-Element aufgebaut — bringt Focus-Trap und Escape-Close gratis.</p>
-      <div class="demo-row">
-        <button class="btn" type="button" onclick="document.getElementById('demo-modal').showModal()">Modal öffnen</button>
-        <button class="btn btn--secondary" type="button" onclick="document.getElementById('demo-drawer').showModal()">Drawer öffnen</button>
-      </div>
-
-      <dialog class="modal" id="demo-modal">
-        <header class="modal__header">
-          <h3 class="modal__title">Buchung bestätigen</h3>
-          <button class="modal__close" aria-label="Schließen" type="button" onclick="this.closest('dialog').close()">×</button>
-        </header>
-        <div class="modal__body">
-          <p>Anna Meier · Haarschnitt · Morgen 09:00 – 09:45 · CHF 94</p>
-          <p>Möchtest du die Buchung bestätigen? Der Kunde erhält eine Email.</p>
-        </div>
-        <footer class="modal__actions">
-          <button class="btn btn--secondary" type="button" onclick="this.closest('dialog').close()">Abbrechen</button>
-          <button class="btn" type="button" onclick="this.closest('dialog').close()">Bestätigen</button>
-        </footer>
-      </dialog>
-
-      <dialog class="drawer drawer--end" id="demo-drawer">
-        <header class="drawer__header">
-          <h3 class="drawer__title">Filter</h3>
-          <button class="drawer__close" aria-label="Schließen" type="button" onclick="this.closest('dialog').close()">×</button>
-        </header>
-        <div class="drawer__body stack stack--md">
-          <div class="field">
-            <label class="field__label">Status</label>
-            <label class="choice"><input type="checkbox" class="checkbox" checked><span>Bestätigt</span></label>
-            <label class="choice"><input type="checkbox" class="checkbox"><span>Ausstehend</span></label>
-            <label class="choice"><input type="checkbox" class="checkbox"><span>No-Show</span></label>
-          </div>
-          <div class="field">
-            <label class="field__label">Zeitraum</label>
-            <input type="range" class="range" min="0" max="100" value="30">
-          </div>
-        </div>
-        <footer class="drawer__footer">
-          <button class="btn w-full" type="button" onclick="this.closest('dialog').close()">Filter anwenden</button>
-        </footer>
-      </dialog>
-    </section>
-
-    <!-- TOOLTIP + ACCORDION + TABS -->
-    <section class="section">
-      <h2>Content-Organisation</h2>
-
-      <h3>Tooltip</h3>
-      <div class="demo-row">
-        <span class="tooltip-host">
-          <button class="btn btn--ghost" type="button">Hover mich</button>
-          <span class="tooltip" role="tooltip">Mehr Info erscheint hier</span>
-        </span>
-        <span class="tooltip-host">
-          <span class="badge badge--info">?</span>
-          <span class="tooltip" role="tooltip">Das ist ein Info-Badge</span>
-        </span>
-      </div>
-
-      <h3 class="mt-lg">Tabs</h3>
-      <div class="tabs" role="tablist" id="demo-tabs">
-        <button class="tab" role="tab" aria-selected="true" aria-controls="tp-1" type="button">Übersicht</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="tp-2" type="button">Buchungen</button>
-        <button class="tab" role="tab" aria-selected="false" aria-controls="tp-3" type="button">Analytics</button>
-      </div>
-      <div id="tp-1" class="tab-panel" role="tabpanel"><p>Panel Inhalt — Übersicht.</p></div>
-      <div id="tp-2" class="tab-panel" role="tabpanel" hidden><p>Panel Inhalt — Buchungen.</p></div>
-      <div id="tp-3" class="tab-panel" role="tabpanel" hidden><p>Panel Inhalt — Analytics.</p></div>
-
-      <h3 class="mt-lg">Pill-Tabs</h3>
-      <div class="tabs tabs--pill" role="tablist">
-        <button class="tab" role="tab" aria-selected="true" type="button">Heute</button>
-        <button class="tab" role="tab" aria-selected="false" type="button">Woche</button>
-        <button class="tab" role="tab" aria-selected="false" type="button">Monat</button>
-      </div>
-
-      <h3 class="mt-lg">Accordion</h3>
-      <details class="accordion">
-        <summary class="accordion__summary">Wie viele Buchungen pro Monat?</summary>
-        <div class="accordion__body"><p>Im Free-Plan sind 20 Buchungen/Monat enthalten. Pro: unlimitiert.</p></div>
-      </details>
-      <details class="accordion" open>
-        <summary class="accordion__summary">Kann ich eigene Services importieren?</summary>
-        <div class="accordion__body"><p>Ja — über Auto-Setup-Scan oder manuell in der Settings-Seite.</p></div>
-      </details>
-      <details class="accordion">
-        <summary class="accordion__summary">Wie wechsle ich den Plan?</summary>
-        <div class="accordion__body"><p>Settings → Billing → Plan-Wechsel. Wird pro-rata verrechnet.</p></div>
-      </details>
-    </section>
-
-    <!-- FEEDBACK & STATE -->
-    <section class="section">
-      <h2>Feedback-States</h2>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Empty-State</span>
-          <div class="empty-state">
-            <div class="empty-state__icon" aria-hidden="true">📭</div>
-            <h3 class="empty-state__title">Noch keine Buchungen</h3>
-            <p class="empty-state__body">Sobald das Widget live ist, erscheinen Buchungen hier.</p>
-            <button class="btn" type="button">Widget einrichten</button>
-          </div>
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Skeleton (Loading)</span>
-          <div class="stack stack--sm">
-            <div class="skeleton skeleton--heading"></div>
-            <div class="skeleton skeleton--line"></div>
-            <div class="skeleton skeleton--line"></div>
-            <div class="skeleton skeleton--line-sm"></div>
-            <div class="demo-row mt-sm">
-              <div class="skeleton skeleton--avatar"></div>
-              <div class="stack stack--sm flex-1">
-                <div class="skeleton skeleton--line-sm"></div>
-                <div class="skeleton skeleton--line"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <h3 class="mt-lg">Toast (Notification)</h3>
-      <p>In echten Apps werden Toasts via JS in einen Stack eingefügt. Hier statisch zur Demo:</p>
-      <div class="stack stack--sm max-w-sm">
-        <div class="toast toast--success" role="status">
-          <span class="toast__body"><strong>Gespeichert</strong>Deine Änderungen sind live.</span>
-          <button class="toast__close" type="button" aria-label="Schließen">×</button>
-        </div>
-        <div class="toast toast--warning" role="status">
-          <span class="toast__body"><strong>Reminder offen</strong>3 Buchungen haben keine Email-Erinnerung.</span>
-          <button class="toast__close" type="button" aria-label="Schließen">×</button>
-        </div>
-        <div class="toast toast--danger" role="status">
-          <span class="toast__body"><strong>Fehler</strong>Widget konnte nicht geladen werden.</span>
-          <button class="toast__close" type="button" aria-label="Schließen">×</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- NAVIGATION ADDITIONS -->
-    <section class="section">
-      <h2>Navigation — Breadcrumbs &amp; Pagination</h2>
-
-      <h3>Breadcrumbs</h3>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <ol>
-          <li><a href="#">Dashboard</a></li>
-          <li><a href="#">Kunden</a></li>
-          <li><a href="#">Beni Müller</a></li>
-          <li aria-current="page">Buchungen</li>
-        </ol>
-      </nav>
-
-      <h3 class="mt-lg">Chevron-Variante</h3>
-      <nav class="breadcrumbs breadcrumbs--chevron" aria-label="Breadcrumb">
-        <ol>
-          <li><a href="#">Settings</a></li>
-          <li><a href="#">Billing</a></li>
-          <li aria-current="page">Plan wechseln</li>
-        </ol>
-      </nav>
-
-      <h3 class="mt-lg">Pagination</h3>
-      <nav class="pagination" aria-label="Seiten-Navigation">
-        <a href="#" class="pagination__link" rel="prev" aria-label="Vorherige">←</a>
-        <a href="#" class="pagination__link">1</a>
-        <a href="#" class="pagination__link" aria-current="page">2</a>
-        <a href="#" class="pagination__link">3</a>
-        <span class="pagination__ellipsis">…</span>
-        <a href="#" class="pagination__link">10</a>
-        <a href="#" class="pagination__link" rel="next" aria-label="Nächste">→</a>
-      </nav>
-    </section>
-
-    <!-- RANGE SLIDER -->
-    <section class="section">
-      <h2>Range-Slider</h2>
-      <div class="demo-grid">
-        <div class="demo-block">
-          <div class="field">
-            <label class="field__label" for="r-price">Maximaler Preis: <span id="r-price-val">CHF 120</span></label>
-            <input type="range" class="range" id="r-price" min="0" max="300" value="120"
-              oninput="document.getElementById('r-price-val').textContent='CHF '+this.value">
-          </div>
-        </div>
-        <div class="demo-block">
-          <div class="field">
-            <label class="field__label" for="r-dur">Dauer: <span id="r-dur-val">45 Min</span></label>
-            <input type="range" class="range" id="r-dur" min="15" max="180" step="15" value="45"
-              oninput="document.getElementById('r-dur-val').textContent=this.value+' Min'">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TABLE -->
-    <section class="section">
-      <h2>Tabellen</h2>
-      <p>Data-Tables für Listen. Horizontal scrollbar bei schmalen Viewports über <code>.table-wrap</code>.</p>
-
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Kunde</th>
-              <th>Segment</th>
-              <th>Buchungen</th>
-              <th>Umsatz</th>
-              <th>Letzte Buchung</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="demo-row" style="gap: var(--space-8)">
-                  <span class="avatar avatar--sm avatar--c3">AM</span>
-                  Anna Meier
-                </div>
-              </td>
-              <td><span class="badge badge--success">Stammkunde</span></td>
-              <td>12</td>
-              <td>CHF 1'440</td>
-              <td>Gestern</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="demo-row" style="gap: var(--space-8)">
-                  <span class="avatar avatar--sm avatar--c1">BS</span>
-                  Beat Soltermann
-                </div>
-              </td>
-              <td><span class="badge badge--info">Neukunde</span></td>
-              <td>1</td>
-              <td>CHF 155</td>
-              <td>Vor 2 Tagen</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="demo-row" style="gap: var(--space-8)">
-                  <span class="avatar avatar--sm avatar--c0">FR</span>
-                  Fritz Ruegg
-                </div>
-              </td>
-              <td><span class="badge badge--danger"><span class="badge__dot"></span> Risiko</span></td>
-              <td>8</td>
-              <td>CHF 680</td>
-              <td>Vor 3 Monaten</td>
-            </tr>
-            <tr>
-              <td>
-                <div class="demo-row" style="gap: var(--space-8)">
-                  <span class="avatar avatar--sm avatar--c7">EL</span>
-                  Emma Lehmann
-                </div>
-              </td>
-              <td><span class="badge badge--neutral">Inaktiv</span></td>
-              <td>0</td>
-              <td>CHF 0</td>
-              <td>—</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3 class="mt-lg">Compact-Variante</h3>
-      <div class="table-wrap">
-        <table class="table table--compact">
-          <thead>
-            <tr>
-              <th>Service</th>
-              <th>Dauer</th>
-              <th>Preis</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Haarschnitt Damen</td><td>45 Min</td><td>CHF 94</td></tr>
-            <tr><td>Haarschnitt Herren</td><td>30 Min</td><td>CHF 45</td></tr>
-            <tr><td>Haarfarbe</td><td>90 Min</td><td>CHF 74</td></tr>
-            <tr><td>Balayage</td><td>120 Min</td><td>CHF 155</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- DARK MODE -->
-    <section class="section">
-      <h2>Dark-Mode</h2>
-      <p>
-        Orthogonal zu Tones — <code>data-mode="dark"</code> kombiniert sich mit jedem Tone.
-        Ohne <code>data-mode</code> wird <code>prefers-color-scheme</code> respektiert; <code>data-mode="light"</code> überstimmt System-Setting.
-      </p>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Aktivierung</span>
-          <pre class="code-block code-block--light"><code>&lt;html data-mode="dark"&gt;       &lt;!-- manuell --&gt;
-&lt;html data-mode="light"&gt;      &lt;!-- manuell hell, ignoriert System --&gt;
-&lt;html&gt;                        &lt;!-- Auto via prefers-color-scheme --&gt;</code></pre>
-        </div>
-        <div class="demo-block">
-          <span class="demo-label">Was sich ändert</span>
-          <ul class="stack stack--sm" style="padding: 0; margin: 0">
-            <li class="demo-row" style="gap: var(--space-8); margin: 0">
-              <span class="badge badge--strong">BG</span>
-              <span>Hintergründe dunkler, Text hell</span>
-            </li>
-            <li class="demo-row" style="gap: var(--space-8); margin: 0">
-              <span class="badge badge--strong">Shadow</span>
-              <span>Stärker (mehr Opacity) für Tiefe auf dunklem BG</span>
-            </li>
-            <li class="demo-row" style="gap: var(--space-8); margin: 0">
-              <span class="badge badge--strong">Border</span>
-              <span>Heller statt dunkler (gray-700 statt gray-200)</span>
-            </li>
-            <li class="demo-row" style="gap: var(--space-8); margin: 0">
-              <span class="badge badge--strong">Tone</span>
-              <span>Tone-Farben bleiben erhalten — dark-mode überschreibt nur Neutrale</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <p class="mt-lg text-muted text-small">
-        Klick auf <strong>Dark</strong> oben rechts um die ganze Seite zu wechseln. Alle 29 Components adaptieren sich.
-      </p>
-    </section>
-
-    <!-- TOKEN SCALES -->
-    <section class="section">
-      <h2>Token-Skalen</h2>
-      <p>rem-basierte Skalen für Consistency. Fluide Typo für Headings.</p>
-
-      <div class="demo-grid">
-        <div class="demo-block">
-          <span class="demo-label">Spacing (T-Shirt-Aliase)</span>
-          <div class="stack stack--sm">
-            <div class="demo-row" style="gap: var(--space-md); align-items: center">
-              <code style="min-width: 5rem">xs</code>
-              <div style="width: var(--space-xs); height: 1rem; background: var(--color-interactive)"></div>
-              <span class="text-muted text-small">4 px</span>
-            </div>
-            <div class="demo-row" style="gap: var(--space-md); align-items: center">
-              <code style="min-width: 5rem">sm</code>
-              <div style="width: var(--space-sm); height: 1rem; background: var(--color-interactive)"></div>
-              <span class="text-muted text-small">8 px</span>
-            </div>
-            <div class="demo-row" style="gap: var(--space-md); align-items: center">
-              <code style="min-width: 5rem">md</code>
-              <div style="width: var(--space-md); height: 1rem; background: var(--color-interactive)"></div>
-              <span class="text-muted text-small">16 px</span>
-            </div>
-            <div class="demo-row" style="gap: var(--space-md); align-items: center">
-              <code style="min-width: 5rem">lg</code>
-              <div style="width: var(--space-lg); height: 1rem; background: var(--color-interactive)"></div>
-              <span class="text-muted text-small">24 px</span>
-            </div>
-            <div class="demo-row" style="gap: var(--space-md); align-items: center">
-              <code style="min-width: 5rem">xl</code>
-              <div style="width: var(--space-xl); height: 1rem; background: var(--color-interactive)"></div>
-              <span class="text-muted text-small">32 px</span>
-            </div>
-            <div class="demo-row" style="gap: var(--space-md); align-items: center">
-              <code style="min-width: 5rem">2xl</code>
-              <div style="width: var(--space-2xl); height: 1rem; background: var(--color-interactive)"></div>
-              <span class="text-muted text-small">48 px</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Radius</span>
-          <div class="demo-row" style="gap: var(--space-md); align-items: flex-end">
-            <div style="width: 3rem; height: 3rem; background: var(--color-interactive); border-radius: var(--radius-2)"></div>
-            <div style="width: 3rem; height: 3rem; background: var(--color-interactive); border-radius: var(--radius-4)"></div>
-            <div style="width: 3rem; height: 3rem; background: var(--color-interactive); border-radius: var(--radius-6)"></div>
-            <div style="width: 3rem; height: 3rem; background: var(--color-interactive); border-radius: var(--radius-8)"></div>
-            <div style="width: 3rem; height: 3rem; background: var(--color-interactive); border-radius: var(--radius-12)"></div>
-            <div style="width: 3rem; height: 3rem; background: var(--color-interactive); border-radius: var(--radius-20)"></div>
-            <div style="width: 3rem; height: 3rem; background: var(--color-interactive); border-radius: var(--radius-full)"></div>
-          </div>
-          <div class="demo-row text-muted text-small" style="gap: var(--space-md); margin-top: var(--space-xs)">
-            <span style="min-width: 3rem; text-align: center">2</span>
-            <span style="min-width: 3rem; text-align: center">4</span>
-            <span style="min-width: 3rem; text-align: center">6</span>
-            <span style="min-width: 3rem; text-align: center">8</span>
-            <span style="min-width: 3rem; text-align: center">12</span>
-            <span style="min-width: 3rem; text-align: center">20</span>
-            <span style="min-width: 3rem; text-align: center">full</span>
-          </div>
-        </div>
-
-        <div class="demo-block">
-          <span class="demo-label">Shadow</span>
-          <div class="demo-row" style="gap: var(--space-lg); flex-wrap: wrap">
-            <div style="width: 4rem; height: 4rem; background: var(--card-bg); box-shadow: var(--shadow-sm); border-radius: var(--radius-md)"></div>
-            <div style="width: 4rem; height: 4rem; background: var(--card-bg); box-shadow: var(--shadow-md); border-radius: var(--radius-md)"></div>
-            <div style="width: 4rem; height: 4rem; background: var(--card-bg); box-shadow: var(--shadow-lg); border-radius: var(--radius-md)"></div>
-            <div style="width: 4rem; height: 4rem; background: var(--card-bg); box-shadow: var(--shadow-xl); border-radius: var(--radius-md)"></div>
-          </div>
-          <div class="demo-row text-muted text-small" style="gap: var(--space-lg); margin-top: var(--space-xs)">
-            <span style="min-width: 4rem; text-align: center">sm</span>
-            <span style="min-width: 4rem; text-align: center">md</span>
-            <span style="min-width: 4rem; text-align: center">lg</span>
-            <span style="min-width: 4rem; text-align: center">xl</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- A11Y -->
-    <section class="section">
-      <h2>Accessibility</h2>
-      <ul>
-        <li><strong>Tab-Navigation</strong> — Focus-Ring nutzt <code>--focus-ring</code>, per Theme gefärbt</li>
-        <li><strong>prefers-reduced-motion</strong> — OS-Setting abschalten: alle Animationen stoppen global</li>
-        <li><strong>prefers-contrast: more</strong> — Borders &amp; Text dunkeln automatisch nach</li>
-        <li><strong>Browser-Zoom / Font-Size</strong> — Strg + Scroll: komplette UI skaliert dank rem</li>
-        <li><strong>Windows High-Contrast-Mode</strong> — Focus-Outline nutzt System-Highlight-Color</li>
-        <li><strong>Logische Properties</strong> — <code>padding-block</code>, <code>margin-inline</code> → RTL-ready</li>
-      </ul>
-    </section>
-
-    <!-- ARCHITEKTUR -->
-    <section class="section section--compact">
-      <h2>Architektur</h2>
-      <p>
-        Layer-Reihenfolge per CSS <code>@layer</code> — Priorität ist spezifikations-deterministisch,
-        nicht konventions-basiert:
-      </p>
-      <pre class="code-block code-block--light"><code>reset  &lt;  tokens  &lt;  semantic  &lt;  themes  &lt;  base  &lt;  state  &lt;  components</code></pre>
-
-      <div class="grid-2 mt-lg">
+      </aside>
+      <aside class="callout callout--warning" style="margin-top: 1rem">
         <div>
-          <h3>Regeln</h3>
-          <ul>
-            <li>Themes setzen nur Token-Werte — nie Component-Selektoren</li>
-            <li>Components lesen nur Tokens — nie theme-spezifische Farben direkt</li>
-            <li>Durchgesetzt via <code>npm run lint</code> (Contract-Lint)</li>
-            <li>WCAG-AA verifiziert pro Theme × Token-Paar via <code>npm run check:contrast</code></li>
-          </ul>
+          <div class="callout__title">Warning</div>
+          <p class="callout__body">Beispiel-Callout in warning-Variante.</p>
         </div>
+      </aside>
+      <aside class="callout callout--danger" style="margin-top: 1rem">
         <div>
-          <h3>Zahlen</h3>
-          <ul>
-            <li>6 Tones × 2 Modes = 12 visuelle Zustände</li>
-            <li>29 Components, alle Contract-basiert</li>
-            <li>221 Tokens (Primitive + Semantic)</li>
-            <li>Export: <code>tokens.json</code> (W3C DTCG) + <code>tokens.d.ts</code></li>
-          </ul>
+          <div class="callout__title">Danger</div>
+          <p class="callout__body">Beispiel-Callout in danger-Variante.</p>
         </div>
-      </div>
+      </aside>
     </section>
 
   </main>
 
   <footer class="footer container">
-    <p>
-      Demo für <code>GasserwerkSolutions/DesignSystem</code> —
-      <a href="https://github.com/GasserwerkSolutions/DesignSystem">GitHub</a>
-    </p>
+    <p>Demo</p>
   </footer>
 
   <script>
@@ -1638,24 +241,21 @@
       const outerTone = document.getElementById("outer-tone");
 
       function setTone(tone) {
-        body.setAttribute("data-tone", tone);
+        document.documentElement.setAttribute("data-tone", tone);
         if (readout) readout.textContent = tone;
         if (outerTone) outerTone.textContent = tone;
         try { localStorage.setItem("demo-tone", tone); } catch {}
       }
 
-      // Restore on load
       try {
         const saved = localStorage.getItem("demo-tone");
         if (saved) setTone(saved);
       } catch {}
 
-      // Wire up switcher
       document.querySelectorAll("[data-set-tone]").forEach((btn) => {
         btn.addEventListener("click", () => setTone(btn.dataset.setTone));
       });
 
-      // Dark-Mode-Toggle
       const html = document.documentElement;
       const modeBtn = document.querySelector("[data-toggle-mode]");
 
@@ -1672,8 +272,6 @@
         try { localStorage.setItem("demo-mode", mode); } catch {}
       }
 
-      // Restore — default: light (demo startet bewusst hell, unabhängig vom System-Setting,
-      // damit alle Theme-Unterschiede sichtbar sind)
       let initialMode = "light";
       try {
         const saved = localStorage.getItem("demo-mode");
@@ -1684,28 +282,6 @@
       modeBtn.addEventListener("click", () => {
         const isDark = html.getAttribute("data-mode") === "dark";
         applyMode(isDark ? "light" : "dark");
-      });
-
-      // Tab-Switching (Demo)
-      document.querySelectorAll("[role='tablist']").forEach((list) => {
-        const tabs = list.querySelectorAll("[role='tab']");
-        tabs.forEach((tab) => {
-          tab.addEventListener("click", () => {
-            tabs.forEach((t) => {
-              t.setAttribute("aria-selected", t === tab ? "true" : "false");
-              const panelId = t.getAttribute("aria-controls");
-              if (panelId) {
-                const panel = document.getElementById(panelId);
-                if (panel) panel.hidden = t !== tab;
-              }
-            });
-          });
-        });
-      });
-
-      // Toast-Close
-      document.querySelectorAll(".toast__close").forEach((btn) => {
-        btn.addEventListener("click", () => btn.closest(".toast")?.remove());
       });
     })();
   </script>

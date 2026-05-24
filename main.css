@@ -1,36 +1,7 @@
-/**
- * MAIN CSS ORCHESTRATION
- * ======================
- *
- * Single entry point. Cascade-Priorität ist via @layer deterministisch
- * festgelegt — unabhängig von Selector-Spezifität.
- *
- * Layer-Reihenfolge (links = niedrigste Priorität, rechts = höchste):
- *
- *   reset  <  tokens  <  semantic  <  themes  <  base  <  state  <  components
- *
- * Bedeutung:
- *   1. reset      → Browser-Normalisierung (alles darf überschreiben)
- *   2. tokens     → Primitive Werte (nur Custom Properties)
- *   3. semantic   → Bedeutungs-Mapping + Contract-Defaults (trust-Baseline)
- *   4. themes     → Token-Overrides, scoped via [data-tone~="..."]
- *   5. base       → Reset-agnostic defaults (Typography, Layout)
- *   6. state      → Generische Interaction-Defaults (:focus-visible, etc.)
- *   7. components → Button, Card, Section — gewinnen gegen state im Konflikt
- *
- * REGEL: Themes setzen nur Token-Werte. Components lesen nur Tokens.
- * Kein Theme darf .btn, .card, .section oder h1/h2/h3 selektieren.
- * Durchgesetzt via scripts/lint-themes.js.
- *
- * Ohne gesetztes [data-tone] gilt die trust-Baseline aus semantic.css.
- * Tones dürfen verschachtelt werden (z. B. premium-Card in trust-Layout).
- */
-
-@layer reset, tokens, semantic, themes, base, state, components;
+@layer reset, tokens, semantic, themes, mode, base, state, components;
 
 @import "./tokens/tokens.css"     layer(tokens);
 @import "./semantic/semantic.css" layer(semantic);
-@import "./semantic/dark.css"     layer(semantic);
 
 @import "./themes/trust.css"      layer(themes);
 @import "./themes/playful.css"    layer(themes);
@@ -38,6 +9,8 @@
 @import "./themes/industrial.css" layer(themes);
 @import "./themes/modern.css"     layer(themes);
 @import "./themes/minimal.css"    layer(themes);
+
+@import "./semantic/dark.css"     layer(mode);
 
 @import "./base/reset.css"      layer(reset);
 @import "./base/typography.css" layer(base);

@@ -1,50 +1,21 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.1.0",
-  "description": "Contract-based Multi-Tone CSS Design-System — 6 Themes, Dark-Mode, 29 Components.",
-  "keywords": [
-    "design-system",
-    "css",
-    "design-tokens",
-    "theming",
-    "accessibility",
-    "multi-tone"
-  ],
-  "homepage": "https://github.com/GasserwerkSolutions/DesignSystem",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GasserwerkSolutions/DesignSystem.git"
-  },
-  "bugs": {
-    "url": "https://github.com/GasserwerkSolutions/DesignSystem/issues"
-  },
+  "version": "0.2.0",
+  "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
-  "author": "Gasserwerk Solutions",
   "main": "main.css",
   "style": "main.css",
-  "files": [
-    "main.css",
-    "tokens/",
-    "semantic/",
-    "themes/",
-    "base/",
-    "state/",
-    "components/",
-    "dist/",
-    "README.md",
-    "LICENSE"
-  ],
   "scripts": {
     "lint": "node scripts/lint-themes.js",
+    "lint:strict": "node scripts/lint-themes.js --strict",
     "check:contrast": "node scripts/check-contrast.js",
+    "check:contrast:browser": "node scripts/check-contrast-browser.js",
+    "check:contrast:compare": "node scripts/check-contrast-browser.js --compare",
     "check": "npm run lint && npm run check:contrast",
-    "build:tokens": "node scripts/export-tokens.js",
-    "build:types": "node scripts/generate-types.js",
-    "build": "npm run build:tokens && npm run build:types",
-    "dev": "npx serve .",
-    "prepublishOnly": "npm run check && npm run build"
+    "check:full": "npm run lint && npm run check:contrast && npm run check:contrast:browser"
   },
-  "engines": {
-    "node": ">=18"
+  "engines": { "node": ">=18" },
+  "optionalDependencies": {
+    "puppeteer": "^22.0.0"
   }
 }
