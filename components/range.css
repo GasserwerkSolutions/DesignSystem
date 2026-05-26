@@ -26,15 +26,25 @@
   margin: 0;
 }
 
+/* Track mit optionalem Fill — Konsument updated --range-fill-pct via JS
+   (siehe slider.css für den 6-Zeilen-Snippet). Default 0% = solid track. */
 .range::-webkit-slider-runnable-track {
   height: 0.375rem;
-  background: var(--range-track, var(--color-bg-tertiary));
+  background: linear-gradient(
+    to right,
+    var(--range-fill, var(--color-interactive)) var(--range-fill-pct, 0%),
+    var(--range-track, var(--color-bg-tertiary)) var(--range-fill-pct, 0%)
+  );
   border-radius: var(--radius-full);
 }
 
 .range::-moz-range-track {
   height: 0.375rem;
-  background: var(--range-track, var(--color-bg-tertiary));
+  background: linear-gradient(
+    to right,
+    var(--range-fill, var(--color-interactive)) var(--range-fill-pct, 0%),
+    var(--range-track, var(--color-bg-tertiary)) var(--range-fill-pct, 0%)
+  );
   border-radius: var(--radius-full);
   border: none;
 }

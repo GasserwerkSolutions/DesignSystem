@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.5.1] — Advanced Components (Schritt 2: Slider)
+
+### Hinzugefügt
+
+- **`.slider`-Component** als Composition-Wrapper um die existing `.range`. Bringt Label, Value-Display via native `<output>` und optionale min/mid/max-Skala zusammen.
+- **Sub-Elemente:** `.slider__header` (Label + Value nebeneinander), `.slider__label`, `.slider__value` (Mono-Font, tabular-nums, Interactive-Color), `.slider__scale` (Tertiary-Text-Marker).
+- **`.range` um Track-Fill erweitert** — `linear-gradient(to right, fill X%, track X%)` mit Custom-Property `--range-fill-pct` (default 0% = solid track, backward-kompatibel). Über `-webkit-` und `-moz-`-Pseudos symmetrisch.
+- **JS-Snippet im Component-Header dokumentiert** (12 Zeilen): updated Track-Fill-Property und synct `<output>` auf `input`-Event. Demo-JS implementiert das Snippet plus custom Formatter für Preis-Slider ("CHF X").
+- **Demo-Section "Slider"** mit zwei Beispielen: Lautstärke (0–100) und Max-Preis (CHF 20–500, step 10).
+
+### Validierung
+
+- Smoke (puppeteer): Math korrekt
+  - Volume 50 → fill 50%, output "50"
+  - Price 120 → fill 20.83% (= (120−20)/(500−20)), output "CHF 120"
+  - Nach Change auf 260 → fill 50%, output "CHF 260" ✓
+- Lint + Static-Contrast (1008/1008) + Browser-Contrast (180/180) WCAG-AA grün.
+
+---
+
 ## [0.5.0] — Advanced Components (Schritt 1: App-Shell)
 
 Eröffnet v0.5 — die größeren Layout/Composition-Components. App-Shell ist

@@ -183,6 +183,39 @@
     </section>
 
     <section class="section">
+      <h2>Slider</h2>
+      <p>
+        Composition über <code>.range</code> — Label, Value-Display via native
+        <code>&lt;output&gt;</code>, optionale Skala. Track-Fill kommt aus dem
+        erweiterten <code>.range</code> mit
+        <code>--range-fill-pct</code>-Custom-Property, JS-Snippet syncronisiert
+        Fill + Output auf <code>input</code> event.
+      </p>
+      <div class="grid-2">
+        <div class="slider">
+          <div class="slider__header">
+            <label class="slider__label" for="slider-volume">Lautstärke</label>
+            <output class="slider__value" for="slider-volume">50</output>
+          </div>
+          <input type="range" id="slider-volume" class="range" min="0" max="100" value="50">
+          <div class="slider__scale">
+            <span>0</span><span>50</span><span>100</span>
+          </div>
+        </div>
+        <div class="slider">
+          <div class="slider__header">
+            <label class="slider__label" for="slider-price">Max-Preis</label>
+            <output class="slider__value" for="slider-price">CHF 120</output>
+          </div>
+          <input type="range" id="slider-price" class="range" min="20" max="500" step="10" value="120">
+          <div class="slider__scale">
+            <span>CHF 20</span><span>CHF 260</span><span>CHF 500</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>App-Shell</h2>
       <p>
         Layout-Primitive für Dashboard-/App-Pages. CSS Grid mit Header / Sidebar /
@@ -792,6 +825,24 @@
       // Tag-Remove-Pattern (analog zu Alert/Toast).
       document.querySelectorAll(".tag__remove").forEach((btn) => {
         btn.addEventListener("click", () => btn.closest(".tag")?.remove());
+      });
+
+      // Slider: Track-Fill + Output-Sync auf input event. Spezial für slider-price:
+      // Output bekommt "CHF X" als Präfix-Pattern, daher custom formatter.
+      document.querySelectorAll(".slider").forEach((slider) => {
+        const input  = slider.querySelector('input[type="range"]');
+        const output = slider.querySelector(".slider__value");
+        if (!input) return;
+        const isPrice = input.id === "slider-price";
+        const sync = () => {
+          const min = +input.min || 0;
+          const max = +input.max || 100;
+          const pct = ((input.valueAsNumber - min) / (max - min)) * 100;
+          input.style.setProperty("--range-fill-pct", pct + "%");
+          if (output) output.value = isPrice ? `CHF ${input.value}` : input.value;
+        };
+        input.addEventListener("input", sync);
+        sync();
       });
 
       // Popover-Trigger-Anchoring. beforetoggle bubbelt nicht — per-Popover-Listener.
