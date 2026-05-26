@@ -39,6 +39,7 @@
 @import "./components/list-row.css"   layer(components);
 @import "./components/funnel.css"     layer(components);
 @import "./components/checkbox.css"    layer(components);
+@import "./components/switch.css"      layer(components);
 @import "./components/field.css"       layer(components);
 @import "./components/search.css"      layer(components);
 @import "./components/modal.css"       layer(components);

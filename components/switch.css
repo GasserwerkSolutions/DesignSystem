@@ -1,0 +1,108 @@
+/**
+ * Switch Component
+ * =================
+ *
+ * Binary on/off-Toggle. Eigene Semantik vs. Checkbox:
+ *   - Checkbox: "Wähle eine/mehrere aus" (Auswahl-Entscheidung)
+ *   - Switch:   "Schalte etwas ein/aus" (Zustands-Entscheidung, sofort wirksam)
+ *
+ * Markup nutzt native <input type="checkbox"> + role="switch" — ARIA-konform,
+ * behält Keyboard-Steuerung, Form-Submission und Screen-Reader-Garantien des
+ * Native-Inputs. Visueller Rebuild via appearance:none, gleicher Pfad wie
+ * .checkbox / .radio.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --switch-track-w / --switch-track-h     Track-Dimensionen
+ *     --switch-thumb-size                     Thumb-Quadrat (kleiner als track-h)
+ *     --switch-thumb-inset                    Padding zwischen Thumb und Track-Rand
+ *     --switch-track-bg / --switch-track-bg-checked
+ *     --switch-thumb-bg
+ *     --switch-radius
+ *
+ * Struktur (analog zu .choice für Checkbox/Radio):
+ *   <label class="choice">
+ *     <input type="checkbox" class="switch" role="switch">
+ *     <span>Push-Benachrichtigungen</span>
+ *   </label>
+ *
+ *   Mit Hint:
+ *   <label class="choice">
+ *     <input type="checkbox" class="switch" role="switch" checked>
+ *     <span>
+ *       Auto-Backup
+ *       <span class="choice__hint">Täglich um 03:00</span>
+ *     </span>
+ *   </label>
+ */
+
+.switch {
+  --_track-w:     var(--switch-track-w, 2.25rem);
+  --_track-h:     var(--switch-track-h, 1.25rem);
+  --_thumb-size:  var(--switch-thumb-size, 0.875rem);
+  --_thumb-inset: var(--switch-thumb-inset, 0.1875rem);
+
+  appearance: none;
+  -webkit-appearance: none;
+  width:  var(--_track-w);
+  height: var(--_track-h);
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: var(--switch-radius, var(--radius-full));
+  background: var(--switch-track-bg, var(--color-border-dark));
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background-color var(--duration-fast) var(--easing-fast);
+  margin-block-start: 0.2em;
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  inset-inline-start: var(--_thumb-inset);
+  transform: translateY(-50%);
+  width:  var(--_thumb-size);
+  height: var(--_thumb-size);
+  border-radius: var(--radius-full);
+  background: var(--switch-thumb-bg, white);
+  box-shadow: var(--elevation-1);
+  transition: transform var(--duration-fast) var(--easing-fast);
+}
+
+.switch:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--switch-track-bg, var(--color-border-dark)) 85%, var(--color-text-primary));
+}
+
+.switch:checked {
+  background: var(--switch-track-bg-checked, var(--color-interactive));
+}
+
+.switch:checked:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--switch-track-bg-checked, var(--color-interactive)) 85%, var(--color-text-primary));
+}
+
+/* Thumb-Travel: track-w minus thumb-size minus 2× Padding.
+   transform translateX ist GPU-accelerated (vs inset-inline-start = layout).
+   RTL-Variante kehrt das Vorzeichen via :dir(rtl). */
+.switch:checked::after {
+  transform: translateY(-50%)
+             translateX(calc(var(--_track-w) - var(--_thumb-size) - 2 * var(--_thumb-inset)));
+}
+
+.switch:dir(rtl):checked::after {
+  transform: translateY(-50%)
+             translateX(calc(-1 * (var(--_track-w) - var(--_thumb-size) - 2 * var(--_thumb-inset))));
+}
+
+.switch:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

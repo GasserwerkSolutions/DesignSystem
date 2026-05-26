@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.0] — Component-Lücken (Schritt 1: Switch)
+
+Erster v0.4-Component: Switch / Toggle als binary on/off-Control.
+
+### Hinzugefügt
+
+- **`.switch`-Component** in `components/switch.css`. Native `<input type="checkbox">` + `role="switch"` für ARIA-Konformität, Keyboard, Form-Submission und Screen-Reader-Garantien — visueller Rebuild via `appearance:none`. Gleicher Pfad wie `.checkbox` und `.radio`, konsistente Choice-Wrapper-Nutzung.
+- **Token-Contract:** `--switch-track-w/h`, `--switch-thumb-size/inset`, `--switch-track-bg/-checked`, `--switch-thumb-bg`, `--switch-radius`. Track-Geometrie ist calc()-verkettet — wer die Track-Breite überschreibt, bekommt den korrigierten Thumb-Travel automatisch.
+- **RTL-Support:** Thumb-Travel kehrt das Vorzeichen via `:dir(rtl)`-Pseudo-Klasse. translateX bleibt GPU-accelerated.
+- **Demo-Section "Toggle-Controls"** zeigt Switch / Checkbox / Radio nebeneinander mit klar getrennten Use-Cases.
+- **Thumb nutzt `var(--elevation-1)`** für subtle hairline-Schatten — automatisch dark-mode-aware durch die in v0.3.3 etablierte Elevation-Skala.
+
+### Semantik
+
+- Switch ist binary on/off, sofort wirksam (kein "Apply"-Button nötig).
+- Checkbox ist Auswahl-Entscheidung (eine oder mehrere aus einem Set).
+- Beide nutzen `<input type="checkbox">` — die Unterscheidung liegt in `role` + visueller Sprache.
+
+---
+
 ## [0.3.3] — Foundation-Härtung (Schritt 4: Elevation-Skala)
 
 ### Hinzugefügt

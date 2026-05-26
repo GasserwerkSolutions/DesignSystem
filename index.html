@@ -183,6 +183,56 @@
     </section>
 
     <section class="section">
+      <h2>Toggle-Controls</h2>
+      <p>
+        Switch (binary on/off, sofort wirksam) vs. Checkbox (Auswahl-Entscheidung)
+        vs. Radio (exklusive Auswahl). Alle drei nutzen native Inputs + Choice-Wrapper.
+      </p>
+      <div class="grid-3">
+        <div class="stack">
+          <span class="demo-label">Switch</span>
+          <label class="choice">
+            <input type="checkbox" class="switch" role="switch" checked>
+            <span>Push-Benachrichtigungen</span>
+          </label>
+          <label class="choice">
+            <input type="checkbox" class="switch" role="switch">
+            <span>
+              Auto-Backup
+              <span class="choice__hint">Täglich um 03:00</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="checkbox" class="switch" role="switch" disabled>
+            <span>Disabled</span>
+          </label>
+        </div>
+        <div class="stack">
+          <span class="demo-label">Checkbox</span>
+          <label class="choice">
+            <input type="checkbox" class="checkbox" checked>
+            <span>Newsletter abonnieren</span>
+          </label>
+          <label class="choice">
+            <input type="checkbox" class="checkbox">
+            <span>AGB akzeptieren</span>
+          </label>
+        </div>
+        <div class="stack">
+          <span class="demo-label">Radio</span>
+          <label class="choice">
+            <input type="radio" name="plan-demo" class="radio" checked>
+            <span>Basic</span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="plan-demo" class="radio">
+            <span>Pro</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Editorial-Container</h2>
       <p>
         <code>.container--prose</code> verengt sich auf <code>--prose-max</code>
