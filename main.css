@@ -30,6 +30,7 @@
 @import "./components/callout.css" layer(components);
 @import "./components/alert.css"   layer(components);
 @import "./components/steps.css"   layer(components);
+@import "./components/timeline.css" layer(components);
 @import "./components/table.css"      layer(components);
 @import "./components/code-block.css" layer(components);
 @import "./components/progress.css"   layer(components);

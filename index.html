@@ -183,6 +183,83 @@
     </section>
 
     <section class="section">
+      <h2>Timeline</h2>
+      <p>
+        Vertikale Aktivitäts-Liste mit Marker-Linie. Marker-Variants ziehen
+        aus dem <code>--status-*</code>-Token-Set (v0.3.1) — automatisch
+        mode-aware. Pures CSS, kein JS.
+      </p>
+      <div class="grid-2">
+        <div class="demo-block">
+          <span class="demo-label">Booking-Verlauf</span>
+          <ol class="timeline">
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--success" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">Mo, 08:32</time>
+                <strong class="timeline__title">Termin gebucht</strong>
+                <p>Anna Meier — Haarschnitt &amp; Föhnen</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--success" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">Mo, 09:15</time>
+                <strong class="timeline__title">Bestätigung versendet</strong>
+                <p>SMS an +41 79 …</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--current" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">Heute, 14:00</time>
+                <strong class="timeline__title">Termin läuft</strong>
+                <p>Voraussichtliches Ende 14:45</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">Geplant</time>
+                <strong class="timeline__title">Rechnung versenden</strong>
+                <p>Auto-Trigger nach Abschluss</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">System-Events</span>
+          <ol class="timeline">
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--success" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">vor 2 h</time>
+                <strong class="timeline__title">Backup erfolgreich</strong>
+                <p>2.4 GB · 1'820 Records</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--warning" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">vor 6 h</time>
+                <strong class="timeline__title">Zertifikat läuft bald aus</strong>
+                <p>SSL-Cert: noch 7 Tage gültig</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--danger" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">gestern</time>
+                <strong class="timeline__title">Zahlung fehlgeschlagen</strong>
+                <p>Card declined · Versuch automatisch in 24h</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>File-Upload</h2>
       <p>
         Styled <code>&lt;label&gt;</code> als Click- und Dropzone, native

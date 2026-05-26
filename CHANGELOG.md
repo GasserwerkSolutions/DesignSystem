@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.5.3] — Advanced Components (Schritt 4: Timeline)
+
+### Hinzugefügt
+
+- **`.timeline`-Component** als vertikale Aktivitäts-Liste (Booking-History, Activity-Feed, Audit-Log, Order-Tracking). Pures CSS, kein JS.
+- **Token-Contract:** `--timeline-marker-size/-gap/-offset`, `--timeline-line-color/-width`, `--timeline-item-spacing`.
+- **Sub-Elemente:** `.timeline__item` (Grid mit Marker-Spalte + Body), `.timeline__marker` (Bullet), `.timeline__body` (Container für `.timeline__time`, `.timeline__title`, beliebigen `<p>`-Inhalt).
+- **Linie via pseudo-element pro Item** (`::before`) — läuft vom Marker-Top bis Item-Bottom, kontinuierlich da row-gap=0; Marker überdeckt die Schnittpunkte via eigenen Background. Letztes Item bekommt kein `::before` → saubere Linien-Terminierung.
+- **4 Marker-Variants** ziehen aus dem `--status-*`-Token-Set (v0.3.1): `--success`, `--warning`, `--danger`, plus `--current` (mit Focus-Ring-Glow für aktiven Schritt).
+- **Demo-Section "Timeline"** mit zwei realistischen Patterns: Booking-Verlauf (success → success → current → default) und System-Events (success/warning/danger).
+
+### Validierung
+
+- Smoke (puppeteer):
+  - 4 Items rendern, letztes hat kein `::before` ✓
+  - Marker-Variants korrekt gefärbt (success rgb(22,163,74), default hollow) ✓
+  - Marker-Title-Alignment nachjustiert (`--timeline-marker-offset: 0.2rem` für Time+Title-Pattern, override auf `0.4rem` wenn nur Title) ✓
+- Lint + Static-Contrast (1008/1008) + Browser-Contrast (180/180) WCAG-AA grün.
+
+---
+
 ## [0.5.2] — Advanced Components (Schritt 3: File-Upload)
 
 ### Hinzugefügt
