@@ -183,6 +183,55 @@
     </section>
 
     <section class="section">
+      <h2>Layout-Primitives: Stack &amp; Cluster</h2>
+      <p>
+        <code>.stack</code> ist vertikal mit konsistentem Gap, <code>.cluster</code>
+        ist horizontal mit Wrap. Beide haben <code>xs/sm/md/lg/xl</code>-Größen und
+        Custom-Properties für Alignment (<code>--stack-align</code>,
+        <code>--cluster-align</code>, <code>--cluster-justify</code>).
+      </p>
+      <div class="grid-2">
+        <div class="demo-block">
+          <span class="demo-label">.stack — vertikal</span>
+          <div class="stack stack--sm">
+            <button class="btn btn--secondary">Aktion 1</button>
+            <button class="btn btn--secondary">Aktion 2</button>
+            <button class="btn btn--secondary">Aktion 3</button>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">.cluster — horizontal mit Wrap</span>
+          <div class="cluster cluster--sm">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">CSS</span>
+            <span class="tag">Vite</span>
+            <span class="tag">Vitest</span>
+            <span class="tag">Storybook</span>
+            <span class="tag">Playwright</span>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">.cluster--between (Toolbar)</span>
+          <div class="cluster cluster--between">
+            <strong>Drei Termine ausgewählt</strong>
+            <div class="cluster cluster--sm">
+              <button class="btn btn--sm btn--ghost">Verwerfen</button>
+              <button class="btn btn--sm">Bestätigen</button>
+            </div>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">.cluster--end (rechtsbündig)</span>
+          <div class="cluster cluster--end">
+            <button class="btn btn--ghost">Abbrechen</button>
+            <button class="btn">Speichern</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Avatar-Stack</h2>
       <p>
         Layout-Pattern auf der bestehenden Avatar-Component. Stack steuert die

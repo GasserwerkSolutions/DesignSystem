@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.5] — Component-Lücken (Schritt 6: Layout-Primitives — Stack & Cluster)
+
+### Hinzugefügt
+
+- **`.cluster`** als horizontaler Layout-Container mit `flex-wrap`. Toolbars, Tag-Listen, gemischte Inline-Inhalte mit konsistentem Gap und natürlichem Umbruch bei schmaler Viewport. Lebt in `base/layout.css` als reines Layout-Primitive, kein Component.
+- **5 Cluster-Größen** (`--xs/--sm/--md/--lg/--xl`) parallel zur Stack-Skala — konsistentes Gap-Vokabular über alle Layout-Achsen.
+- **3 Cluster-Alignment-Modifier:** `--between` (space-between), `--end` (flex-end), `--center` (justify-content: center). Toolbars und Footer-Action-Bars haben damit ein 1-Wort-API.
+- **`.stack--xs`** als feinste Größe (4px), füllt die Lücke unter `--sm`.
+- **Custom-Property-Konfiguration** für ad-hoc Alignment ohne neue Klassen: `--stack-align`, `--cluster-align`, `--cluster-justify` lokal überschreibbar.
+
+### Demo
+
+- Neue Section "Layout-Primitives: Stack & Cluster" mit vier praxisnahen Patterns: vertikaler Action-Stack, Tag-Cluster mit Wrap, Toolbar mit `--between`, rechtsbündige Action-Bar mit `--end`.
+
+### Validierung
+
+- Cluster-Wrap unter 400px Viewport: 7 Tags → 2 Rows ✓ (Puppeteer-Smoke).
+
+---
+
 ## [0.4.4] — Component-Lücken (Schritt 5: Avatar-Stack)
 
 ### Hinzugefügt

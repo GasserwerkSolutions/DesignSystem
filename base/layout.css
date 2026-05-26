@@ -18,16 +18,43 @@
   max-width: var(--prose-max, 70ch);
 }
 
+/* Stack: vertikaler Layout-Container mit konsistentem Gap.
+   --stack-gap kontrolliert den Abstand; Modifier setzen ihn.
+   --stack-align (default stretch) für items-Alignment ohne extra Klasse. */
 .stack {
   display: flex;
   flex-direction: column;
   gap: var(--stack-gap, var(--space-12));
+  align-items: var(--stack-align, stretch);
 }
 
+.stack--xs { --stack-gap: var(--space-4); }
 .stack--sm { --stack-gap: var(--space-8); }
 .stack--md { --stack-gap: var(--space-16); }
 .stack--lg { --stack-gap: var(--space-32); }
 .stack--xl { --stack-gap: var(--space-48); }
+
+/* Cluster: horizontaler Stack mit flex-wrap. Toolbars, Tag-Listen,
+   gemischte Inline-Inhalte mit konsistentem Gap und natürlichem Umbruch.
+   --cluster-align (default center) und --cluster-justify (default start)
+   sind via Custom-Property überschreibbar, ohne neue Klassen. */
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cluster-gap, var(--space-12));
+  align-items:     var(--cluster-align,   center);
+  justify-content: var(--cluster-justify, flex-start);
+}
+
+.cluster--xs { --cluster-gap: var(--space-4); }
+.cluster--sm { --cluster-gap: var(--space-8); }
+.cluster--md { --cluster-gap: var(--space-16); }
+.cluster--lg { --cluster-gap: var(--space-24); }
+.cluster--xl { --cluster-gap: var(--space-32); }
+
+.cluster--between { --cluster-justify: space-between; }
+.cluster--end     { --cluster-justify: flex-end; }
+.cluster--center  { --cluster-justify: center; }
 
 .flex {
   display: flex;
