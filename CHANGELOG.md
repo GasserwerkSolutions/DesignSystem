@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.4.2] — Component-Lücken (Schritt 3: Inline-Alert)
+
+### Hinzugefügt
+
+- **`.alert`-Component** als dismissible Status-Feedback im Content-Flow. Schwester von Callout, aber:
+  - Callout: editorial, eyebrow-Title (uppercase, font-xs), kein Close
+  - Banner: Page-Top, persistent, full-width
+  - Toast: floating (position:fixed), auto-dismiss
+  - **Alert: inline, dismissible, paragraph-Title, Close-Button als Erstklasse-Element**
+- **Token-Contract:** `--alert-bg/-fg/-stripe/-accent`, `--alert-py/-px/-radius`. Ziehen Variants aus `--status-{info,success,warning,danger}-{bg,fg,border}` (v0.3.1).
+- **Sub-Elemente:** `.alert__icon`, `.alert__title`, `.alert__body`, `.alert__close`.
+- **ARIA-Pattern dokumentiert:** `role="status"` (info/success, polite) vs. `role="alert"` (warning/danger, assertive). Konsument wählt je nach Dringlichkeit.
+- **JS-Dismiss-Snippet** in Component-Header dokumentiert (analog zu `.toast__close`-Pattern). Demo nutzt es.
+- **Browser-Contrast-Check** erweitert um 4 Alert-Title-Pairs × 6 Tones × 2 Modes = **180 Paare** (vorher 132). Alle WCAG-AA.
+
+### Demo
+
+- Neue Section "Inline-Alerts" mit allen vier Variants, vollständigem Markup-Beispiel inkl. Icon-Slot + Close-Button. Dismiss funktioniert (verifiziert via Puppeteer-Smoke).
+
+---
+
 ## [0.4.1] — Component-Lücken (Schritt 2: Spinner)
 
 ### Hinzugefügt

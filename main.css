@@ -27,6 +27,7 @@
 @import "./components/stat.css"    layer(components);
 @import "./components/nav.css"     layer(components);
 @import "./components/callout.css" layer(components);
+@import "./components/alert.css"   layer(components);
 @import "./components/steps.css"   layer(components);
 @import "./components/table.css"      layer(components);
 @import "./components/code-block.css" layer(components);

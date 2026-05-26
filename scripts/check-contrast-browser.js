@@ -106,6 +106,34 @@ const PAIRS = [
     bgProp: "backgroundColor",
     threshold: 4.5,
   },
+  {
+    label: "alert--success title on bg",
+    selector: ".alert--success",
+    fgPath: [".alert__title", "color"],
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "alert--warning title on bg",
+    selector: ".alert--warning",
+    fgPath: [".alert__title", "color"],
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "alert--danger title on bg",
+    selector: ".alert--danger",
+    fgPath: [".alert__title", "color"],
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "alert--info title on bg",
+    selector: ".alert--info",
+    fgPath: [".alert__title", "color"],
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
 ];
 
 function rgbToHex([r,g,b]) {

@@ -183,6 +183,49 @@
     </section>
 
     <section class="section">
+      <h2>Inline-Alerts</h2>
+      <p>
+        Dismissible Status-Feedback im Content-Flow. Vs. Callout (statisch,
+        editorial) und Banner (Page-Top). Zieht Farben aus dem
+        <code>--status-*</code>-Token-Set.
+      </p>
+      <div class="stack stack--md" id="alert-demo">
+        <div class="alert alert--success" role="status">
+          <span class="alert__icon" aria-hidden="true">✓</span>
+          <div class="alert__body">
+            <strong class="alert__title">Buchung gespeichert</strong>
+            <p>Anna ist für Donnerstag 14:00 eingetragen.</p>
+          </div>
+          <button class="alert__close" type="button" aria-label="Schließen">×</button>
+        </div>
+        <div class="alert alert--info" role="status">
+          <span class="alert__icon" aria-hidden="true">ℹ</span>
+          <div class="alert__body">
+            <strong class="alert__title">Neues Update verfügbar</strong>
+            <p>Version 2.3 ist bereit zum Installieren.</p>
+          </div>
+          <button class="alert__close" type="button" aria-label="Schließen">×</button>
+        </div>
+        <div class="alert alert--warning" role="alert">
+          <span class="alert__icon" aria-hidden="true">⚠</span>
+          <div class="alert__body">
+            <strong class="alert__title">Abo läuft bald aus</strong>
+            <p>Verlängere in den nächsten 3 Tagen, um Unterbrechungen zu vermeiden.</p>
+          </div>
+          <button class="alert__close" type="button" aria-label="Schließen">×</button>
+        </div>
+        <div class="alert alert--danger" role="alert">
+          <span class="alert__icon" aria-hidden="true">✕</span>
+          <div class="alert__body">
+            <strong class="alert__title">Zahlung fehlgeschlagen</strong>
+            <p>Bitte aktualisiere deine Zahlungsmethode in den Einstellungen.</p>
+          </div>
+          <button class="alert__close" type="button" aria-label="Schließen">×</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Spinner / Loading-States</h2>
       <p>
         currentColor als Default — der Spinner erbt die Textfarbe seines
@@ -450,6 +493,11 @@
 
       document.querySelectorAll("[data-set-density]").forEach((btn) => {
         btn.addEventListener("click", () => setDensity(btn.dataset.setDensity));
+      });
+
+      // Alert-Dismiss-Pattern: zeigt das in der Component-Doku empfohlene Snippet.
+      document.querySelectorAll(".alert__close").forEach((btn) => {
+        btn.addEventListener("click", () => btn.closest(".alert")?.remove());
       });
     })();
   </script>
