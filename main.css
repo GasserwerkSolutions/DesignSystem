@@ -24,6 +24,7 @@
 @import "./components/card.css"    layer(components);
 @import "./components/section.css" layer(components);
 @import "./components/badge.css"   layer(components);
+@import "./components/tag.css"     layer(components);
 @import "./components/stat.css"    layer(components);
 @import "./components/nav.css"     layer(components);
 @import "./components/callout.css" layer(components);

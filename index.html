@@ -183,6 +183,51 @@
     </section>
 
     <section class="section">
+      <h2>Tags</h2>
+      <p>
+        Interactive Chips — Filter, Skill-Listen, Multi-Select-Display. Semantisch
+        unterschiedlich zu Badge (read-only Status-Label). Größer, medium-radius,
+        optional removable/clickable.
+      </p>
+      <div class="demo-grid">
+        <div class="demo-block">
+          <span class="demo-label">Varianten</span>
+          <div class="demo-row">
+            <span class="tag">React</span>
+            <span class="tag tag--solid">TypeScript</span>
+            <span class="tag tag--outline">Vue</span>
+            <span class="tag tag--sm">Small</span>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Clickable (Filter-Toggle)</span>
+          <div class="demo-row">
+            <button class="tag tag--clickable" type="button">Bestätigt</button>
+            <button class="tag tag--clickable" type="button">Diese Woche</button>
+            <button class="tag tag--clickable tag--solid" type="button">Aktiv</button>
+          </div>
+        </div>
+        <div class="demo-block" id="tag-demo">
+          <span class="demo-label">Removable (Multi-Select)</span>
+          <div class="demo-row">
+            <span class="tag">
+              Anna Meier
+              <button class="tag__remove" type="button" aria-label="Anna entfernen">×</button>
+            </span>
+            <span class="tag">
+              Marc Stein
+              <button class="tag__remove" type="button" aria-label="Marc entfernen">×</button>
+            </span>
+            <span class="tag tag--solid">
+              Lisa Vogel
+              <button class="tag__remove" type="button" aria-label="Lisa entfernen">×</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Inline-Alerts</h2>
       <p>
         Dismissible Status-Feedback im Content-Flow. Vs. Callout (statisch,
@@ -498,6 +543,11 @@
       // Alert-Dismiss-Pattern: zeigt das in der Component-Doku empfohlene Snippet.
       document.querySelectorAll(".alert__close").forEach((btn) => {
         btn.addEventListener("click", () => btn.closest(".alert")?.remove());
+      });
+
+      // Tag-Remove-Pattern (analog zu Alert/Toast).
+      document.querySelectorAll(".tag__remove").forEach((btn) => {
+        btn.addEventListener("click", () => btn.closest(".tag")?.remove());
       });
     })();
   </script>

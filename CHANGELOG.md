@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.4.3] — Component-Lücken (Schritt 4: Tag / Chip)
+
+### Hinzugefügt
+
+- **`.tag`-Component** als interactive Chip. Semantische Differenzierung zu Badge:
+  - Badge: read-only Status-Label, klein (font-xs), pill (radius-full)
+  - **Tag: interactive Chip (font-sm, radius-md), optional removable/clickable**
+- **Token-Contract:** `--tag-bg/-fg/-border/-hover-bg`, `--tag-px/-py/-radius/-size`.
+- **Modifier:** `.tag--solid` (filled accent), `.tag--outline` (transparent + border), `.tag--clickable` (hover + focus-visible), `.tag--sm` (kleiner).
+- **Sub-Element `.tag__remove`** mit Touch-Affordance (1rem×1rem, opacity-fade-in on hover, currentColor inheritance, focus-visible).
+- **Dismiss-Pattern** im Component-Header dokumentiert, JS-Snippet im Demo eingebaut (analog zu Alert / Toast).
+- **Demo-Section "Tags"** zeigt 4 statische Varianten, 3 clickable Filter, 3 removable Multi-Select-Chips.
+
+### A11Y
+
+- **Klare WCAG-Notiz im Component-Header** zu `--tag--solid`: Default ~3:1 Kontrast (X-600 + white) folgt Button-Pattern. UI-Component-Norm (SC 1.4.11) erfüllt, strict-AA für normal text (SC 1.4.3) borderline. Override-Pfad dokumentiert (X-700/800-Variante setzen).
+- Remove-Button hat eigenen Touch-Target, eigenes focus-visible-Ring, ARIA-Label verpflichtend.
+
+---
+
 ## [0.4.2] — Component-Lücken (Schritt 3: Inline-Alert)
 
 ### Hinzugefügt
