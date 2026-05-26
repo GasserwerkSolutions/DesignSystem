@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.3.1] — Foundation-Härtung (Schritt 2: Status-Token-Konsolidierung)
+
+### Hinzugefügt
+
+- **`--status-{info,success,warning,danger,neutral}-{bg,fg,border}`-Token-Set** in `semantic/semantic.css`. Gemeinsame Basis für Callout / Badge / Banner / Toast — vier Components ziehen aus derselben Quelle. **Mode-aware durch Token-Vererbung:** `--status-X-bg` mixt gegen `--color-bg`, `--status-X-fg` gegen `--color-text-primary`. Wechseln die im Dark-Mode, folgen die color-mix-Resultate automatisch — kein separater Dark-Override nötig.
+- **`--callout-stripe` als eigene Token-Achse** (Border-Inline-Start-Farbe), getrennt von `--callout-accent` (Title-Text-Farbe). Stripe nutzt die pure Statusfarbe, Accent den dunkleren `--status-X-fg` — sauberer Vertrag und höherer Title-Kontrast.
+- **Contrast-Check-Erweiterung:** Static-Checker prüft jetzt **1008 Paare** (336 vorher), davon 8 zusätzliche Status-Paare pro Tone×Mode×Nested-Kombination. Browser-Checker prüft **132 Paare** (36 vorher) inkl. 8 Status-Components in der Demo.
+- **Canvas-basierte sRGB-Konvertierung im Browser-Checker.** Chromium liefert `getComputedStyle()` für `color-mix(in oklch, ...)`-Werte als `oklch(...)` zurück — der alte `parseRgb` (nur `rgb(...)`) hat alle Status-Pairs als "skip" markiert. Canvas im Browser-Context konvertiert beliebige CSS-Color-Notationen verlässlich zu sRGB-Triples.
+
+### Behoben
+
+- **Dark-Mode-Kontrast für Status-Components.** Callout/Badge/Banner mixten Variants vorher hartcodiert gegen `white`/`black` — im Dark-Mode blieb der Pastel-bg also hell, was den Kontrast zu `--color-text-primary` (im Dark hell) auf 1.x:1 drückte. Mit Vererbung von `--color-bg`/`--color-text-primary` ist der Pastel-bg im Dark dunkel, fg hell — alle 12 Status-Paare (4 Variants × 3 Pairs) WCAG-AA in allen Tones × Modes.
+- **Inkonsistente Mix-Ratios.** Callout (10-14%), Banner (10-15%), Badge (15-18%) hatten zufällige, nicht-designte Unterschiede. Konsolidiert auf 12% (warning: 14%) für bg, 60% für fg.
+
+### Geändert
+
+- **BREAKING (sehr eng):** Token-API von Callout — `--callout-accent` ist jetzt Title-Text-Farbe (vorher beides: Title + Border). Wer den Border separat steuern will, nutzt `--callout-stripe`.
+- Callout / Badge / Banner / Toast `*--info/success/warning/danger/neutral`-Variants ziehen Werte aus `--status-*` statt sie inline mit `color-mix(..., white)` zu berechnen.
+
+---
+
 ## [0.3.0] — Foundation-Härtung (Schritt 1: ADR-001 + Repo-Konsolidierung)
 
 ### Hinzugefügt

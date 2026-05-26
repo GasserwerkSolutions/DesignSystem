@@ -62,10 +62,10 @@
   to   { opacity: 1; transform: none; }
 }
 
-.toast--success { --toast-accent: var(--color-success); }
-.toast--warning { --toast-accent: var(--color-warning); }
-.toast--danger  { --toast-accent: var(--color-error); }
-.toast--info    { --toast-accent: var(--color-info); }
+.toast--success { --toast-accent: var(--status-success-border); }
+.toast--warning { --toast-accent: var(--status-warning-border); }
+.toast--danger  { --toast-accent: var(--status-danger-border); }
+.toast--info    { --toast-accent: var(--status-info-border); }
 
 .toast__body {
   flex: 1 1 auto;

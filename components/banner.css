@@ -29,7 +29,7 @@
   align-items: center;
   gap: var(--space-12);
   padding: var(--space-12) var(--space-24);
-  background: var(--banner-bg, color-mix(in oklch, var(--color-info) 12%, white));
+  background: var(--banner-bg, var(--status-info-bg));
   color: var(--banner-fg, var(--color-text-primary));
   border-block-end: 1px solid var(--banner-border, transparent);
   font-size: var(--font-sm);
@@ -43,12 +43,12 @@
 }
 
 .banner__body strong {
-  color: var(--banner-accent, var(--color-info));
+  color: var(--banner-accent, var(--status-info-fg));
   font-weight: var(--fw-700);
 }
 
 .banner__action {
-  color: var(--banner-accent, var(--color-info));
+  color: var(--banner-accent, var(--status-info-fg));
   font-weight: var(--fw-600);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -57,25 +57,25 @@
 }
 
 .banner__action:hover {
-  color: color-mix(in oklch, var(--banner-accent, var(--color-info)) 80%, black);
+  color: color-mix(in oklch, var(--banner-accent, var(--status-info-fg)) 80%, var(--color-text-primary));
 }
 
 .banner--info {
-  --banner-bg: color-mix(in oklch, var(--color-info) 12%, white);
-  --banner-accent: var(--color-info);
+  --banner-bg:     var(--status-info-bg);
+  --banner-accent: var(--status-info-fg);
 }
 
 .banner--success {
-  --banner-bg: color-mix(in oklch, var(--color-success) 12%, white);
-  --banner-accent: var(--color-success);
+  --banner-bg:     var(--status-success-bg);
+  --banner-accent: var(--status-success-fg);
 }
 
 .banner--warning {
-  --banner-bg: color-mix(in oklch, var(--color-warning) 15%, white);
-  --banner-accent: color-mix(in oklch, var(--color-warning) 85%, black);
+  --banner-bg:     var(--status-warning-bg);
+  --banner-accent: var(--status-warning-fg);
 }
 
 .banner--danger {
-  --banner-bg: color-mix(in oklch, var(--color-error) 10%, white);
-  --banner-accent: var(--color-error);
+  --banner-bg:     var(--status-danger-bg);
+  --banner-accent: var(--status-danger-fg);
 }

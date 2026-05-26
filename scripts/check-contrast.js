@@ -23,10 +23,22 @@ const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 
 const PAIRS = [
-  { fg: "--color-text-primary",   bg: "--color-bg",  threshold: 4.5, label: "body-text on body-bg" },
-  { fg: "--color-text-secondary", bg: "--color-bg",  threshold: 4.5, label: "secondary-text on body-bg" },
-  { fg: "--color-text-primary",   bg: "--card-bg",   threshold: 4.5, label: "body-text on card-bg" },
-  { fg: "--color-text-tertiary",  bg: "--color-bg",  threshold: 3.0, label: "tertiary-text on body-bg" },
+  // Core text-on-surface
+  { fg: "--color-text-primary",   bg: "--color-bg",           threshold: 4.5, label: "body-text on body-bg" },
+  { fg: "--color-text-secondary", bg: "--color-bg",           threshold: 4.5, label: "secondary-text on body-bg" },
+  { fg: "--color-text-primary",   bg: "--card-bg",            threshold: 4.5, label: "body-text on card-bg" },
+  { fg: "--color-text-tertiary",  bg: "--color-bg",           threshold: 3.0, label: "tertiary-text on body-bg" },
+
+  // Status-Tripel — Callout/Badge/Banner ziehen Title/Strong-Text aus --status-X-fg
+  // gegen den pastelligen --status-X-bg. Body-Text bleibt --color-text-primary.
+  { fg: "--status-info-fg",       bg: "--status-info-bg",     threshold: 4.5, label: "status-info: title-on-bg" },
+  { fg: "--color-text-primary",   bg: "--status-info-bg",     threshold: 4.5, label: "status-info: body-on-bg" },
+  { fg: "--status-success-fg",    bg: "--status-success-bg",  threshold: 4.5, label: "status-success: title-on-bg" },
+  { fg: "--color-text-primary",   bg: "--status-success-bg",  threshold: 4.5, label: "status-success: body-on-bg" },
+  { fg: "--status-warning-fg",    bg: "--status-warning-bg",  threshold: 4.5, label: "status-warning: title-on-bg" },
+  { fg: "--color-text-primary",   bg: "--status-warning-bg",  threshold: 4.5, label: "status-warning: body-on-bg" },
+  { fg: "--status-danger-fg",     bg: "--status-danger-bg",   threshold: 4.5, label: "status-danger: title-on-bg" },
+  { fg: "--color-text-primary",   bg: "--status-danger-bg",   threshold: 4.5, label: "status-danger: body-on-bg" },
 ];
 
 const TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal"];

@@ -50,12 +50,64 @@ const PAIRS = [
     bgProp: "backgroundColor",
     threshold: 4.5,
   },
+  {
+    label: "callout--info title on bg",
+    selector: ".callout--info",
+    fgPath: [".callout__title", "color"],
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "callout--success title on bg",
+    selector: ".callout--success",
+    fgPath: [".callout__title", "color"],
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "callout--warning title on bg",
+    selector: ".callout--warning",
+    fgPath: [".callout__title", "color"],
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "callout--danger title on bg",
+    selector: ".callout--danger",
+    fgPath: [".callout__title", "color"],
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "badge--success on its bg",
+    selector: ".badge--success",
+    fgProp: "color",
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "badge--warning on its bg",
+    selector: ".badge--warning",
+    fgProp: "color",
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "badge--danger on its bg",
+    selector: ".badge--danger",
+    fgProp: "color",
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
+  {
+    label: "badge--info on its bg",
+    selector: ".badge--info",
+    fgProp: "color",
+    bgProp: "backgroundColor",
+    threshold: 4.5,
+  },
 ];
 
-function parseRgb(s) {
-  const m = s.match(/rgba?\((\d+)[\s,]+(\d+)[\s,]+(\d+)/);
-  return m ? [+m[1], +m[2], +m[3]] : null;
-}
 function rgbToHex([r,g,b]) {
   const h = (n) => Math.round(n).toString(16).padStart(2, "0");
   return "#" + h(r) + h(g) + h(b);
@@ -95,28 +147,41 @@ async function main() {
         await new Promise((r) => setTimeout(r, 80));
 
         for (const pair of PAIRS) {
-          const measure = await page.evaluate((sel, fgProp, fgPath, bgProp) => {
+          // Canvas im Browser-Context konvertiert beliebige CSS-Farben
+          // (rgb, oklch, oklab, hsl, color-mix) zuverlässig zu sRGB-Triples.
+          const measure = await page.evaluate(({ sel, fgProp, fgPath, bgProp }) => {
+            const canvas = document.createElement("canvas");
+            canvas.width = 1; canvas.height = 1;
+            const ctx = canvas.getContext("2d");
+            function toRgb(color) {
+              if (!color) return null;
+              ctx.clearRect(0, 0, 1, 1);
+              ctx.fillStyle = "#000";
+              ctx.fillStyle = color;
+              ctx.fillRect(0, 0, 1, 1);
+              const d = ctx.getImageData(0, 0, 1, 1).data;
+              return [d[0], d[1], d[2]];
+            }
             const el = document.querySelector(sel);
             if (!el) return null;
             const cs = getComputedStyle(el);
-            const bg = bgProp ? cs[bgProp] : null;
-            let fg;
+            const bgStr = bgProp ? cs[bgProp] : null;
+            let fgStr;
             if (fgPath) {
               const child = el.querySelector(fgPath[0]);
               if (!child) return null;
-              fg = getComputedStyle(child)[fgPath[1]];
+              fgStr = getComputedStyle(child)[fgPath[1]];
             } else {
-              fg = cs[fgProp];
+              fgStr = cs[fgProp];
             }
-            return { fg, bg };
-          }, pair.selector, pair.fgProp, pair.fgPath, pair.bgProp);
+            return { fg: toRgb(fgStr), bg: toRgb(bgStr) };
+          }, { sel: pair.selector, fgProp: pair.fgProp, fgPath: pair.fgPath, bgProp: pair.bgProp });
 
           if (!measure) {
             results.push({ tone, mode, pair: pair.label, status: "missing" });
             continue;
           }
-          const fg = parseRgb(measure.fg);
-          const bg = parseRgb(measure.bg);
+          const { fg, bg } = measure;
           if (!fg || !bg) {
             results.push({ tone, mode, pair: pair.label, status: "skip" });
             continue;

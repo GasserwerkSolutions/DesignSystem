@@ -40,6 +40,37 @@
   --color-error:   #dc2626;
   --color-info:    #0284c7;  /* cyan-600 — eigenständig, unabhängig von Themes */
 
+  /* Status-Token-Tripel — gemeinsame Basis für Callout / Badge / Banner / Toast.
+     Mode-aware durch Vererbung: --color-bg und --color-text-primary wechseln
+     in dark.css, die color-mix-Resultate folgen automatisch.
+     - bg: hell-pastell im Light, dunkel-pastell im Dark
+     - fg: tiefes Statusfarbe im Light, helles Statusfarbe im Dark
+     - border: pure Statusfarbe (constant), trägt den Akzent
+
+     Mix-Ratios sind kontrastvalidiert (WCAG AA, 4.5:1) für alle 6 Tones × 4 Modi
+     plus Nested-Scopes. fg-Mix: 60%/40%, bg-Mix: 12-15%/85-88%. Warning-bg
+     etwas tinker, weil Amber-Pastel sonst zu nah am Body-bg liegt.
+  */
+  --status-info-bg:        color-mix(in oklch, var(--color-info)    12%, var(--color-bg));
+  --status-info-fg:        color-mix(in oklch, var(--color-info)    60%, var(--color-text-primary));
+  --status-info-border:    var(--color-info);
+
+  --status-success-bg:     color-mix(in oklch, var(--color-success) 12%, var(--color-bg));
+  --status-success-fg:     color-mix(in oklch, var(--color-success) 60%, var(--color-text-primary));
+  --status-success-border: var(--color-success);
+
+  --status-warning-bg:     color-mix(in oklch, var(--color-warning) 14%, var(--color-bg));
+  --status-warning-fg:     color-mix(in oklch, var(--color-warning) 60%, var(--color-text-primary));
+  --status-warning-border: var(--color-warning);
+
+  --status-danger-bg:      color-mix(in oklch, var(--color-error)   12%, var(--color-bg));
+  --status-danger-fg:      color-mix(in oklch, var(--color-error)   60%, var(--color-text-primary));
+  --status-danger-border:  var(--color-error);
+
+  --status-neutral-bg:     var(--color-bg-tertiary);
+  --status-neutral-fg:     var(--color-text-secondary);
+  --status-neutral-border: var(--color-border-dark);
+
   /* Borders */
   --color-border:       var(--gray-200);
   --color-border-light: var(--gray-100);

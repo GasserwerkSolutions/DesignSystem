@@ -7,8 +7,14 @@
  *
  * CONTRACT:
  *   Optional:
- *     --callout-bg, --callout-fg, --callout-accent
+ *     --callout-bg       Background-Pastell
+ *     --callout-fg       Body-Text-Farbe
+ *     --callout-stripe   Border-Inline-Start-Farbe (pure status color)
+ *     --callout-accent   Title-Text-Farbe (kontrastreicher gegen bg)
  *     --callout-border-width, --callout-padding, --callout-radius
+ *
+ * Zieht die Variants aus dem zentralen --status-*-Token-Set
+ * (siehe semantic.css). Mode-aware durch Vererbung — kein eigener Dark-Block.
  *
  * Struktur:
  *   <aside class="callout callout--info">
@@ -19,11 +25,7 @@
  *   </aside>
  *
  * Modifier:
- *   .callout--info      (cyan — default)
- *   .callout--success   (trust/green)
- *   .callout--warning   (playful/amber)
- *   .callout--danger    (red)
- *   .callout--neutral   (grau — ohne Akzent)
+ *   .callout--info / --success / --warning / --danger / --neutral
  */
 
 .callout {
@@ -31,9 +33,9 @@
   align-items: flex-start;
   gap: var(--space-12);
   padding: var(--callout-padding, var(--space-16) var(--space-20));
-  background: var(--callout-bg, color-mix(in oklch, var(--color-info) 10%, white));
+  background: var(--callout-bg, var(--status-info-bg));
   color: var(--callout-fg, var(--color-text-primary));
-  border-inline-start: var(--callout-border-width, 4px) solid var(--callout-accent, var(--color-info));
+  border-inline-start: var(--callout-border-width, 4px) solid var(--callout-stripe, var(--status-info-border));
   border-radius: var(--callout-radius, var(--radius-md));
 }
 
@@ -42,7 +44,7 @@
   font-weight: var(--fw-700);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--callout-accent, var(--color-info));
+  color: var(--callout-accent, var(--status-info-fg));
   margin-bottom: var(--space-4);
 }
 
@@ -62,27 +64,32 @@
 }
 
 .callout--info {
-  --callout-bg: color-mix(in oklch, var(--color-info) 10%, white);
-  --callout-accent: var(--color-info);
+  --callout-bg:     var(--status-info-bg);
+  --callout-stripe: var(--status-info-border);
+  --callout-accent: var(--status-info-fg);
 }
 
 .callout--success {
-  --callout-bg: color-mix(in oklch, var(--color-success) 12%, white);
-  --callout-accent: var(--color-success);
+  --callout-bg:     var(--status-success-bg);
+  --callout-stripe: var(--status-success-border);
+  --callout-accent: var(--status-success-fg);
 }
 
 .callout--warning {
-  --callout-bg: color-mix(in oklch, var(--color-warning) 14%, white);
-  --callout-accent: var(--color-warning);
+  --callout-bg:     var(--status-warning-bg);
+  --callout-stripe: var(--status-warning-border);
+  --callout-accent: var(--status-warning-fg);
 }
 
 .callout--danger {
-  --callout-bg: color-mix(in oklch, var(--color-error) 10%, white);
-  --callout-accent: var(--color-error);
+  --callout-bg:     var(--status-danger-bg);
+  --callout-stripe: var(--status-danger-border);
+  --callout-accent: var(--status-danger-fg);
 }
 
 .callout--neutral {
-  --callout-bg: var(--color-bg-secondary);
-  --callout-accent: var(--color-border-dark);
-  --callout-fg: var(--color-text-secondary);
+  --callout-bg:     var(--status-neutral-bg);
+  --callout-stripe: var(--status-neutral-border);
+  --callout-accent: var(--status-neutral-fg);
+  --callout-fg:     var(--color-text-secondary);
 }
