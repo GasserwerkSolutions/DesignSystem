@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",

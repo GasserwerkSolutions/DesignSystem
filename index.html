@@ -848,6 +848,56 @@
     </section>
 
     <section class="section">
+      <h2>Goldener Schnitt</h2>
+      <p>
+        <code>--phi: 1.618</code> als Foundation-Konstante (Token).
+        <code>.split--golden</code> teilt zwei Spalten in 1 : φ;
+        <code>.aspect-golden</code> setzt das Verhältnis auf Boxen.
+        Ergänzt den 4px-Grid für Editorial-Inhalte, ersetzt ihn nicht —
+        UI-Controls bleiben auf der Spacing-Skala.
+      </p>
+      <div class="split split--golden" style="margin-block-end: var(--space-24)">
+        <aside>
+          <span class="badge badge--neutral">Editorial-Note</span>
+          <h3 style="margin-block-start: var(--space-8)">1 : φ</h3>
+          <p style="color: var(--color-text-secondary); font-size: var(--font-sm); margin: 0">
+            Kurzer Teil links, langer Teil rechts. Klassisches Verhältnis
+            für Side-Notes neben Hauptinhalt.
+          </p>
+        </aside>
+        <article>
+          <p>
+            Wenn der gesamte Bereich in zwei Teile geteilt wird, sodass das
+            Verhältnis des Ganzen zum längeren Teil gleich dem Verhältnis des
+            längeren Teils zum kürzeren ist, entsteht der goldene Schnitt:
+            <code>a : b = (a+b) : a</code>. Beide Verhältnisse ergeben dieselbe
+            Konstante φ ≈ 1.618.
+          </p>
+          <p>
+            In diesem Design-System ist φ ein Foundation-Token, aber kein
+            Default für UI-Controls. Buttons und Inputs bleiben auf der
+            4px-Spacing-Skala; nur Layout-Splits, Aspect-Ratios und
+            redaktionelle Aufteilungen ziehen daraus.
+          </p>
+        </article>
+      </div>
+      <div class="grid-3">
+        <div class="card aspect-golden" style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--space-4)">
+          <strong>aspect-golden</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-tertiary)">φ : 1 (landscape)</span>
+        </div>
+        <div class="card aspect-golden--portrait" style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--space-4)">
+          <strong>portrait</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-tertiary)">1 : φ</span>
+        </div>
+        <div class="card aspect-square" style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--space-4)">
+          <strong>square</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-tertiary)">1 : 1 (zum Vergleich)</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Editorial-Container</h2>
       <p>
         <code>.container--prose</code> verengt sich auf <code>--prose-max</code>

@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.5.5] — Goldener Schnitt im Layout
+
+Foundation-Erweiterung: φ als harmonische Konstante für Editorial-Splits
+und Aspect-Ratios — ergänzt den 4px-Grid (UI-Controls), ersetzt ihn nicht.
+
+### Hinzugefügt
+
+- **Token `--phi: 1.618`** in `tokens.css` mit `--phi-short: 38.2%` und `--phi-long: 61.8%` als abgeleitete Prozent-Werte.
+- **`.split`-Layout-Primitive** in `base/layout.css`: zwei-Spalten-Grid, default 1:1, Verhältnis via `--split-ratio`-Custom-Property überschreibbar ohne neue Klasse.
+- **`.split--golden` / `.split--golden-reverse`** Modifier für 1 : φ und φ : 1.
+- **`.aspect-golden`** Utility für `φ : 1` Landscape, `.aspect-golden--portrait` für `1 : φ`.
+- **Responsive Collapse** bei <768px: `.split` wird single-column wie `.grid-*`.
+- **Demo-Section "Goldener Schnitt"** mit Editorial-Split (Sidebar-Note 1 : Body φ) und drei Aspect-Cards (landscape / portrait / square zum Vergleich).
+
+### Architektur-Entscheidung
+
+- **φ ist eine optionale Layout-Achse, kein Default für UI-Controls.** Buttons / Inputs / Density bleiben auf der 4px-Grid-Skala. φ wirkt nur dort, wo Konsumenten explizit `.split--golden` oder `.aspect-golden` setzen — niemand bekommt φ-Proportionen "automatisch" aufgepfropft.
+
+### Validierung
+
+- Smoke (puppeteer): mathematisch präzise
+  - Split-Verhältnis: 431px / 697px = **1.618 exakt** ✓
+  - Landscape: 956 / 591 = 1.618 ✓
+  - Portrait: 591 / 365 = 1.618 ✓
+- DTCG-Export: `phi`-Token, 252 Tokens total (vorher 249).
+- Lint, Static-Contrast (1008/1008), Browser-Contrast (180/180) WCAG-AA grün.
+
+---
+
 ## [0.5.4] — Advanced Components (Schritt 5: Tree)
 
 ### Hinzugefügt

@@ -119,6 +119,36 @@
   aspect-ratio: 16 / 9;
 }
 
+.aspect-golden {
+  aspect-ratio: var(--phi) / 1;
+}
+
+.aspect-golden--portrait {
+  aspect-ratio: 1 / var(--phi);
+}
+
+/* Split: zwei-Spalten Layout-Primitive für Editorial-Inhalte.
+   Default 1:1. Modifier setzen das Verhältnis ohne neue Klasse-Explosion.
+   Ergänzt .grid-2 (gleich-große Spalten) um harmonische Aufteilungen. */
+.split {
+  display: grid;
+  grid-template-columns: var(--split-ratio, 1fr 1fr);
+  gap: var(--split-gap, var(--space-block));
+  align-items: var(--split-align, start);
+}
+
+/* Goldener Schnitt: kurzer Teil links (1), langer rechts (φ).
+   Klassisches Editorial-Verhältnis — Sidebar-Note + Body, oder
+   Lead-Paragraph + Hero-Image. */
+.split--golden         { --split-ratio: 1fr 1.618fr; }
+.split--golden-reverse { --split-ratio: 1.618fr 1fr; }
+
+@media (max-width: 768px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
 .block { display: block; }
 .inline { display: inline; }
 .inline-block { display: inline-block; }
