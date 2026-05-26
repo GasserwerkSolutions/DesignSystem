@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.5.4] — Advanced Components (Schritt 5: Tree)
+
+### Hinzugefügt
+
+- **`.tree`-Component** als hierarchische Liste mit Expand/Collapse via native `<details>`/`<summary>`. Disclosure-Semantik, Keyboard (Enter/Space) und A11Y-Verlinkung kommen vom Browser — **kein JS nötig**.
+- **Token-Contract:** `--tree-indent` (default `--space-16`), `--tree-item-py/-px`, `--tree-hover-bg`, `--tree-chevron-color`.
+- **Sub-Elemente:** `.tree__node` (auf `<details>`), `.tree__summary` (clickable header), `.tree__chevron` (rotiert via `[open]`), `.tree__label`, `.tree__leaf` (für blattlose Items mit aligned indent).
+- **`aria-current="true"`** auf `.tree__leaf` für active-state (zieht aus `--color-interactive-light/-dark`).
+- **CSS-only Chevron** via Triangle-Border-Trick (kein SVG, currentColor-aware).
+- **Demo-Section "Tree"** mit zwei Patterns: Folder-Struktur (3 Ebenen tief, mit Badges + aria-current) und Settings-Navigation.
+
+### Architektur-Hinweis
+
+- Bewusst Disclosure-Pattern statt vollständigem WAI-ARIA Tree-Pattern (mit Arrow-Key-Navigation und `role="tree"`). Disclosure ist robuster, einfacher und für 90% der Use-Cases ausreichend. Wer echte Tree-Keyboard-Navigation braucht, bringt eigene JS-Implementation mit — im Component-Header explizit dokumentiert.
+
+### Validierung
+
+- Lint, Static-Contrast (1008/1008), Browser-Contrast (180/180) WCAG-AA grün.
+
+---
+
 ## [0.5.3] — Advanced Components (Schritt 4: Timeline)
 
 ### Hinzugefügt

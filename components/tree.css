@@ -1,0 +1,163 @@
+/**
+ * Tree Component
+ * ===============
+ *
+ * Hierarchische Liste mit Expand/Collapse. Nutzt native <details>/<summary>
+ * — Browser bringt Disclosure-Semantik, Keyboard (Enter/Space toggles) und
+ * A11Y-Verlinkung gratis mit. Kein JS nötig.
+ *
+ * Use-Cases: Ordner-Strukturen, Settings-Sections, Org-Charts, Nav-Trees,
+ * Filter-Hierarchien.
+ *
+ * Hinweis zur ARIA-Semantik:
+ *   Diese Component nutzt das "Disclosure"-Pattern (native details/summary),
+ *   nicht das vollständige WAI-ARIA "Tree"-Pattern (mit Arrow-Key-Navigation
+ *   und role="tree"). Disclosure ist einfacher, robuster und für 90% der
+ *   Use-Cases ausreichend. Wer echte Tree-Keyboard-Navigation braucht,
+ *   bringt eigene JS-Implementation mit.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --tree-indent          Padding pro Hierarchie-Ebene (default --space-16)
+ *     --tree-item-py / -px   Padding pro Item-Zeile
+ *     --tree-hover-bg
+ *     --tree-chevron-color
+ *
+ * Struktur:
+ *   <ul class="tree">
+ *     <li>
+ *       <details class="tree__node" open>
+ *         <summary class="tree__summary">
+ *           <span class="tree__chevron" aria-hidden="true"></span>
+ *           <span class="tree__label">📂 Dokumente</span>
+ *           <span class="badge badge--neutral">12</span>
+ *         </summary>
+ *         <ul class="tree__children">
+ *           <li><a class="tree__leaf" href="#">📄 invoice.pdf</a></li>
+ *           <li>
+ *             <details class="tree__node">
+ *               <summary class="tree__summary">
+ *                 <span class="tree__chevron" aria-hidden="true"></span>
+ *                 <span class="tree__label">📂 Archiv</span>
+ *               </summary>
+ *               <ul class="tree__children">
+ *                 <li><a class="tree__leaf" href="#">📄 alt.txt</a></li>
+ *               </ul>
+ *             </details>
+ *           </li>
+ *         </ul>
+ *       </details>
+ *     </li>
+ *   </ul>
+ *
+ * `.tree__node[open]` rotiert das Chevron automatisch — gleicher Pattern
+ * wie Accordion in v0.x.
+ */
+
+.tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--font-sm);
+}
+
+.tree ul {
+  list-style: none;
+  margin: 0;
+  padding-inline-start: var(--tree-indent, var(--space-16));
+}
+
+.tree__node {
+  /* Reset default details styling, keep behavior */
+}
+
+.tree__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--tree-item-py, var(--space-6)) var(--tree-item-px, var(--space-8));
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  user-select: none;
+  font-weight: var(--fw-500);
+
+  /* Native marker entfernen — Chevron-Element übernimmt visuell. */
+  list-style: none;
+}
+
+.tree__summary::-webkit-details-marker {
+  display: none;
+}
+
+.tree__summary::marker {
+  display: none;
+}
+
+.tree__summary:hover {
+  background: var(--tree-hover-bg, var(--color-bg-secondary));
+}
+
+.tree__summary:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* Chevron als CSS-only Caret. Rotiert auf [open]. */
+.tree__chevron {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  flex-shrink: 0;
+  color: var(--tree-chevron-color, var(--color-text-tertiary));
+  transition: transform var(--motion-feedback);
+}
+
+.tree__chevron::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-block-start: 0.3rem solid transparent;
+  border-block-end:   0.3rem solid transparent;
+  border-inline-start: 0.4rem solid currentColor;
+}
+
+.tree__node[open] > .tree__summary > .tree__chevron {
+  transform: rotate(90deg);
+}
+
+.tree__label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Leaf: kein Toggle, nur clickable link/button */
+.tree__leaf {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--tree-item-py, var(--space-6)) var(--tree-item-px, var(--space-8));
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-weight: var(--fw-400);
+  /* Leaves richten sich an Position der Labels aus — Indent um Chevron-Breite. */
+  padding-inline-start: calc(var(--tree-item-px, var(--space-8)) + 0.6rem + var(--space-8));
+}
+
+.tree__leaf:hover {
+  background: var(--tree-hover-bg, var(--color-bg-secondary));
+  color: var(--color-text-primary);
+}
+
+.tree__leaf:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.tree__leaf[aria-current="true"] {
+  background: var(--color-interactive-light);
+  color: var(--color-interactive-dark);
+  font-weight: var(--fw-600);
+}

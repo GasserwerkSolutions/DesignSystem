@@ -183,6 +183,114 @@
     </section>
 
     <section class="section">
+      <h2>Tree</h2>
+      <p>
+        Hierarchische Liste mit Expand/Collapse via native
+        <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code>. Disclosure-Semantik,
+        Keyboard (Enter/Space) und A11Y kommen vom Browser — kein JS nötig.
+        Chevron rotiert über das <code>[open]</code>-Attribut.
+      </p>
+      <div class="grid-2">
+        <div class="demo-block">
+          <span class="demo-label">Folder-Struktur</span>
+          <ul class="tree">
+            <li>
+              <details class="tree__node" open>
+                <summary class="tree__summary">
+                  <span class="tree__chevron" aria-hidden="true"></span>
+                  <span class="tree__label">📂 Dokumente</span>
+                  <span class="badge badge--neutral">14</span>
+                </summary>
+                <ul>
+                  <li>
+                    <details class="tree__node" open>
+                      <summary class="tree__summary">
+                        <span class="tree__chevron" aria-hidden="true"></span>
+                        <span class="tree__label">📂 Rechnungen 2026</span>
+                      </summary>
+                      <ul>
+                        <li><a class="tree__leaf" href="#">📄 Mai.pdf</a></li>
+                        <li><a class="tree__leaf" href="#" aria-current="true">📄 April.pdf</a></li>
+                        <li><a class="tree__leaf" href="#">📄 März.pdf</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                  <li>
+                    <details class="tree__node">
+                      <summary class="tree__summary">
+                        <span class="tree__chevron" aria-hidden="true"></span>
+                        <span class="tree__label">📂 Verträge</span>
+                      </summary>
+                      <ul>
+                        <li><a class="tree__leaf" href="#">📄 Mietvertrag.pdf</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                  <li><a class="tree__leaf" href="#">📄 Steuererklärung.xlsx</a></li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details class="tree__node">
+                <summary class="tree__summary">
+                  <span class="tree__chevron" aria-hidden="true"></span>
+                  <span class="tree__label">📂 Bilder</span>
+                  <span class="badge badge--neutral">238</span>
+                </summary>
+                <ul>
+                  <li><a class="tree__leaf" href="#">🖼 logo.png</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Settings-Navigation</span>
+          <ul class="tree">
+            <li>
+              <details class="tree__node" open>
+                <summary class="tree__summary">
+                  <span class="tree__chevron" aria-hidden="true"></span>
+                  <span class="tree__label">Konto</span>
+                </summary>
+                <ul>
+                  <li><a class="tree__leaf" href="#">Profil</a></li>
+                  <li><a class="tree__leaf" href="#">Sicherheit</a></li>
+                  <li><a class="tree__leaf" href="#">Benachrichtigungen</a></li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details class="tree__node" open>
+                <summary class="tree__summary">
+                  <span class="tree__chevron" aria-hidden="true"></span>
+                  <span class="tree__label">Salon</span>
+                </summary>
+                <ul>
+                  <li><a class="tree__leaf" href="#">Öffnungszeiten</a></li>
+                  <li><a class="tree__leaf" href="#">Services</a></li>
+                  <li><a class="tree__leaf" href="#">Stundensatz</a></li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details class="tree__node">
+                <summary class="tree__summary">
+                  <span class="tree__chevron" aria-hidden="true"></span>
+                  <span class="tree__label">Abrechnung</span>
+                </summary>
+                <ul>
+                  <li><a class="tree__leaf" href="#">Plan &amp; Tarif</a></li>
+                  <li><a class="tree__leaf" href="#">Zahlungsmethode</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Timeline</h2>
       <p>
         Vertikale Aktivitäts-Liste mit Marker-Linie. Marker-Variants ziehen
