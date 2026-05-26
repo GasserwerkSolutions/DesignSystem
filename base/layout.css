@@ -11,6 +11,13 @@
   padding: 0 var(--space-inline);
 }
 
+/* Editorial-Container: opt-in für Prosa-Spalten. Themes setzen --prose-max,
+   nicht --container-max — sonst erbt jeder Layout-Container (Topbar, Grids)
+   die Verengung via Custom-Property-Cascade. Siehe ADR-001. */
+.container--prose {
+  max-width: var(--prose-max, 70ch);
+}
+
 .stack {
   display: flex;
   flex-direction: column;

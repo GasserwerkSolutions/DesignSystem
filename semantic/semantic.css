@@ -150,8 +150,13 @@
   /* Section */
   --section-py: var(--space-section);
 
-  /* Container */
+  /* Container — invariant Layout-Breite, theme-agnostisch */
   --container-max: 1280px;
+
+  /* Prose — opt-in via .container--prose. Themes mit Editorial-Charakter
+     (premium) verengen hier statt --container-max, damit UI-Container
+     ihre volle Breite behalten. Siehe ADR-001. */
+  --prose-max:     70ch;
 
   /* Input */
   --input-bg:           white;

@@ -32,7 +32,11 @@
   --space-block:   var(--space-40);
   --space-section: var(--space-96);
   --section-py:    var(--space-96);
-  --container-max: 80ch;
+
+  /* Editorial-Spalte: nur .container--prose verengt sich, .container bleibt
+     auf 1280px. Verhindert, dass UI-Chrome (Topbar, Grids) via
+     Custom-Property-Cascade auf Editorial-Breite verengt. Siehe ADR-001. */
+  --prose-max:     80ch;
 
   /* Motion */
   --duration-fast:   var(--motion-slow);

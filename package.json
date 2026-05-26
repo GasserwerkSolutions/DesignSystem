@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
@@ -15,7 +15,7 @@
     "check:full": "npm run lint && npm run check:contrast && npm run check:contrast:browser"
   },
   "engines": { "node": ">=18" },
-  "optionalDependencies": {
-    "puppeteer": "^22.0.0"
+  "devDependencies": {
+    "puppeteer": "^25.1.0"
   }
 }

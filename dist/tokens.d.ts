@@ -148,6 +148,7 @@ export type TokenName =
   | "--playful-700"
   | "--playful-800"
   | "--playful-900"
+  | "--prose-max"
   | "--radius-0"
   | "--radius-12"
   | "--radius-16"

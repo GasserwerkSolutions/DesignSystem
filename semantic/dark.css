@@ -14,8 +14,13 @@
  * beide Trigger (manual + auto) referenziert.
  */
 
-/* Dark-Token-Set — manuell */
-[data-mode="dark"] {
+/* Dark-Token-Set — manuell.
+   Descendant-Partner ist Pflicht: ohne ihn cascadieren Theme-Tokens auf
+   nested [data-tone]-Subtrees, der dark-Block matched dort nicht mehr,
+   und z.B. premium-text wird im Dark-Mode fast schwarz auf schwarz.
+   Lint-Check 3 (scripts/lint-themes.js) erzwingt das. */
+[data-mode="dark"],
+[data-mode="dark"] [data-tone] {
   color-scheme: dark;
 
   /* Backgrounds */
@@ -59,9 +64,12 @@
   --focus-ring: 3px solid var(--color-focus-ring);
 }
 
-/* Auto-Dark via System — außer User hat explizit Light gewählt */
+/* Auto-Dark via System — außer User hat explizit Light gewählt.
+   Selber Descendant-Partner-Mechanismus: nested data-tone-Subtrees müssen
+   auch ohne explizites data-mode auf dem Root den Dark-Override erhalten. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-mode="light"]):not([data-mode="dark"]) {
+  :root:not([data-mode="light"]):not([data-mode="dark"]),
+  :root:not([data-mode="light"]):not([data-mode="dark"]) [data-tone] {
     color-scheme: dark;
 
     --color-bg:             var(--gray-950);

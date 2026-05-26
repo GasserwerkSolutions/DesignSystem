@@ -77,11 +77,12 @@ npm run check:full              # lint + static + browser
 
 ### Lint
 
-Drei Checks:
+Vier Checks:
 
 1. **Selector-Contract (hard-fail):** Themes dürfen nur `[data-tone~="..."]` selektieren.
 2. **Destruktive mode-sensitive Tokens (warn):** Themes, die Tokens setzen, die auch in `semantic/dark.css` stehen, werden gewarnt. Funktionieren nur wegen `mode`-Layer-Reihenfolge.
 3. **Nested-Mode-Coverage (hard-fail):** Jeder `[data-mode="X"]`-Selektor in `dark.css` braucht einen `[data-mode="X"] [data-tone]`-Descendant-Partner. Sonst verlieren nested Tone-Scopes ihren Dark-Mode.
+4. **Layout-Token-Verbot (hard-fail):** Themes dürfen `--container-max` nicht setzen. Custom-Property-Cascade verengt sonst jeden `.container` (auch UI-Chrome). Editorial-Verengung gehört in `--prose-max` + `.container--prose`. Siehe ADR-001.
 
 ### Static-Contrast-Checker
 
@@ -104,4 +105,4 @@ Lädt die echte `index.html` in headless Chromium, klickt sich durch alle Theme-
 
 ## Architektur-Entscheidungen
 
-- [ADR-001 — Container-Width-Inheritance bei tone-spezifischen Overrides](./docs/ADR-001-container-max-inheritance.md)
+- [ADR-001 — Container-Width-Inheritance bei tone-spezifischen Overrides](./ADR-001-container-max-inheritance.md)
