@@ -60,6 +60,18 @@
   --code-copy-bg:         rgba(255, 255, 255, 0.06);
   --code-copy-hover-bg:   rgba(255, 255, 255, 0.12);
 
+  /* Chart-Palette — heller + leicht ent-sättigt für Lesbarkeit auf
+     dunklem BG. Identitäts-Reihenfolge erhalten (orange, blue, green …),
+     Konsumenten-Code muss nichts umstellen. */
+  --chart-1: #FFB938;
+  --chart-2: #88CCEE;
+  --chart-3: #44BBA4;
+  --chart-4: #FFEB75;
+  --chart-5: #4A9EE0;
+  --chart-6: #E88556;
+  --chart-7: #DC9ABF;
+  --chart-8: #BFBFBF;
+
   /* Focus-Ring kontrastreicher */
   --focus-ring: 3px solid var(--color-focus-ring);
 }
@@ -100,5 +112,14 @@
     --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.6);
 
     --code-block-bg:        var(--gray-800);
+
+    --chart-1: #FFB938;
+    --chart-2: #88CCEE;
+    --chart-3: #44BBA4;
+    --chart-4: #FFEB75;
+    --chart-5: #4A9EE0;
+    --chart-6: #E88556;
+    --chart-7: #DC9ABF;
+    --chart-8: #BFBFBF;
   }
 }

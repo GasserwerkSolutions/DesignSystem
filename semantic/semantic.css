@@ -71,6 +71,31 @@
   --status-neutral-fg:     var(--color-text-secondary);
   --status-neutral-border: var(--color-border-dark);
 
+  /* ========================================
+     CHART — kategorische Palette für Datenvisualisierung
+     ========================================
+     Okabe-Ito-Palette (Cell Press / academic gold standard für
+     Color-Blind-Safety). 8 unterscheidbare Farben — funktioniert für
+     Deuteranopie, Protanopie und Tritanopie. Tone-agnostisch (Daten
+     brauchen konsistente Farben unabhängig vom Theme). Mode-aware
+     durch Overrides in dark.css.
+
+     Semantic-Aliases (--chart-positive/-negative/-neutral) ziehen aus
+     den Status-Bordern, damit Trend-Färbung mit Callout/Badge konsistent
+     bleibt. */
+  --chart-1: #E69F00;   /* orange */
+  --chart-2: #56B4E9;   /* sky-blue */
+  --chart-3: #009E73;   /* bluish-green */
+  --chart-4: #F0E442;   /* yellow */
+  --chart-5: #0072B2;   /* blue */
+  --chart-6: #D55E00;   /* vermillion */
+  --chart-7: #CC79A7;   /* reddish-purple */
+  --chart-8: #999999;   /* gray */
+
+  --chart-positive: var(--status-success-border);
+  --chart-negative: var(--status-danger-border);
+  --chart-neutral:  var(--chart-8);
+
   /* Borders */
   --color-border:       var(--gray-200);
   --color-border-light: var(--gray-100);

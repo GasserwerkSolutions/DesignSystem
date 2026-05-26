@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.5.6] — Chart-Container + kategorische Palette
+
+Datenvisualisierung in den DS-Stack aufgenommen. Library-agnostischer
+Container plus eine Color-Blind-Safe Palette als Foundation-Token-Set.
+
+### Hinzugefügt
+
+- **Okabe-Ito-Palette** in `semantic.css`: `--chart-1` bis `--chart-8`. Color-Blind-Safe (Cell Press / academic gold standard für Deuteranopie, Protanopie, Tritanopie). Tone-agnostisch — gleich in allen 6 Themes, weil Daten-Farben Konsistenz brauchen.
+- **Mode-aware Palette-Overrides** in `dark.css` (manuell + auto-Block beide ergänzt): hellere + leicht ent-sättigte Varianten der 8 Slots. Identitäts-Reihenfolge (orange → sky-blue → green → …) bleibt erhalten — Konsumenten-Code muss nichts umstellen beim Mode-Switch.
+- **Semantic-Aliases:** `--chart-positive` / `--chart-negative` / `--chart-neutral` ziehen aus den Status-Bordern (v0.3.1) — Trend-Färbung bleibt konsistent zu Callout/Banner/Alert.
+- **`.chart`-Container-Component** als Library-agnostischer Frame mit `__header` (Title + Subtitle + Trend), `__body` (für SVG/Canvas/Library-Output), `__legend` (mit `__swatch`-Sub-Element), `__source`-Slots.
+- **Trend-Modifier:** `.chart__trend--positive` / `--negative` / `--neutral` mit color-mixed bg + fg aus den semantic-Aliases — mode-aware durch Vererbung.
+- **Demo-Section "Chart-Container"** mit drei realistischen Charts:
+  - Bar (Umsatz Q1, `--chart-1`, positive Trend-Chip)
+  - Line (Buchungen vs No-Shows, `--chart-3` + `--chart-6`, negative Trend-Chip)
+  - Palette-Übersicht (alle 8 Kategorien als Swatch-Reihe)
+
+### Architektur
+
+- **Library-agnostisch:** DS liefert Container + Palette, kein Chart-Engine. Konsument bringt SVG inline, Canvas, Chart.js, D3, Recharts oder Observable Plot mit — alle nutzen `var(--chart-N)` für Kategorien.
+- **`.chart__body > svg`** wird automatisch `width: 100%; height: auto; display: block;` — responsive ohne dass Konsument das einzeln setzen muss.
+
+### Validierung
+
+- Smoke (puppeteer):
+  - Light: Okabe-Ito exakt (8 Hex-Werte korrekt)
+  - Dark: alle 8 Slots wechseln zu helleren Varianten
+  - Trend-Chips ziehen `--chart-positive`/`--chart-negative` korrekt
+- DTCG-Export: 263 Tokens (vorher 252) — `chart.1..8` plus `chart.positive/-negative/-neutral` sauber als nested tree.
+- Lint, Static-Contrast (1008/1008), Browser-Contrast (180/180) WCAG-AA grün.
+
+---
+
 ## [0.5.5] — Goldener Schnitt im Layout
 
 Foundation-Erweiterung: φ als harmonische Konstante für Editorial-Splits

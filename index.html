@@ -291,6 +291,100 @@
     </section>
 
     <section class="section">
+      <h2>Chart-Container</h2>
+      <p>
+        Library-agnostischer Frame — Konsument bringt das Rendering mit
+        (SVG inline, Canvas, Chart.js, D3, …). Das DS liefert Container,
+        Color-Palette (Okabe-Ito, Color-Blind-Safe) und Trend-Variants.
+        Die Palette wechselt im Dark-Mode automatisch (heller, ent-sättigt)
+        — alle 8 Kategorien bleiben unterscheidbar.
+      </p>
+      <div class="grid-2">
+        <figure class="chart">
+          <figcaption class="chart__header">
+            <div>
+              <h3 class="chart__title">Umsatz Q1</h3>
+              <p class="chart__subtitle">CHF, monatlich</p>
+            </div>
+            <span class="chart__trend chart__trend--positive">+12.4%</span>
+          </figcaption>
+          <div class="chart__body">
+            <svg viewBox="0 0 400 180" role="img" aria-label="Balkendiagramm Umsatz Januar bis April">
+              <g>
+                <rect x="20"  y="90"  width="60" height="80"  rx="4" fill="var(--chart-1)"></rect>
+                <rect x="100" y="60"  width="60" height="110" rx="4" fill="var(--chart-1)"></rect>
+                <rect x="180" y="40"  width="60" height="130" rx="4" fill="var(--chart-1)"></rect>
+                <rect x="260" y="20"  width="60" height="150" rx="4" fill="var(--chart-1)"></rect>
+              </g>
+              <line x1="0" y1="170" x2="400" y2="170" stroke="var(--color-border)" stroke-width="1"/>
+              <g font-size="11" font-family="var(--font-mono)" fill="var(--color-text-tertiary)">
+                <text x="50"  y="178" text-anchor="middle" dy="0.8em">Jan</text>
+                <text x="130" y="178" text-anchor="middle" dy="0.8em">Feb</text>
+                <text x="210" y="178" text-anchor="middle" dy="0.8em">Mär</text>
+                <text x="290" y="178" text-anchor="middle" dy="0.8em">Apr</text>
+              </g>
+            </svg>
+          </div>
+          <p class="chart__source">Buchungssystem · 14:32</p>
+        </figure>
+
+        <figure class="chart">
+          <figcaption class="chart__header">
+            <div>
+              <h3 class="chart__title">Buchungen vs. No-Shows</h3>
+              <p class="chart__subtitle">letzte 7 Tage</p>
+            </div>
+            <span class="chart__trend chart__trend--negative">−3 No-Shows</span>
+          </figcaption>
+          <div class="chart__body">
+            <svg viewBox="0 0 400 180" role="img" aria-label="Liniendiagramm Buchungen und No-Shows">
+              <polyline points="20,40 80,55 140,30 200,45 260,25 320,50 380,35"
+                        fill="none" stroke="var(--chart-3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="20,140 80,135 140,150 200,130 260,145 320,140 380,155"
+                        fill="none" stroke="var(--chart-6)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+              <line x1="0" y1="170" x2="400" y2="170" stroke="var(--color-border)" stroke-width="1"/>
+            </svg>
+          </div>
+          <ul class="chart__legend">
+            <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+            <li><span class="chart__swatch" style="--swatch: var(--chart-6)"></span> No-Shows</li>
+          </ul>
+        </figure>
+      </div>
+
+      <figure class="chart" style="margin-block-start: var(--space-24)">
+        <figcaption class="chart__header">
+          <div>
+            <h3 class="chart__title">Palette — Okabe-Ito (8 Kategorien)</h3>
+            <p class="chart__subtitle">Color-Blind-Safe für Deuteranopie, Protanopie, Tritanopie</p>
+          </div>
+        </figcaption>
+        <div class="chart__body">
+          <svg viewBox="0 0 400 60" role="img" aria-label="Acht Kategoriefarben der Palette">
+            <rect x="0"   y="0" width="50" height="60" fill="var(--chart-1)"/>
+            <rect x="50"  y="0" width="50" height="60" fill="var(--chart-2)"/>
+            <rect x="100" y="0" width="50" height="60" fill="var(--chart-3)"/>
+            <rect x="150" y="0" width="50" height="60" fill="var(--chart-4)"/>
+            <rect x="200" y="0" width="50" height="60" fill="var(--chart-5)"/>
+            <rect x="250" y="0" width="50" height="60" fill="var(--chart-6)"/>
+            <rect x="300" y="0" width="50" height="60" fill="var(--chart-7)"/>
+            <rect x="350" y="0" width="50" height="60" fill="var(--chart-8)"/>
+          </svg>
+        </div>
+        <ul class="chart__legend">
+          <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> 1 · orange</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-2)"></span> 2 · sky-blue</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> 3 · bluish-green</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-4)"></span> 4 · yellow</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-5)"></span> 5 · blue</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-6)"></span> 6 · vermillion</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-7)"></span> 7 · reddish-purple</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-8)"></span> 8 · gray</li>
+        </ul>
+      </figure>
+    </section>
+
+    <section class="section">
       <h2>Timeline</h2>
       <p>
         Vertikale Aktivitäts-Liste mit Marker-Linie. Marker-Variants ziehen
