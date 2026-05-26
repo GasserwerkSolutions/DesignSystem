@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.4.7] — Component-Lücken (Schritt 8 / final: Select)
+
+Damit schließt v0.4 ab — alle 8 ursprünglich identifizierten Component-Lücken sind gefüllt.
+
+### Hinzugefügt
+
+- **`.select`-Component** als styled native `<select>`. Behält alle starken Native-Eigenschaften:
+  - Form-Integration (FormData, POST-Submit, reset)
+  - Native Keyboard (Type-ahead, Arrow-Keys, Enter, Esc)
+  - Mobile-Picker (iOS scroll-wheel, Android list)
+  - Screen-Reader-Support out of the box
+- **`.select-wrap`-Wrapper** für mode-aware Custom-Arrow via `mask-image` + `background-color: var(--color-text-tertiary)`. Arrow wechselt automatisch im Dark-Mode (gray-500 hat ≥3:1 Kontrast auf beiden Surfaces — WCAG SC 1.4.11 für UI-Components erfüllt).
+- **Token-Contract:** `--select-py/-px/-bg/-fg/-border/-radius/-arrow-color`. Padding defaultet auf `--density-control-{py,px}` → automatisch density-responsive.
+- **Modifier:** `.select--multiple` (Listbox-Display mit native list-style, kein Arrow via `:has(> .select--multiple)`-Selector), `.select-wrap--inline` (auto-width statt 100%).
+
+### Architektur-Entscheidung
+
+- **Native-styled, kein Custom-Listbox in v0.4.** Native-Select deckt 80%+ der Use-Cases mit perfekter A11Y/Mobile-Integration. Custom-Listbox (Combobox mit Search, Custom-Content-Options, Multi-Select-Chips) bleibt **v0.5-Roadmap** — eigene Component-Architektur mit Popover-API-Basis und dokumentiertem ARIA-Keyboard-Handler-Pattern.
+
+### Validierung
+
+- Smoke (puppeteer): Density wirkt (Select-Heights 50/42/58 px = identisch zu Button-Heights, beide ziehen `--density-control-py`), Arrow rendert in beiden Modes mit `--color-text-tertiary`, `:has()`-Selektor blendet Arrow bei `.select--multiple` aus ✓
+- Lint, Static-Contrast (1008/1008), Browser-Contrast (180/180) WCAG-AA grün.
+
+### v0.4-Bilanz
+
+8 neue Components / Patterns in 8 Schritten ergänzt:
+
+| Schritt | Component | Schlüsselmerkmal |
+|---|---|---|
+| 0.4.0 | Switch | Native checkbox + role=switch, calc()-verkettete Track-Geometrie |
+| 0.4.1 | Spinner | Border-Trick, currentColor inheritance, reduced-motion slowdown |
+| 0.4.2 | Alert | Dismissible, zieht --status-*-Tokens, role-Differenzierung |
+| 0.4.3 | Tag | Interactive Chip, AA-Trade-off im Header dokumentiert |
+| 0.4.4 | Avatar-Stack | Composition via Custom-Property-Cascade |
+| 0.4.5 | Stack & Cluster | Layout-Primitives mit konsistenter xs/sm/md/lg/xl-Skala |
+| 0.4.6 | Popover | Native Popover API, JS-Anchoring per-Element |
+| 0.4.7 | Select | Styled-Native, Mask-Image-Arrow, density-responsive |
+
+---
+
 ## [0.4.6] — Component-Lücken (Schritt 7: Popover)
 
 ### Hinzugefügt

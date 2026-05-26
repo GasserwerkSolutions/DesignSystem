@@ -45,6 +45,7 @@
 @import "./components/switch.css"      layer(components);
 @import "./components/field.css"       layer(components);
 @import "./components/search.css"      layer(components);
+@import "./components/select.css"      layer(components);
 @import "./components/modal.css"       layer(components);
 @import "./components/drawer.css"      layer(components);
 @import "./components/tooltip.css"     layer(components);

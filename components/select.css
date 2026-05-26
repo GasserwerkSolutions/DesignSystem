@@ -1,0 +1,133 @@
+/**
+ * Select Component (styled native <select>)
+ * ==========================================
+ *
+ * Native <select> mit appearance:none + Custom-Arrow im Wrapper.
+ * Behält die starken Native-Eigenschaften:
+ *   - Form-Integration (FormData, POST-Submit, reset)
+ *   - Native Keyboard (Type-ahead, Arrow-Keys, Enter, Esc)
+ *   - Mobile-Picker (iOS scroll-wheel, Android list)
+ *   - Screen-Reader-Support out of the box
+ *
+ * Für Custom-Content-Options (Icons, Avatars), Search-Filter oder
+ * Multi-Select mit Chip-Display → v0.5 Combobox-Component (Roadmap).
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --select-py / --select-px      Padding (default: --density-control-*)
+ *     --select-bg / --select-fg / --select-border
+ *     --select-radius
+ *     --select-arrow-color           Pfeil-Farbe (default: --color-text-tertiary,
+ *                                    mode-aware durch dark.css)
+ *
+ * Default-Markup — mit Wrapper für mode-aware Arrow:
+ *   <div class="select-wrap">
+ *     <select class="select">
+ *       <option>Trust</option>
+ *       <option>Playful</option>
+ *       <option>Premium</option>
+ *     </select>
+ *   </div>
+ *
+ * In einem Field:
+ *   <div class="field">
+ *     <label class="field__label" for="role">Rolle</label>
+ *     <div class="select-wrap">
+ *       <select id="role" class="select">…</select>
+ *     </div>
+ *   </div>
+ *
+ * Multi-Select (Listbox-Modus, kein Pfeil nötig):
+ *   <select class="select select--multiple" multiple size="5">…</select>
+ *
+ * Inline-Variante (auto-width statt 100%):
+ *   <div class="select-wrap select-wrap--inline">
+ *     <select class="select">…</select>
+ *   </div>
+ */
+
+.select-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.select-wrap--inline {
+  display: inline-block;
+  width: auto;
+}
+
+/* Custom Arrow via Mask — Farbe erbt aus --select-arrow-color (mode-aware
+   via --color-text-tertiary). pointer-events:none lässt Clicks durch zum
+   <select>, sodass der Native-Picker öffnet. */
+.select-wrap::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: var(--space-12);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  width:  1rem;
+  height: 1rem;
+  background-color: var(--select-arrow-color, var(--color-text-tertiary));
+  -webkit-mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='4,6 8,10 12,6'/></svg>");
+          mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='4,6 8,10 12,6'/></svg>");
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+  pointer-events: none;
+}
+
+/* Bei Multi-Select-Variante kein Arrow (zeigt Listbox direkt). */
+.select-wrap:has(> .select--multiple)::after {
+  display: none;
+}
+
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 100%;
+  padding: var(--select-py, var(--density-control-py))
+           var(--select-px, var(--density-control-px));
+  /* Platz für den Arrow rechts (logical property für RTL-Symmetrie). */
+  padding-inline-end: calc(var(--select-px, var(--density-control-px)) + 1.5rem);
+
+  background: var(--select-bg, var(--input-bg));
+  color: var(--select-fg, var(--input-text));
+  border: 1px solid var(--select-border, var(--input-border));
+  border-radius: var(--select-radius, var(--radius-md));
+
+  font: inherit;
+  cursor: pointer;
+}
+
+.select:hover:not(:disabled) {
+  border-color: var(--color-border-dark);
+}
+
+.select:focus-visible {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: 0 0 0 3px var(--input-focus-ring);
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Multiple: Listbox-Darstellung, kein Picker. appearance:auto, damit
+   Native-List-Style greift. cursor wird default (keine Pointer-Affordance). */
+.select--multiple {
+  appearance: auto;
+  -webkit-appearance: auto;
+  padding-inline-end: var(--select-px, var(--density-control-px));
+  cursor: default;
+}
+
+.select--multiple option {
+  padding: var(--space-4) var(--space-8);
+}

@@ -183,6 +183,64 @@
     </section>
 
     <section class="section">
+      <h2>Select</h2>
+      <p>
+        Styled native <code>&lt;select&gt;</code> — behält Form-Integration,
+        Mobile-Picker, Type-ahead-Keyboard und Screen-Reader-Support gratis.
+        Density-aware. Wrapper-Pattern für mode-aware Custom-Arrow via
+        <code>mask-image</code>. Für Search/Custom-Content-Options kommt
+        v0.5 die Combobox-Component.
+      </p>
+      <div class="grid-2">
+        <div class="field">
+          <label class="field__label" for="select-role">Rolle</label>
+          <div class="select-wrap">
+            <select id="select-role" class="select">
+              <option>Stylistin</option>
+              <option>Coloristin</option>
+              <option>Empfangskraft</option>
+              <option>Inhaberin</option>
+            </select>
+          </div>
+          <p class="field__hint">Wrapper macht den Pfeil mode-aware.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="select-status">Status</label>
+          <div class="select-wrap select-wrap--inline">
+            <select id="select-status" class="select">
+              <option>Aktiv</option>
+              <option>Pausiert</option>
+              <option>Im Urlaub</option>
+            </select>
+          </div>
+          <p class="field__hint">Inline = auto-width statt 100%.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="select-services">Services (Multi)</label>
+          <div class="select-wrap">
+            <select id="select-services" class="select select--multiple" multiple size="5">
+              <option>Haarschnitt</option>
+              <option selected>Färben</option>
+              <option>Strähnen</option>
+              <option>Bart-Trim</option>
+              <option selected>Wash &amp; Blow</option>
+              <option>Maniküre</option>
+            </select>
+          </div>
+          <p class="field__hint">Listbox-Darstellung — kein Picker, kein Arrow.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="select-disabled">Disabled</label>
+          <div class="select-wrap">
+            <select id="select-disabled" class="select" disabled>
+              <option>Nicht editierbar</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Popover</h2>
       <p>
         Native Popover API für Behavior (Light-Dismiss / Esc / Top-Layer / ARIA gratis),
