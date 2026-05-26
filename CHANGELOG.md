@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.4] — Component-Lücken (Schritt 5: Avatar-Stack)
+
+### Hinzugefügt
+
+- **`.avatar-stack`-Component** als Layout-Wrapper auf der existierenden `.avatar`-Component. Keine neue Visual-Identity, nur Composition.
+- **Token-Contract:** `--avatar-stack-overlap` (default −0.625rem), `--avatar-stack-ring` (default `--color-bg` → mode-aware), `--avatar-stack-ring-width` (default 2px). `--avatar-size` wird vom Stack-Container an alle Kinder vererbt.
+- **Modifier:** `.avatar-stack--sm` / `--lg` (Größen-Presets, steuern via Custom-Property alle Kinder), `.avatar-stack--hoverable` (fan-out-Animation, `prefers-reduced-motion: reduce` respektiert).
+- **`.avatar--more`-Variante** als Counter-Element (`+3`, `+12`) — nutzt `--color-bg-tertiary` + `--color-text-secondary` für mode-awareness. Keine separate Component.
+- **Demo-Section "Avatar-Stack"** mit 3 Größen-Varianten + hoverable Fan-Out.
+
+### Architektur
+
+- **Composition statt Replikation:** Avatar-Stack erweitert `.avatar` via Wrapper + Custom-Property-Cascade. Größen-Modifier auf dem Stack setzen `--avatar-size` für alle Kinder. Counter ist ein Token-Override-Modifier, keine separate Component.
+
+---
+
 ## [0.4.3] — Component-Lücken (Schritt 4: Tag / Chip)
 
 ### Hinzugefügt

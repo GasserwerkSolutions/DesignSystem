@@ -1,0 +1,81 @@
+/**
+ * Avatar-Stack Component
+ * =======================
+ *
+ * Überlappende Avatar-Reihe — Team-Member, Teilnehmer-Liste, "X andere".
+ * Layout-Wrapper auf existierender .avatar-Component, kein eigenes
+ * Visual-Identity-Token-Set.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --avatar-size              steuert alle Kinder (erbt durch Cascade)
+ *     --avatar-stack-overlap     negative Margin zwischen Avataren (default -0.625rem)
+ *     --avatar-stack-ring        Ring-Color (default --color-bg, mode-aware)
+ *     --avatar-stack-ring-width  Ring-Dicke (default 2px)
+ *
+ * Struktur:
+ *   <div class="avatar-stack" role="group" aria-label="Team">
+ *     <span class="avatar avatar--c3" title="Anna Meier">AM</span>
+ *     <span class="avatar avatar--c1" title="Marc Stein">MS</span>
+ *     <span class="avatar avatar--c4" title="Lisa Vogel">LV</span>
+ *     <span class="avatar avatar--more" title="+3 weitere">+3</span>
+ *   </div>
+ *
+ * Stacking-Order: später-im-DOM = visuell-darüber (CSS-Default). Wer
+ * "first-on-top" will, dreht die DOM-Reihenfolge um.
+ *
+ * Modifier:
+ *   .avatar-stack--sm / --lg     Größen-Presets (steuern Kinder)
+ *   .avatar-stack--hoverable     fan-out-Animation auf Hover
+ *
+ * Plus .avatar--more als counter-Variante (Token-Override, nicht eigene Component).
+ */
+
+.avatar-stack {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.avatar-stack > .avatar {
+  box-shadow: 0 0 0 var(--avatar-stack-ring-width, 2px)
+                    var(--avatar-stack-ring, var(--color-bg));
+  position: relative;
+}
+
+.avatar-stack > .avatar:not(:first-child) {
+  margin-inline-start: var(--avatar-stack-overlap, -0.625rem);
+}
+
+.avatar-stack--sm {
+  --avatar-size:           1.75rem;
+  --avatar-stack-overlap:  -0.5rem;
+}
+
+.avatar-stack--lg {
+  --avatar-size:           3.5rem;
+  --avatar-stack-overlap:  -0.875rem;
+}
+
+/* "+N"-Counter als Avatar-Variante. Nutzt neutrale Surface-Tokens, ist
+   mode-aware durch Vererbung. */
+.avatar--more {
+  --avatar-bg: var(--color-bg-tertiary);
+  --avatar-fg: var(--color-text-secondary);
+}
+
+/* Optional: Stack expandiert auf Hover. Touch-Users sehen kein Hover-State,
+   daher rein dekorativ — kein semantisches Re-Layout. */
+.avatar-stack--hoverable > .avatar {
+  transition: margin-inline-start var(--duration-medium) var(--easing-medium);
+}
+
+.avatar-stack--hoverable:hover > .avatar:not(:first-child) {
+  margin-inline-start: var(--space-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatar-stack--hoverable > .avatar {
+    transition: none;
+  }
+}

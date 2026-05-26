@@ -183,6 +183,51 @@
     </section>
 
     <section class="section">
+      <h2>Avatar-Stack</h2>
+      <p>
+        Layout-Pattern auf der bestehenden Avatar-Component. Stack steuert die
+        Größe aller Kinder, jeder Avatar bekommt einen Ring in
+        <code>--color-bg</code> für saubere Überlappung.
+        <code>+N</code>-Counter ist eine <code>.avatar--more</code>-Variante,
+        keine separate Component.
+      </p>
+      <div class="demo-grid">
+        <div class="demo-block">
+          <span class="demo-label">Default + Größen-Modifier</span>
+          <div class="stack stack--md">
+            <div class="avatar-stack avatar-stack--sm" role="group" aria-label="Kleines Team">
+              <span class="avatar avatar--c3" title="Anna Meier">AM</span>
+              <span class="avatar avatar--c1" title="Marc Stein">MS</span>
+              <span class="avatar avatar--c4" title="Lisa Vogel">LV</span>
+            </div>
+            <div class="avatar-stack" role="group" aria-label="Mittleres Team">
+              <span class="avatar avatar--c3">AM</span>
+              <span class="avatar avatar--c1">MS</span>
+              <span class="avatar avatar--c4">LV</span>
+              <span class="avatar avatar--c6">JK</span>
+              <span class="avatar avatar--more" title="+5 weitere">+5</span>
+            </div>
+            <div class="avatar-stack avatar-stack--lg" role="group" aria-label="Großes Team">
+              <span class="avatar avatar--c3">AM</span>
+              <span class="avatar avatar--c1">MS</span>
+              <span class="avatar avatar--more">+12</span>
+            </div>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Hover-Variante (fan-out)</span>
+          <div class="avatar-stack avatar-stack--hoverable" role="group" aria-label="Hover-Team">
+            <span class="avatar avatar--c3">AM</span>
+            <span class="avatar avatar--c1">MS</span>
+            <span class="avatar avatar--c4">LV</span>
+            <span class="avatar avatar--c6">JK</span>
+            <span class="avatar avatar--more">+2</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Tags</h2>
       <p>
         Interactive Chips — Filter, Skill-Listen, Multi-Select-Display. Semantisch
