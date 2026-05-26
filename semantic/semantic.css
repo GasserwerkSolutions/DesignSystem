@@ -179,12 +179,36 @@
   --radius-2xl: var(--radius-20);
 
   /* ========================================
-     SEMANTIC SHADOWS
-     ======================================== */
+     ELEVATION — kanonische Skala (6 Stufen)
+     ========================================
 
-  --shadow-card:     var(--shadow-md);
-  --shadow-elevated: var(--shadow-lg);
-  --shadow-modal:    var(--shadow-xl);
+     Components nutzen --elevation-X direkt statt --shadow-X. Mode-aware
+     durch dark.css-Overrides (höhere Opacity auf dunklem BG, sonst
+     verschwindet der Schatten).
+
+     Stufen-Semantik:
+       0  flat — kein Schatten
+       1  hairline — Active-States (Tabs-active, Range-Thumb)
+       2  resting — Cards in Listen, dezent erhoben
+       3  raised — Cards default, Hover-Cards
+       4  floating — Toast, Popover, Tooltip-Bubble
+       5  overlay — Modal, Drawer, Command-Palette
+
+     Werte 1:1 zu den bisherigen --shadow-X (sm/base/md/lg/xl) — kein
+     visueller Bruch. --shadow-X bleiben als raw primitives nutzbar. */
+
+  --elevation-0: var(--shadow-none);
+  --elevation-1: var(--shadow-sm);
+  --elevation-2: var(--shadow-base);
+  --elevation-3: var(--shadow-md);
+  --elevation-4: var(--shadow-lg);
+  --elevation-5: var(--shadow-xl);
+
+  /* Legacy semantic-aliases — mappen auf Elevation. Bestehender Code, der
+     --shadow-card/elevated/modal nutzt, läuft unverändert weiter. */
+  --shadow-card:     var(--elevation-3);
+  --shadow-elevated: var(--elevation-4);
+  --shadow-modal:    var(--elevation-5);
 
   /* ========================================
      COMPONENT CONTRACT DEFAULTS

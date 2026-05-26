@@ -31,7 +31,7 @@
   max-height: 100dvh;
   width: var(--drawer-width, min(24rem, 100vw));
   margin-block: 0;
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--drawer-shadow, var(--elevation-5));
   display: flex;
   flex-direction: column;
   overflow: hidden;

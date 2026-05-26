@@ -90,5 +90,5 @@
 .tabs--pill .tab[aria-selected="true"] {
   background: var(--card-bg);
   color: var(--color-text-primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--elevation-1);
 }

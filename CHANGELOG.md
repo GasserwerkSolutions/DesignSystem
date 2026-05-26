@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.3.3] — Foundation-Härtung (Schritt 4: Elevation-Skala)
+
+### Hinzugefügt
+
+- **`--elevation-0..5`** als kanonische Schatten-Skala in `semantic.css`. Sechs-Stufen-Pattern (M3-Style), semantisch eindeutig benannt:
+  - `0` flat · `1` hairline (active-states) · `2` resting · `3` raised (Cards default) · `4` floating (Toast, Popover) · `5` overlay (Modal, Drawer)
+- **Mode-aware durch Alias-Chain.** `--elevation-X` zeigt auf raw `--shadow-X`, das in `dark.css` umgesetzt wird → höhere Opacity (0.4–0.6) auf dunklem BG, sonst verschwindet der Schatten.
+
+### Behoben
+
+- **`--shadow-xl` fehlte im `auto-dark`-Block** (nur im manuellen `[data-mode="dark"]`-Block gesetzt). Modal und Drawer hätten unter `prefers-color-scheme: dark` die hellen Light-Werte gezeigt — schlafender Bug, jetzt symmetrisch in beiden Blöcken.
+- **Verstreute Direkt-Verwendung von `--shadow-X` in Components** war architektonisch unklar. Components nutzen jetzt durchgehend `--elevation-X` als publike API; `--shadow-X` bleiben als raw primitives in `tokens.css` für legacy direct use.
+
+### Geändert
+
+- **Components migriert** auf `--elevation-X`:
+  - Card default: `--card-shadow, var(--elevation-3))` (Wert identisch zu vorher)
+  - Card-flat / Card-bordered: `var(--elevation-0)`
+  - Toast: `var(--elevation-4)`
+  - Modal: `var(--modal-shadow, var(--elevation-5))` (neuer überschreibbarer Token)
+  - Drawer: `var(--drawer-shadow, var(--elevation-5))` (neuer überschreibbarer Token)
+  - Tabs `aria-selected`: `var(--elevation-1)`
+  - Range-Thumb: `var(--elevation-1)`
+- **Legacy semantic-Aliase** `--shadow-card/elevated/modal` mappen jetzt auf `--elevation-3/4/5` (bisher direkt auf `--shadow-md/lg/xl`). Werte identisch, Indirektion sauberer.
+
+### Migration
+
+Keine Breaking Changes — alle visuellen Werte 1:1 erhalten. Konsumenten können auf `--elevation-X` umstellen (empfohlen) oder die alten `--shadow-X` / `--shadow-card` weiter nutzen.
+
+---
+
 ## [0.3.2] — Foundation-Härtung (Schritt 3: Density-Achse)
 
 ### Hinzugefügt

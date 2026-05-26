@@ -22,7 +22,7 @@
   background:    var(--card-bg);
   border:        var(--card-border, 1px solid var(--color-border));
   border-radius: var(--card-radius, var(--radius-lg));
-  box-shadow:    var(--card-shadow, var(--shadow-md));
+  box-shadow:    var(--card-shadow, var(--elevation-3));
   padding:       var(--card-padding, var(--space-24));
 
   transition: transform var(--duration-medium) var(--easing-medium),
@@ -31,14 +31,14 @@
 
 .card:hover {
   transform:  var(--card-hover-transform, none);
-  box-shadow: var(--card-hover-shadow, var(--card-shadow, var(--shadow-md)));
+  box-shadow: var(--card-hover-shadow, var(--card-shadow, var(--elevation-3)));
 }
 
 .card--flat {
-  --card-shadow: none;
+  --card-shadow: var(--elevation-0);
 }
 
 .card--bordered {
   --card-border: 2px solid var(--color-border-dark);
-  --card-shadow: none;
+  --card-shadow: var(--elevation-0);
 }
