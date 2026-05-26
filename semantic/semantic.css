@@ -126,6 +126,32 @@
   --space-3xl: var(--space-64);
 
   /* ========================================
+     DENSITY — drei Tiers für interaktive Components
+     ========================================
+
+     Default = comfortable. Overrides für compact/spacious leben in
+     semantic/density.css (mode-Layer). Components nutzen diese Tokens
+     als Fallback (var(--btn-py, var(--density-control-py))), damit
+     Theme-Overrides weiterhin direkt gewinnen — Theme-Identität bleibt
+     erhalten, density-aware sind Components, deren Tokens das Theme
+     nicht explizit setzt.
+
+     Tiers:
+       --density-control-*   Buttons, Inputs, Selects, Tabs (Haupt-Controls)
+       --density-row-*       Table-Cells, List-Rows (Listen-Items)
+       --density-item-*      Nav-Items, Pagination-Buttons (Sekundäre Controls)
+
+     WCAG 2.5.8: Mindest-Touch-Target 24×24 CSS-px. Compact mit ~32px ist
+     sicher; tiefer gehen wir bewusst nicht. */
+
+  --density-control-py: var(--space-12);
+  --density-control-px: var(--space-20);
+  --density-row-py:     var(--space-12);
+  --density-row-px:     var(--space-16);
+  --density-item-py:    var(--space-8);
+  --density-item-px:    var(--space-12);
+
+  /* ========================================
      SEMANTIC MOTION
      ======================================== */
 
@@ -164,12 +190,13 @@
      COMPONENT CONTRACT DEFAULTS
      ======================================== */
 
-  /* Button */
+  /* Button — Padding folgt der Density-Achse. Themes können --btn-px/--btn-py
+     direkt überschreiben (gewinnt durch Layer-Reihenfolge). */
   --btn-bg:     var(--color-interactive);
   --btn-fg:     white;
   --btn-radius: var(--radius-md);
-  --btn-px:     var(--space-20);
-  --btn-py:     var(--space-12);
+  --btn-px:     var(--density-control-px);
+  --btn-py:     var(--density-control-py);
   --btn-weight: 600;
 
   /* Card */

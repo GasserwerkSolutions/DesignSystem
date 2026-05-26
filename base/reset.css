@@ -58,7 +58,7 @@ select {
 input,
 textarea {
   width: 100%;
-  padding: var(--space-8) var(--space-12);
+  padding: var(--input-py, var(--density-control-py)) var(--input-px, var(--density-control-px));
   border: 1px solid var(--input-border);
   border-radius: var(--radius-md);
   background-color: var(--input-bg);

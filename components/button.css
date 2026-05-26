@@ -25,8 +25,8 @@
   --_btn-bg-hover:   var(--btn-bg-hover, color-mix(in oklch, var(--btn-bg) 88%, black));
   --_btn-bg-active:  var(--btn-bg-active, color-mix(in oklch, var(--btn-bg) 75%, black));
   --_btn-border:     var(--btn-border, transparent);
-  --_btn-px:         var(--btn-px, var(--space-20));
-  --_btn-py:         var(--btn-py, var(--space-12));
+  --_btn-px:         var(--btn-px, var(--density-control-px));
+  --_btn-py:         var(--btn-py, var(--density-control-py));
   --_btn-weight:     var(--btn-weight, 600);
   --_btn-letter:     var(--btn-letter, 0);
   --_btn-transform:  var(--btn-transform, none);

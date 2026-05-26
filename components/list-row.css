@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-12);
-  padding: var(--list-row-py, var(--space-12)) var(--list-row-px, var(--space-16));
+  padding: var(--list-row-py, var(--density-row-py)) var(--list-row-px, var(--density-row-px));
   background: var(--list-row-bg, transparent);
   border-block-end: 1px solid var(--list-row-divider, var(--color-border));
   transition: background var(--duration-fast) var(--easing-fast);

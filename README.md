@@ -1,17 +1,19 @@
 # Design System
 
-Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, 29 Components, WCAG AA validated.
+Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, Density-Achse, 29 Components, WCAG AA validated.
 
 ```html
 <link rel="stylesheet" href="main.css">
-<html data-tone="trust" data-mode="light">
+<html data-tone="trust" data-mode="light" data-density="comfortable">
   <body>
     <button class="btn">Call to action</button>
   </body>
 </html>
 ```
 
-> **Wichtig:** `data-tone` und `data-mode` müssen auf demselben Element sitzen (idiomatisch: `<html>`). Sind sie auf verschiedenen Elementen, überschreibt das innere Element via Custom-Property-Vererbung das äußere — Dark-Mode greift dann nicht für tone-spezifische Token.
+> **Wichtig:** `data-tone`, `data-mode` und `data-density` müssen auf demselben Element sitzen (idiomatisch: `<html>`). Sind sie auf verschiedenen Elementen, überschreibt das innere Element via Custom-Property-Vererbung das äußere — Dark-Mode greift dann nicht für tone-spezifische Token.
+
+`data-density` ist optional; ohne Attribut gilt `comfortable`. Themes mit eigenen Sizing-Tokens (Premium, Playful, Industrial, Minimal) gewinnen über Density — Density-Achse wirkt auf alle anderen interaktiven Components und auf nicht-opinionated Themes (Trust, Modern).
 
 ---
 

@@ -32,7 +32,7 @@
 }
 
 .accordion__summary {
-  padding: var(--space-md) var(--space-lg);
+  padding: var(--accordion-summary-py, var(--density-row-py)) var(--accordion-summary-px, var(--density-row-px));
   cursor: pointer;
   font-weight: var(--fw-600);
   color: var(--color-text-primary);

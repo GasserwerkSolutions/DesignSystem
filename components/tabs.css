@@ -33,7 +33,7 @@
 }
 
 .tab {
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--tab-py, var(--density-control-py)) var(--tab-px, var(--density-control-px));
   background: none;
   border: none;
   border-block-end: 2px solid transparent;

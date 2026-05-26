@@ -91,7 +91,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-8);
-  padding: var(--space-8) var(--space-12);
+  padding: var(--nav-item-py, var(--density-item-py)) var(--nav-item-px, var(--density-item-px));
   color: var(--nav-text);
   text-decoration: none;
   border-radius: var(--radius-md);

@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.3.2] — Foundation-Härtung (Schritt 3: Density-Achse)
+
+### Hinzugefügt
+
+- **Density als dritte orthogonale Achse** neben `data-tone` und `data-mode`. Drei Stufen via `data-density="compact|comfortable|spacious"`. Default ohne Attribut = comfortable.
+- **`--density-{control,row,item}-{py,px}`-Token-Set** in `semantic/semantic.css` als 3-Tier-Skala:
+  - `control` für Buttons, Inputs, Tabs (Haupt-Controls)
+  - `row` für Table-Cells, List-Rows, Accordion-Summary (Listen-Items)
+  - `item` für Nav-Items (sekundäre Controls)
+- **`semantic/density.css`** als neue Datei im `mode`-Layer mit Overrides für compact + spacious. Sub-tree-fähig wie `data-tone` und `data-mode`.
+- **Components migriert** auf Density-Fallback-Pattern (`var(--btn-py, var(--density-control-py))`): Button, Input (via reset.css), Table-Cells, List-Row, Nav-Item, Tabs, Accordion-Summary.
+- **Demo-Topbar**: drei Density-Buttons mit localStorage-Persistierung, Readout, JS-Handler analog zu Tone/Mode.
+- **Demo-Section "Density-Achse"** mit Input + Button-Pair + Table — zeigt density-responsive Verhalten direkt.
+
+### Geändert
+
+- **Trust und Modern Themes**: redundante `--btn-px/--btn-py`-Setzungen (Default-Werte) entfernt. Diese beiden Themes sind jetzt density-responsive. Premium / Playful / Industrial / Minimal behalten ihre identitätsstiftenden Sizing-Tokens und gewinnen bewusst über Density.
+- **`semantic.css` Component-Contract-Defaults für `--btn-px/--btn-py`** zeigen jetzt auf `--density-control-{px,py}` statt auf hardcoded `space-20/space-12` — Token-Vererbung trägt die Density-Achse durch.
+
+### A11Y
+
+- WCAG 2.5.8 (Mindest-Touch-Target 24×24 CSS-px) eingehalten: compact ergibt ~32px-Controls, sicher über dem Limit. Tiefer geht die Skala bewusst nicht.
+
+---
+
 ## [0.3.1] — Foundation-Härtung (Schritt 2: Status-Token-Konsolidierung)
 
 ### Hinzugefügt
