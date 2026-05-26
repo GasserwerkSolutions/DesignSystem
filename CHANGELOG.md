@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.5.2] — Advanced Components (Schritt 3: File-Upload)
+
+### Hinzugefügt
+
+- **`.file-upload`-Component** als styled `<label>` mit verstecktem nativen `<input type="file">`. Click + Keyboard funktionieren **ohne JS** (Native Label-for-Input-Mechanik), Drag &amp; Drop + Selected-File-Anzeige aus dem JS-Snippet im Header.
+- **Token-Contract:** `--file-upload-bg/-border/-radius/-padding/-hover-bg/-active-border`.
+- **Sub-Elemente:** `.file-upload__input` (sr-only, focus-zugänglich), `.file-upload__icon`, `.file-upload__text`, `.file-upload__hint`.
+- **`.file-upload--compact`-Variante** für inline Form-Anhänge (horizontal layout, kleineres Icon).
+- **`:focus-within`-Pattern** bringt den Outline-Ring auf das visuelle Label statt den versteckten Input — sauberere A11Y-UX.
+- **`data-dragging`-Attribut** schaltet den Drag-Hover-Visual; JS setzt/entfernt per `dragenter`/`dragleave`/`drop`-Event.
+- **JS-Snippet (24 Zeilen) im Component-Header dokumentiert:** Drag-State + Drop-Übernahme (`input.files = dataTransfer.files`) + Selected-File-Text-Anzeige. Demo-JS implementiert das Snippet.
+
+### Validierung
+
+- Smoke (puppeteer):
+  - Hero: dashed border, column-Layout, Input visually-hidden aber Focus-zugänglich ✓
+  - Compact: row-Layout ✓
+  - `dragenter` → `data-dragging="true"`, border-color wechselt ✓
+  - `dragleave` → Attribut entfernt ✓
+  - File-Selektion → Text "✓ logo.png" ✓
+- Lint, Static-Contrast (1008/1008), Browser-Contrast (180/180) WCAG-AA grün.
+
+---
+
 ## [0.5.1] — Advanced Components (Schritt 2: Slider)
 
 ### Hinzugefügt

@@ -183,6 +183,29 @@
     </section>
 
     <section class="section">
+      <h2>File-Upload</h2>
+      <p>
+        Styled <code>&lt;label&gt;</code> als Click- und Dropzone, native
+        <code>&lt;input type="file"&gt;</code> verborgen aber Focus-zugänglich.
+        Click + Keyboard funktionieren ohne JS; Drag &amp; Drop + Selected-File-
+        Anzeige kommen aus dem JS-Snippet im Component-Header.
+      </p>
+      <div class="grid-2">
+        <label class="file-upload" id="upload-hero">
+          <input type="file" class="file-upload__input" accept="image/png,image/jpeg">
+          <span class="file-upload__icon" aria-hidden="true">📁</span>
+          <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+          <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+        </label>
+        <label class="file-upload file-upload--compact" id="upload-compact">
+          <input type="file" class="file-upload__input" multiple>
+          <span class="file-upload__icon" aria-hidden="true">📎</span>
+          <span class="file-upload__text">Anhang hinzufügen …</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Slider</h2>
       <p>
         Composition über <code>.range</code> — Label, Value-Display via native
@@ -825,6 +848,35 @@
       // Tag-Remove-Pattern (analog zu Alert/Toast).
       document.querySelectorAll(".tag__remove").forEach((btn) => {
         btn.addEventListener("click", () => btn.closest(".tag")?.remove());
+      });
+
+      // File-Upload: Drag-State + Drop + Selected-File-Anzeige.
+      document.querySelectorAll(".file-upload").forEach((label) => {
+        const input = label.querySelector('input[type="file"]');
+        const text  = label.querySelector(".file-upload__text");
+        const defaultText = text?.textContent;
+        ["dragenter", "dragover"].forEach((e) =>
+          label.addEventListener(e, (ev) => {
+            ev.preventDefault();
+            label.dataset.dragging = "true";
+          })
+        );
+        ["dragleave", "drop"].forEach((e) =>
+          label.addEventListener(e, () => { delete label.dataset.dragging; })
+        );
+        label.addEventListener("drop", (ev) => {
+          ev.preventDefault();
+          if (!input || !ev.dataTransfer?.files?.length) return;
+          input.files = ev.dataTransfer.files;
+          input.dispatchEvent(new Event("change", { bubbles: true }));
+        });
+        input?.addEventListener("change", () => {
+          if (!text) return;
+          const n = input.files?.length || 0;
+          text.textContent = n === 0 ? defaultText
+            : n === 1 ? `✓ ${input.files[0].name}`
+            : `✓ ${input.files[0].name}  (+${n - 1} weitere)`;
+        });
       });
 
       // Slider: Track-Fill + Output-Sync auf input event. Spezial für slider-price:

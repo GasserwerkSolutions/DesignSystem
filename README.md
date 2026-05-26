@@ -1,6 +1,6 @@
 # Design System
 
-Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, Density-Achse, 43 Components, WCAG AA validated.
+Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, Density-Achse, 44 Components, WCAG AA validated.
 
 ```html
 <link rel="stylesheet" href="main.css">
