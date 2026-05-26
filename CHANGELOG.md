@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.4.6] — Component-Lücken (Schritt 7: Popover)
+
+### Hinzugefügt
+
+- **`.popover`-Component** auf Basis der **Native Popover API** (Baseline 2024+: Chrome 114+, Safari 17+, Firefox 125+). Light-Dismiss (Click-outside / Esc), Top-Layer-Render und automatische ARIA-Verlinkung kommen vom Browser — kein DS-Custom-Behavior nötig.
+- **Token-Contract:** `--popover-bg/-fg/-border/-radius/-padding/-shadow/-min-width/-max-width/-offset`. Default shadow `--elevation-4` (mode-aware aus v0.3.3).
+- **Sub-Elemente:** `.popover__menu` (Listen-Pattern mit `role="menu"`), `.popover__item` (mit `--danger`-Variante via `--status-danger-{bg,fg}`), `.popover__header`, `.popover__divider`.
+- **Entry-Animation** (opacity + translateY) auf `:popover-open`, `prefers-reduced-motion: reduce` respektiert.
+- **JS-Anchoring-Snippet** im Component-Header dokumentiert (8 Zeilen). Demo-JS implementiert das Snippet.
+- **Demo-Section "Popover"** mit zwei Patterns: Action-Menu (4 Items + Separator + Danger-Action) und Info-Popover (Header + Body + Link).
+
+### Architektur-Entscheidungen
+
+- **CSS Anchor Positioning als Opt-in dokumentiert, nicht im Default.** Bei mehreren Popovers im DOM kollidieren shared `anchor-name`-Werte. JS-Positioning ist Multi-Popover-safe; Konsumenten mit Single-Popover-Pages können CSS-Anchor selbst aktivieren via inline-style.
+- **`beforetoggle`-Listener müssen per-Element attached werden** (Event bubbelt nicht). Demo + Component-Header dokumentieren das korrekt.
+
+### Validierung
+
+- Smoke (puppeteer): beide Demo-Popovers ankern korrekt am eigenen Trigger (gap 4px, `leftMatch: true`), Esc-Dismiss schließt sauber ✓.
+
+---
+
 ## [0.4.5] — Component-Lücken (Schritt 6: Layout-Primitives — Stack & Cluster)
 
 ### Hinzugefügt

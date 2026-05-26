@@ -183,6 +183,50 @@
     </section>
 
     <section class="section">
+      <h2>Popover</h2>
+      <p>
+        Native Popover API für Behavior (Light-Dismiss / Esc / Top-Layer / ARIA gratis),
+        5-Zeilen-JS-Snippet für Trigger-Positioning. Wo CSS Anchor Positioning
+        verfügbar ist (Chrome 125+), wird das JS automatisch übersprungen.
+      </p>
+      <div class="demo-grid">
+        <div class="demo-block">
+          <span class="demo-label">Action-Menu</span>
+          <div class="cluster">
+            <button class="btn btn--secondary popover-anchor" type="button" popovertarget="demo-menu">
+              Buchung verwalten ▾
+            </button>
+          </div>
+          <div class="popover" id="demo-menu" popover>
+            <ul class="popover__menu" role="menu">
+              <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+              <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+              <li><button class="popover__item" role="menuitem" type="button">Verschieben …</button></li>
+              <li role="separator"><hr class="popover__divider"></li>
+              <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Stornieren</button></li>
+            </ul>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Info-Popover</span>
+          <div class="cluster">
+            <span>Provisionsmodell aktiv</span>
+            <button class="btn btn--sm btn--ghost popover-anchor" type="button" popovertarget="demo-info" aria-label="Mehr Info">
+              ?
+            </button>
+          </div>
+          <div class="popover" id="demo-info" popover>
+            <div class="popover__header">Provisionsmodell</div>
+            <p style="margin: 0">
+              5% der Bookings gehen an die Plattform. Auszahlung am 1. jedes Monats.
+              <a href="#">Details</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Layout-Primitives: Stack &amp; Cluster</h2>
       <p>
         <code>.stack</code> ist vertikal mit konsistentem Gap, <code>.cluster</code>
@@ -642,6 +686,20 @@
       // Tag-Remove-Pattern (analog zu Alert/Toast).
       document.querySelectorAll(".tag__remove").forEach((btn) => {
         btn.addEventListener("click", () => btn.closest(".tag")?.remove());
+      });
+
+      // Popover-Trigger-Anchoring. beforetoggle bubbelt nicht — per-Popover-Listener.
+      document.querySelectorAll(".popover").forEach((pop) => {
+        pop.addEventListener("beforetoggle", (e) => {
+          if (e.newState !== "open") return;
+          const trigger = document.querySelector(`[popovertarget="${pop.id}"]`);
+          if (!trigger) return;
+          const r = trigger.getBoundingClientRect();
+          Object.assign(pop.style, {
+            top:  `${r.bottom + 4}px`,
+            left: `${r.left}px`,
+          });
+        });
       });
     })();
   </script>

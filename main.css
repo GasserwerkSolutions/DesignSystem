@@ -48,6 +48,7 @@
 @import "./components/modal.css"       layer(components);
 @import "./components/drawer.css"      layer(components);
 @import "./components/tooltip.css"     layer(components);
+@import "./components/popover.css"     layer(components);
 @import "./components/tabs.css"        layer(components);
 @import "./components/accordion.css"   layer(components);
 @import "./components/skeleton.css"    layer(components);
