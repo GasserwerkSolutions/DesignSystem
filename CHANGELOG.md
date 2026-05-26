@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.1] — Component-Lücken (Schritt 2: Spinner)
+
+### Hinzugefügt
+
+- **`.spinner`-Component** als CSS-only Loading-Indicator. Border-Trick (`border-top-color` als Arc, restliche Borders als Track), `animation: spinner-rotate` linear infinite.
+- **Token-Contract:** `--spinner-size`, `--spinner-stroke`, `--spinner-color`, `--spinner-track-color`, `--spinner-duration`.
+- **`currentColor` als Default** für `--spinner-color`: Spinner inline in einem Button erbt automatisch die Button-Textfarbe — weiß in primary, gray-900 in secondary, interactive in ghost. Verifiziert via Smoke-Test.
+- **Track-Color als `color-mix(... 20% ... transparent)`** des Arc — bleibt automatisch konsistent, egal wie der Konsument die Farbe setzt.
+- **Modifier:** `.spinner--sm` (14px) und `.spinner--lg` (32px); Default 20px.
+- **`.spinner-block`-Wrapper** für centered Loading-States (Card, Section).
+- **Demo-Section "Spinner / Loading-States"** mit drei Use-Cases: standalone-Größen, inline in 3 Button-Varianten, block-centered.
+
+### A11Y
+
+- **Reduced-Motion:** Spinner stoppt nicht (Loading-Affordance würde verschwinden), sondern verlangsamt von 700 ms auf 2500 ms. Keine flackernde Rotation, Status bleibt sichtbar.
+- **ARIA:** Konsumenten setzen `role="status" aria-label="…"` für standalone; `aria-hidden="true"` für inline-in-Button (Button-Label trägt die Semantik).
+
+---
+
 ## [0.4.0] — Component-Lücken (Schritt 1: Switch)
 
 Erster v0.4-Component: Switch / Toggle als binary on/off-Control.

@@ -48,6 +48,7 @@
 @import "./components/tabs.css"        layer(components);
 @import "./components/accordion.css"   layer(components);
 @import "./components/skeleton.css"    layer(components);
+@import "./components/spinner.css"     layer(components);
 @import "./components/empty-state.css" layer(components);
 @import "./components/toast.css"       layer(components);
 @import "./components/breadcrumbs.css" layer(components);

@@ -1,0 +1,87 @@
+/**
+ * Spinner Component
+ * ==================
+ *
+ * Indeterminate Loading-Indicator. Pures CSS, kein SVG, kein JS.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --spinner-size           Quadrat-Dimension (default 1.25rem ≈ 20px)
+ *     --spinner-stroke         Ring-Stroke-Width (default 2px)
+ *     --spinner-color          Sweeping-Arc-Farbe (default currentColor)
+ *     --spinner-track-color    Restkreis (default: 20% mix der Arc-Farbe)
+ *     --spinner-duration       Rotation pro Umdrehung (default 700ms)
+ *
+ * currentColor als Default: Spinner inline in einem Button erbt automatisch
+ * die Button-Textfarbe. Standalone erbt von der umgebenden Textfarbe.
+ *
+ * ARIA: Spinner ist visuell — Konsument setzt role="status" + aria-label,
+ * damit Screen-Reader den Loading-Zustand bekanntgeben:
+ *   <span class="spinner" role="status" aria-label="Laden …"></span>
+ *
+ * Inline in Button (Loading-State):
+ *   <button class="btn" disabled>
+ *     <span class="spinner spinner--sm" aria-hidden="true"></span>
+ *     Speichern
+ *   </button>
+ *
+ * Block-centered Loading-State:
+ *   <div class="spinner-block">
+ *     <span class="spinner spinner--lg" role="status" aria-label="Lädt …"></span>
+ *   </div>
+ *
+ * Modifier:
+ *   .spinner--sm   kleiner (z.B. inline in btn--sm)
+ *   .spinner--lg   größer (für Page-Level-Loading)
+ */
+
+.spinner {
+  --_size:     var(--spinner-size, 1.25rem);
+  --_stroke:   var(--spinner-stroke, 2px);
+  --_color:    var(--spinner-color, currentColor);
+  --_track:    var(--spinner-track-color, color-mix(in oklch, var(--_color) 20%, transparent));
+  --_duration: var(--spinner-duration, 700ms);
+
+  display: inline-block;
+  width:  var(--_size);
+  height: var(--_size);
+  border: var(--_stroke) solid var(--_track);
+  border-top-color: var(--_color);
+  border-radius: var(--radius-full);
+  animation: spinner-rotate var(--_duration) linear infinite;
+  flex-shrink: 0;
+  vertical-align: -0.2em;
+}
+
+@keyframes spinner-rotate {
+  to { transform: rotate(360deg); }
+}
+
+.spinner--sm {
+  --spinner-size:   0.875rem;
+  --spinner-stroke: 1.5px;
+}
+
+.spinner--lg {
+  --spinner-size:   2rem;
+  --spinner-stroke: 3px;
+}
+
+/* Block-Wrapper für centered Loading-State (z.B. in Card oder Section) */
+.spinner-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-32);
+  min-height: 8rem;
+  color: var(--color-text-secondary);
+}
+
+/* Reduced-Motion: nicht stoppen — Loading-Affordance bleibt sichtbar.
+   Stattdessen deutlich verlangsamen, sodass keine flackernde Rotation
+   das Auge irritiert. */
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2500ms;
+  }
+}
