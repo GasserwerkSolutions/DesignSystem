@@ -59,3 +59,4 @@
 @import "./components/breadcrumbs.css" layer(components);
 @import "./components/pagination.css"  layer(components);
 @import "./components/range.css"       layer(components);
+@import "./components/app-shell.css"   layer(components);

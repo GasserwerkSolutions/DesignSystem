@@ -183,6 +183,54 @@
     </section>
 
     <section class="section">
+      <h2>App-Shell</h2>
+      <p>
+        Layout-Primitive für Dashboard-/App-Pages. CSS Grid mit Header / Sidebar /
+        Main / Footer als named areas. Reines CSS — kein JS. Embedded-Demo unten
+        nutzt <code>--app-shell-min-h</code> für eine feste Frame-Höhe statt
+        <code>100vh</code>. Bei Viewport &lt;768px collapsed die Sidebar über den Main.
+      </p>
+      <div class="app-shell" style="--app-shell-min-h: 24rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden;">
+        <header class="app-shell__header">
+          <strong style="margin-inline-end: auto">DemoApp</strong>
+          <span class="badge badge--success">Live</span>
+        </header>
+        <aside class="app-shell__sidebar">
+          <nav class="nav">
+            <ul class="nav__list">
+              <li><a href="#" class="nav__item" aria-current="page">📅 Termine</a></li>
+              <li><a href="#" class="nav__item">👥 Kunden</a></li>
+              <li><a href="#" class="nav__item">💼 Mitarbeitende</a></li>
+              <li><a href="#" class="nav__item">📊 Reports</a></li>
+              <li><a href="#" class="nav__item">⚙️ Einstellungen</a></li>
+            </ul>
+          </nav>
+        </aside>
+        <main class="app-shell__main">
+          <div class="cluster cluster--between" style="margin-block-end: var(--space-16)">
+            <h3 style="margin: 0">Heute</h3>
+            <button class="btn btn--sm">+ Termin</button>
+          </div>
+          <div class="grid-3">
+            <div class="stat">
+              <span class="stat__label">Termine</span>
+              <span class="stat__value">12</span>
+            </div>
+            <div class="stat">
+              <span class="stat__label">Umsatz</span>
+              <span class="stat__value">CHF 2'840</span>
+            </div>
+            <div class="stat">
+              <span class="stat__label">No-Shows</span>
+              <span class="stat__value">0</span>
+            </div>
+          </div>
+        </main>
+        <footer class="app-shell__footer">v0.5 · Geöffnet 09:00–18:00</footer>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Select</h2>
       <p>
         Styled native <code>&lt;select&gt;</code> — behält Form-Integration,

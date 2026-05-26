@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.5.0] — Advanced Components (Schritt 1: App-Shell)
+
+Eröffnet v0.5 — die größeren Layout/Composition-Components. App-Shell ist
+der natürliche Einstieg: hoher Hebel, kein JS, baut auf bestehenden
+Components (Nav, Stat, Badge, Cluster) auf.
+
+### Hinzugefügt
+
+- **`.app-shell`-Layout-Primitive** als vollständiges Page-Grid für Dashboard- und App-Pages. CSS Grid mit Named Areas (`header / sidebar / main / footer`). Pures CSS, kein JS.
+- **Token-Contract:** `--app-shell-sidebar-w` (default 16rem), `--app-shell-header-h` (default 3.5rem), `--app-shell-min-h` (default 100vh — für embedded Demo-Frames auf fixe rem überschreibbar).
+- **Sub-Elemente:** `.app-shell__header` (sticky, backdrop-blur), `.app-shell__sidebar` (scrollable, eigener bg), `.app-shell__main` (Content-Region), `.app-shell__footer` (optional).
+- **Modifier:**
+  - `.app-shell--right-sidebar` — spiegelt Grid-Spalten + Border-Inline-Direction
+  - `.app-shell--no-header` — Header-Row weg, Sidebar+Main füllen voll
+  - Beide Modifier kombinierbar
+- **Responsive Collapse** bei Viewport <768px: Sidebar stapelt sich über Main, Header bleibt sticky oben. Border-Inline-Direction wechselt zu Border-Block-End.
+
+### Demo
+
+- Embedded App-Shell als Mini-Frame (24rem Höhe) mit echter Nav, Stat-Grid und Header-Toolbar. Zeigt das Layout in Aktion ohne die Demo-Page-Struktur umzubauen.
+
+### Validierung
+
+- Smoke (puppeteer):
+  - Desktop 1400px: sidebar 256px (= 16rem) links, header 56px (= 3.5rem), side-by-side mit main ✓
+  - Mobile 600px: sidebar full-width gestapelt über main, header sticky ✓
+- Lint + 1008 Static-Contrast + 180 Browser-Contrast WCAG-AA grün.
+
+---
+
 ## [0.4.7] — Component-Lücken (Schritt 8 / final: Select)
 
 Damit schließt v0.4 ab — alle 8 ursprünglich identifizierten Component-Lücken sind gefüllt.
