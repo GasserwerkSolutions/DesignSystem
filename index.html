@@ -575,25 +575,27 @@
       </p>
       <div class="grid-2">
         <div class="field">
-          <label class="field__label" for="cb-service">Service</label>
+          <label class="field__label" id="cb-service-label">Service</label>
           <div class="combobox" id="cb-service">
             <button class="combobox__trigger" type="button"
                     role="combobox"
+                    aria-labelledby="cb-service-label cb-service-value"
                     aria-expanded="false"
                     aria-haspopup="listbox"
                     aria-controls="cb-service-list"
                     popovertarget="cb-service-panel">
-              <span class="combobox__value">Service wählen …</span>
+              <span class="combobox__value" id="cb-service-value">Service wählen …</span>
               <span class="chevron" aria-hidden="true"></span>
             </button>
             <div class="combobox__panel" id="cb-service-panel" popover>
               <div class="combobox__search">
                 <input type="text" class="combobox__search-input"
                        placeholder="Suchen …"
+                       aria-label="Services durchsuchen"
                        aria-autocomplete="list"
                        aria-controls="cb-service-list">
               </div>
-              <ul class="combobox__listbox" id="cb-service-list" role="listbox" aria-label="Services">
+              <ul class="combobox__listbox" id="cb-service-list" role="listbox" aria-labelledby="cb-service-label">
                 <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="haarschnitt damen">
                   <span class="combobox__option-label">Damen-Haarschnitt</span>
                   <span class="combobox__option-hint">45 min · CHF 65</span>
@@ -628,19 +630,20 @@
           <p class="field__hint">Search-Filter via <code>data-search</code>-Stichwortliste.</p>
         </div>
         <div class="field">
-          <label class="field__label" for="cb-staff">Stylist:in</label>
+          <label class="field__label" id="cb-staff-label">Stylist:in</label>
           <div class="combobox" id="cb-staff">
             <button class="combobox__trigger" type="button"
                     role="combobox"
+                    aria-labelledby="cb-staff-label cb-staff-value"
                     aria-expanded="false"
                     aria-haspopup="listbox"
                     aria-controls="cb-staff-list"
                     popovertarget="cb-staff-panel">
-              <span class="combobox__value">Beliebige</span>
+              <span class="combobox__value" id="cb-staff-value">Beliebige</span>
               <span class="chevron" aria-hidden="true"></span>
             </button>
             <div class="combobox__panel" id="cb-staff-panel" popover>
-              <ul class="combobox__listbox" id="cb-staff-list" role="listbox" aria-label="Stylisten">
+              <ul class="combobox__listbox" id="cb-staff-list" role="listbox" aria-labelledby="cb-staff-label">
                 <li class="combobox__option" role="option" aria-selected="true" tabindex="-1">Beliebige</li>
                 <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">Anna Meier</li>
                 <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">Marc Stein</li>

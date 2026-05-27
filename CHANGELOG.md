@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.6.1] — Quality-Gates Etappe 1: axe-core A11Y-Lint
+
+### Hinzugefügt
+
+- **`scripts/check-a11y.js`**: lädt die Demo in headless Chromium, injiziert axe-core (lokales File, kein CDN), durchläuft die Page mit programmatisch geöffneten Popovers/Comboboxes, aggregiert Violations nach Severity (critical/serious → hard-fail, moderate/minor → soft-warn).
+- **`npm run check:a11y`** + **`check:a11y:strict`** + Integration in **`npm run check:full`** als fünfter Pipeline-Schritt (Lint → Test-Lint → Static-Contrast → Browser-Contrast → A11Y-Lint).
+- **Konfiguration:** axe filtert auf `wcag2a/aa, wcag21a/aa, wcag22aa`-Tags; Color-Contrast bleibt sekundärer Cross-Check (unsere check-contrast.js mit 1008 Cascade-simulierten Paaren ist die primäre Wahrheit für Farbe).
+- **Popover-Aware:** Native Popover-API-Elemente werden via `showPopover()` aufgeklappt, bevor axe läuft — sonst sind Combobox-Listboxen und Popover-Menüs für den A11Y-Audit unsichtbar.
+
+### Behoben
+
+- **Combobox-Trigger ohne accessible name** (critical-Violation, beide Demo-Instanzen). WAI-ARIA-Combobox-1.2-Spec fordert `aria-labelledby` oder `aria-label` auf Trigger-Elementen mit `role="combobox"` — sichtbarer Span-Content im Button reicht nicht, weil Combobox als komplexes Composite-Widget eine explizite Namens-Verlinkung erwartet.
+  - **Fix-Pattern** (in `combobox.css` Component-Header dokumentiert): `aria-labelledby="<label-id> <value-id>"` verkettet das Field-Label mit dem aktuellen Value-Span, sodass Screen-Reader "Service, combobox, Service wählen, collapsed" liest.
+  - **Markup-Update** in beiden Demo-Comboboxes (Service-Picker, Stylist-Picker) plus Search-Input bekommt eigenes `aria-label` ("Services durchsuchen"), Listbox bekommt `aria-labelledby` auf das Field-Label.
+
+### Validierung
+
+- `npm run check:a11y`: **0 critical, 0 serious, 0 moderate, 0 minor** ✓
+- Andere Pipeline-Schritte bleiben grün (1008 + 180 Contrast-Pairs, 13/13 Lint-Tests).
+
+### Bug-Caught-Value
+
+Der A11Y-Audit fand einen Bug, der durch das eigene "WAI-ARIA-Combobox-Pattern 1.2 implementiert"-Selbstverständnis verdeckt war. Konkret: zwei kritische Buttons mit unvollständigem Accessibility-Tree → Screen-Reader hätten sie als "button, expanded false" statt "Service, combobox, Service wählen, collapsed" angekündigt. Konsumenten der Demo hätten den Fehler kopiert.
+
+---
+
 ## [0.6.0] — Quality-Gates Etappe 1: PostCSS-AST-Lint + Unit-Tests
 
 Erster Schritt Richtung A+. Code-Qualität-Sprung: Hand-Parsing des

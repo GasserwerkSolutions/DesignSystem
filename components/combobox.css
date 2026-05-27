@@ -16,38 +16,43 @@
  *
  * WAI-ARIA-Combobox-Pattern 1.2:
  *   role="combobox" auf Trigger, aria-expanded/-controls/-haspopup
- *   role="listbox" auf Liste, aria-label für Bezug
+ *   role="listbox" auf Liste, aria-label oder aria-labelledby für Bezug
  *   role="option" auf Items, aria-selected für Selection-State
+ *
+ *   ACCESSIBLE NAME: Combobox-Trigger braucht einen expliziten Namen via
+ *   aria-labelledby. Sichtbarer Text im Button-Content reicht der Spec
+ *   nicht, weil combobox ein komplexes Composite-Widget ist. Konvention:
+ *   aria-labelledby verkettet das field-label mit dem combobox-value-span,
+ *   sodass der Screen-Reader "Service, combobox, Service wählen …" liest.
  *
  * CONTRACT:
  *   Optional:
  *     --combobox-trigger-bg / -fg / -border / -radius / -py / -px
  *     --combobox-panel-shadow / -max-h
  *
- * Struktur:
+ * Struktur (mit korrektem A11Y-Markup):
+ *   <label class="field__label" id="cb-1-label">Service</label>
  *   <div class="combobox">
  *     <button class="combobox__trigger" type="button"
  *             role="combobox"
+ *             aria-labelledby="cb-1-label cb-1-value"
  *             aria-expanded="false"
  *             aria-haspopup="listbox"
- *             aria-controls="cb-list-1"
- *             popovertarget="cb-panel-1">
- *       <span class="combobox__value">Service wählen …</span>
+ *             aria-controls="cb-1-list"
+ *             popovertarget="cb-1-panel">
+ *       <span class="combobox__value" id="cb-1-value">Service wählen …</span>
  *       <span class="chevron" aria-hidden="true"></span>
  *     </button>
- *     <div class="combobox__panel" id="cb-panel-1" popover>
+ *     <div class="combobox__panel" id="cb-1-panel" popover>
  *       <div class="combobox__search">
  *         <input type="text" class="combobox__search-input"
  *                placeholder="Suchen …"
  *                aria-autocomplete="list"
- *                aria-controls="cb-list-1">
+ *                aria-controls="cb-1-list">
  *       </div>
- *       <ul class="combobox__listbox" id="cb-list-1" role="listbox" aria-label="Services">
+ *       <ul class="combobox__listbox" id="cb-1-list" role="listbox" aria-labelledby="cb-1-label">
  *         <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
  *           Damen-Haarschnitt
- *         </li>
- *         <li class="combobox__option" role="option" aria-selected="true" tabindex="-1">
- *           Färben &amp; Strähnen
  *         </li>
  *       </ul>
  *     </div>
