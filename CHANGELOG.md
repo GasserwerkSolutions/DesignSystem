@@ -1,5 +1,63 @@
 # Changelog
 
+## [0.10.0] — Bundle Discipline (Measurement + Budget + Minified Output)
+
+Was Konsumenten interessiert ist die ausgelieferte Größe. Bisher gemessen:
+nichts. Diese Release misst, dokumentiert, budgetiert.
+
+### Hinzugefügt
+
+- **`scripts/measure-size.js`** — bundlet `main.css` über esbuild (resolved
+  alle `@imports`), misst raw + gzip + brotli, dazu minified-Variante.
+  Zusätzlich per-Layer (tokens / semantic / themes / base / state /
+  components) und per-Component-Breakdown (Top 10).
+- **`npm run measure`** (Report) + **`npm run measure:check`** (Budget-
+  Enforcement, exit 1 bei Überschreitung).
+- **`dist/main.min.css`** — minified Output (esbuild-minify), exportiert
+  via `@gws/design-system/min`. Konsumenten bekommen direkt eine
+  optimierte Variante, ohne eigenen Build-Step.
+- **`dist/bundle-stats.json`** — strukturierte Stats, exportiert via
+  `@gws/design-system/bundle-stats.json` für Dashboards/Reports.
+- **`bundleBudget`** in `package.json` — Reserve ~10% über aktuellem
+  Stand. Schlägt fehl wenn die Größe wächst (Regression-Detection).
+- **Foundations-Site zeigt Bundle-Stats** prominent am Seitenanfang.
+- **`check:full` chained `measure:check`** — Budget-Verstoß failed das
+  publish-vor-Check.
+
+### Stats (Baseline v0.10.0)
+
+  Bundled (resolved):  114.7 KB raw · 17.5 KB gzip · 14.8 KB brotli
+  Minified:             91.4 KB raw · 16.3 KB gzip · 14.1 KB brotli
+
+  Per Layer:
+    tokens       7.5 KB    (1 Datei)
+    semantic    17.2 KB    (3 Dateien)
+    themes      10.6 KB    (6 Dateien)
+    base        12.4 KB    (4 Dateien)
+    state        2.2 KB    (1 Datei)
+    components 136.0 KB   (48 Dateien)
+
+  Top 3 größte Components:
+    combobox     8.9 KB  (custom listbox + search)
+    file-upload  5.4 KB  (drag-drop pattern)
+    popover      5.3 KB  (anchor + native popover)
+
+### Distribution-Optionen
+
+- **`@gws/design-system`** → `main.css` (vollständig, alle Components)
+- **`@gws/design-system/min`** → `main.min.css` (minified)
+- **`@gws/design-system/components/<name>`** → per-Component-Import (tree-
+  shake auf CSS-Ebene, importiere nur was nötig)
+- **`@gws/design-system/themes/<tone>`** → per-Theme-Import
+- **`@gws/design-system/tokens.json`** → DTCG-Token-Export
+- **`@gws/design-system/bundle-stats.json`** → strukturierte Stats
+
+### Quality
+
+  34/34 site-checks · 6/6 pipeline-checks · 4/4 budget-categories grün
+
+---
+
 ## [0.9.0] — Container-Queries als 4. Achse
 
 Components passen sich jetzt an ihren tatsächlichen Container an — nicht

@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
@@ -9,6 +9,7 @@
   "types": "./dist/js/index.d.ts",
   "exports": {
     ".": "./main.css",
+    "./min": "./dist/main.min.css",
     "./js": {
       "types": "./dist/js/index.d.ts",
       "import": "./dist/js/index.js"
@@ -17,7 +18,8 @@
     "./js/iife": "./dist/js/design-system.iife.js",
     "./components/*": "./components/*",
     "./themes/*": "./themes/*",
-    "./tokens.json": "./dist/tokens.json"
+    "./tokens.json": "./dist/tokens.json",
+    "./bundle-stats.json": "./dist/bundle-stats.json"
   },
   "files": [
     "main.css",
@@ -27,6 +29,8 @@
     "themes/",
     "tokens/",
     "dist/js/",
+    "dist/main.min.css",
+    "dist/bundle-stats.json",
     "dist/tokens.json",
     "dist/tokens.d.ts",
     "ADR-001-container-max-inheritance.md",
@@ -47,6 +51,8 @@
     "check:journeys": "node scripts/check-journeys.js",
     "check:rendered": "node scripts/check-rendered.js",
     "check:site": "node scripts/check-site.js",
+    "measure": "node scripts/measure-size.js",
+    "measure:check": "node scripts/measure-size.js --check",
     "check:tools": "node scripts/check-a11y.js --self-test && node scripts/check-visual.js --self-test",
     "audit": "node scripts/audit-system.js",
     "build:js": "node scripts/build-js.js",
@@ -54,13 +60,24 @@
     "build:site": "node scripts/build-site.js",
     "build": "npm run build:js && npm run build:tokens",
     "check": "npm run lint && npm run test:lint && npm run check:contrast",
-    "check:full": "npm run build:js && npm run lint && npm run test:lint && npm run check:contrast && npm run check:contrast:browser && npm run check:a11y && npm run check:visual && npm run check:journeys && npm run build:site && npm run check:site",
+    "check:full": "npm run build:js && npm run lint && npm run test:lint && npm run check:contrast && npm run check:contrast:browser && npm run check:a11y && npm run check:visual && npm run check:journeys && npm run build:site && npm run check:site && npm run measure:check",
     "release": "node scripts/release.js",
     "prepare": "npm run build",
     "prepublishOnly": "npm run check:full && npm run check:tools"
   },
   "engines": {
     "node": ">=18"
+  },
+  "bundleBudget": {
+    "_comment": "Größenbudgets in Bytes, gemessen via scripts/measure-size.js. Reserve ~10% über aktuellem Stand. Überschreitung failt npm run measure:check.",
+    "bundle": {
+      "raw": 130000,
+      "gzip": 20000
+    },
+    "minified": {
+      "raw": 105000,
+      "gzip": 18500
+    }
   },
   "devDependencies": {
     "@types/node": "^25.9.1",

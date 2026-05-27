@@ -888,6 +888,24 @@ function renderFoundationGroup(groupConfig, allTokens) {
     </section>`;
 }
 
+function renderBundleStats() {
+  const statsPath = path.join(ROOT, "dist", "bundle-stats.json");
+  if (!fs.existsSync(statsPath)) return "";
+  let stats;
+  try {
+    stats = JSON.parse(fs.readFileSync(statsPath, "utf8"));
+  } catch {
+    return "";
+  }
+  const fmt = (b) => (b < 1024 ? `${b} B` : `${(b / 1024).toFixed(1)} KB`);
+  return `
+        <div class="foundation-bundle-stats">
+          <strong>Bundle</strong>
+          <span><code>${fmt(stats.bundle.raw)}</code> raw · <code>${fmt(stats.bundle.gzip)}</code> gzip · <code>${fmt(stats.minified.raw)}</code> min · <code>${fmt(stats.minified.gzip)}</code> min+gzip</span>
+          <span class="site-muted">v${stats.version} · ${stats.components.length} Components</span>
+        </div>`;
+}
+
 function renderFoundationsPage(components, allTokens) {
   const sidebar = componentSidebar(components, null, "./");
   const groups = FOUNDATION_GROUPS.map((g) =>
@@ -914,6 +932,7 @@ function renderFoundationsPage(components, allTokens) {
             ändern. Aktive Edits + Tone/Mode/Density wandern in die URL —
             teilbar via Copy.
           </p>
+          ${renderBundleStats()}
           <div class="site-doc__cta">
             <button type="button" class="btn btn--sm" data-share-url>URL kopieren</button>
             <button type="button" class="btn btn--ghost btn--sm" data-foundation-reset>Edits zurücksetzen</button>
@@ -1381,6 +1400,21 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
     0%, 100% { transform: scale(1); opacity: 0.6; }
     50% { transform: scale(1.6); opacity: 1; }
   }
+
+  .foundation-bundle-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    flex-wrap: wrap;
+    padding: var(--space-12) var(--space-16);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-16);
+    font-size: var(--font-sm);
+  }
+  .foundation-bundle-stats strong { font-weight: var(--fw-700); }
+  .foundation-bundle-stats code { font-family: var(--font-mono); font-size: var(--font-xs); }
 
   .foundation-cq-demo h3 { font-size: var(--font-lg); margin: 0 0 var(--space-12); }
   .foundation-cq-handle {

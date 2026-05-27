@@ -1,0 +1,240 @@
+{
+  "timestamp": "2026-05-27T22:16:38.982Z",
+  "version": "0.10.0",
+  "bundle": {
+    "raw": 117461,
+    "gzip": 17913,
+    "brotli": 15192
+  },
+  "minified": {
+    "raw": 93560,
+    "gzip": 16651,
+    "brotli": 14474
+  },
+  "layers": [
+    {
+      "label": "tokens",
+      "raw": 7705,
+      "files": 1
+    },
+    {
+      "label": "semantic",
+      "raw": 17605,
+      "files": 3
+    },
+    {
+      "label": "themes",
+      "raw": 10881,
+      "files": 6
+    },
+    {
+      "label": "base",
+      "raw": 12720,
+      "files": 4
+    },
+    {
+      "label": "state",
+      "raw": 2273,
+      "files": 1
+    },
+    {
+      "label": "components",
+      "raw": 139267,
+      "files": 48
+    }
+  ],
+  "components": [
+    {
+      "name": "combobox",
+      "raw": 9112
+    },
+    {
+      "name": "file-upload",
+      "raw": 5495
+    },
+    {
+      "name": "popover",
+      "raw": 5443
+    },
+    {
+      "name": "list-row",
+      "raw": 4814
+    },
+    {
+      "name": "select",
+      "raw": 4337
+    },
+    {
+      "name": "timeline",
+      "raw": 4052
+    },
+    {
+      "name": "alert",
+      "raw": 3994
+    },
+    {
+      "name": "tree",
+      "raw": 3787
+    },
+    {
+      "name": "card",
+      "raw": 3781
+    },
+    {
+      "name": "app-shell",
+      "raw": 3777
+    },
+    {
+      "name": "chart",
+      "raw": 3769
+    },
+    {
+      "name": "tag",
+      "raw": 3758
+    },
+    {
+      "name": "button",
+      "raw": 3607
+    },
+    {
+      "name": "switch",
+      "raw": 3423
+    },
+    {
+      "name": "nav",
+      "raw": 3268
+    },
+    {
+      "name": "checkbox",
+      "raw": 3249
+    },
+    {
+      "name": "date-input",
+      "raw": 3029
+    },
+    {
+      "name": "slider",
+      "raw": 2863
+    },
+    {
+      "name": "modal",
+      "raw": 2804
+    },
+    {
+      "name": "callout",
+      "raw": 2710
+    },
+    {
+      "name": "spinner",
+      "raw": 2676
+    },
+    {
+      "name": "funnel",
+      "raw": 2626
+    },
+    {
+      "name": "code-block",
+      "raw": 2610
+    },
+    {
+      "name": "toast",
+      "raw": 2585
+    },
+    {
+      "name": "avatar-stack",
+      "raw": 2540
+    },
+    {
+      "name": "accordion",
+      "raw": 2536
+    },
+    {
+      "name": "drawer",
+      "raw": 2535
+    },
+    {
+      "name": "badge",
+      "raw": 2531
+    },
+    {
+      "name": "field",
+      "raw": 2439
+    },
+    {
+      "name": "range",
+      "raw": 2396
+    },
+    {
+      "name": "steps",
+      "raw": 2304
+    },
+    {
+      "name": "tabs",
+      "raw": 2303
+    },
+    {
+      "name": "stat",
+      "raw": 2243
+    },
+    {
+      "name": "avatar",
+      "raw": 2238
+    },
+    {
+      "name": "banner",
+      "raw": 2098
+    },
+    {
+      "name": "progress",
+      "raw": 2006
+    },
+    {
+      "name": "chevron",
+      "raw": 1974
+    },
+    {
+      "name": "pagination",
+      "raw": 1877
+    },
+    {
+      "name": "tooltip",
+      "raw": 1774
+    },
+    {
+      "name": "panel-list",
+      "raw": 1759
+    },
+    {
+      "name": "skeleton",
+      "raw": 1753
+    },
+    {
+      "name": "table",
+      "raw": 1749
+    },
+    {
+      "name": "divider",
+      "raw": 1653
+    },
+    {
+      "name": "empty-state",
+      "raw": 1594
+    },
+    {
+      "name": "breadcrumbs",
+      "raw": 1518
+    },
+    {
+      "name": "search",
+      "raw": 1447
+    },
+    {
+      "name": "section",
+      "raw": 1414
+    },
+    {
+      "name": "trend",
+      "raw": 1017
+    }
+  ]
+}
