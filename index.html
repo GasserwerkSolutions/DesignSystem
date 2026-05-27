@@ -566,6 +566,94 @@
     </section>
 
     <section class="section">
+      <h2>Combobox</h2>
+      <p>
+        Custom-Listbox mit Search-Filter und Custom-Content-Options. Nutzt die
+        Native Popover API (Top-Layer, Light-Dismiss) und das WAI-ARIA-
+        Combobox-Pattern 1.2. JS-Snippet im Component-Header liefert
+        Keyboard-Navigation (Arrow/Enter/Esc), Selection und Filter.
+      </p>
+      <div class="grid-2">
+        <div class="field">
+          <label class="field__label" for="cb-service">Service</label>
+          <div class="combobox" id="cb-service">
+            <button class="combobox__trigger" type="button"
+                    role="combobox"
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    aria-controls="cb-service-list"
+                    popovertarget="cb-service-panel">
+              <span class="combobox__value">Service wählen …</span>
+              <span class="combobox__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="combobox__panel" id="cb-service-panel" popover>
+              <div class="combobox__search">
+                <input type="text" class="combobox__search-input"
+                       placeholder="Suchen …"
+                       aria-autocomplete="list"
+                       aria-controls="cb-service-list">
+              </div>
+              <ul class="combobox__listbox" id="cb-service-list" role="listbox" aria-label="Services">
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="haarschnitt damen">
+                  <span class="combobox__option-label">Damen-Haarschnitt</span>
+                  <span class="combobox__option-hint">45 min · CHF 65</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="haarschnitt herren">
+                  <span class="combobox__option-label">Herren-Haarschnitt</span>
+                  <span class="combobox__option-hint">30 min · CHF 45</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="true" tabindex="-1" data-search="färben strähnen">
+                  <span class="combobox__option-label">Färben &amp; Strähnen</span>
+                  <span class="combobox__option-hint">120 min · CHF 180</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="bart trim">
+                  <span class="combobox__option-label">Bart-Trim</span>
+                  <span class="combobox__option-hint">20 min · CHF 25</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="wash blow föhnen">
+                  <span class="combobox__option-label">Wash &amp; Blow</span>
+                  <span class="combobox__option-hint">25 min · CHF 40</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="maniküre nägel">
+                  <span class="combobox__option-label">Maniküre</span>
+                  <span class="combobox__option-hint">40 min · CHF 55</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="pediküre fuß">
+                  <span class="combobox__option-label">Pediküre</span>
+                  <span class="combobox__option-hint">50 min · CHF 70</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p class="field__hint">Search-Filter via <code>data-search</code>-Stichwortliste.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="cb-staff">Stylist:in</label>
+          <div class="combobox" id="cb-staff">
+            <button class="combobox__trigger" type="button"
+                    role="combobox"
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    aria-controls="cb-staff-list"
+                    popovertarget="cb-staff-panel">
+              <span class="combobox__value">Beliebige</span>
+              <span class="combobox__chevron" aria-hidden="true"></span>
+            </button>
+            <div class="combobox__panel" id="cb-staff-panel" popover>
+              <ul class="combobox__listbox" id="cb-staff-list" role="listbox" aria-label="Stylisten">
+                <li class="combobox__option" role="option" aria-selected="true" tabindex="-1">Beliebige</li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">Anna Meier</li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">Marc Stein</li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">Lisa Vogel</li>
+              </ul>
+            </div>
+          </div>
+          <p class="field__hint">Ohne Search bei kurzer Liste.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Date / Time</h2>
       <p>
         Styled native <code>&lt;input type="date|time|datetime-local|month|week"&gt;</code> —
@@ -1260,6 +1348,67 @@
         };
         input.addEventListener("input", sync);
         sync();
+      });
+
+      // Combobox: Keyboard, Selection, Filter, Panel-Anchoring.
+      document.querySelectorAll(".combobox").forEach((cb) => {
+        const trigger = cb.querySelector(".combobox__trigger");
+        const panel   = cb.querySelector(".combobox__panel");
+        const search  = panel.querySelector(".combobox__search-input");
+        const value   = trigger.querySelector(".combobox__value");
+        const opts    = () => panel.querySelectorAll(".combobox__option:not([hidden])");
+        let active = -1;
+
+        const setActive = (i) => {
+          const o = opts();
+          o.forEach((el, j) => el.classList.toggle("combobox__option--active", j === i));
+          if (i >= 0 && o[i]) o[i].scrollIntoView({ block: "nearest" });
+          active = i;
+        };
+
+        const select = (opt) => {
+          panel.querySelectorAll(".combobox__option")
+               .forEach((o) => o.setAttribute("aria-selected", "false"));
+          opt.setAttribute("aria-selected", "true");
+          value.textContent = (opt.querySelector(".combobox__option-label")?.textContent
+                              || opt.textContent).trim();
+          panel.hidePopover();
+        };
+
+        panel.addEventListener("beforetoggle", (e) => {
+          trigger.setAttribute("aria-expanded", e.newState === "open" ? "true" : "false");
+          if (e.newState !== "open") return;
+          const r = trigger.getBoundingClientRect();
+          Object.assign(panel.style, {
+            top: `${r.bottom + 4}px`,
+            left: `${r.left}px`,
+            minWidth: `${r.width}px`,
+          });
+          setActive(-1);
+          requestAnimationFrame(() => search?.focus());
+        });
+
+        panel.addEventListener("click", (e) => {
+          const opt = e.target.closest(".combobox__option");
+          if (opt) select(opt);
+        });
+
+        cb.addEventListener("keydown", (e) => {
+          const o = opts();
+          if (e.key === "ArrowDown")    { e.preventDefault(); setActive(Math.min(active + 1, o.length - 1)); }
+          else if (e.key === "ArrowUp") { e.preventDefault(); setActive(Math.max(active - 1, 0)); }
+          else if (e.key === "Enter" && active >= 0) { e.preventDefault(); select(o[active]); }
+          else if (e.key === "Escape")  { panel.hidePopover(); trigger.focus(); }
+        });
+
+        search?.addEventListener("input", () => {
+          const q = search.value.toLowerCase();
+          panel.querySelectorAll(".combobox__option").forEach((o) => {
+            const hay = (o.dataset.search || o.textContent).toLowerCase();
+            o.hidden = q && !hay.includes(q);
+          });
+          setActive(-1);
+        });
       });
 
       // Popover-Trigger-Anchoring. beforetoggle bubbelt nicht — per-Popover-Listener.

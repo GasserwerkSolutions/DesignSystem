@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.5.8] — Combobox (Custom-Listbox mit Search)
+
+### Hinzugefügt
+
+- **`.combobox`-Component** als Custom Single-Select für Use-Cases, die Native `<select>` nicht abdeckt: Search-Filter über viele Optionen, Custom-Content-Options (Label + Hint), volle visuelle Kontrolle. Wo Native ausreicht → `.select` (v0.4.7) bleibt die erste Wahl.
+- **Nutzt Native Popover API** (v0.4.6) für das Listbox-Panel — Top-Layer-Render, Light-Dismiss, kein z-index-Wrangling.
+- **WAI-ARIA-Combobox-Pattern 1.2:** `role="combobox"` + `aria-expanded`/`-controls`/`-haspopup` auf Trigger, `role="listbox"` mit `aria-label` auf Panel, `role="option"` + `aria-selected` auf Items.
+- **Sub-Elemente:** `.combobox__trigger` (sieht aus wie `.select`), `.combobox__value`, `.combobox__chevron` (rotiert via `[aria-expanded]`), `.combobox__panel`, `.combobox__search`, `.combobox__search-input`, `.combobox__listbox`, `.combobox__option`, `.combobox__option-label`, `.combobox__option-hint`.
+- **JS-Snippet (~50 Zeilen) im Component-Header dokumentiert:** Keyboard-Navigation (ArrowUp/Down/Enter/Esc), Selection-Logik mit `aria-selected`-Toggle, Search-Filter über `data-search`-Stichworte, Panel-Anchoring an Trigger via `beforetoggle`-Listener. Demo-JS implementiert das Snippet 1:1.
+- **Density-aware** durch Trigger-Padding-Fallback auf `--density-control-{py,px}` — Combobox-Höhe matched Button/Input/Select.
+- **Demo-Section "Combobox"** mit zwei Patterns: Service-Picker (7 Optionen mit Hint + Search via `data-search`-Stichworten), Stylist-Picker (4 Optionen ohne Search bei kurzer Liste).
+
+### Validierung
+
+- Smoke (puppeteer):
+  - Initial: "Färben & Strähnen" vorausgewählt, ARIA-Expanded=false ✓
+  - Filter "haar": ARIA-Expanded=true, 2 sichtbare Optionen ("Damen-Haarschnitt", "Herren-Haarschnitt"), Rest hidden ✓
+  - Click auf Bart-Trim: Trigger-Label aktualisiert, Panel schließt, ARIA-Selected wechselt ✓
+- Lint, Static-Contrast (1008/1008), Browser-Contrast (180/180) WCAG-AA grün.
+
+---
+
 ## [0.5.7] — Date / Time Inputs
 
 ### Hinzugefügt
