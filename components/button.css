@@ -13,6 +13,22 @@
  *   --btn-weight, --btn-letter, --btn-transform
  *   --btn-hover-motion, --btn-transition
  *
+ * Struktur:
+ *   <button class="btn">Bestätigen</button>
+ *   <button class="btn btn--secondary">Verschieben</button>
+ *   <button class="btn btn--ghost">Abbrechen</button>
+ *
+ *   Größenvarianten:
+ *   <button class="btn btn--sm">Klein</button>
+ *   <button class="btn">Standard</button>
+ *   <button class="btn btn--lg">Groß</button>
+ *
+ *   Disabled:
+ *   <button class="btn" disabled>Nicht verfügbar</button>
+ *
+ *   Als Link gestylt (Anchor mit Button-Look):
+ *   <a class="btn" href="#">CTA-Link</a>
+ *
  * Modifier:
  *   .btn--secondary   transparent mit Border
  *   .btn--ghost       transparent, nur Textfarbe

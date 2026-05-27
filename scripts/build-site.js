@@ -121,14 +121,15 @@ function splitSections(headerText) {
     if (start) {
       let labelTail = start.rest;
       let j = i;
-      while (!/:\s*$|:\s/.test(labelTail) && j + 1 < lines.length) {
+      const isLabelComplete = (t) => /^:/.test(t) || /:\s*$/.test(t);
+      while (!isLabelComplete(labelTail) && j + 1 < lines.length) {
         const next = lines[j + 1];
         if (!next.trim()) break;
         if (detectLabelStart(next)) break;
         j++;
         labelTail += " " + next.trim();
       }
-      if (/:/.test(labelTail)) {
+      if (isLabelComplete(labelTail)) {
         flush();
         currentLabel = start.label;
         const afterColon = labelTail.split(/:\s*/).slice(1).join(": ").trim();

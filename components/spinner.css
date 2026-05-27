@@ -16,16 +16,18 @@
  * die Button-Textfarbe. Standalone erbt von der umgebenden Textfarbe.
  *
  * ARIA: Spinner ist visuell — Konsument setzt role="status" + aria-label,
- * damit Screen-Reader den Loading-Zustand bekanntgeben:
+ * damit Screen-Reader den Loading-Zustand bekanntgeben.
+ *
+ * Struktur:
  *   <span class="spinner" role="status" aria-label="Laden …"></span>
  *
- * Inline in Button (Loading-State):
+ *   Inline in Button (Loading-State):
  *   <button class="btn" disabled>
  *     <span class="spinner spinner--sm" aria-hidden="true"></span>
  *     Speichern
  *   </button>
  *
- * Block-centered Loading-State:
+ *   Block-centered Loading-State:
  *   <div class="spinner-block">
  *     <span class="spinner spinner--lg" role="status" aria-label="Lädt …"></span>
  *   </div>

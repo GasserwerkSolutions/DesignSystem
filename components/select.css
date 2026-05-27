@@ -20,7 +20,7 @@
  *     --select-arrow-color           Pfeil-Farbe (default: --color-text-tertiary,
  *                                    mode-aware durch dark.css)
  *
- * Default-Markup — mit Wrapper für mode-aware Arrow:
+ * Struktur — mit Wrapper für mode-aware Arrow:
  *   <div class="select-wrap">
  *     <select class="select">
  *       <option>Trust</option>

@@ -1,94 +1,96 @@
 # Changelog
 
-## [Unreleased — v0.8.0-WIP] — Interactive Documentation Site (Etappe 1)
+## [0.8.0] — Interactive Documentation Site + Theme-Generator
 
-Auftakt zu v0.8.0: statische Dokumentations-Site direkt aus den
-Component-Headern generiert. Eat-your-own-dogfood — die Site nutzt das DS
-selbst, Theme-/Mode-/Density-Switcher wirken live auf die Beispiele.
+Ausgeliefert in 5 Etappen auf einem Branch — jede Etappe ein in sich
+geschlossener Mehrwert. End-to-End: aus den Component-Headern entstehen
+48 Doc-Pages, 263 Tokens werden im Browser live editierbar, eine
+HEX-Farbe wird zu einer kompletten 11-Step-OKLCH-Palette mit Color-Blind-
+Safety-Verdict und CSS-Export, und alle Konfigurationen sind teilbar via
+URL.
 
-### Hinzugefügt
+### Etappe 5 — Missing Struktur-Blocks + Parser-Härtung
 
-- **`scripts/build-site.js`** — statischer Generator. Parst die JSDoc-Header
-  aller 48 Components und extrahiert: Titel, Intro (mit Bullet-Listen),
-  CONTRACT (Required/Optional-Tokens), Struktur (HTML-Beispiele), Modifier.
-  Multi-line Section-Labels werden korrekt zusammengeführt (z.B.
-  `Struktur (mit korrektem A11Y-Markup …):` über zwei Header-Zeilen).
-- **`scripts/check-site.js`** — Smoke- und Interaction-Test der generierten
-  Site. Prüft pageerror/404/console.error auf 9 Seiten und verifiziert dass
-  Tone-/Mode-/Density-Switcher sowie Sidebar-Search funktionieren.
-- **`dist/site/`** — generierter Output: 48 Component-Pages,
-  Index-Übersicht (Kategorien-Grid), Stubs für Foundations / Themes /
-  Playground. Site-Shell via App-Shell-Component aus dem DS.
-- **npm-scripts** `build:site` und `check:site`. `check:full` ruft beide auf.
-- **Site-Assets**: `dist/site/assets/site.css` (Overlay-Layer mit
-  Sidebar/Topbar/Doc-Layout) und `dist/site/assets/site.js` (Axis-Persistierung
-  via localStorage, Sidebar-Filter).
+- Struktur-Blöcke ergänzt in **badge / button / card / section / select /
+  spinner / switch / avatar / tag / tree / nav / chevron / combobox**.
+  Diese Source-Improvements wirken sowohl direkt im Repo (bessere
+  CONTRACT-Header) als auch in der generierten Site (Live-Markup-Beispiele).
+- **Parser-Bug behoben**: Vorhin akzeptierte der Section-Label-Parser
+  Intro-Prose wie `Markup nutzt native <input ...>` als Label, weil der
+  post-loop-Test schon ein einzelnes `:` irgendwo in der Akkumulation
+  zugelassen hat (z.B. via `appearance:none` im Prose). Neue Logik:
+  `isLabelComplete = /^:/ || /:\s*$/` — Label muss entweder mit `:` direkt
+  am Anfang ein Inline-Value liefern, oder die akkumulierten Zeilen
+  müssen mit `:` enden. Markup-Erkennung jetzt 48/48 Components.
 
-### Etappe 2 — Foundations + Live-Token-Editor
+### Etappe 4 — URL-State + GitHub-Pages-Workflow
 
-- **Token-Parser** in `build-site.js` liest 263 Tokens aus `tokens/tokens.css`
-  + `semantic/semantic.css`. Group-Detection aus den `/* CATEGORY */`-
-  Kommentar-Headern im Source.
-- **`dist/site/foundations.html`** rendert 9 Token-Gruppen (Farben Neutral
-  & Paletten, Farben Semantic, Spacing, Typografie, Radius & Borders,
-  Schatten & Elevation, Motion, Proportionen, Z-Index) mit kategorie-
-  passenden Swatches: Farbflächen, Spacing-Balken, Radius-Quadrate,
-  Border-Linien, Schatten-Boxes, Font-Samples, animierte Motion-Pulse-Dots.
-- **Live-Token-Editor**: Klick auf »Edit« neben einem Token öffnet ein
-  Input-Feld, der neue Wert wird per `.style.setProperty()` auf `:root`
-  gesetzt und wirkt sofort auf alle Site-Beispiele. Edited-Marker
-  (Outline) zeigt geänderte Tokens. »Alle Edits zurücksetzen« stellt
-  `removeProperty()` für alle her.
-- **Check-Site erweitert**: drei zusätzliche Asserts für Live-Token-Edit
-  (Wert ändert sich, Marker erscheint, Reset restored).
+Macht den Stand teilbar.
+
+- URL-State-Persistierung in site.js:
+  - `?tone=premium&mode=dark&density=compact` — Axis-Switchers schreiben
+    bei jeder Änderung via `history.replaceState()` (rAF-debounced).
+  - `?t.--btn-radius=2rem&t.--color-interactive=...` — Live-Token-Edits.
+  - `?hex=...&name=...` — Theme-Generator-Eingabe.
+  - Beim Page-Load werden alle Werte ausgelesen und angewendet.
+- **Share-URL-Button** auf Foundations kopiert `location.href`.
+- **`--asset-root=` / `DS_ASSET_ROOT` Env-Var**: konfigurierbarer
+  Project-Root-Pfad. Default = relativ für file://-Demo; Deployment-
+  Workflow setzt `./_ds/` damit DS-Assets unter einem Subpfad gestaged
+  werden können.
+- **`.github/workflows/deploy-site.yml`**: GitHub-Pages-Workflow.
+  Trigger: push auf main + manuelles workflow_dispatch.
+- **Check-Site +4 URL-State-Asserts**.
 
 ### Etappe 3 — Theme-Generator (HEX → OKLCH-Palette)
 
 - **Color-Konvertierung in JS**: sRGB ↔ linear-sRGB ↔ OKLab ↔ OKLCH
-  (Ottosson 2020). Gamut-Mapping via Bisection auf Chroma. Reverse-Roundtrip
-  zurück zu HEX mit sRGB-Clip.
-- **Palette-Generierung**: User-HEX → 11-Step-Skala (50, 100, 200, 300, 400,
-  500, 600, 700, 800, 900, 950). OKLCH-Hue bleibt konstant, Lightness folgt
-  einer Tailwind-orientierten Zielkurve, Chroma fällt zu den Extremen ab.
+  (Ottosson 2020). Gamut-Mapping via Bisection auf Chroma.
+- **Palette-Generierung**: User-HEX → 11-Step-Skala (50–950). OKLCH-Hue
+  konstant, Lightness folgt einer Tailwind-orientierten Zielkurve,
+  Chroma fällt zu den Extremen ab.
 - **Color-Blind-Safety-Check**: Brettel/Viénot-Mollon-Simulation für
   Deuteranopie / Protanopie / Tritanopie. Min-Lightness-Delta zwischen
-  adjacenten Steps wird gemeldet; Verdict pro CB-Typ als Badge (ok / knapp).
-- **Live-Preview**: Buttons (primary/secondary/ghost) + Alert + Badges in
-  einem `.theme-gen__preview` Wrapper bekommen die generierten Tokens via
-  inline `<style>`-Tag scoped per `data-tone="<name>"`.
-- **CSS-Export**: Vollständiger `[data-tone~="<name>"]`-Block mit allen
-  abgeleiteten Tokens (interactive, focus, btn, card, input). Copy-to-
-  Clipboard-Button.
-- **`dist/site/assets/theme-generator.js`** als separates Modul (~12 KB).
-- **Check-Site erweitert** um 4 Theme-Generator-Asserts (Palette-Init,
-  Palette-Update, CSS-Export, Live-Preview-Farbänderung).
+  adjacenten Steps wird gemeldet; Verdict pro CB-Typ als Badge.
+- **Live-Preview**: Card mit Buttons + Alert + Badges bekommt die
+  generierten Tokens via scoped `<style>` + `data-tone`.
+- **CSS-Export**: vollständiger `[data-tone~="<name>"]`-Block mit allen
+  abgeleiteten Tokens. Copy-to-Clipboard-Button.
 
-### Etappe 4 — URL-State + GitHub-Pages-Deployment
+### Etappe 2 — Foundations + Live-Token-Editor
 
-- **URL-State-Persistierung**: Tone/Mode/Density wandern automatisch in
-  `?tone=...&mode=...&density=...`. Token-Edits in `?t.--btn-radius=2rem`-
-  Format. Theme-Generator schreibt `?hex=...&name=...`. Beim Page-Load
-  werden alle Werte aus der URL gelesen — Links sind shareable.
-- **Share-URL-Button** auf Foundations: kopiert `location.href` mit
-  aktuellem Stand in die Zwischenablage.
-- **`--asset-root=PFAD` / `DS_ASSET_ROOT` Env-Var**: Override für den
-  Project-Root-Pfad. Default ist relativ (`../../`) für `file://`-
-  Demo-Öffnen; deployment-Workflow setzt `./_ds/` damit Assets unter
-  einem Subpfad gestaged werden können (Naming-Collision-Vermeidung
-  mit Site-Pages).
-- **`.github/workflows/deploy-site.yml`**: GitHub-Pages-Workflow. Stages
-  Site nach `_pages/`, DS-Assets nach `_pages/_ds/`. Trigger: push auf
-  main + manuelles workflow_dispatch.
-- **Check-Site +4 URL-State-Asserts**: query-params-Read, tone-change-
-  Write, token-edit-Write, theme-gen-URL-Roundtrip.
+- 263 Tokens werden aus `tokens/tokens.css` + `semantic/semantic.css`
+  gelesen und nach 9 Foundation-Gruppen sortiert.
+- Pro Token-Kind ein passendes Swatch: Farbflächen, Spacing-Balken,
+  Radius-Quadrate, Border-Linien, Schatten-Boxes, Font-Samples,
+  animierte Motion-Pulse-Dots.
+- Live-Editor via `.style.setProperty()` auf `:root` — wirkt sofort auf
+  alle Beispiele. Edited-Marker, Reset-Button, URL-Persistierung.
 
-28/28 site-checks bestehen.
+### Etappe 1 — Site Foundation (Doc-Site direkt aus Component-Headern)
 
-### Folgeschritte (v0.8.0 Etappe 5)
+- **`scripts/build-site.js`** — statischer Generator. Parst die JSDoc-Header
+  aller 48 Components und extrahiert Titel, Intro (mit Bullet-Listen),
+  CONTRACT, Struktur (HTML-Beispiele), Modifier. Multi-line Section-Labels
+  werden korrekt zusammengeführt (z.B. `Struktur (mit korrektem A11Y-Markup
+  …):` über zwei Header-Zeilen). Indent-basierte Boundary trennt Prose von
+  HTML.
+- **`scripts/check-site.js`** — Smoke + Interactions + Foundations + Theme-
+  Generator + URL-State. **28 Asserts** insgesamt, hängt nicht am
+  vorderen `check:full`, kann standalone laufen.
+- **`dist/site/`** — 48 Component-Pages + Index-Grid + Foundations + Themes
+  + Playground-Stub. App-Shell-Layout aus dem DS, Sidebar mit Kategorien-
+  Gruppen, Topbar mit Axis-Switchers.
+- **npm-scripts** `build:site` und `check:site`. `check:full` chained beide.
 
-- Fehlende `Struktur:`-Blöcke in 13 Component-Headern (button, badge,
-  tag, card, avatar, switch, select, section, spinner, toast, tree, nav).
-- Version-Bump auf 0.8.0 + Release.
+### Stats
+
+- **48** Component-Pages generiert (100% Markup-Coverage nach Etappe 5)
+- **263** Tokens im Foundations-Browser
+- **11** Steps in der OKLCH-Theme-Generator-Palette
+- **28** automated Site-Asserts (Smoke + Interactions + Live-Edit + Theme-
+  Gen + URL-State)
+- **0** pageerror/404/console.error in der generierten Site
 
 ---
 

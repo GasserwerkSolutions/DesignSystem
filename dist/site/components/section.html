@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.7.3</span>
+          <span class="badge badge--neutral">v0.8.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -146,7 +146,49 @@
 
         <section class="site-doc__section">
           <h2>Beispiele</h2>
-          <p class="site-muted">Kein Markup-Beispiel im Header — siehe Source.</p>
+          
+    <section class="site-example">
+      
+      <div class="site-example__preview"><section class="section">
+  <h2>Sektion-Titel</h2>
+  <p>Inhalt.</p>
+</section></div>
+      <details class="site-example__source">
+        <summary>HTML anzeigen</summary>
+        <pre class="code-block"><code>&lt;section class=&quot;section&quot;&gt;
+  &lt;h2&gt;Sektion-Titel&lt;/h2&gt;
+  &lt;p&gt;Inhalt.&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+      </details>
+    </section>
+
+    <section class="site-example">
+      <h3 class="site-example__caption">Hero-Sektion (großes Padding)</h3>
+      <div class="site-example__preview"><section class="section section--hero">
+  <h1>Hero-Headline</h1>
+  <p>Lead-Text.</p>
+</section></div>
+      <details class="site-example__source">
+        <summary>HTML anzeigen</summary>
+        <pre class="code-block"><code>&lt;section class=&quot;section section--hero&quot;&gt;
+  &lt;h1&gt;Hero-Headline&lt;/h1&gt;
+  &lt;p&gt;Lead-Text.&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+      </details>
+    </section>
+
+    <section class="site-example">
+      <h3 class="site-example__caption">Mit Top-Divider</h3>
+      <div class="site-example__preview"><section class="section" style="--section-divider: 1px solid var(--color-border);">
+  <h2>Nach dem Divider</h2>
+</section></div>
+      <details class="site-example__source">
+        <summary>HTML anzeigen</summary>
+        <pre class="code-block"><code>&lt;section class=&quot;section&quot; style=&quot;--section-divider: 1px solid var(--color-border);&quot;&gt;
+  &lt;h2&gt;Nach dem Divider&lt;/h2&gt;
+&lt;/section&gt;</code></pre>
+      </details>
+    </section>
         </section>
 
         <section class="site-doc__section">

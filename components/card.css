@@ -11,6 +11,24 @@
  *   --card-border, --card-radius, --card-shadow, --card-padding
  *   --card-hover-transform, --card-hover-shadow
  *
+ * Struktur:
+ *   <div class="card">
+ *     <h3>Buchung bestätigen</h3>
+ *     <p>Anna, Donnerstag 14:00 — Damen-Haarschnitt.</p>
+ *     <button class="btn">Bestätigen</button>
+ *   </div>
+ *
+ *   Flach (ohne Schatten):
+ *   <div class="card card--flat">
+ *     <p>Subtler Background-Block ohne Elevation.</p>
+ *   </div>
+ *
+ *   Mit Border-Akzent:
+ *   <div class="card card--bordered">
+ *     <h4>Status</h4>
+ *     <p>14 offene Buchungen, 3 wartend.</p>
+ *   </div>
+ *
  * Modifier:
  *   .card--flat       ohne Schatten
  *   .card--bordered   starker Border, kein Schatten

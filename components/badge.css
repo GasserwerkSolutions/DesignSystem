@@ -11,6 +11,20 @@
  *     --badge-weight, --badge-letter, --badge-transform
  *     --badge-px, --badge-py
  *
+ * Struktur:
+ *   <span class="badge badge--info">Neu</span>
+ *
+ *   Mit Status-Dot:
+ *   <span class="badge badge--success">
+ *     <span class="badge__dot" aria-hidden="true"></span>
+ *     Aktiv
+ *   </span>
+ *
+ *   Variants nebeneinander:
+ *   <span class="badge badge--strong">Premium</span>
+ *   <span class="badge badge--warning">Bald ausverkauft</span>
+ *   <span class="badge badge--outline">Beta</span>
+ *
  * Modifier:
  *   .badge--strong     filled (interactive accent)
  *   .badge--success    subtle success
