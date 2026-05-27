@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.5.7] — Date / Time Inputs
+
+### Hinzugefügt
+
+- **`components/date-input.css`** als styled-Native-Erweiterung für `<input type="date|time|datetime-local|month|week">`. Padding und Border kommen vom generischen Input-Styling in `base/reset.css` (automatisch density-aware) — diese Datei justiert nur den webkit-Picker-Indicator und liefert das `.date-range`-Wrapper-Pattern.
+- **Mode-aware Picker-Indicator** via `filter: invert(1)` im Dark-Mode. Beide Blöcke (manuell + auto-dark) symmetrisch — keine Mode-Lücke.
+- **`.date-range`-Wrapper** für From-To-Patterns: zwei native inputs nebeneinander mit `__separator` (default em-dash). Inputs behalten Native-Picker individuell.
+- **Demo-Section "Date / Time"** mit vier Patterns: Date, Time, Month, Date-Range.
+
+### Architektur
+
+- Bewusst **kein** Custom-Calendar-Component. Native `<input type="date">` deckt 95% der Use-Cases mit perfekter Mobile- und A11Y-Integration. Custom-Calendar (mit Inline-Popover, Disabled-Dates, Range-Selection-Visual) bleibt v0.6 als Combobox-ähnliches Pattern auf Popover-Basis.
+
+### Validierung
+
+- Lint, Static-Contrast (1008/1008), Browser-Contrast (180/180) WCAG-AA grün.
+
+---
+
 ## [0.5.6] — Chart-Container + kategorische Palette
 
 Datenvisualisierung in den DS-Stack aufgenommen. Library-agnostischer

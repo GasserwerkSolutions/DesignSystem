@@ -1,0 +1,98 @@
+/**
+ * Date-Input Component
+ * =====================
+ *
+ * Styled native <input type="date"> / type="time" / type="datetime-local" /
+ * type="month" / type="week". Behält:
+ *   - Native Calendar/Time-Picker (iOS scroll-wheel, Android picker)
+ *   - Form-Integration (FormData, valueAsDate, valueAsNumber)
+ *   - Native Keyboard (Pfeil-Tasten zum Datum-Stepping)
+ *   - Screen-Reader-Support out of the box
+ *
+ * Padding und Border erbt das Element aus dem generischen <input>-Style
+ * in base/reset.css — automatisch density-aware. Diese Datei justiert nur
+ * den webkit-Picker-Indicator (mode-aware Color) und liefert das
+ * .date-range-Wrapper-Pattern für From-To-Filter.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --date-indicator-opacity  (default 0.6)
+ *     --date-range-separator    (default "—")
+ *
+ * Struktur:
+ *   Single:
+ *     <div class="field">
+ *       <label class="field__label" for="dt-from">Termin</label>
+ *       <input type="date" id="dt-from">
+ *     </div>
+ *
+ *   Range (From — To):
+ *     <div class="field">
+ *       <label class="field__label" for="dt-range-from">Zeitraum</label>
+ *       <div class="date-range">
+ *         <input type="date" id="dt-range-from" aria-label="Von">
+ *         <span class="date-range__separator" aria-hidden="true">—</span>
+ *         <input type="date" aria-label="Bis">
+ *       </div>
+ *     </div>
+ */
+
+/* Webkit-Calendar-Picker-Indicator: mode-aware Färbung via filter:invert.
+   Light: schwarzer Indicator (default); Dark: invertiert zu hell.
+   Firefox/Safari haben eigenes UI, das ist hier OK. */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator,
+input[type="week"]::-webkit-calendar-picker-indicator {
+  opacity: var(--date-indicator-opacity, 0.6);
+  cursor: pointer;
+  transition: opacity var(--motion-feedback);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="time"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover,
+input[type="month"]::-webkit-calendar-picker-indicator:hover,
+input[type="week"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+[data-mode="dark"] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-mode="dark"] input[type="time"]::-webkit-calendar-picker-indicator,
+[data-mode="dark"] input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+[data-mode="dark"] input[type="month"]::-webkit-calendar-picker-indicator,
+[data-mode="dark"] input[type="week"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mode="light"]):not([data-mode="dark"]) input[type="date"]::-webkit-calendar-picker-indicator,
+  :root:not([data-mode="light"]):not([data-mode="dark"]) input[type="time"]::-webkit-calendar-picker-indicator,
+  :root:not([data-mode="light"]):not([data-mode="dark"]) input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+  :root:not([data-mode="light"]):not([data-mode="dark"]) input[type="month"]::-webkit-calendar-picker-indicator,
+  :root:not([data-mode="light"]):not([data-mode="dark"]) input[type="week"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}
+
+/* Date-Range-Wrapper: zwei date-inputs nebeneinander mit Separator.
+   Inputs behalten ihre eigene Border/Padding aus reset.css. */
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.date-range > input {
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
+}
+
+.date-range__separator {
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}

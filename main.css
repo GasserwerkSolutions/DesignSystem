@@ -48,6 +48,7 @@
 @import "./components/field.css"       layer(components);
 @import "./components/search.css"      layer(components);
 @import "./components/select.css"      layer(components);
+@import "./components/date-input.css"  layer(components);
 @import "./components/file-upload.css" layer(components);
 @import "./components/modal.css"       layer(components);
 @import "./components/drawer.css"      layer(components);

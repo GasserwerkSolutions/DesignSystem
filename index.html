@@ -566,6 +566,42 @@
     </section>
 
     <section class="section">
+      <h2>Date / Time</h2>
+      <p>
+        Styled native <code>&lt;input type="date|time|datetime-local|month|week"&gt;</code> —
+        behält Mobile-Picker, Calendar-Popup, Form-Integration, Pfeil-Tasten-Keyboard und
+        Screen-Reader-Support out of the box. Density-aware durch das generische
+        Input-Styling aus <code>base/reset.css</code>. Picker-Indicator wechselt
+        automatisch im Dark-Mode (filter: invert).
+      </p>
+      <div class="grid-2">
+        <div class="field">
+          <label class="field__label" for="dt-day">Termin-Datum</label>
+          <input type="date" id="dt-day" value="2026-05-27">
+          <p class="field__hint">Native Browser-Picker, Pfeil-Tasten steppen.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="dt-time">Uhrzeit</label>
+          <input type="time" id="dt-time" value="14:30">
+          <p class="field__hint">Minuten-Step via <code>step</code>-Attribut anpassbar.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="dt-month">Abrechnungs-Monat</label>
+          <input type="month" id="dt-month" value="2026-05">
+        </div>
+        <div class="field">
+          <label class="field__label">Zeitraum (Range)</label>
+          <div class="date-range">
+            <input type="date" value="2026-05-01" aria-label="Von">
+            <span class="date-range__separator" aria-hidden="true">—</span>
+            <input type="date" value="2026-05-31" aria-label="Bis">
+          </div>
+          <p class="field__hint">Wrapper-Pattern, zwei native inputs + Separator.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <h2>Select</h2>
       <p>
         Styled native <code>&lt;select&gt;</code> — behält Form-Integration,
