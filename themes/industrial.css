@@ -42,8 +42,6 @@
   --btn-fg:           white;
   --btn-border:       var(--industrial-600);
   --btn-radius:       0;
-  --btn-px:           var(--space-16);
-  --btn-py:           var(--space-12);
   --btn-weight:       700;
   --btn-letter:       var(--ls-wide);
   --btn-transform:    uppercase;

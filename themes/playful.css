@@ -35,8 +35,6 @@
   --btn-bg-hover:     var(--playful-700);
   --btn-fg:           white;
   --btn-radius:       var(--radius-20);
-  --btn-px:           var(--space-16);
-  --btn-py:           var(--space-12);
   --btn-weight:       700;
   --btn-hover-motion: scale(1.08);
   --btn-transition:   all var(--motion-fastest) cubic-bezier(0.34, 1.56, 0.64, 1);

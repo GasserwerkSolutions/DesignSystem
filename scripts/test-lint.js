@@ -283,6 +283,37 @@ test("destructive token + --strict: exit 1", () => {
   assertEq(r.code, 1, "strict mode → exit 1 for destructive token");
 });
 
+// Check 5: axis-blocker auto-detection
+// --btn-py wird in semantic.css definiert als var(--density-control-py),
+// daher density-sensitive. Setzt ein Theme es hartcoded, blockt es Density.
+test("axis-blocker (--btn-py hardcoded): exit 1", () => {
+  const r = runLint(`[data-tone~="test"] {\n  --btn-py: 20px;\n}`);
+  if (r.code !== 1) {
+    throw new Error(`expected exit 1, got ${r.code}\nstderr:\n${r.stderr}`);
+  }
+  if (!r.stderr.includes("cross-axis")) {
+    throw new Error(`expected 'cross-axis' in error output, got:\n${r.stderr}`);
+  }
+  if (!r.stderr.includes("density")) {
+    throw new Error(`expected 'density' in error output, got:\n${r.stderr}`);
+  }
+  if (!r.stderr.includes("line 2")) {
+    throw new Error(`expected 'line 2' source position, got:\n${r.stderr}`);
+  }
+});
+
+test("axis-blocker (table-cell-py): exit 1", () => {
+  // --table-cell-py is density-row-sensitive (per components/table.css)
+  const r = runLint(`[data-tone~="test"] { --table-cell-py: 8px; }`);
+  assertEq(r.code, 1, "exit 1 for table-cell-py block");
+});
+
+test("non-axis token (--btn-radius): exit 0", () => {
+  // --btn-radius hat keinen --density-* fallback → kein block, only theme-identity.
+  const r = runLint(`[data-tone~="test"] { --btn-radius: 8px; }`);
+  assertEq(r.code, 0, "non-axis tokens should pass");
+});
+
 // ============================================================
 // Summary
 // ============================================================

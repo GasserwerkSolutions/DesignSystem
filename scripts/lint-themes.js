@@ -36,9 +36,12 @@ const fs = require("fs");
 const path = require("path");
 const postcss = require("postcss");
 
-const ROOT       = path.resolve(__dirname, "..");
-const THEMES_DIR = path.join(ROOT, "themes");
-const DARK_CSS   = path.join(ROOT, "semantic/dark.css");
+const ROOT           = path.resolve(__dirname, "..");
+const THEMES_DIR     = path.join(ROOT, "themes");
+const DARK_CSS       = path.join(ROOT, "semantic/dark.css");
+const COMPONENTS_DIR = path.join(ROOT, "components");
+const BASE_DIR       = path.join(ROOT, "base");
+const SEMANTIC_DIR   = path.join(ROOT, "semantic");
 
 const ALLOWED_SELECTOR = /^\[data-tone~="[^"]+"\]$/;
 const STRICT = process.argv.includes("--strict");
@@ -79,13 +82,67 @@ function readModeSensitiveTokens() {
   return tokens;
 }
 
-function lintTheme(file, modeSensitive) {
+/**
+ * AUTO-DETECTION: cross-axis-sensitive Component-Tokens.
+ *
+ * Scannt components/*.css + base/*.css nach Pattern:
+ *   var(--<component-token>, var(--<axis>-...))
+ * → Das Component-Token ist von einer Mode-Achse abhängig. Wenn ein Theme
+ *   es hartcoded überschreibt, blockiert es die Achse für diese Component.
+ *
+ * Aktuell erkannte Achsen: --density-*.
+ * Erweiterbar durch zusätzliche Achsen-Prefixes in AXIS_PREFIXES.
+ */
+const AXIS_PREFIXES = ["--density-"];
+
+function readAxisSensitiveTokens() {
+  // Map: componentToken → axis-name (e.g. "density")
+  const sensitive = new Map();
+
+  function recordSensitive(componentToken, axisToken) {
+    for (const prefix of AXIS_PREFIXES) {
+      if (axisToken.startsWith(prefix)) {
+        if (!sensitive.has(componentToken)) {
+          sensitive.set(componentToken, prefix.replace(/-+$/, "").slice(2));
+        }
+      }
+    }
+  }
+
+  const scanDir = (dir) => {
+    if (!fs.existsSync(dir)) return;
+    for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".css"))) {
+      const css = fs.readFileSync(path.join(dir, file), "utf8");
+
+      // Pattern A: fallback chain in components → var(--X, var(--density-...))
+      const fallbackRe = /var\(\s*(--[\w-]+)\s*,\s*var\(\s*(--[\w-]+)/gs;
+      let m;
+      while ((m = fallbackRe.exec(css)) !== null) {
+        recordSensitive(m[1], m[2]);
+      }
+
+      // Pattern B: direct definition in semantic → --X: var(--density-...)
+      // Catches semantic.css-style: --btn-py: var(--density-control-py);
+      const defineRe = /(--[\w-]+)\s*:\s*var\(\s*(--[\w-]+)/g;
+      while ((m = defineRe.exec(css)) !== null) {
+        recordSensitive(m[1], m[2]);
+      }
+    }
+  };
+  scanDir(COMPONENTS_DIR);
+  scanDir(BASE_DIR);
+  scanDir(SEMANTIC_DIR);
+  return sensitive;
+}
+
+function lintTheme(file, modeSensitive, axisSensitive) {
   const filePath = path.join(THEMES_DIR, file);
   const root = parseFile(filePath);
 
   const selectorViolations = [];
   const destructiveTokens = new Map();   // token → first source line
   const layoutViolations = new Map();    // token → first source line
+  const axisBlocks = new Map();          // token → { line, axis }
 
   walkAllRules(root, (rule) => {
     // Check 1: Selector-Contract — jeder Teil der Komma-Liste muss
@@ -99,7 +156,7 @@ function lintTheme(file, modeSensitive) {
       }
     }
 
-    // Check 2 + 4: Token-Setzungen prüfen.
+    // Check 2 + 4 + 5: Token-Setzungen prüfen.
     rule.walkDecls(/^--/, (decl) => {
       const line = decl.source?.start?.line ?? 0;
       if (modeSensitive.has(decl.prop) && !destructiveTokens.has(decl.prop)) {
@@ -108,6 +165,9 @@ function lintTheme(file, modeSensitive) {
       if (FORBIDDEN_LAYOUT_TOKENS.has(decl.prop) && !layoutViolations.has(decl.prop)) {
         layoutViolations.set(decl.prop, line);
       }
+      if (axisSensitive.has(decl.prop) && !axisBlocks.has(decl.prop)) {
+        axisBlocks.set(decl.prop, { line, axis: axisSensitive.get(decl.prop) });
+      }
     });
   });
 
@@ -115,6 +175,7 @@ function lintTheme(file, modeSensitive) {
     selectorViolations,
     destructiveTokens: [...destructiveTokens.entries()].sort((a, b) => a[0].localeCompare(b[0])),
     layoutViolations: [...layoutViolations.entries()].sort((a, b) => a[0].localeCompare(b[0])),
+    axisBlocks: [...axisBlocks.entries()].sort((a, b) => a[0].localeCompare(b[0])),
   };
 }
 
@@ -170,24 +231,28 @@ function lintDarkCss() {
 
 function main() {
   const modeSensitive = readModeSensitiveTokens();
-  console.log(`Mode-sensitive tokens from dark.css: ${modeSensitive.size}\n`);
+  const axisSensitive = readAxisSensitiveTokens();
+  console.log(`Mode-sensitive tokens from dark.css: ${modeSensitive.size}`);
+  console.log(`Axis-sensitive component tokens (auto-detected): ${axisSensitive.size}`);
+  console.log("");
 
   let selectorViolations = 0;
   let destructiveWarnings = 0;
   let nestedIssues = 0;
   let layoutViolations = 0;
+  let axisBlocks = 0;
 
-  // ===== Check 1+2+4: Themes =====
+  // ===== Check 1+2+4+5: Themes =====
   const files = fs
     .readdirSync(THEMES_DIR)
     .filter((f) => f.endsWith(".css"))
     .sort();
 
   for (const file of files) {
-    const { selectorViolations: sv, destructiveTokens: dt, layoutViolations: lv } =
-      lintTheme(file, modeSensitive);
+    const { selectorViolations: sv, destructiveTokens: dt, layoutViolations: lv, axisBlocks: ab } =
+      lintTheme(file, modeSensitive, axisSensitive);
 
-    if (sv.length === 0 && dt.length === 0 && lv.length === 0) {
+    if (sv.length === 0 && dt.length === 0 && lv.length === 0 && ab.length === 0) {
       console.log(`[ok]    ${file}`);
       continue;
     }
@@ -204,6 +269,17 @@ function main() {
       console.error(`        Cascadiert via DOM-Vererbung auf jeden .container.`);
       console.error(`        Editorial-Verengung gehört in --prose-max (siehe ADR-001).`);
       layoutViolations += lv.length;
+    }
+
+    if (ab.length > 0) {
+      console.error(`[fail]  ${file}  cross-axis-blockierende Token-Setzungen:`);
+      for (const [token, info] of ab) {
+        console.error(`        -> ${token}  (line ${info.line}, blockt ${info.axis}-Achse)`);
+      }
+      console.error(`        Diese Component-Tokens haben Fallbacks auf --${ab[0][1].axis}-*.`);
+      console.error(`        Hartcoded Theme-Werte schalten ${ab[0][1].axis} für diese Component aus.`);
+      console.error(`        Identität via radius/color/weight/transform statt Sizing setzen.`);
+      axisBlocks += ab.length;
     }
 
     if (dt.length > 0) {
@@ -241,6 +317,10 @@ function main() {
   }
   if (nestedIssues > 0) {
     console.error(`${nestedIssues} nested-mode-Coverage-Issue(s).`);
+    process.exit(1);
+  }
+  if (axisBlocks > 0) {
+    console.error(`${axisBlocks} cross-axis-Token-Block(s) — Mode/Density wird in einigen Themes ignoriert.`);
     process.exit(1);
   }
   if (destructiveWarnings > 0) {

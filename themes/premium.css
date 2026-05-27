@@ -42,14 +42,13 @@
   --duration-medium: var(--motion-slower);
   --easing-medium:   cubic-bezier(0.25, 0.1, 0.25, 1);
 
-  /* Button */
+  /* Button — Padding folgt der Density-Achse. Identität via radius+weight+
+     letter+transform statt hardcoded Padding (siehe ADR-002, v0.7.2). */
   --btn-bg:           var(--gray-900);
   --btn-bg-hover:     var(--gray-800);
   --btn-fg:           white;
   --btn-border:       var(--gray-900);
   --btn-radius:       var(--radius-2);
-  --btn-px:           var(--space-32);
-  --btn-py:           var(--space-16);
   --btn-weight:       500;
   --btn-letter:       1px;
   --btn-transform:    uppercase;

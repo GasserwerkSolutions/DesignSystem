@@ -1,5 +1,66 @@
 # Changelog
 
+## [0.7.2] — Density universal + systematische Bug-Klassen-Detection
+
+User-Bug-Report: "Spacing ist nur für Trust und Modern verfügbar, Premium und
+Industrial haben keinen Dark-Mode toggle und das Auswählen des Spacings hat Bugs."
+Plus Anweisung: "Durchsuche das ganze System systematisch nach ähnlichen Bugs,
+finde alle. Du musst alle finden und beheben."
+
+### Behoben
+
+- **Density-Block in 4 Themes** (Premium, Playful, Industrial, Minimal):
+  alle setzten `--btn-px` + `--btn-py` hardcoded → blockten die Density-Achse.
+  v0.3.2-Designentscheidung "opinionated Themes behalten Identity-Sizing"
+  von User-Erwartung "Density universal" überstimmt. Entlassen, jetzt
+  density-responsive (50/42/58 px in comfortable/compact/spacious — verifiziert).
+  Identität via radius/color/weight/letter/transform statt Padding.
+- **Dist/js/-Bundle-Loss-Verständnis**: User-Report "Dark-Mode-Toggle in
+  Premium/Industrial broken" war Symptom des Bundle-fehlt-Bugs. Wenn dist/js/
+  zwischen Builds verloren ging (z.B. durch `rm -rf dist`), brach das ganze
+  Demo-JS — Dark-Toggle technisch ok, aber Companion-JS broken machte den
+  Eindruck. Mitigiert durch `prepare`-Hook + dist/js/ committed.
+
+### Hinzugefügt — Systematische Detection
+
+- **Lint Check 5: Cross-Axis-Token-Block-Detection**. Auto-detected aus
+  semantic+components+base: welche Component-Tokens haben Fallback auf
+  `--density-*` (Pattern A: `var(--X, var(--density-...))`) oder werden
+  direkt darauf definiert (Pattern B: `--X: var(--density-...)`). Themes
+  die diese Tokens hartcoded setzen → hard-fail. **Keine Whitelist** —
+  zukünftige axis-Achsen (forced-colors, prefers-contrast in v0.8) werden
+  durch Erweitern von `AXIS_PREFIXES` automatisch erfasst.
+- **20 axis-sensitive Tokens auto-detected** in der ersten Iteration.
+  Aktuell 0 Blocker — alle Themes konform.
+- **`scripts/audit-system.js`**: heuristische Pattern-Scans für 5 Bug-Klassen
+  (A: Density-Blocker, B: A11Y, C: hardcoded Sizing in Components, D: Magic-
+  Numbers in Themes, E: Demo inline-styles). A+B durch Pipeline-Checks
+  covered; C+D aktuell 0 Befunde; E ist heuristisch (Demo-naturally OK).
+- **`npm run audit`**: einmaliger Scan, kein hard-fail (Pattern-Diagnose).
+- **3 neue Integration-Tests in `test-lint.js`** (21 Tests total):
+  - axis-blocker (--btn-py hardcoded) → exit 1
+  - axis-blocker (--table-cell-py hardcoded) → exit 1
+  - non-axis token (--btn-radius) → exit 0 (Theme-Identity OK)
+
+### VRT-Baselines aktualisiert
+
+Premium / Playful / Industrial / Minimal haben jetzt density-default
+Button-Padding — visuell anders als bisher. 12/12 Baselines regeneriert.
+
+### Strategie-Lehre
+
+Nicht "alle Bugs ad-hoc finden", sondern **Klassen mechanisch erkennbar machen**:
+- Cross-Axis-Blocker: Lint Check 5 (regelt für künftige Axes mit)
+- Hardcoded Sizing in Components: Audit Class C
+- Magic-Number Tokens in Themes: Audit Class D
+- Jeder neue Bug-Typ wird im Pattern aufgenommen, einmal — danach automatisch.
+
+### Pipeline-Stand
+
+8-stufig grün: `build:js → Lint(5 Checks) → Test-Lint(21) → Static-Contrast(1008) → Browser-Contrast(180) → A11Y(0) → Visual(12) → Journeys(6)`
+
+---
+
 ## [0.7.0] — Companion-JS in TypeScript
 
 Erste v0.7-Etappe: das DS bekommt eine offizielle JavaScript-Library für

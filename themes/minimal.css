@@ -45,8 +45,6 @@
   --btn-bg-hover:     var(--gray-700);
   --btn-fg:           white;
   --btn-radius:       var(--radius-2);
-  --btn-px:           var(--space-24);
-  --btn-py:           var(--space-12);
   --btn-weight:       500;
   --btn-hover-motion: none;
 
