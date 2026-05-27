@@ -399,36 +399,49 @@ function parseTokenFile(filePath) {
  */
 function tokenKind(token) {
   const n = token.name;
+  /* Component-internal tokens — werden auf der jeweiligen Component-Page
+     unter Token-Contract gezeigt, NICHT in Foundations doppelt. */
+  if (
+    /^--btn-|^--card-|^--badge-|^--callout-|^--stat-|^--nav-|^--alert-|^--toast-|^--banner-|^--input-|^--select-|^--combobox-|^--switch-|^--checkbox-|^--field-|^--popover-|^--tooltip-|^--modal-|^--drawer-|^--tab-|^--tabs-|^--accordion-|^--tree-|^--avatar-|^--list-row-|^--section-|^--chart-shadow|^--spinner-|^--skeleton-|^--progress-|^--range-|^--slider-|^--app-shell-/.test(n)
+  )
+    return "component-internal";
+
   if (
     /^--gray-|^--trust-|^--playful-|^--premium-|^--industrial-|^--modern-|^--minimal-/.test(n)
   )
     return "palette-color";
   if (/^--color-|^--status-.*-(bg|fg|border)/.test(n)) return "semantic-color";
+  if (/^--chart-/.test(n)) return "chart-color";
   if (/^--space-/.test(n)) return "spacing";
+  if (/^--density-/.test(n)) return "spacing";
   if (/^--radius-/.test(n)) return "radius";
   if (/^--border-/.test(n)) return "border";
   if (/^--shadow-|^--elevation-/.test(n)) return "shadow";
-  if (/^--font-(serif|sans|mono)/.test(n)) return "font-family";
-  if (/^--font-/.test(n)) return "font-size";
-  if (/^--fw-/.test(n)) return "font-weight";
-  if (/^--lh-/.test(n)) return "line-height";
+  if (/^--focus-ring/.test(n)) return "shadow";
+  if (/^--font-(serif|sans|mono)|^--heading-font/.test(n)) return "font-family";
+  if (/^--font-|^--text-size-|^--body-size/.test(n)) return "font-size";
+  if (/^--fw-|^--text-weight-|^--heading-weight/.test(n)) return "font-weight";
+  if (/^--lh-|^--text-line-height-|^--heading-line-height|^--body-line-height/.test(n)) return "line-height";
   if (/^--ls-/.test(n)) return "letter-spacing";
   if (/^--motion-|^--duration-/.test(n)) return "duration";
   if (/^--ease-|^--easing-/.test(n)) return "easing";
   if (/^--phi/.test(n)) return "proportion";
   if (/^--z-/.test(n)) return "z-index";
+  if (/^--cq-bp-|^--container-max|^--prose-max/.test(n)) return "container";
   return "raw";
 }
 
 const FOUNDATION_GROUPS = [
   { id: "color", label: "Farben — Neutral & Paletten", kinds: ["palette-color"] },
   { id: "semantic-color", label: "Farben — Semantic", kinds: ["semantic-color"] },
-  { id: "spacing", label: "Spacing", kinds: ["spacing"] },
+  { id: "chart-color", label: "Farben — Chart-Palette (Okabe-Ito)", kinds: ["chart-color"] },
+  { id: "spacing", label: "Spacing & Density-Axis", kinds: ["spacing"] },
   { id: "typography", label: "Typografie", kinds: ["font-family", "font-size", "font-weight", "line-height", "letter-spacing"] },
   { id: "radius", label: "Radius & Borders", kinds: ["radius", "border"] },
   { id: "elevation", label: "Schatten & Elevation", kinds: ["shadow"] },
   { id: "motion", label: "Motion", kinds: ["duration", "easing"] },
   { id: "proportion", label: "Proportionen", kinds: ["proportion"] },
+  { id: "container", label: "Container & Layout", kinds: ["container"] },
   { id: "z-index", label: "Z-Index", kinds: ["z-index"] },
 ];
 
@@ -817,7 +830,10 @@ function renderTokenSwatch(token) {
   switch (kind) {
     case "palette-color":
     case "semantic-color":
+    case "chart-color":
       return `<span class="foundation-swatch foundation-swatch--color" style="background:var(${token.name});" data-token="${name}" aria-hidden="true"></span>`;
+    case "container":
+      return `<span class="foundation-swatch foundation-swatch--proportion">${value}</span>`;
     case "spacing":
       return `<span class="foundation-swatch foundation-swatch--spacing"><span class="foundation-swatch__bar" style="width:var(${token.name});"></span></span>`;
     case "radius":
@@ -885,7 +901,7 @@ function renderFoundationsPage(components, allTokens) {
     (g) =>
       `<li><a href="#group-${g.id}">${escapeHtml(g.label)}</a></li>`
   )
-    .concat(`<li><a href="#group-container">Container-Queries</a></li>`)
+    .concat(`<li><a href="#cq-demo">Container-Queries — Demo</a></li>`)
     .join("");
 
   const body = `
@@ -908,8 +924,8 @@ function renderFoundationsPage(components, allTokens) {
         </header>
         ${groups}
 
-        <section class="foundation-group" id="group-container">
-          <h2 class="foundation-group__title">Container-Queries <span class="site-muted">(4. Achse)</span></h2>
+        <section class="foundation-group" id="cq-demo">
+          <h2 class="foundation-group__title">Container-Queries — Demo <span class="site-muted">(4. Achse)</span></h2>
           <p class="site-muted">Components passen sich an ihren tatsächlichen Container an — nicht an die Viewport-Breite. Opt-in via <code>.cq</code>-Wrapper. Zieh die Ecke der gestrichelten Box rechts unten, um die Container-Breite zu verändern und beobachte wie Card und List-Row reagieren.</p>
 
           <div class="foundation-cq-demo">
@@ -2057,6 +2073,30 @@ function main() {
     process.exit(1);
   }
 
+  /* Foundations-Coverage-Self-Check: jedes Token in tokens.css/semantic.css
+     MUSS in einer Foundation-Group landen. Component-internal Tokens werden
+     bewusst ausgenommen (gehören auf die jeweilige Component-Page). Sonst
+     werden neue Tokens still ignoriert (z.B. die v0.9.0 --cq-bp-* sind
+     anfangs durchgefallen). Vor OUT_DIR-Cleanup prüfen, sonst lässt ein
+     Fail dist/site halb-leer zurück. */
+  const tokens = [
+    ...parseTokenFile(TOKENS_FILE),
+    ...parseTokenFile(SEMANTIC_FILE),
+  ];
+  const renderedKinds = new Set(FOUNDATION_GROUPS.flatMap((g) => g.kinds));
+  const unclassified = tokens.filter((t) => {
+    const k = tokenKind(t);
+    return k === "raw" || (!renderedKinds.has(k) && k !== "component-internal");
+  });
+  if (unclassified.length) {
+    console.error(
+      `[build-site] Foundations-Coverage-Gap: ${unclassified.length} token(s) classified as 'raw' oder ohne Foundation-Group:`
+    );
+    for (const t of unclassified) console.error(`  - ${t.name}`);
+    console.error(`  Fix: extend tokenKind() oder FOUNDATION_GROUPS in scripts/build-site.js.`);
+    process.exit(1);
+  }
+
   if (fs.existsSync(OUT_DIR)) {
     fs.rmSync(OUT_DIR, { recursive: true });
   }
@@ -2070,10 +2110,6 @@ function main() {
 
   fs.writeFileSync(path.join(OUT_DIR, "index.html"), renderIndexPage(components));
 
-  const tokens = [
-    ...parseTokenFile(TOKENS_FILE),
-    ...parseTokenFile(SEMANTIC_FILE),
-  ];
   fs.writeFileSync(
     path.join(OUT_DIR, "foundations.html"),
     renderFoundationsPage(components, tokens)

@@ -237,7 +237,7 @@ async function runContainerQueries(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
   await page.goto(
-    "file://" + path.join(SITE_DIR, "foundations.html#group-container"),
+    "file://" + path.join(SITE_DIR, "foundations.html#cq-demo"),
     { waitUntil: "load" }
   );
   await new Promise((r) => setTimeout(r, 400));
