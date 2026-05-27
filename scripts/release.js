@@ -95,6 +95,25 @@ step("3/5 — Tarball-Audit (npm pack --dry-run)", () => {
     topLevels.add(top);
   });
   [...topLevels].sort().forEach((t) => console.log(`  · ${t}`));
+
+  /* Coverage-Self-Check: jeder @import in main.css MUSS im Tarball-Inhalt
+     auffindbar sein. Sonst bricht die Installation bei Konsumenten still
+     (main.css verweist auf nicht-existierende Dateien). Hatten das v0.10.0
+     mit state/ — dieser Check verhindert die Wiederholung. */
+  const mainCss = fs.readFileSync(path.join(ROOT, "main.css"), "utf8");
+  const importPaths = [...mainCss.matchAll(/@import\s+["']\.\/([^"']+)["']/g)].map((m) => m[1]);
+  const tarballPaths = new Set(data.files.map((f) => f.path));
+  const missing = importPaths.filter((p) => !tarballPaths.has(p));
+  if (missing.length) {
+    console.error("");
+    console.error(`✗ ${missing.length} @import-Targets fehlen im Tarball:`);
+    for (const p of missing) console.error(`    - ${p}`);
+    console.error("  Fix: package.json:files erweitern.");
+    process.exit(1);
+  } else {
+    console.log("");
+    console.log(`✓ Tarball-Coverage: alle ${importPaths.length} @imports aus main.css enthalten.`);
+  }
 });
 
 // ============================================================
