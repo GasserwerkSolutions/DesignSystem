@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./assets/site.css">
   <script defer src="./../../dist/js/design-system.iife.js"></script>
   <script defer src="./assets/site.js"></script>
+  <script defer src="./assets/theme-generator.js"></script>
 </head>
 <body>
   <div class="app-shell">
@@ -139,12 +140,76 @@
       <article class="site-doc">
         <header class="site-doc__header">
           <h1 class="site-doc__title">Theme-Generator</h1>
-          <p class="site-doc__lede">HEX-Picker → OKLCH-12-Step-Skala, Color-Blind-Safety-Check, Export als CSS. In Vorbereitung.</p>
+          <p class="site-doc__lede">
+            Wähle eine Hauptfarbe — der Generator erzeugt eine 11-Step-OKLCH-
+            Skala (50 – 950), prüft Color-Blind-Safety, und exportiert das
+            Ergebnis als <code>[data-tone~="…"]</code>-Block.
+          </p>
         </header>
+
         <section class="site-doc__section">
-          <div class="card">
-            <p class="site-muted">Diese Seite wird in einem nachfolgenden Etappen-Commit aufgebaut.</p>
-            <p>Bis dahin: <a href="./index.html">zurück zur Übersicht</a>.</p>
+          <h2>1. Hauptfarbe wählen</h2>
+          <div class="theme-gen__inputs">
+            <label class="theme-gen__field">
+              <span>HEX-Wert</span>
+              <div class="theme-gen__hex-row">
+                <input type="color" id="tg-color" value="#22c55e" data-theme-gen-color>
+                <input type="text" id="tg-hex" value="#22c55e" data-theme-gen-hex spellcheck="false">
+              </div>
+            </label>
+            <label class="theme-gen__field">
+              <span>Tone-Name</span>
+              <input type="text" id="tg-name" value="custom" data-theme-gen-name spellcheck="false">
+            </label>
+          </div>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>2. Generierte Palette (OKLCH)</h2>
+          <ol class="theme-gen__palette" data-theme-gen-palette aria-label="11-Step-Palette"></ol>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>3. Color-Blind-Safety</h2>
+          <p class="site-muted">Simulation via Brettel/Viénot-Mollon. Adjacent steps brauchen ein wahrnehmbares Lightness-Delta in jedem Modus — sonst fließen sie ineinander.</p>
+          <div class="theme-gen__cb-rows" data-theme-gen-cb></div>
+          <div class="theme-gen__cb-verdict" data-theme-gen-cb-verdict></div>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>4. Live-Vorschau</h2>
+          <p class="site-muted">Components wie unter dem generierten Theme aussehen würden.</p>
+          <div class="theme-gen__preview" data-theme-gen-preview>
+            <div class="theme-gen__preview-card card">
+              <h3>Buchung bestätigen</h3>
+              <p>Anna, Donnerstag 14:00 — Damen-Haarschnitt.</p>
+              <div class="theme-gen__preview-actions">
+                <button class="btn">Bestätigen</button>
+                <button class="btn btn--secondary">Verschieben</button>
+                <button class="btn btn--ghost">Abbrechen</button>
+              </div>
+              <div class="alert alert--success" role="status" style="margin-top: var(--space-16);">
+                <span class="alert__icon" aria-hidden="true">✓</span>
+                <div class="alert__body">
+                  <strong class="alert__title">Bereit</strong>
+                  <p>Bestätigung versendet Anna eine Erinnerung.</p>
+                </div>
+              </div>
+              <div style="display: flex; gap: var(--space-8); margin-top: var(--space-16);">
+                <span class="badge badge--info">Neu</span>
+                <span class="badge badge--success">Aktiv</span>
+                <span class="tag">VIP-Kundin</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>5. Export</h2>
+          <p class="site-muted">Kopiere den Block nach <code>themes/&lt;name&gt;.css</code>, ergänze die Import-Zeile in <code>main.css</code>, und das Theme ist via <code>data-tone="&lt;name&gt;"</code> verfügbar.</p>
+          <div class="theme-gen__export">
+            <button class="btn btn--sm" data-theme-gen-copy>In Zwischenablage kopieren</button>
+            <pre class="code-block"><code data-theme-gen-css></code></pre>
           </div>
         </section>
       </article>

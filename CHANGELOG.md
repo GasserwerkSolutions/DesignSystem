@@ -42,11 +42,32 @@ selbst, Theme-/Mode-/Density-Switcher wirken live auf die Beispiele.
 - **Check-Site erweitert**: drei zusätzliche Asserts für Live-Token-Edit
   (Wert ändert sich, Marker erscheint, Reset restored).
 
-### Folgeschritte (v0.8.0 Etappe 3+)
+### Etappe 3 — Theme-Generator (HEX → OKLCH-Palette)
 
-- HEX-Picker → OKLCH-12-Step-Theme-Generator inkl. Color-Blind-Safety-Check
+- **Color-Konvertierung in JS**: sRGB ↔ linear-sRGB ↔ OKLab ↔ OKLCH
+  (Ottosson 2020). Gamut-Mapping via Bisection auf Chroma. Reverse-Roundtrip
+  zurück zu HEX mit sRGB-Clip.
+- **Palette-Generierung**: User-HEX → 11-Step-Skala (50, 100, 200, 300, 400,
+  500, 600, 700, 800, 900, 950). OKLCH-Hue bleibt konstant, Lightness folgt
+  einer Tailwind-orientierten Zielkurve, Chroma fällt zu den Extremen ab.
+- **Color-Blind-Safety-Check**: Brettel/Viénot-Mollon-Simulation für
+  Deuteranopie / Protanopie / Tritanopie. Min-Lightness-Delta zwischen
+  adjacenten Steps wird gemeldet; Verdict pro CB-Typ als Badge (ok / knapp).
+- **Live-Preview**: Buttons (primary/secondary/ghost) + Alert + Badges in
+  einem `.theme-gen__preview` Wrapper bekommen die generierten Tokens via
+  inline `<style>`-Tag scoped per `data-tone="<name>"`.
+- **CSS-Export**: Vollständiger `[data-tone~="<name>"]`-Block mit allen
+  abgeleiteten Tokens (interactive, focus, btn, card, input). Copy-to-
+  Clipboard-Button.
+- **`dist/site/assets/theme-generator.js`** als separates Modul (~12 KB).
+- **Check-Site erweitert** um 4 Theme-Generator-Asserts (Palette-Init,
+  Palette-Update, CSS-Export, Live-Preview-Farbänderung).
+
+### Folgeschritte (v0.8.0 Etappe 4+)
+
 - URL-State-Persistierung (`?tone=...&mode=...&token--btn-radius=...`)
 - GitHub-Pages-Deployment-Workflow
+- Fehlende `Struktur:`-Blöcke in 13 Component-Headern (button, badge, etc.)
 
 ---
 

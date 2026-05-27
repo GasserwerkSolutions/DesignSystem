@@ -130,6 +130,67 @@ async function runInteractions(browser) {
   return errors;
 }
 
+async function runThemeGenerator(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "themes.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 500));
+
+  const initialPalette = await page.evaluate(() =>
+    [...document.querySelectorAll(".theme-gen__swatch code")].map((c) => c.textContent)
+  );
+  const initialCss = await page.evaluate(() =>
+    document.querySelector("[data-theme-gen-css]").textContent
+  );
+
+  await page.evaluate(() => {
+    const hex = document.querySelector("[data-theme-gen-hex]");
+    hex.value = "#dc2626";
+    hex.dispatchEvent(new Event("input", { bubbles: true }));
+    const name = document.querySelector("[data-theme-gen-name]");
+    name.value = "fire";
+    name.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await new Promise((r) => setTimeout(r, 200));
+
+  const newPalette = await page.evaluate(() =>
+    [...document.querySelectorAll(".theme-gen__swatch code")].map((c) => c.textContent)
+  );
+  const newCss = await page.evaluate(() =>
+    document.querySelector("[data-theme-gen-css]").textContent
+  );
+  const previewBg = await page.evaluate(() => {
+    const btn = document.querySelector(".theme-gen__preview .btn");
+    return getComputedStyle(btn).backgroundColor;
+  });
+
+  await page.close();
+
+  const checks = [
+    ["theme-gen: initial palette has 11 steps", initialPalette.length === 11],
+    [
+      "theme-gen: palette updates on hex change",
+      newPalette.length === 11 &&
+        newPalette.join() !== initialPalette.join() &&
+        newPalette.every((h) => /^#[0-9a-f]{6}$/i.test(h)),
+    ],
+    [
+      "theme-gen: CSS export updates with new name",
+      newCss.includes("--fire-500") && newCss.includes('[data-tone~="fire"]'),
+    ],
+    ["theme-gen: live preview button color reflects new tone", /rgb\((1[0-9]{2}|2[0-9]{2}),/.test(previewBg)],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
 async function runFoundationsEdit(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
@@ -199,8 +260,10 @@ async function runFoundationsEdit(browser) {
   const interactionErrs = await runInteractions(browser);
   console.log("[check-site] Foundations live-edit:");
   const foundationErrs = await runFoundationsEdit(browser);
+  console.log("[check-site] Theme-Generator:");
+  const themeGenErrs = await runThemeGenerator(browser);
   await browser.close();
-  const total = smokeErrs + interactionErrs + foundationErrs;
+  const total = smokeErrs + interactionErrs + foundationErrs + themeGenErrs;
   console.log(
     total === 0
       ? "[check-site] passed."
