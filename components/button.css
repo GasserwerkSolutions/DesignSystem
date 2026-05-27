@@ -90,6 +90,14 @@
   --btn-bg: transparent;
   --btn-fg: var(--color-interactive);
   --btn-border: transparent;
+  /* Ghost ist explicit "subtle" — opinionated Theme-Identity-Token
+     (uppercase, letter-spacing, weight) gehören nicht zu diesem Pattern.
+     Sonst werden Topbar-Nav-Items oder secondary Actions visuell zu
+     aufdringlich und die UI verliert ihre Hierarchie. Identity bleibt
+     für .btn (primary) und .btn--secondary erhalten. */
+  --btn-transform: none;
+  --btn-letter: 0;
+  --btn-weight: var(--fw-500);
 }
 
 .btn--sm {

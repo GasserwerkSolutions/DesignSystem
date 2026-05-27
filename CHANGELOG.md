@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.7.3] — Vorschau-Fix: Ghost-Buttons + Topbar-Wrap
+
+User-Report (Folge-Bug): Demo-Vorschau hatte sichtbare Issues — Topbar wrappte
+in 2 Zeilen bei Premium/Industrial, DARK-Toggle wanderte in 2. Zeile und war
+"verloren". Plus stale Hero-Text "29 Components" statt aktuell 50.
+
+### Behoben
+
+- **Ghost-Buttons übernahmen Theme-Identity-Tokens** (`--btn-transform: uppercase`, `--btn-letter`, `--btn-weight`) von Premium/Industrial → wurden zu UPPERCASE Text-Spalten ohne erkennbaren Button-Charakter. **Topbar-Folge-Bug:** durch die längere Uppercase-Breite wrappte die Topbar in 2 Zeilen, DARK-Toggle landete unten und schien "fehlend" — das war die ursprüngliche User-Beschwerde "Premium/Industrial haben keinen Dark-Mode toggle". Beides ein Bug, ein Fix.
+  - **Lösung:** `.btn--ghost` resetet `--btn-transform: none` + `--btn-letter: 0` + `--btn-weight: var(--fw-500)`. Ghost ist explicit das "subtle"-Pattern, opinionated Identity-Tokens passen nicht dazu. Primary + Secondary behalten Theme-Identity unverändert.
+- **Stale Hero-Text aktualisiert:** "29 Components" → "50 Components" + Achsen-Spezifikation "6 Tones × 2 Modes × 3 Densities".
+
+### VRT-Baselines aktualisiert
+
+12 PNGs regeneriert wegen Ghost-Button-Visual-Änderung + Hero-Text-Update.
+
+### Lehre
+
+User-Report-Symptom "kein Dark-Toggle" → echte Ursache nicht das Toggle selbst, sondern Layout-Wrap durch zu breite Topbar-Buttons. Mein Probe v0.7.2 testete den Toggle programmatisch (klick → state-change) und sah ihn "funktional", aber visuell war er außerhalb des Viewport-Sweet-Spots. **Pixel-Inspektion vor Probe-Logic.**
+
+---
+
 ## [0.7.2] — Density universal + systematische Bug-Klassen-Detection
 
 User-Bug-Report: "Spacing ist nur für Trust und Modern verfügbar, Premium und
