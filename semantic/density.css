@@ -11,7 +11,9 @@
  *   (kein Attribut)                 comfortable, ~40px (Default aus semantic.css)
  *
  * Sub-tree-fähig: <div data-density="compact"> innerhalb eines anderen
- * Density-Scopes funktioniert via Custom-Property-Cascade — wie data-tone.
+ * Density-Scopes wirkt automatisch via Custom-Property-Cascade. Anders als
+ * dark.css braucht Density KEINEN Descendant-Partner-Selector — Themes
+ * setzen keine Density-Tokens destruktiv um, der Cascade trägt das alleine.
  *
  * Themes überschreiben Component-Tokens (z.B. --btn-py) direkt; Density
  * wirkt nur als Fallback. Wer ein Theme density-responsive haben will,
@@ -21,8 +23,7 @@
  */
 
 /* Compact: ~32px tall controls, ~28px-Rows. Touch-Target ≥24px erfüllt. */
-[data-density="compact"],
-[data-density="compact"] [data-density-scope] {
+[data-density="compact"] {
   --density-control-py: var(--space-8);
   --density-control-px: var(--space-16);
   --density-row-py:     var(--space-8);
@@ -32,8 +33,7 @@
 }
 
 /* Spacious: ~48px tall controls — Touch-friendly, Editorial-Komfort. */
-[data-density="spacious"],
-[data-density="spacious"] [data-density-scope] {
+[data-density="spacious"] {
   --density-control-py: var(--space-16);
   --density-control-px: var(--space-24);
   --density-row-py:     var(--space-16);

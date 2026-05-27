@@ -75,7 +75,8 @@
  *       panel.querySelectorAll(".combobox__option")
  *            .forEach((o) => o.setAttribute("aria-selected", "false"));
  *       opt.setAttribute("aria-selected", "true");
- *       value.textContent = opt.dataset.label || opt.textContent.trim();
+ *       value.textContent = (opt.querySelector(".combobox__option-label")?.textContent
+ *                           || opt.textContent).trim();
  *       panel.hidePopover();
  *     };
  *
@@ -172,7 +173,8 @@
   transform: rotate(180deg);
 }
 
-/* Panel — Popover-API. Reset native defaults wie in popover.css. */
+/* Panel — Popover-API. Reset native defaults wie in popover.css.
+   Inkl. Entry-Animation auf :popover-open. */
 .combobox__panel {
   position: fixed;
   inset: auto;
@@ -186,17 +188,15 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--motion-feedback), transform var(--motion-feedback);
 }
 
 .combobox__panel:popover-open {
   opacity: 1;
   transform: none;
-}
-
-.combobox__panel {
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity var(--motion-feedback), transform var(--motion-feedback);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -915,15 +915,15 @@
           <div class="demo-row">
             <span class="tag">
               Anna Meier
-              <button class="tag__remove" type="button" aria-label="Anna entfernen">×</button>
+              <button class="tag__remove" type="button" aria-label="Anna entfernen" data-dismiss=".tag">×</button>
             </span>
             <span class="tag">
               Marc Stein
-              <button class="tag__remove" type="button" aria-label="Marc entfernen">×</button>
+              <button class="tag__remove" type="button" aria-label="Marc entfernen" data-dismiss=".tag">×</button>
             </span>
             <span class="tag tag--solid">
               Lisa Vogel
-              <button class="tag__remove" type="button" aria-label="Lisa entfernen">×</button>
+              <button class="tag__remove" type="button" aria-label="Lisa entfernen" data-dismiss=".tag">×</button>
             </span>
           </div>
         </div>
@@ -944,7 +944,7 @@
             <strong class="alert__title">Buchung gespeichert</strong>
             <p>Anna ist für Donnerstag 14:00 eingetragen.</p>
           </div>
-          <button class="alert__close" type="button" aria-label="Schließen">×</button>
+          <button class="alert__close" type="button" aria-label="Schließen" data-dismiss=".alert">×</button>
         </div>
         <div class="alert alert--info" role="status">
           <span class="alert__icon" aria-hidden="true">ℹ</span>
@@ -952,7 +952,7 @@
             <strong class="alert__title">Neues Update verfügbar</strong>
             <p>Version 2.3 ist bereit zum Installieren.</p>
           </div>
-          <button class="alert__close" type="button" aria-label="Schließen">×</button>
+          <button class="alert__close" type="button" aria-label="Schließen" data-dismiss=".alert">×</button>
         </div>
         <div class="alert alert--warning" role="alert">
           <span class="alert__icon" aria-hidden="true">⚠</span>
@@ -960,7 +960,7 @@
             <strong class="alert__title">Abo läuft bald aus</strong>
             <p>Verlängere in den nächsten 3 Tagen, um Unterbrechungen zu vermeiden.</p>
           </div>
-          <button class="alert__close" type="button" aria-label="Schließen">×</button>
+          <button class="alert__close" type="button" aria-label="Schließen" data-dismiss=".alert">×</button>
         </div>
         <div class="alert alert--danger" role="alert">
           <span class="alert__icon" aria-hidden="true">✕</span>
@@ -968,7 +968,7 @@
             <strong class="alert__title">Zahlung fehlgeschlagen</strong>
             <p>Bitte aktualisiere deine Zahlungsmethode in den Einstellungen.</p>
           </div>
-          <button class="alert__close" type="button" aria-label="Schließen">×</button>
+          <button class="alert__close" type="button" aria-label="Schließen" data-dismiss=".alert">×</button>
         </div>
       </div>
     </section>
@@ -1293,32 +1293,53 @@
         btn.addEventListener("click", () => setDensity(btn.dataset.setDensity));
       });
 
-      // Alert-Dismiss-Pattern: zeigt das in der Component-Doku empfohlene Snippet.
-      document.querySelectorAll(".alert__close").forEach((btn) => {
-        btn.addEventListener("click", () => btn.closest(".alert")?.remove());
+      // Generic Dismiss-Pattern: [data-dismiss="<selector>"] entfernt den
+      // nächsten matching Ancestor. Spart 3× duplizierten Listener für
+      // Alert / Tag / Toast — Konsumenten markieren ihre Close-Buttons mit
+      // data-dismiss="<parent-selector>".
+      document.querySelectorAll("[data-dismiss]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          btn.closest(btn.dataset.dismiss)?.remove();
+        });
       });
 
-      // Tag-Remove-Pattern (analog zu Alert/Toast).
-      document.querySelectorAll(".tag__remove").forEach((btn) => {
-        btn.addEventListener("click", () => btn.closest(".tag")?.remove());
-      });
+      // Shared positioning utility — panel below trigger via beforetoggle.
+      // beforetoggle bubbelt nicht → per-Element-Listener nötig.
+      function anchorPopoverByTrigger(panel, { matchWidth = false, onOpen } = {}) {
+        panel.addEventListener("beforetoggle", (e) => {
+          if (onOpen) onOpen(e);
+          if (e.newState !== "open") return;
+          const trigger = document.querySelector(`[popovertarget="${panel.id}"]`);
+          if (!trigger) return;
+          const r = trigger.getBoundingClientRect();
+          const style = { top: `${r.bottom + 4}px`, left: `${r.left}px` };
+          if (matchWidth) style.minWidth = `${r.width}px`;
+          Object.assign(panel.style, style);
+        });
+      }
 
       // File-Upload: Drag-State + Drop + Selected-File-Anzeige.
+      // dragleave feuert auch beim Übertritt auf Kind-Elemente — Counter-Pattern
+      // hält dragging=true bis der Pointer wirklich die Dropzone verlässt.
       document.querySelectorAll(".file-upload").forEach((label) => {
         const input = label.querySelector('input[type="file"]');
         const text  = label.querySelector(".file-upload__text");
         const defaultText = text?.textContent;
-        ["dragenter", "dragover"].forEach((e) =>
-          label.addEventListener(e, (ev) => {
-            ev.preventDefault();
-            label.dataset.dragging = "true";
-          })
-        );
-        ["dragleave", "drop"].forEach((e) =>
-          label.addEventListener(e, () => { delete label.dataset.dragging; })
-        );
+        let depth = 0;
+        label.addEventListener("dragenter", (ev) => {
+          ev.preventDefault();
+          depth++;
+          label.dataset.dragging = "true";
+        });
+        label.addEventListener("dragover", (ev) => ev.preventDefault());
+        label.addEventListener("dragleave", () => {
+          depth = Math.max(0, depth - 1);
+          if (depth === 0) delete label.dataset.dragging;
+        });
         label.addEventListener("drop", (ev) => {
           ev.preventDefault();
+          depth = 0;
+          delete label.dataset.dragging;
           if (!input || !ev.dataTransfer?.files?.length) return;
           input.files = ev.dataTransfer.files;
           input.dispatchEvent(new Event("change", { bubbles: true }));
@@ -1375,17 +1396,14 @@
           panel.hidePopover();
         };
 
-        panel.addEventListener("beforetoggle", (e) => {
-          trigger.setAttribute("aria-expanded", e.newState === "open" ? "true" : "false");
-          if (e.newState !== "open") return;
-          const r = trigger.getBoundingClientRect();
-          Object.assign(panel.style, {
-            top: `${r.bottom + 4}px`,
-            left: `${r.left}px`,
-            minWidth: `${r.width}px`,
-          });
-          setActive(-1);
-          requestAnimationFrame(() => search?.focus());
+        anchorPopoverByTrigger(panel, {
+          matchWidth: true,
+          onOpen: (e) => {
+            trigger.setAttribute("aria-expanded", e.newState === "open" ? "true" : "false");
+            if (e.newState !== "open") return;
+            setActive(-1);
+            requestAnimationFrame(() => search?.focus());
+          },
         });
 
         panel.addEventListener("click", (e) => {
@@ -1411,19 +1429,8 @@
         });
       });
 
-      // Popover-Trigger-Anchoring. beforetoggle bubbelt nicht — per-Popover-Listener.
-      document.querySelectorAll(".popover").forEach((pop) => {
-        pop.addEventListener("beforetoggle", (e) => {
-          if (e.newState !== "open") return;
-          const trigger = document.querySelector(`[popovertarget="${pop.id}"]`);
-          if (!trigger) return;
-          const r = trigger.getBoundingClientRect();
-          Object.assign(pop.style, {
-            top:  `${r.bottom + 4}px`,
-            left: `${r.left}px`,
-          });
-        });
-      });
+      // Popover-Trigger-Anchoring via shared utility.
+      document.querySelectorAll(".popover").forEach((pop) => anchorPopoverByTrigger(pop));
     })();
   </script>
 

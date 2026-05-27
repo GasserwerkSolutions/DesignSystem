@@ -45,7 +45,10 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-12);
-  padding: var(--alert-py, var(--space-12)) var(--alert-px, var(--space-16));
+  /* Padding folgt der Row-Density-Achse (analog zu Table-Cells / List-Rows),
+     damit Alerts in compact/spacious-Modes konsistent atmen. */
+  padding: var(--alert-py, var(--density-row-py))
+           var(--alert-px, var(--density-row-px));
   background: var(--alert-bg, var(--status-info-bg));
   color: var(--alert-fg, var(--color-text-primary));
   border-inline-start: 4px solid var(--alert-stripe, var(--status-info-border));

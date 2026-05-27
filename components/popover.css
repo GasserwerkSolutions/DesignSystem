@@ -57,6 +57,14 @@
  *   });
  */
 
+/* CSS Anchor Positioning ist Opt-in pro Popover-Instanz, weil ein gemeinsamer
+   anchor-name bei mehreren Triggers im DOM kollidiert. Konsument vergibt
+   unique Names:
+     <button style="anchor-name: --tr-1" popovertarget="p-1">…</button>
+     <div   style="position-anchor: --tr-1; top: anchor(bottom); left: anchor(left);"
+            class="popover" id="p-1" popover>…</div>
+   Der JS-Anker-Snippet im Component-Header funktioniert ohne diese Komplexität
+   und ist die empfohlene Default-Strategie. */
 .popover {
   --_offset: var(--popover-offset, 0.25rem);
 
@@ -77,20 +85,9 @@
 
   font-size: var(--font-sm);
   line-height: var(--lh-normal);
-}
 
-/* CSS Anchor Positioning ist Opt-in pro Popover-Instanz, weil ein gemeinsamer
-   anchor-name bei mehreren Triggers im DOM kollidiert. Konsument vergibt
-   unique Names:
-     <button style="anchor-name: --tr-1" popovertarget="p-1">…</button>
-     <div   style="position-anchor: --tr-1; top: anchor(bottom); left: anchor(left);"
-            class="popover" id="p-1" popover>…</div>
-   Der JS-Anker-Snippet im Component-Header funktioniert ohne diese Komplexität
-   und ist die empfohlene Default-Strategie. */
-
-/* Entry-Animation: das `:popover-open`-Pseudo aktiviert sich beim Öffnen.
-   Reduced-Motion respektiert. */
-.popover {
+  /* Entry-Animation: :popover-open aktiviert sich beim Öffnen.
+     Reduced-Motion respektiert (siehe @media unten). */
   opacity: 0;
   transform: translateY(-4px);
   transition: opacity var(--motion-feedback), transform var(--motion-feedback);

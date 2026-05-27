@@ -29,24 +29,30 @@
  *   </label>
  *
  * JS-Snippet (Konsument kopiert ins eigene Setup) — Drag-State,
- * File-Drop-Übernahme und Selected-File-Anzeige:
+ * File-Drop-Übernahme und Selected-File-Anzeige. dragleave feuert auch
+ * beim Übertritt auf Kind-Elemente (Icon, Text-Spans); ein Counter hält
+ * dragging=true bis der Pointer wirklich die Dropzone verlässt.
  *
  *   document.querySelectorAll(".file-upload").forEach((label) => {
  *     const input = label.querySelector('input[type="file"]');
  *     const text  = label.querySelector(".file-upload__text");
  *     const defaultText = text?.textContent;
+ *     let depth = 0;
  *
- *     ["dragenter", "dragover"].forEach((e) =>
- *       label.addEventListener(e, (ev) => {
- *         ev.preventDefault();
- *         label.dataset.dragging = "true";
- *       })
- *     );
- *     ["dragleave", "drop"].forEach((e) =>
- *       label.addEventListener(e, () => { delete label.dataset.dragging; })
- *     );
+ *     label.addEventListener("dragenter", (ev) => {
+ *       ev.preventDefault();
+ *       depth++;
+ *       label.dataset.dragging = "true";
+ *     });
+ *     label.addEventListener("dragover", (ev) => ev.preventDefault());
+ *     label.addEventListener("dragleave", () => {
+ *       depth = Math.max(0, depth - 1);
+ *       if (depth === 0) delete label.dataset.dragging;
+ *     });
  *     label.addEventListener("drop", (ev) => {
  *       ev.preventDefault();
+ *       depth = 0;
+ *       delete label.dataset.dragging;
  *       if (!input || !ev.dataTransfer?.files?.length) return;
  *       input.files = ev.dataTransfer.files;
  *       input.dispatchEvent(new Event("change", { bubbles: true }));
@@ -99,7 +105,8 @@
 }
 
 /* Native input visuell verstecken, aber für Screen-Reader und Keyboard
-   weiterhin fokussierbar (klassisches sr-only-Pattern). */
+   weiterhin fokussierbar. Spiegelt das .sr-only-Pattern aus base/reset.css —
+   Konsumenten können alternativ class="sr-only" direkt am Input setzen. */
 .file-upload__input {
   position: absolute;
   width:  1px;
@@ -130,12 +137,14 @@
 }
 
 /* Compact-Variante: horizontal, weniger Padding, kleineres Icon.
-   Nutzbar inline in Forms (z.B. Anhang an eine Notiz). */
+   Nutzbar inline in Forms. Padding folgt der Density-Achse (row-tier),
+   damit der Compact-Drop sich in compact/spacious-Modes konsistent
+   zu Table-Rows und List-Rows verhält. */
 .file-upload--compact {
   flex-direction: row;
   align-items: center;
   gap: var(--space-12);
-  padding: var(--space-12) var(--space-16);
+  padding: var(--density-row-py) var(--density-row-px);
   text-align: start;
 }
 
