@@ -1,5 +1,52 @@
 # Changelog
 
+## [0.6.4] — Tools-Self-Test-Pattern (adressiert Schwächen #1 + #2)
+
+Erste Etappe nach der ehrlichen Schwächen-Analyse v0.6.3. Pattern-Etablierung:
+jeder Check-Skript beweist seine eigene Erkennungsfähigkeit. **Mutation
+Testing für CSS-Systeme** — bisher als JS-Disziplin etabliert (Stryker),
+wir adoptieren das Pattern für unsere Welt.
+
+### Hinzugefügt
+
+- **`check-visual.js --self-test`** mit Sensitivitäts-Suite (3 Mutations):
+  - trust `--btn-radius 8 → 24`: erwartet 1000–50000 px Diff
+  - premium `--space-section 96 → 32`: erwartet dimension-mismatch
+  - modern `--btn-radius 4 → 24`: erwartet 1000–50000 px Diff
+  - Mutationen werden via Subprocess-Call gegen Baselines geprüft, Range-Drift wird automatisch erkannt.
+- **`check-a11y.js --self-test`** mit DOM-Mutation-Suite (3 Mutations):
+  - `<button>` ohne accessible name → erwartet `button-name` critical
+  - `<img>` ohne alt → erwartet `image-alt` critical
+  - `<input>` ohne label → erwartet `label` critical
+  - Mutationen werden im Browser-Context injiziert (kein File-Roundtrip).
+- **`npm run check:tools`** als Master-Runner für alle Self-Tests. Separate Disziplin von `check:full`: prüft die Tools, nicht das Repo.
+
+### Behoben
+
+- **Code-Smell in allen 6 Themes** (durch Self-Test aufgedeckt): `--section-py` wurde in jedem Theme redundant gesetzt, obwohl `semantic.css` `--section-py: var(--space-section)` bereits per Indirection definiert. Effekt: Konsumenten, die nur `--space-section` änderten, sahen keinen Effekt (Self-Test premium-mutation produzierte "pixel-identical" trotz extremer Layout-Änderung). 6 redundante Zeilen entfernt, Indirection trägt jetzt. VRT-Baselines bleiben identisch (visueller Output unverändert).
+
+### Self-Test-Implementation-Details
+
+- **Parser-Robustheit:** Self-Test fängt sowohl `[fail] X-Y N px diff` als auch `[fail] X-Y dimensions: ...`-Patterns. Dimension-Mismatch ist eine valide Catch-Form bei extremen Layout-Shifts.
+- **Cleanup-Garantie:** alle Mutations laufen in `try/finally`, File- bzw. DOM-State wird restored auch bei Errors.
+- **Range-Validation:** Pixel-Counts müssen in `[minPixels, maxPixels]` liegen. Drift in beide Richtungen (zu wenig = schwacher Threshold; zu viel = unerwartete Sensitivität) wird sichtbar.
+
+### Wirkung
+
+- **Schwäche #1** (Tests ohne Beweise): jeder Check muss `--self-test` bestehen, bevor wir ihm vertrauen.
+- **Schwäche #2** (empirische Thresholds): MAX_DIFF_PIXELS = 500 ist jetzt mit 3 Mutations kalibriert. Wenn das Threshold zu hoch wird (echte Bugs gehen durch), schreit der Self-Test.
+
+### Pipeline-Stand
+
+- `check:full` (6 Schritte): verifiziert das Repo
+- `check:tools` (2 Self-Tests): verifiziert die Tools — neu
+
+Geplante Reihenfolge der weiteren Schwächen-Hardening:
+- v0.6.5: User-Journey-Tests (Schwäche #4) + Puppeteer-Konsolidierung (Schwäche #5)
+- v0.6.6: Playwright + Cross-Browser (Schwäche #3 — Cross-Host-Determinismus via bundled Chromium)
+
+---
+
 ## [0.6.3] — Visual-Regression-Testing (pixelmatch + Puppeteer)
 
 Sechster Pipeline-Schritt: das visuelle Render wird jetzt deterministisch

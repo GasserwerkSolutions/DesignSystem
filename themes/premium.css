@@ -31,7 +31,6 @@
   --space-inline:  var(--space-24);
   --space-block:   var(--space-40);
   --space-section: var(--space-96);
-  --section-py:    var(--space-96);
 
   /* Editorial-Spalte: nur .container--prose verengt sich, .container bleibt
      auf 1280px. Verhindert, dass UI-Chrome (Topbar, Grids) via

@@ -27,8 +27,9 @@
 
 const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
-const STRICT  = process.argv.includes("--strict");
-const VERBOSE = process.argv.includes("--verbose");
+const STRICT    = process.argv.includes("--strict");
+const VERBOSE   = process.argv.includes("--verbose");
+const SELF_TEST = process.argv.includes("--self-test");
 
 let puppeteer;
 try {
@@ -105,7 +106,117 @@ function reportViolation(v) {
   }
 }
 
+/**
+ * Self-Test: beweist dass axe-Lint kritische A11Y-Bugs fängt.
+ * Injiziert bekannte Mutations in den DOM nach Page-Load (vor axe-Run),
+ * verifiziert dass jede Mutation als critical/serious gemeldet wird,
+ * räumt auf.
+ *
+ * Mutations werden im Browser-Context injiziert (statt File-Mutation),
+ * damit kein File-System-Roundtrip nötig ist. Faster + sauberer.
+ */
+const A11Y_MUTATIONS = [
+  {
+    name: "button ohne accessible name",
+    inject: () => {
+      const b = document.createElement("button");
+      b.id = "__a11y_test_btn__";
+      b.type = "button";
+      // kein text, kein aria-label
+      document.body.appendChild(b);
+    },
+    cleanup: () => document.getElementById("__a11y_test_btn__")?.remove(),
+    expectedRule: "button-name",
+    expectedImpact: ["critical", "serious"],
+  },
+  {
+    name: "<img> ohne alt-Attribut",
+    inject: () => {
+      const img = document.createElement("img");
+      img.id = "__a11y_test_img__";
+      img.src = "data:image/png;base64,iVBORw0KGgo=";
+      // alt absichtlich weg
+      document.body.appendChild(img);
+    },
+    cleanup: () => document.getElementById("__a11y_test_img__")?.remove(),
+    expectedRule: "image-alt",
+    expectedImpact: ["critical", "serious"],
+  },
+  {
+    name: "<input> ohne assoziiertes Label",
+    inject: () => {
+      const i = document.createElement("input");
+      i.id = "__a11y_test_input__";
+      i.type = "text";
+      // kein label, kein aria-label, kein aria-labelledby
+      document.body.appendChild(i);
+    },
+    cleanup: () => document.getElementById("__a11y_test_input__")?.remove(),
+    expectedRule: "label",
+    expectedImpact: ["critical", "serious"],
+  },
+];
+
+async function runSelfTest() {
+  const browser = await puppeteer.launch({
+    headless: "new",
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
+
+  let allPassed = true;
+  console.log("A11Y-Self-Test (Mutation-Suite):");
+  console.log("");
+
+  try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1400, height: 900 });
+    await page.goto("file://" + path.resolve(ROOT, "index.html"));
+    await new Promise((r) => setTimeout(r, 500));
+    await page.addScriptTag({ path: AXE_PATH });
+
+    for (const m of A11Y_MUTATIONS) {
+      await page.evaluate(m.inject);
+      try {
+        const { violations } = await runAxe(page);
+        const found = violations.find((v) => v.id === m.expectedRule);
+        if (!found) {
+          console.error(`  [FAIL] ${m.name}`);
+          console.error(`         Erwartete axe-Rule "${m.expectedRule}" NICHT gemeldet`);
+          console.error(`         Gefundene Rules: ${violations.map((v) => v.id).join(", ") || "(keine)"}`);
+          allPassed = false;
+          continue;
+        }
+        if (!m.expectedImpact.includes(found.impact)) {
+          console.error(`  [FAIL] ${m.name}`);
+          console.error(`         Rule "${m.expectedRule}" hat impact="${found.impact}"`);
+          console.error(`         Erwartet eine von: ${m.expectedImpact.join(", ")}`);
+          allPassed = false;
+          continue;
+        }
+        console.log(`  [ok]   ${m.name}`);
+        console.log(`         caught: ${found.id} (${found.impact})`);
+      } finally {
+        await page.evaluate(m.cleanup);
+      }
+    }
+  } finally {
+    await browser.close();
+  }
+
+  console.log("");
+  if (!allPassed) {
+    console.error("A11Y-Self-Test FAILED — Pipeline würde echte A11Y-Bugs durchlassen.");
+    process.exit(1);
+  }
+  console.log("A11Y-Self-Test passed — axe-Lint erkennt alle kalibrierten Mutationen.");
+}
+
 async function main() {
+  if (SELF_TEST) {
+    await runSelfTest();
+    return;
+  }
+
   const browser = await puppeteer.launch({
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],

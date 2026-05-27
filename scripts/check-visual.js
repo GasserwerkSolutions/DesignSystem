@@ -39,6 +39,7 @@ const DIFF_DIR   = path.join(VISUAL_DIR, "_diff");
 
 const UPDATE = process.argv.includes("--update");
 const CREATE = process.argv.includes("--create");
+const SELF_TEST = process.argv.includes("--self-test");
 
 const TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
 const MODES = ["light", "dark"];
@@ -169,7 +170,146 @@ function diffImages(baselinePng, actualPng) {
   };
 }
 
+/**
+ * Self-Test: beweist dass VRT realistische Visual-Changes erkennt.
+ * Mutiert je ein bekanntes Token in einer Theme-Datei, ruft den VRT in
+ * einem Subprocess auf (damit keine Rekursion), parsed Output gegen
+ * erwartete Fail-Labels + Pixel-Ranges, restored die Datei.
+ *
+ * Threshold-Kalibrierung: wenn eine echte Mutation NICHT mehr in den
+ * erwarteten Range fällt, muss MAX_DIFF_PIXELS oder die Mutation
+ * angepasst werden. Sensitivitäts-Drift wird so sichtbar.
+ */
+const MUTATIONS = [
+  {
+    name: "trust --btn-radius 8 → 24 (corner-shift pro Button)",
+    file: path.join(ROOT, "themes/trust.css"),
+    find: "--btn-radius:       var(--radius-8);",
+    replace: "--btn-radius: var(--radius-24);",
+    expectedFails: ["trust-light", "trust-dark"],
+    minPixels: 1000,
+    maxPixels: 50000,
+  },
+  {
+    name: "premium --space-section 96 → 32 (extreme layout-shift)",
+    file: path.join(ROOT, "themes/premium.css"),
+    find: "--space-section: var(--space-96);",
+    replace: "--space-section: var(--space-32);",
+    expectedFails: ["premium-light", "premium-dark"],
+    minPixels: 100_000,
+    maxPixels: 10_000_000,
+  },
+  {
+    name: "modern --btn-radius 4 → 24 (large per-button corner-shift)",
+    file: path.join(ROOT, "themes/modern.css"),
+    find: "--btn-radius:       var(--radius-4);",
+    replace: "--btn-radius: var(--radius-24);",
+    expectedFails: ["modern-light", "modern-dark"],
+    minPixels: 1000,
+    maxPixels: 50_000,
+  },
+];
+
+async function selfTest() {
+  const { spawnSync } = require("child_process");
+  console.log("VRT Self-Test (Sensitivity-Suite):");
+  console.log("");
+
+  let allPassed = true;
+
+  for (const m of MUTATIONS) {
+    const original = fs.readFileSync(m.file, "utf8");
+    if (!original.includes(m.find)) {
+      console.error(`  [SKIP] ${m.name}`);
+      console.error(`         target not found in ${path.relative(ROOT, m.file)}`);
+      allPassed = false;
+      continue;
+    }
+
+    try {
+      fs.writeFileSync(m.file, original.replace(m.find, m.replace));
+
+      // Subprocess-Call ohne --self-test → normaler VRT-Run gegen Baselines.
+      // Wir erwarten exit=1 (= Mutation gefangen).
+      const res = spawnSync("node", [__filename], {
+        encoding: "utf8",
+        cwd: ROOT,
+        timeout: 60_000,
+      });
+      const output = res.stdout + res.stderr;
+
+      // 1) Wurden die erwarteten Tone×Mode-Kombis als [fail] gemeldet?
+      // Pixel-Diff-Fail ODER dimension-Mismatch-Fail zählen beide als "caught".
+      // Dimension-Fails bekommen den Sentinel-Wert -1 (skip Range-Check).
+      const seen = new Map();
+      const pxRegex  = /\[fail\]\s+([\w-]+)\s+(\d+)\s+px diff/g;
+      const dimRegex = /\[fail\]\s+([\w-]+)\s+dimensions:/g;
+      let match;
+      while ((match = pxRegex.exec(output)) !== null) {
+        seen.set(match[1], parseInt(match[2], 10));
+      }
+      while ((match = dimRegex.exec(output)) !== null) {
+        if (!seen.has(match[1])) seen.set(match[1], -1);
+      }
+
+      const missingFails = m.expectedFails.filter((l) => !seen.has(l));
+      if (missingFails.length > 0) {
+        console.error(`  [FAIL] ${m.name}`);
+        console.error(`         Erwartete Fail-Labels NICHT gemeldet: ${missingFails.join(", ")}`);
+        const auszug = output.split("\n").filter((l) =>
+          m.expectedFails.some((label) => l.includes(label))
+        );
+        if (auszug.length > 0) {
+          console.error(`         Output-Auszug:\n${auszug.slice(0, 6).map((l) => "         " + l).join("\n")}`);
+        }
+        allPassed = false;
+        continue;
+      }
+
+      // 2) Liegen die Pixel-Counts in den erwarteten Ranges?
+      // Bei dimension-fails (px === -1) wird kein Range gechecked — die
+      // Mutation hat layout-shift produziert, was auch eine valide
+      // Catch-Form ist.
+      let inRange = true;
+      for (const label of m.expectedFails) {
+        const px = seen.get(label);
+        if (px === -1) continue; // dimension-mismatch: valid catch
+        if (px < m.minPixels || px > m.maxPixels) {
+          console.error(`  [FAIL] ${m.name}`);
+          console.error(`         ${label} = ${px} px außerhalb [${m.minPixels}, ${m.maxPixels}]`);
+          console.error(`         → MAX_DIFF_PIXELS oder Mutation neu kalibrieren.`);
+          allPassed = false;
+          inRange = false;
+        }
+      }
+
+      if (inRange) {
+        const pxs = m.expectedFails.map((l) => {
+          const v = seen.get(l);
+          return v === -1 ? `${l}=DIM` : `${l}=${v}`;
+        }).join(", ");
+        console.log(`  [ok]   ${m.name}`);
+        console.log(`         caught: ${pxs}`);
+      }
+    } finally {
+      fs.writeFileSync(m.file, original);
+    }
+  }
+
+  console.log("");
+  if (!allPassed) {
+    console.error("VRT Self-Test FAILED — Pipeline würde echte Bugs durchlassen.");
+    process.exit(1);
+  }
+  console.log("VRT Self-Test passed — VRT erkennt alle kalibrierten Mutationen.");
+}
+
 async function main() {
+  if (SELF_TEST) {
+    await selfTest();
+    return;
+  }
+
   await loadPixelmatch();
   ensureDir(VISUAL_DIR);
   // Stale Diff-Files aus früheren fails löschen — sonst Confusion.

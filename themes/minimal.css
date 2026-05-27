@@ -34,7 +34,6 @@
   --space-inline:  var(--space-24);
   --space-block:   var(--space-40);
   --space-section: var(--space-96);
-  --section-py:    var(--space-96);
 
   /* Motion — fast imperceptible */
   --duration-fast:   var(--motion-fast);

@@ -29,7 +29,6 @@
   --space-inline:    var(--space-16);
   --space-block:     var(--space-20);
   --space-section:   var(--space-48);
-  --section-py:      var(--space-48);
   --section-divider: 2px solid var(--color-border);
 
   /* Motion */

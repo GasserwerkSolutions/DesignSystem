@@ -27,7 +27,6 @@
   --space-inline:  var(--space-20);
   --space-block:   var(--space-32);
   --space-section: var(--space-64);
-  --section-py:    var(--space-64);
 
   /* Motion */
   --duration-fast:   var(--motion-base);
