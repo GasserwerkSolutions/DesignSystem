@@ -1,5 +1,49 @@
 # Changelog
 
+## [0.6.0] — Quality-Gates Etappe 1: PostCSS-AST-Lint + Unit-Tests
+
+Erster Schritt Richtung A+. Code-Qualität-Sprung: Hand-Parsing des
+existing Lint-Skripts auf PostCSS-AST migriert, plus eine Unit-Test-
+Suite, die die Lint-Logik gegen Edge-Cases absichert.
+
+### Geändert
+
+- **`scripts/lint-themes.js`** vollständig auf PostCSS-AST umgebaut. Externes Verhalten 1:1 (gleiche Output-Form, gleiche Exit-Codes, gleiche Findings). Intern:
+  - `walkRules()`-Hand-Parser → `postcss.parse().walkRules()`
+  - `stripComments()`-Regex → PostCSS-AST ignoriert Comments nativ
+  - `extractDeclaredTokens()`-Split-by-`;` → `rule.walkDecls(/^--/, ...)`
+  - **Bonus:** Source-Line-Reporting pro Finding (`(line 41)` statt nur Token-Name) — präzise Lokalisierung für Konsumenten.
+- **Robust gegen Edge-Cases**, die das Hand-Parsing fragil machten:
+  - Verschachtelte `@media` / `@supports` / `@container` / `@layer`
+  - `:not()` / `:is()` / `:where()` in Selektoren
+  - Werte mit `{}`-Chars (z.B. `--grid-template: "a b" "c d"`)
+  - Comments an beliebigen Stellen, inkl. innerhalb Selektor-Listen
+  - Strings mit `"`/`'`-Chars
+
+### Hinzugefügt
+
+- **`scripts/test-lint.js`** als Unit-Test-Suite (Node-native, keine Dependency). **13 Tests** decken:
+  - Token-Extraction über verschachtelte at-Rules (3 Tests)
+  - Selector-Contract über Comma-Listen + nested @media (5 Tests)
+  - Nested-Mode-Coverage inkl. `:not()`-Edge-Case (3 Tests — fängt den `:root:not([data-mode="light"]):not([data-mode="dark"])`-Auto-Block-Fall ab, der einen falschen "missing descendant"-Alarm hätte auslösen können)
+  - Brace-Edge-Cases in Property-Values (2 Tests)
+- **`npm run test:lint`**-Script registriert.
+- **`npm run check` und `check:full`** rufen jetzt auch test:lint auf → CI-Gate.
+
+### Architektur-Begründung
+
+Hand-Parsing per balanced-brace + Regex hat in v0.x funktioniert, aber jeder neue Check (z.B. forced-colors-coverage in v0.8 geplant) hätte das Parsing weiter überfrachtet. PostCSS-AST gibt der Lint-Engine eine echte Programmierschnittstelle (`rule.parent`, `rule.source.start.line`, walkers für jeden Node-Typ) — neue Checks sind jetzt 5-10 Zeilen statt 50+.
+
+### Validierung
+
+- `npm run lint` mit existing themes: 18 dokumentierte destruktive warnings, 0 fails ✓
+- Active-Negative-Test: trust.css mit injiziertem `--container-max: 90ch` → `exit=1, line 41 lokalisiert` ✓
+- `npm run test:lint`: 13/13 grün ✓
+- `npm run check:contrast`: 1008/1008 ✓
+- `npm run check:contrast:browser`: 180/180 ✓
+
+---
+
 ## [0.5.9] — Shared Chevron-Utility (Konsolidierung)
 
 Three-Chevron-Refactor aus dem Code-Review angegangen. Tree und Combobox

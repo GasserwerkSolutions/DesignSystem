@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
@@ -8,14 +8,18 @@
   "scripts": {
     "lint": "node scripts/lint-themes.js",
     "lint:strict": "node scripts/lint-themes.js --strict",
+    "test:lint": "node scripts/test-lint.js",
     "check:contrast": "node scripts/check-contrast.js",
     "check:contrast:browser": "node scripts/check-contrast-browser.js",
     "check:contrast:compare": "node scripts/check-contrast-browser.js --compare",
-    "check": "npm run lint && npm run check:contrast",
-    "check:full": "npm run lint && npm run check:contrast && npm run check:contrast:browser"
+    "check": "npm run lint && npm run test:lint && npm run check:contrast",
+    "check:full": "npm run lint && npm run test:lint && npm run check:contrast && npm run check:contrast:browser"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "devDependencies": {
+    "postcss": "^8.5.15",
     "puppeteer": "^25.1.0"
   }
 }
