@@ -200,6 +200,27 @@
     50% { transform: scale(1.6); opacity: 1; }
   }
 
+  .foundation-cq-demo h3 { font-size: var(--font-lg); margin: 0 0 var(--space-12); }
+  .foundation-cq-handle {
+    resize: horizontal;
+    overflow: auto;
+    min-width: 240px;
+    max-width: 100%;
+    width: 100%;
+    padding: var(--space-12);
+    border: 2px dashed var(--color-interactive);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+  }
+  .foundation-cq-handle::after {
+    content: "↘ ziehen zum Resize";
+    display: block;
+    text-align: right;
+    font-size: var(--font-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-8);
+  }
+
   /* Theme-Generator */
   .theme-gen__inputs { display: flex; gap: var(--space-24); flex-wrap: wrap; }
   .theme-gen__field { display: flex; flex-direction: column; gap: var(--space-8); }

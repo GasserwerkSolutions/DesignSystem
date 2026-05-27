@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="./index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.8.0</span>
+          <span class="badge badge--neutral">v0.9.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="./index.html">Overview</a>
@@ -141,7 +141,7 @@
         <header class="site-doc__header">
           <h1 class="site-doc__title">Foundations</h1>
           <p class="site-doc__lede">
-            263 Design-Tokens — die Atome des Systems. Klicke
+            267 Design-Tokens — die Atome des Systems. Klicke
             <strong>Edit</strong> bei einem Token, um seinen Wert live zu
             ändern. Aktive Edits + Tone/Mode/Density wandern in die URL —
             teilbar via Copy.
@@ -151,7 +151,7 @@
             <button type="button" class="btn btn--ghost btn--sm" data-foundation-reset>Edits zurücksetzen</button>
           </div>
           <nav class="foundation-toc" aria-label="Token-Gruppen">
-            <ul><li><a href="#group-color">Farben — Neutral &amp; Paletten</a></li><li><a href="#group-semantic-color">Farben — Semantic</a></li><li><a href="#group-spacing">Spacing</a></li><li><a href="#group-typography">Typografie</a></li><li><a href="#group-radius">Radius &amp; Borders</a></li><li><a href="#group-elevation">Schatten &amp; Elevation</a></li><li><a href="#group-motion">Motion</a></li><li><a href="#group-proportion">Proportionen</a></li><li><a href="#group-z-index">Z-Index</a></li></ul>
+            <ul><li><a href="#group-color">Farben — Neutral &amp; Paletten</a></li><li><a href="#group-semantic-color">Farben — Semantic</a></li><li><a href="#group-spacing">Spacing</a></li><li><a href="#group-typography">Typografie</a></li><li><a href="#group-radius">Radius &amp; Borders</a></li><li><a href="#group-elevation">Schatten &amp; Elevation</a></li><li><a href="#group-motion">Motion</a></li><li><a href="#group-proportion">Proportionen</a></li><li><a href="#group-z-index">Z-Index</a></li><li><a href="#group-container">Container-Queries</a></li></ul>
           </nav>
         </header>
         
@@ -1783,6 +1783,55 @@
           <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--z-tooltip" aria-label="Token bearbeiten">Edit</button>
         </li></ul>
     </section>
+
+        <section class="foundation-group" id="group-container">
+          <h2 class="foundation-group__title">Container-Queries <span class="site-muted">(4. Achse)</span></h2>
+          <p class="site-muted">Components passen sich an ihren tatsächlichen Container an — nicht an die Viewport-Breite. Opt-in via <code>.cq</code>-Wrapper. Zieh die Ecke der gestrichelten Box rechts unten, um die Container-Breite zu verändern und beobachte wie Card und List-Row reagieren.</p>
+
+          <div class="foundation-cq-demo">
+            <h3>Card (vertikal → horizontal Split ≥ 600px Container)</h3>
+            <div class="cq foundation-cq-handle">
+              <article class="card card--split">
+                <div class="card__lead">
+                  <div style="background: var(--color-interactive-light); border-radius: var(--radius-md); aspect-ratio: 4/3;"></div>
+                </div>
+                <div class="card__body">
+                  <h4 style="margin-top:0;">Brand-neuer Salon-Stuhl</h4>
+                  <p style="margin: var(--space-8) 0 0;">Höhenverstellbar, ergonomisch. Lieferung ab Dezember.</p>
+                  <button class="btn btn--sm" style="margin-top: var(--space-12);">Details</button>
+                </div>
+              </article>
+            </div>
+
+            <h3 style="margin-top: var(--space-32);">List-Row (volle Row → __meta versteckt &lt; 480px Container)</h3>
+            <div class="cq foundation-cq-handle">
+              <div class="list">
+                <div class="list-row">
+                  <div class="list-row__lead"><span class="avatar">AM</span></div>
+                  <div class="list-row__body">
+                    <div class="list-row__title">Anna Meier</div>
+                    <div class="list-row__subtitle">09:00 – Haarschnitt</div>
+                  </div>
+                  <div class="list-row__meta">12 Buchungen</div>
+                  <div class="list-row__trail">
+                    <span class="badge badge--success">OK</span>
+                  </div>
+                </div>
+                <div class="list-row">
+                  <div class="list-row__lead"><span class="avatar">LK</span></div>
+                  <div class="list-row__body">
+                    <div class="list-row__title">Luca Keller</div>
+                    <div class="list-row__subtitle">10:00 – Bart-Trim</div>
+                  </div>
+                  <div class="list-row__meta">3 Buchungen</div>
+                  <div class="list-row__trail">
+                    <span class="badge badge--warning">Wartet</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </article>
     </main>
   </div>

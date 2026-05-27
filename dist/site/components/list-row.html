@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.8.0</span>
+          <span class="badge badge--neutral">v0.9.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -177,6 +177,60 @@
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
+      </details>
+    </section>
+
+    <section class="site-example">
+      <h3 class="site-example__caption">In schmalem Container (.cq) versteckt sich __meta automatisch</h3>
+      <div class="site-example__preview"><div class="cq" style="max-width: 320px;">
+  <div class="list">
+    <div class="list-row">
+      <div class="list-row__lead"><span class="avatar">AN</span></div>
+      <div class="list-row__body">
+        <div class="list-row__title">Anna Meier</div>
+        <div class="list-row__subtitle">09:00 – Haarschnitt</div>
+      </div>
+      <div class="list-row__meta">12 Buchungen</div>
+      <div class="list-row__trail">
+        <span class="badge badge--success">OK</span>
+      </div>
+    </div>
+  </div>
+</div></div>
+      <details class="site-example__source">
+        <summary>HTML anzeigen</summary>
+        <pre class="code-block"><code>&lt;div class=&quot;cq&quot; style=&quot;max-width: 320px;&quot;&gt;
+  &lt;div class=&quot;list&quot;&gt;
+    &lt;div class=&quot;list-row&quot;&gt;
+      &lt;div class=&quot;list-row__lead&quot;&gt;&lt;span class=&quot;avatar&quot;&gt;AN&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;list-row__body&quot;&gt;
+        &lt;div class=&quot;list-row__title&quot;&gt;Anna Meier&lt;/div&gt;
+        &lt;div class=&quot;list-row__subtitle&quot;&gt;09:00 – Haarschnitt&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;list-row__meta&quot;&gt;12 Buchungen&lt;/div&gt;
+      &lt;div class=&quot;list-row__trail&quot;&gt;
+        &lt;span class=&quot;badge badge--success&quot;&gt;OK&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </details>
+    </section>
+
+    <section class="site-example">
+      <h3 class="site-example__caption">In einem .cq-Wrapper passt sich die Row an ihren Container an</h3>
+      <div class="site-example__preview">  < 480px (Sidebar-Spalte) → .list-row__meta wird versteckt; Body
+                             wickelt sich automatisch im verfügbaren
+                             Platz. Trail bleibt sichtbar (kompakter).
+  ≥ 480px                  → volle Row mit Lead + Body + Meta + Trail.
+Ohne .cq-Wrapper ist die Row immer "voll" — backward-compatible.</div>
+      <details class="site-example__source">
+        <summary>HTML anzeigen</summary>
+        <pre class="code-block"><code>  &lt; 480px (Sidebar-Spalte) → .list-row__meta wird versteckt; Body
+                             wickelt sich automatisch im verfügbaren
+                             Platz. Trail bleibt sichtbar (kompakter).
+  ≥ 480px                  → volle Row mit Lead + Body + Meta + Trail.
+Ohne .cq-Wrapper ist die Row immer &quot;voll&quot; — backward-compatible.</code></pre>
       </details>
     </section>
         </section>

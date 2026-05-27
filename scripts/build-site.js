@@ -884,7 +884,9 @@ function renderFoundationsPage(components, allTokens) {
   const toc = FOUNDATION_GROUPS.map(
     (g) =>
       `<li><a href="#group-${g.id}">${escapeHtml(g.label)}</a></li>`
-  ).join("");
+  )
+    .concat(`<li><a href="#group-container">Container-Queries</a></li>`)
+    .join("");
 
   const body = `
       <article class="site-doc">
@@ -905,6 +907,55 @@ function renderFoundationsPage(components, allTokens) {
           </nav>
         </header>
         ${groups}
+
+        <section class="foundation-group" id="group-container">
+          <h2 class="foundation-group__title">Container-Queries <span class="site-muted">(4. Achse)</span></h2>
+          <p class="site-muted">Components passen sich an ihren tatsächlichen Container an — nicht an die Viewport-Breite. Opt-in via <code>.cq</code>-Wrapper. Zieh die Ecke der gestrichelten Box rechts unten, um die Container-Breite zu verändern und beobachte wie Card und List-Row reagieren.</p>
+
+          <div class="foundation-cq-demo">
+            <h3>Card (vertikal → horizontal Split ≥ 600px Container)</h3>
+            <div class="cq foundation-cq-handle">
+              <article class="card card--split">
+                <div class="card__lead">
+                  <div style="background: var(--color-interactive-light); border-radius: var(--radius-md); aspect-ratio: 4/3;"></div>
+                </div>
+                <div class="card__body">
+                  <h4 style="margin-top:0;">Brand-neuer Salon-Stuhl</h4>
+                  <p style="margin: var(--space-8) 0 0;">Höhenverstellbar, ergonomisch. Lieferung ab Dezember.</p>
+                  <button class="btn btn--sm" style="margin-top: var(--space-12);">Details</button>
+                </div>
+              </article>
+            </div>
+
+            <h3 style="margin-top: var(--space-32);">List-Row (volle Row → __meta versteckt &lt; 480px Container)</h3>
+            <div class="cq foundation-cq-handle">
+              <div class="list">
+                <div class="list-row">
+                  <div class="list-row__lead"><span class="avatar">AM</span></div>
+                  <div class="list-row__body">
+                    <div class="list-row__title">Anna Meier</div>
+                    <div class="list-row__subtitle">09:00 – Haarschnitt</div>
+                  </div>
+                  <div class="list-row__meta">12 Buchungen</div>
+                  <div class="list-row__trail">
+                    <span class="badge badge--success">OK</span>
+                  </div>
+                </div>
+                <div class="list-row">
+                  <div class="list-row__lead"><span class="avatar">LK</span></div>
+                  <div class="list-row__body">
+                    <div class="list-row__title">Luca Keller</div>
+                    <div class="list-row__subtitle">10:00 – Bart-Trim</div>
+                  </div>
+                  <div class="list-row__meta">3 Buchungen</div>
+                  <div class="list-row__trail">
+                    <span class="badge badge--warning">Wartet</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </article>`;
   return pageShell({
     title: "Foundations",
@@ -1313,6 +1364,27 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
   @keyframes foundation-pulse {
     0%, 100% { transform: scale(1); opacity: 0.6; }
     50% { transform: scale(1.6); opacity: 1; }
+  }
+
+  .foundation-cq-demo h3 { font-size: var(--font-lg); margin: 0 0 var(--space-12); }
+  .foundation-cq-handle {
+    resize: horizontal;
+    overflow: auto;
+    min-width: 240px;
+    max-width: 100%;
+    width: 100%;
+    padding: var(--space-12);
+    border: 2px dashed var(--color-interactive);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+  }
+  .foundation-cq-handle::after {
+    content: "↘ ziehen zum Resize";
+    display: block;
+    text-align: right;
+    font-size: var(--font-xs);
+    color: var(--color-text-tertiary);
+    margin-top: var(--space-8);
   }
 
   /* Theme-Generator */

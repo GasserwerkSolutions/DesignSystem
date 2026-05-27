@@ -1,5 +1,60 @@
 # Changelog
 
+## [0.9.0] — Container-Queries als 4. Achse
+
+Components passen sich jetzt an ihren tatsächlichen Container an — nicht
+an die Viewport-Breite. Damit wächst das DS-Achsenmodell von 3 auf 4:
+
+  Tone × Mode × Density × Container
+
+Opt-in via `.cq`-Wrapper-Klasse — backward-compatible. Bestehende
+Components ohne `.cq`-Wrapper verhalten sich unverändert.
+
+### Hinzugefügt
+
+- **Tokens** (`tokens.css` → CONTAINER-QUERY BREAKPOINTS):
+  `--cq-bp-sm` (480px), `--cq-bp-md` (640px), `--cq-bp-lg` (800px),
+  `--cq-bp-xl` (1024px). CSS-Caveat: `@container` kann derzeit kein
+  `var()` lesen — die Tokens sind als Konvention für Components
+  dokumentiert, die Breakpoints werden in den Rules literal verwendet.
+- **`.cq` Wrapper** (`base/layout.css`): `container-type: inline-size`.
+  Macht Kinder Container-Query-aware. Opt-in, weil Containment
+  Nebeneffekte hat (z.B. `height: 100%` Children).
+- **`.card--split`** Modifier: vertikal default, horizontal split
+  (1:φ Goldener Schnitt) sobald der Container ≥ 600px breit ist.
+  Demonstriert die Bewegung zwischen Layouts.
+- **`.list-row` Container-Awareness**: in einem `.cq`-Wrapper < 480px
+  Breite wird `__meta` versteckt — Sidebar-Slots überfordern sonst die
+  Title-Truncation.
+- **Foundations-Site: Container-Demo-Sektion** mit nativem
+  `resize: horizontal`-Handle. User zieht die gestrichelte Box, Card +
+  List-Row reagieren live.
+
+### Tests
+
+- **check-site +4 Container-Query-Asserts**: card--split grid-cols
+  (2 wide, 1 narrow), list-row__meta visibility (visible wide, hidden
+  narrow). Programmatic resize triggert deterministisch die Layout-
+  Wechsel.
+
+### Quality
+
+  Site-Checks      38 → grün (4 neue Container-Asserts)
+  Pipeline-Checks  6 / 6 grün (lint, test:lint, contrast, a11y, visual, journeys)
+  Tokens           267 (4 neue --cq-bp-* )
+
+### Design-Entscheidungen
+
+- **App-Shell bleibt @media (viewport-basiert)** — page-level Shells
+  sind logisch viewport-bezogen. Container-Queries sind das richtige
+  Werkzeug für Component-interne Layout-Anpassung, nicht für Page-
+  Level-Shells.
+- **Opt-in statt Default**: `.cq` muss explizit gesetzt werden. Damit
+  bleibt der Default-Pfad backward-compatible und Performance-Footprint
+  von Containment ist nur dort wo gewünscht.
+
+---
+
 ## [0.8.0] — Interactive Documentation Site + Theme-Generator
 
 Ausgeliefert in 5 Etappen auf einem Branch — jede Etappe ein in sich

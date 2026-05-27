@@ -218,4 +218,23 @@
   --z-dropdown: 100;
   --z-modal:    1000;
   --z-tooltip:  1100;
+
+  /* ========================================
+     CONTAINER-QUERY BREAKPOINTS
+     ========================================
+     4. Achse neben tone/mode/density. Components passen sich an ihren
+     tatsächlichen Container an, nicht an die Viewport-Breite.
+
+     CSS-Caveat: @container kann derzeit kein var() lesen, die Breakpoints
+     müssen pro Component literal sein. Diese Tokens dokumentieren die
+     Konvention und werden in Components als Kommentar-Anker referenziert.
+
+     Opt-in via .cq Wrapper-Klasse (siehe base/layout.css). Default-
+     Verhalten bleibt unverändert — backward-compatible.
+
+     Baseline 2023+: Chrome 105, Safari 16, Firefox 110. */
+  --cq-bp-sm: 480px;
+  --cq-bp-md: 640px;
+  --cq-bp-lg: 800px;
+  --cq-bp-xl: 1024px;
 }

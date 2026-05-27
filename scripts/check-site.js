@@ -233,6 +233,60 @@ async function runInteractions(browser) {
   return errors;
 }
 
+async function runContainerQueries(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "foundations.html#group-container"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 400));
+
+  /* Setze die Container-Wrapper deterministisch breit, prüfe dass card--split
+     horizontal ist und list-row__meta sichtbar — dann auf schmal, prüfe das
+     Gegenteil. */
+  await page.evaluate(() => {
+    const handles = document.querySelectorAll(".foundation-cq-handle");
+    handles.forEach((h) => (h.style.width = "700px"));
+  });
+  await new Promise((r) => setTimeout(r, 100));
+  const wide = await page.evaluate(() => {
+    const splitCard = document.querySelector(".card--split");
+    const splitCols = getComputedStyle(splitCard).gridTemplateColumns.split(" ").length;
+    const meta = document.querySelector(".list-row__meta");
+    const metaVisible = getComputedStyle(meta).display !== "none";
+    return { splitCols, metaVisible };
+  });
+
+  await page.evaluate(() => {
+    const handles = document.querySelectorAll(".foundation-cq-handle");
+    handles.forEach((h) => (h.style.width = "320px"));
+  });
+  await new Promise((r) => setTimeout(r, 100));
+  const narrow = await page.evaluate(() => {
+    const splitCard = document.querySelector(".card--split");
+    const splitCols = getComputedStyle(splitCard).gridTemplateColumns.split(" ").length;
+    const meta = document.querySelector(".list-row__meta");
+    const metaVisible = getComputedStyle(meta).display !== "none";
+    return { splitCols, metaVisible };
+  });
+
+  await page.close();
+
+  const checks = [
+    ["container-queries: card--split is 2-col at ≥600px container", wide.splitCols === 2],
+    ["container-queries: card--split is 1-col at <600px container", narrow.splitCols === 1],
+    ["container-queries: list-row__meta visible at ≥480px container", wide.metaVisible === true],
+    ["container-queries: list-row__meta hidden at <480px container", narrow.metaVisible === false],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
 async function runUrlState(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
@@ -459,10 +513,12 @@ async function runFoundationsEdit(browser) {
   const foundationErrs = await runFoundationsEdit(browser);
   console.log("[check-site] Theme-Generator:");
   const themeGenErrs = await runThemeGenerator(browser);
+  console.log("[check-site] Container-Queries:");
+  const cqErrs = await runContainerQueries(browser);
   console.log("[check-site] URL-State:");
   const urlStateErrs = await runUrlState(browser);
   await browser.close();
-  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + urlStateErrs;
+  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + cqErrs + urlStateErrs;
   console.log(
     total === 0
       ? "[check-site] passed."

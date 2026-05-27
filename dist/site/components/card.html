@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.8.0</span>
+          <span class="badge badge--neutral">v0.9.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -191,6 +191,54 @@
 &lt;/div&gt;</code></pre>
       </details>
     </section>
+
+    <section class="site-example">
+      <h3 class="site-example__caption">Split-Card (vertikal default, horizontal ≥600px Container)</h3>
+      <div class="site-example__preview"><div class="cq">
+  <article class="card card--split">
+    <div class="card__lead">
+      <div style="background: var(--color-interactive-light); border-radius: var(--radius-md); aspect-ratio: 4/3;"></div>
+    </div>
+    <div class="card__body">
+      <h3>Brand-neuer Salon-Stuhl</h3>
+      <p>Höhenverstellbar, ergonomisch.</p>
+    </div>
+  </article>
+</div></div>
+      <details class="site-example__source">
+        <summary>HTML anzeigen</summary>
+        <pre class="code-block"><code>&lt;div class=&quot;cq&quot;&gt;
+  &lt;article class=&quot;card card--split&quot;&gt;
+    &lt;div class=&quot;card__lead&quot;&gt;
+      &lt;div style=&quot;background: var(--color-interactive-light); border-radius: var(--radius-md); aspect-ratio: 4/3;&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card__body&quot;&gt;
+      &lt;h3&gt;Brand-neuer Salon-Stuhl&lt;/h3&gt;
+      &lt;p&gt;Höhenverstellbar, ergonomisch.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+&lt;/div&gt;</code></pre>
+      </details>
+    </section>
+
+    <section class="site-example">
+      <h3 class="site-example__caption">bleibt sie vertikal gestapelt. Beispiel</h3>
+      <div class="site-example__preview"><div class="cq">
+  <article class="card card--split">
+    <div class="card__lead"><img src="..." alt=""></div>
+    <div class="card__body">…</div>
+  </article>
+</div></div>
+      <details class="site-example__source">
+        <summary>HTML anzeigen</summary>
+        <pre class="code-block"><code>&lt;div class=&quot;cq&quot;&gt;
+  &lt;article class=&quot;card card--split&quot;&gt;
+    &lt;div class=&quot;card__lead&quot;&gt;&lt;img src=&quot;...&quot; alt=&quot;&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;card__body&quot;&gt;…&lt;/div&gt;
+  &lt;/article&gt;
+&lt;/div&gt;</code></pre>
+      </details>
+    </section>
         </section>
 
         <section class="site-doc__section">
@@ -246,6 +294,7 @@
           <ul class="site-modifier-list">
             <li><code>.card--flat</code> — ohne Schatten</li>
             <li><code>.card--bordered</code> — starker Border, kein Schatten</li>
+            <li><code>.card--split</code> — Container-aware Split-Layout (siehe oben)</li>
           </ul>
         </section>
 
