@@ -46,6 +46,72 @@
     });
   });
 
+  /* Foundations: Live-Token-Edit */
+  const editedTokens = new Map();
+
+  function setTokenValue(name, value) {
+    root.style.setProperty(name, value);
+    editedTokens.set(name, value);
+    const item = document.querySelector(`[data-token-name="${name}"]`);
+    if (item) item.classList.add("foundation-token--edited");
+  }
+
+  function resetTokenValue(name) {
+    root.style.removeProperty(name);
+    editedTokens.delete(name);
+    const item = document.querySelector(`[data-token-name="${name}"]`);
+    if (item) item.classList.remove("foundation-token--edited");
+  }
+
+  function resetAllTokens() {
+    for (const name of [...editedTokens.keys()]) resetTokenValue(name);
+  }
+
+  document.addEventListener("click", (e) => {
+    const editBtn = e.target.closest("[data-edit-token]");
+    if (editBtn) {
+      const name = editBtn.getAttribute("data-edit-token");
+      const li = editBtn.closest(".foundation-token");
+      const valueEl = li.querySelector(".foundation-token__value");
+      const original = valueEl.getAttribute("data-original-value");
+      const current = editedTokens.has(name) ? editedTokens.get(name) : original;
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "foundation-token__edit-input";
+      input.value = current;
+      input.spellcheck = false;
+      valueEl.replaceWith(input);
+      input.focus();
+      input.select();
+      const commit = () => {
+        const newValue = input.value.trim();
+        const span = document.createElement("span");
+        span.className = "foundation-token__value";
+        span.setAttribute("data-original-value", original);
+        span.textContent = newValue;
+        input.replaceWith(span);
+        if (newValue !== original) setTokenValue(name, newValue);
+        else resetTokenValue(name);
+      };
+      input.addEventListener("blur", commit, { once: true });
+      input.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter") input.blur();
+        if (ev.key === "Escape") {
+          input.value = original;
+          input.blur();
+        }
+      });
+      return;
+    }
+    const resetBtn = e.target.closest("[data-foundation-reset]");
+    if (resetBtn) {
+      resetAllTokens();
+      document.querySelectorAll(".foundation-token__value").forEach((el) => {
+        el.textContent = el.getAttribute("data-original-value");
+      });
+    }
+  });
+
   readState();
   if (window.DS && typeof DS.setupAll === "function") DS.setupAll();
 })();

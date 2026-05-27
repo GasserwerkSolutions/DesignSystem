@@ -150,4 +150,53 @@
 
   .site-muted { color: var(--color-text-secondary); }
   .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
+
+  /* Foundations-Page — Token-Browser & Swatches */
+  .foundation-toc { margin: var(--space-16) 0 0; }
+  .foundation-toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-8); }
+  .foundation-toc li { padding: 0; margin: 0; position: static; }
+  .foundation-toc li::before { content: none; }
+  .foundation-toc a { display: inline-block; padding: var(--space-4) var(--space-12); border: 1px solid var(--color-border); border-radius: var(--radius-md); font-size: var(--font-sm); text-decoration: none; color: var(--color-text-secondary); }
+  .foundation-toc a:hover { background: var(--color-surface); color: var(--color-text-primary); }
+
+  .foundation-group { margin-top: var(--space-40); scroll-margin-top: calc(var(--topbar-height) + var(--space-16)); }
+  .foundation-group__title { font-size: var(--font-xl); margin: 0 0 var(--space-16); }
+  .foundation-group__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-12); }
+  .foundation-group__list li { padding: 0; margin: 0; position: static; }
+  .foundation-group__list li::before { content: none; }
+
+  .foundation-token {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: var(--space-12);
+    align-items: center;
+    padding: var(--space-12);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .foundation-token__visual { display: flex; align-items: center; justify-content: center; min-height: 48px; }
+  .foundation-token__meta { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+  .foundation-token__name { font-size: var(--font-sm); font-family: var(--font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .foundation-token__value { font-size: var(--font-xs); color: var(--color-text-secondary); font-family: var(--font-mono); overflow: hidden; text-overflow: ellipsis; max-width: 100%; white-space: nowrap; }
+  .foundation-token--edited { outline: 2px solid var(--color-interactive); outline-offset: -2px; }
+  .foundation-token__edit-input { font: inherit; font-size: var(--font-xs); font-family: var(--font-mono); padding: var(--space-2) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text-primary); width: 100%; }
+
+  .foundation-swatch { display: inline-flex; align-items: center; justify-content: center; min-width: 48px; min-height: 48px; }
+  .foundation-swatch--color { width: 48px; height: 48px; border-radius: var(--radius-md); border: 1px solid var(--color-border); }
+  .foundation-swatch--spacing { width: 56px; height: 16px; background: var(--color-surface-subtle, var(--color-bg-secondary)); border: 1px dashed var(--color-border); position: relative; padding: 0; align-items: stretch; }
+  .foundation-swatch__bar { display: block; height: 100%; background: var(--color-interactive); max-width: 100%; min-width: 2px; }
+  .foundation-swatch--radius { width: 48px; height: 48px; background: var(--color-interactive); }
+  .foundation-swatch--border { width: 56px; height: 24px; background: transparent; }
+  .foundation-swatch--shadow { width: 40px; height: 40px; background: var(--color-bg); border-radius: var(--radius-sm); }
+  .foundation-swatch--font { font-family: inherit; font-size: var(--font-lg); }
+  .foundation-swatch--lh { font-size: var(--font-xs); color: var(--color-text-secondary); text-align: center; padding: var(--space-4); }
+  .foundation-swatch--ls { font-size: var(--font-xs); font-family: var(--font-mono); }
+  .foundation-swatch--proportion, .foundation-swatch--easing, .foundation-swatch--raw { font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-secondary); padding: var(--space-4) var(--space-8); }
+  .foundation-swatch--duration { width: 48px; height: 48px; position: relative; }
+  .foundation-swatch__dot { display: block; width: 12px; height: 12px; background: var(--color-interactive); border-radius: 50%; animation: foundation-pulse infinite ease-in-out; }
+  @keyframes foundation-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.6); opacity: 1; }
+  }
 }

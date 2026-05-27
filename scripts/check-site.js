@@ -130,6 +130,63 @@ async function runInteractions(browser) {
   return errors;
 }
 
+async function runFoundationsEdit(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "foundations.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+
+  const radiusBefore = await page.evaluate(() =>
+    getComputedStyle(document.documentElement).getPropertyValue("--radius-12").trim()
+  );
+
+  await page.evaluate(() => {
+    const btn = document.querySelector('[data-edit-token="--radius-12"]');
+    btn.click();
+  });
+  await new Promise((r) => setTimeout(r, 50));
+  await page.evaluate(() => {
+    const input = document.querySelector(".foundation-token__edit-input");
+    input.value = "2rem";
+    input.dispatchEvent(new Event("blur"));
+  });
+  await new Promise((r) => setTimeout(r, 50));
+
+  const radiusAfter = await page.evaluate(() =>
+    getComputedStyle(document.documentElement).getPropertyValue("--radius-12").trim()
+  );
+
+  const edited = await page.evaluate(() =>
+    !!document.querySelector('[data-token-name="--radius-12"].foundation-token--edited')
+  );
+
+  await page.evaluate(() => {
+    document.querySelector("[data-foundation-reset]").click();
+  });
+  await new Promise((r) => setTimeout(r, 50));
+
+  const radiusReset = await page.evaluate(() =>
+    getComputedStyle(document.documentElement).getPropertyValue("--radius-12").trim()
+  );
+
+  await page.close();
+
+  const checks = [
+    ["foundations: token-edit changed --radius-12", radiusBefore !== radiusAfter],
+    ["foundations: edited-marker applied", edited === true],
+    ["foundations: reset restored original value", radiusReset === radiusBefore],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
 (async () => {
   if (!fs.existsSync(SITE_DIR)) {
     console.error(`[check-site] dist/site missing. Run 'npm run build:site' first.`);
@@ -140,8 +197,10 @@ async function runInteractions(browser) {
   const smokeErrs = await runSmoke(browser);
   console.log("[check-site] Interactions:");
   const interactionErrs = await runInteractions(browser);
+  console.log("[check-site] Foundations live-edit:");
+  const foundationErrs = await runFoundationsEdit(browser);
   await browser.close();
-  const total = smokeErrs + interactionErrs;
+  const total = smokeErrs + interactionErrs + foundationErrs;
   console.log(
     total === 0
       ? "[check-site] passed."

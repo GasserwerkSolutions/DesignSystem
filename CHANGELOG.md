@@ -24,10 +24,26 @@ selbst, Theme-/Mode-/Density-Switcher wirken live auf die Beispiele.
   Sidebar/Topbar/Doc-Layout) und `dist/site/assets/site.js` (Axis-Persistierung
   via localStorage, Sidebar-Filter).
 
-### Folgeschritte (v0.8.0 Etappe 2+)
+### Etappe 2 — Foundations + Live-Token-Editor
 
-- Foundations-Seite mit Token-Browser (gruppiert nach color/space/font)
-- Live-Token-Editor mit `.style.setProperty()`
+- **Token-Parser** in `build-site.js` liest 263 Tokens aus `tokens/tokens.css`
+  + `semantic/semantic.css`. Group-Detection aus den `/* CATEGORY */`-
+  Kommentar-Headern im Source.
+- **`dist/site/foundations.html`** rendert 9 Token-Gruppen (Farben Neutral
+  & Paletten, Farben Semantic, Spacing, Typografie, Radius & Borders,
+  Schatten & Elevation, Motion, Proportionen, Z-Index) mit kategorie-
+  passenden Swatches: Farbflächen, Spacing-Balken, Radius-Quadrate,
+  Border-Linien, Schatten-Boxes, Font-Samples, animierte Motion-Pulse-Dots.
+- **Live-Token-Editor**: Klick auf »Edit« neben einem Token öffnet ein
+  Input-Feld, der neue Wert wird per `.style.setProperty()` auf `:root`
+  gesetzt und wirkt sofort auf alle Site-Beispiele. Edited-Marker
+  (Outline) zeigt geänderte Tokens. »Alle Edits zurücksetzen« stellt
+  `removeProperty()` für alle her.
+- **Check-Site erweitert**: drei zusätzliche Asserts für Live-Token-Edit
+  (Wert ändert sich, Marker erscheint, Reset restored).
+
+### Folgeschritte (v0.8.0 Etappe 3+)
+
 - HEX-Picker → OKLCH-12-Step-Theme-Generator inkl. Color-Blind-Safety-Check
 - URL-State-Persistierung (`?tone=...&mode=...&token--btn-radius=...`)
 - GitHub-Pages-Deployment-Workflow

@@ -27,6 +27,8 @@ const path = require("node:path");
 
 const ROOT = path.resolve(__dirname, "..");
 const COMPONENTS_DIR = path.join(ROOT, "components");
+const TOKENS_FILE = path.join(ROOT, "tokens", "tokens.css");
+const SEMANTIC_FILE = path.join(ROOT, "semantic", "semantic.css");
 const OUT_DIR = path.join(ROOT, "dist", "site");
 const PKG_VERSION = JSON.parse(
   fs.readFileSync(path.join(ROOT, "package.json"), "utf8")
@@ -324,6 +326,78 @@ function parseHeader(filePath) {
     missing: false,
   };
 }
+
+/* =========================================================================
+   1b) TOKEN PARSER (für Foundations-Seite)
+   ========================================================================= */
+
+/**
+ * Extrahiert alle `--name: value;` Deklarationen aus :root-Blöcken. Liefert
+ * { name, value, group } pro Token, wobei group aus dem vorangehenden
+ * `/* CATEGORY ... *​/` Kommentar gezogen wird (Pattern aus tokens.css).
+ */
+function parseTokenFile(filePath) {
+  const src = fs.readFileSync(filePath, "utf8");
+  const tokens = [];
+  let group = "Misc";
+
+  const lines = src.split("\n");
+  for (const raw of lines) {
+    const groupMatch = raw.match(/^\s*\/\*\s+([A-Z][A-Z0-9 \-—&]+)/);
+    if (groupMatch && groupMatch[1].length < 60) {
+      group = groupMatch[1].trim();
+      continue;
+    }
+    const declMatch = raw.match(/^\s*(--[a-z0-9-]+)\s*:\s*([^;]+);/i);
+    if (declMatch) {
+      tokens.push({
+        name: declMatch[1],
+        value: declMatch[2].trim(),
+        group,
+      });
+    }
+  }
+  return tokens;
+}
+
+/**
+ * Klassifiziert Tokens für die Foundations-Anzeige (Swatch-Type bestimmt,
+ * wie wir den Wert visualisieren).
+ */
+function tokenKind(token) {
+  const n = token.name;
+  if (
+    /^--gray-|^--trust-|^--playful-|^--premium-|^--industrial-|^--modern-|^--minimal-/.test(n)
+  )
+    return "palette-color";
+  if (/^--color-|^--status-.*-(bg|fg|border)/.test(n)) return "semantic-color";
+  if (/^--space-/.test(n)) return "spacing";
+  if (/^--radius-/.test(n)) return "radius";
+  if (/^--border-/.test(n)) return "border";
+  if (/^--shadow-|^--elevation-/.test(n)) return "shadow";
+  if (/^--font-(serif|sans|mono)/.test(n)) return "font-family";
+  if (/^--font-/.test(n)) return "font-size";
+  if (/^--fw-/.test(n)) return "font-weight";
+  if (/^--lh-/.test(n)) return "line-height";
+  if (/^--ls-/.test(n)) return "letter-spacing";
+  if (/^--motion-|^--duration-/.test(n)) return "duration";
+  if (/^--ease-|^--easing-/.test(n)) return "easing";
+  if (/^--phi/.test(n)) return "proportion";
+  if (/^--z-/.test(n)) return "z-index";
+  return "raw";
+}
+
+const FOUNDATION_GROUPS = [
+  { id: "color", label: "Farben — Neutral & Paletten", kinds: ["palette-color"] },
+  { id: "semantic-color", label: "Farben — Semantic", kinds: ["semantic-color"] },
+  { id: "spacing", label: "Spacing", kinds: ["spacing"] },
+  { id: "typography", label: "Typografie", kinds: ["font-family", "font-size", "font-weight", "line-height", "letter-spacing"] },
+  { id: "radius", label: "Radius & Borders", kinds: ["radius", "border"] },
+  { id: "elevation", label: "Schatten & Elevation", kinds: ["shadow"] },
+  { id: "motion", label: "Motion", kinds: ["duration", "easing"] },
+  { id: "proportion", label: "Proportionen", kinds: ["proportion"] },
+  { id: "z-index", label: "Z-Index", kinds: ["z-index"] },
+];
 
 /* =========================================================================
    2) CATEGORIZATION (Sidebar-Gruppen)
@@ -697,6 +771,106 @@ function renderComponentPage(meta, allComponents) {
   });
 }
 
+function renderTokenSwatch(token) {
+  const kind = tokenKind(token);
+  const name = escapeHtml(token.name);
+  const value = escapeHtml(token.value);
+  switch (kind) {
+    case "palette-color":
+    case "semantic-color":
+      return `<span class="foundation-swatch foundation-swatch--color" style="background:var(${token.name});" data-token="${name}" aria-hidden="true"></span>`;
+    case "spacing":
+      return `<span class="foundation-swatch foundation-swatch--spacing"><span class="foundation-swatch__bar" style="width:var(${token.name});"></span></span>`;
+    case "radius":
+      return `<span class="foundation-swatch foundation-swatch--radius" style="border-radius:var(${token.name});"></span>`;
+    case "border":
+      return `<span class="foundation-swatch foundation-swatch--border" style="border-bottom:var(${token.name}) solid var(--color-text-primary);"></span>`;
+    case "shadow":
+      return `<span class="foundation-swatch foundation-swatch--shadow" style="box-shadow:var(${token.name});"></span>`;
+    case "font-family":
+      return `<span class="foundation-swatch foundation-swatch--font" style="font-family:var(${token.name});">Aa Bb Cc</span>`;
+    case "font-size":
+      return `<span class="foundation-swatch foundation-swatch--font" style="font-size:var(${token.name});">Aa</span>`;
+    case "font-weight":
+      return `<span class="foundation-swatch foundation-swatch--font" style="font-weight:var(${token.name});">Aa</span>`;
+    case "line-height":
+      return `<span class="foundation-swatch foundation-swatch--lh"><em style="line-height:var(${token.name});display:block;">Mehrzeiliger<br>Beispieltext zur<br>Demonstration</em></span>`;
+    case "letter-spacing":
+      return `<span class="foundation-swatch foundation-swatch--ls" style="letter-spacing:var(${token.name});">LETTER-SPACING</span>`;
+    case "proportion":
+      return `<span class="foundation-swatch foundation-swatch--proportion">${value}</span>`;
+    case "duration":
+      return `<span class="foundation-swatch foundation-swatch--duration"><span class="foundation-swatch__dot" style="animation-duration:var(${token.name});"></span></span>`;
+    case "easing":
+      return `<span class="foundation-swatch foundation-swatch--easing">${value}</span>`;
+    default:
+      return `<span class="foundation-swatch foundation-swatch--raw">${value}</span>`;
+  }
+}
+
+function renderFoundationGroup(groupConfig, allTokens) {
+  const tokens = allTokens.filter((t) =>
+    groupConfig.kinds.includes(tokenKind(t))
+  );
+  if (!tokens.length) return "";
+  const rows = tokens
+    .map((t) => {
+      return `
+        <li class="foundation-token" data-token-name="${escapeHtml(t.name)}">
+          <div class="foundation-token__visual">${renderTokenSwatch(t)}</div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">${escapeHtml(t.name)}</code>
+            <span class="foundation-token__value" data-original-value="${escapeHtml(t.value)}" title="${escapeHtml(t.value)}">${escapeHtml(t.value)}</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="${escapeHtml(t.name)}" aria-label="Token bearbeiten">Edit</button>
+        </li>`;
+    })
+    .join("");
+  return `
+    <section class="foundation-group" id="group-${groupConfig.id}">
+      <h2 class="foundation-group__title">${escapeHtml(groupConfig.label)} <span class="site-muted">(${tokens.length})</span></h2>
+      <ul class="foundation-group__list">${rows}</ul>
+    </section>`;
+}
+
+function renderFoundationsPage(components, allTokens) {
+  const sidebar = componentSidebar(components, null, "./");
+  const groups = FOUNDATION_GROUPS.map((g) =>
+    renderFoundationGroup(g, allTokens)
+  )
+    .filter(Boolean)
+    .join("\n");
+
+  const tokenCount = allTokens.length;
+  const toc = FOUNDATION_GROUPS.map(
+    (g) =>
+      `<li><a href="#group-${g.id}">${escapeHtml(g.label)}</a></li>`
+  ).join("");
+
+  const body = `
+      <article class="site-doc">
+        <header class="site-doc__header">
+          <h1 class="site-doc__title">Foundations</h1>
+          <p class="site-doc__lede">
+            ${tokenCount} Design-Tokens — die Atome des Systems. Klicke
+            <strong>Edit</strong> bei einem Token, um seinen Wert live zu
+            ändern. Resette via <button type="button" class="btn btn--ghost btn--sm" data-foundation-reset>Alle Edits zurücksetzen</button>.
+          </p>
+          <nav class="foundation-toc" aria-label="Token-Gruppen">
+            <ul>${toc}</ul>
+          </nav>
+        </header>
+        ${groups}
+      </article>`;
+  return pageShell({
+    title: "Foundations",
+    navHref: "foundations.html",
+    body,
+    sidebar,
+    relRoot: "./",
+  });
+}
+
 function renderStubPage({ title, navHref, intro, components, relRoot = "./" }) {
   const sidebar = componentSidebar(components, null, relRoot);
   const body = `
@@ -958,6 +1132,55 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
 
   .site-muted { color: var(--color-text-secondary); }
   .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
+
+  /* Foundations-Page — Token-Browser & Swatches */
+  .foundation-toc { margin: var(--space-16) 0 0; }
+  .foundation-toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-8); }
+  .foundation-toc li { padding: 0; margin: 0; position: static; }
+  .foundation-toc li::before { content: none; }
+  .foundation-toc a { display: inline-block; padding: var(--space-4) var(--space-12); border: 1px solid var(--color-border); border-radius: var(--radius-md); font-size: var(--font-sm); text-decoration: none; color: var(--color-text-secondary); }
+  .foundation-toc a:hover { background: var(--color-surface); color: var(--color-text-primary); }
+
+  .foundation-group { margin-top: var(--space-40); scroll-margin-top: calc(var(--topbar-height) + var(--space-16)); }
+  .foundation-group__title { font-size: var(--font-xl); margin: 0 0 var(--space-16); }
+  .foundation-group__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-12); }
+  .foundation-group__list li { padding: 0; margin: 0; position: static; }
+  .foundation-group__list li::before { content: none; }
+
+  .foundation-token {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: var(--space-12);
+    align-items: center;
+    padding: var(--space-12);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .foundation-token__visual { display: flex; align-items: center; justify-content: center; min-height: 48px; }
+  .foundation-token__meta { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+  .foundation-token__name { font-size: var(--font-sm); font-family: var(--font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .foundation-token__value { font-size: var(--font-xs); color: var(--color-text-secondary); font-family: var(--font-mono); overflow: hidden; text-overflow: ellipsis; max-width: 100%; white-space: nowrap; }
+  .foundation-token--edited { outline: 2px solid var(--color-interactive); outline-offset: -2px; }
+  .foundation-token__edit-input { font: inherit; font-size: var(--font-xs); font-family: var(--font-mono); padding: var(--space-2) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-text-primary); width: 100%; }
+
+  .foundation-swatch { display: inline-flex; align-items: center; justify-content: center; min-width: 48px; min-height: 48px; }
+  .foundation-swatch--color { width: 48px; height: 48px; border-radius: var(--radius-md); border: 1px solid var(--color-border); }
+  .foundation-swatch--spacing { width: 56px; height: 16px; background: var(--color-surface-subtle, var(--color-bg-secondary)); border: 1px dashed var(--color-border); position: relative; padding: 0; align-items: stretch; }
+  .foundation-swatch__bar { display: block; height: 100%; background: var(--color-interactive); max-width: 100%; min-width: 2px; }
+  .foundation-swatch--radius { width: 48px; height: 48px; background: var(--color-interactive); }
+  .foundation-swatch--border { width: 56px; height: 24px; background: transparent; }
+  .foundation-swatch--shadow { width: 40px; height: 40px; background: var(--color-bg); border-radius: var(--radius-sm); }
+  .foundation-swatch--font { font-family: inherit; font-size: var(--font-lg); }
+  .foundation-swatch--lh { font-size: var(--font-xs); color: var(--color-text-secondary); text-align: center; padding: var(--space-4); }
+  .foundation-swatch--ls { font-size: var(--font-xs); font-family: var(--font-mono); }
+  .foundation-swatch--proportion, .foundation-swatch--easing, .foundation-swatch--raw { font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-secondary); padding: var(--space-4) var(--space-8); }
+  .foundation-swatch--duration { width: 48px; height: 48px; position: relative; }
+  .foundation-swatch__dot { display: block; width: 12px; height: 12px; background: var(--color-interactive); border-radius: 50%; animation: foundation-pulse infinite ease-in-out; }
+  @keyframes foundation-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.6); opacity: 1; }
+  }
 }
 `;
 
@@ -1009,6 +1232,72 @@ const SITE_JS = `/* Site-Runtime — axis-switchers (tone/mode/density) + sideba
     });
   });
 
+  /* Foundations: Live-Token-Edit */
+  const editedTokens = new Map();
+
+  function setTokenValue(name, value) {
+    root.style.setProperty(name, value);
+    editedTokens.set(name, value);
+    const item = document.querySelector(\`[data-token-name="\${name}"]\`);
+    if (item) item.classList.add("foundation-token--edited");
+  }
+
+  function resetTokenValue(name) {
+    root.style.removeProperty(name);
+    editedTokens.delete(name);
+    const item = document.querySelector(\`[data-token-name="\${name}"]\`);
+    if (item) item.classList.remove("foundation-token--edited");
+  }
+
+  function resetAllTokens() {
+    for (const name of [...editedTokens.keys()]) resetTokenValue(name);
+  }
+
+  document.addEventListener("click", (e) => {
+    const editBtn = e.target.closest("[data-edit-token]");
+    if (editBtn) {
+      const name = editBtn.getAttribute("data-edit-token");
+      const li = editBtn.closest(".foundation-token");
+      const valueEl = li.querySelector(".foundation-token__value");
+      const original = valueEl.getAttribute("data-original-value");
+      const current = editedTokens.has(name) ? editedTokens.get(name) : original;
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "foundation-token__edit-input";
+      input.value = current;
+      input.spellcheck = false;
+      valueEl.replaceWith(input);
+      input.focus();
+      input.select();
+      const commit = () => {
+        const newValue = input.value.trim();
+        const span = document.createElement("span");
+        span.className = "foundation-token__value";
+        span.setAttribute("data-original-value", original);
+        span.textContent = newValue;
+        input.replaceWith(span);
+        if (newValue !== original) setTokenValue(name, newValue);
+        else resetTokenValue(name);
+      };
+      input.addEventListener("blur", commit, { once: true });
+      input.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter") input.blur();
+        if (ev.key === "Escape") {
+          input.value = original;
+          input.blur();
+        }
+      });
+      return;
+    }
+    const resetBtn = e.target.closest("[data-foundation-reset]");
+    if (resetBtn) {
+      resetAllTokens();
+      document.querySelectorAll(".foundation-token__value").forEach((el) => {
+        el.textContent = el.getAttribute("data-original-value");
+      });
+    }
+  });
+
   readState();
   if (window.DS && typeof DS.setupAll === "function") DS.setupAll();
 })();
@@ -1051,14 +1340,17 @@ function main() {
 
   fs.writeFileSync(path.join(OUT_DIR, "index.html"), renderIndexPage(components));
 
+  const tokens = [
+    ...parseTokenFile(TOKENS_FILE),
+    ...parseTokenFile(SEMANTIC_FILE),
+  ];
+  fs.writeFileSync(
+    path.join(OUT_DIR, "foundations.html"),
+    renderFoundationsPage(components, tokens)
+  );
+  console.log(`[build-site] foundations: ${tokens.length} tokens parsed`);
+
   const stubs = [
-    {
-      file: "foundations.html",
-      title: "Foundations",
-      navHref: "foundations.html",
-      intro:
-        "Tokens, Spacing, Typografie, Farben — die Atome des Systems. Live-Editor und Token-Browser folgen.",
-    },
     {
       file: "themes.html",
       title: "Theme-Generator",
