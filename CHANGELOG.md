@@ -1,5 +1,56 @@
 # Changelog
 
+## [0.7.0] — Companion-JS in TypeScript
+
+Erste v0.7-Etappe: das DS bekommt eine offizielle JavaScript-Library für
+die interaktiven Components. Bisher kopierten Konsumenten die JS-Snippets
+aus den Component-Headern manuell — fehleranfällig (v0.6.5 entdeckte 3
+Diagnostik-Probleme rund um Click-Handling und Event-Timing, die jeder
+Konsument einzeln getroffen hätte).
+
+### Hinzugefügt
+
+- **`js/` als TypeScript-Source-Verzeichnis** mit 6 Modulen:
+  - `setup-dismiss.ts` — generic `[data-dismiss]`-Pattern
+  - `setup-popover.ts` — Trigger-Anchoring + `aria-expanded`-Sync
+  - `setup-combobox.ts` — Keyboard (Arrow/Enter/Esc), Selection, Filter, Anchoring
+  - `setup-file-upload.ts` — Drag-Counter robust, Drop-Übernahme, Selected-File-Anzeige
+  - `setup-slider.ts` — Track-Fill + Output-Sync, optionale `data-format-prefix`/`-suffix`-Formatter
+  - `anchor-popover.ts` — shared Utility, von Combobox + Popover genutzt
+  - `index.ts` — Re-Exports + `setupAll()`
+- **`tsconfig.json`** mit strict mode + DOM-Lib + ES2022-Target. Declaration-Files (`*.d.ts`) für TypeScript-Konsumenten.
+- **`scripts/build-js.js`** als Build-Orchestrator: `tsc` für per-File-ESM + `esbuild` für 2 Bundles:
+  - `dist/js/design-system.bundle.js` (ESM, 6.4 KB) — für npm-Konsumenten mit eigenem Bundler
+  - `dist/js/design-system.iife.js` (IIFE als `window.DS`, 8.0 KB) — für direkte `<script src>`-Einbindung, **file://-kompatibel** ohne CORS-Issues
+- **`package.json` exports map**: Subpath-Imports für tree-shaking
+  - `@gws/design-system` — CSS-Entry
+  - `@gws/design-system/js` — TypeScript-typisierte ESM-API
+  - `@gws/design-system/js/bundle` — ESM-Bundle
+  - `@gws/design-system/js/iife` — IIFE-Bundle
+  - `@gws/design-system/components/*` — einzelne Component-CSS
+  - `@gws/design-system/themes/*` — einzelne Theme-CSS
+- **`npm run build:js`** als Pre-Step in `check:full` — garantiert dass die Demo-getestete Pipeline gegen den frisch gebauten Bundle läuft.
+
+### Geändert
+
+- **Demo (`index.html`)** lädt Companion-JS jetzt via `<script src="./dist/js/design-system.iife.js">` + `DS.setupAll()` statt eigener inline-Snippets. ~150 Zeilen inline-JS entfernt; demo-spezifisches JS (Theme/Mode/Density-Switcher) bleibt inline.
+- **Slider-Demo `slider-price`**: `data-format-prefix="CHF "` statt ID-spezifischer Sonderbehandlung im JS — sauberer und konfigurierbar pro Markup.
+
+### Diagnostische Erkenntnisse
+
+- **ES-Module von `file://` werden CORS-blockiert** (Browser-Security). `<script type="module" src="...">` UND inline `<script type="module">import...</script>` beide nicht nutzbar offline. **Lösung:** IIFE-Bundle zusätzlich zur ESM-Variante. Im Component-Header dokumentiert.
+- **`tsconfig.json` `rootDir`** muss explizit gesetzt sein, sonst landen Outputs in `dist/js/js/`-Doppel-Hierarchie.
+- **`dist/js/` wird committed** trotz Build-Artefakt-Status: 76 KB sind trivial, ermöglichen `git clone + open index.html` ohne npm install. `.d.ts.map`-Source-Maps bleiben gitignored.
+
+### Validierung
+
+- 6/6 Journey-Tests bestätigen funktionale Äquivalenz zur inline-Snippet-Variante (alle Interactions weiterhin korrekt).
+- TypeScript-Build erzeugt 0 Errors mit strict mode.
+- ESM 6.4 KB + IIFE 8.0 KB — kein Tree-Shaking nötig für lean Adoption.
+- Komplette 7-stufige Pipeline grün, jetzt mit `build:js` als 0. Schritt.
+
+---
+
 ## [0.6.6] — Host-Diagnostic + Pipeline-Orchestrator (Schwächen #3 + #5 — ehrlich partial)
 
 Ursprünglich geplant: "Playwright-Migration löst #3 + #5 magisch". Realität:

@@ -509,7 +509,7 @@
             <label class="slider__label" for="slider-price">Max-Preis</label>
             <output class="slider__value" for="slider-price">CHF 120</output>
           </div>
-          <input type="range" id="slider-price" class="range" min="20" max="500" step="10" value="120">
+          <input type="range" id="slider-price" class="range" min="20" max="500" step="10" value="120" data-format-prefix="CHF ">
           <div class="slider__scale">
             <span>CHF 20</span><span>CHF 260</span><span>CHF 500</span>
           </div>
@@ -1297,147 +1297,17 @@
       document.querySelectorAll("[data-set-density]").forEach((btn) => {
         btn.addEventListener("click", () => setDensity(btn.dataset.setDensity));
       });
-
-      // Generic Dismiss-Pattern: [data-dismiss="<selector>"] entfernt den
-      // nächsten matching Ancestor. Spart 3× duplizierten Listener für
-      // Alert / Tag / Toast — Konsumenten markieren ihre Close-Buttons mit
-      // data-dismiss="<parent-selector>".
-      document.querySelectorAll("[data-dismiss]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          btn.closest(btn.dataset.dismiss)?.remove();
-        });
-      });
-
-      // Shared positioning utility — panel below trigger via beforetoggle.
-      // beforetoggle bubbelt nicht → per-Element-Listener nötig.
-      function anchorPopoverByTrigger(panel, { matchWidth = false, onOpen } = {}) {
-        panel.addEventListener("beforetoggle", (e) => {
-          if (onOpen) onOpen(e);
-          if (e.newState !== "open") return;
-          const trigger = document.querySelector(`[popovertarget="${panel.id}"]`);
-          if (!trigger) return;
-          const r = trigger.getBoundingClientRect();
-          const style = { top: `${r.bottom + 4}px`, left: `${r.left}px` };
-          if (matchWidth) style.minWidth = `${r.width}px`;
-          Object.assign(panel.style, style);
-        });
-      }
-
-      // File-Upload: Drag-State + Drop + Selected-File-Anzeige.
-      // dragleave feuert auch beim Übertritt auf Kind-Elemente — Counter-Pattern
-      // hält dragging=true bis der Pointer wirklich die Dropzone verlässt.
-      document.querySelectorAll(".file-upload").forEach((label) => {
-        const input = label.querySelector('input[type="file"]');
-        const text  = label.querySelector(".file-upload__text");
-        const defaultText = text?.textContent;
-        let depth = 0;
-        label.addEventListener("dragenter", (ev) => {
-          ev.preventDefault();
-          depth++;
-          label.dataset.dragging = "true";
-        });
-        label.addEventListener("dragover", (ev) => ev.preventDefault());
-        label.addEventListener("dragleave", () => {
-          depth = Math.max(0, depth - 1);
-          if (depth === 0) delete label.dataset.dragging;
-        });
-        label.addEventListener("drop", (ev) => {
-          ev.preventDefault();
-          depth = 0;
-          delete label.dataset.dragging;
-          if (!input || !ev.dataTransfer?.files?.length) return;
-          input.files = ev.dataTransfer.files;
-          input.dispatchEvent(new Event("change", { bubbles: true }));
-        });
-        input?.addEventListener("change", () => {
-          if (!text) return;
-          const n = input.files?.length || 0;
-          text.textContent = n === 0 ? defaultText
-            : n === 1 ? `✓ ${input.files[0].name}`
-            : `✓ ${input.files[0].name}  (+${n - 1} weitere)`;
-        });
-      });
-
-      // Slider: Track-Fill + Output-Sync auf input event. Spezial für slider-price:
-      // Output bekommt "CHF X" als Präfix-Pattern, daher custom formatter.
-      document.querySelectorAll(".slider").forEach((slider) => {
-        const input  = slider.querySelector('input[type="range"]');
-        const output = slider.querySelector(".slider__value");
-        if (!input) return;
-        const isPrice = input.id === "slider-price";
-        const sync = () => {
-          const min = +input.min || 0;
-          const max = +input.max || 100;
-          const pct = ((input.valueAsNumber - min) / (max - min)) * 100;
-          input.style.setProperty("--range-fill-pct", pct + "%");
-          if (output) output.value = isPrice ? `CHF ${input.value}` : input.value;
-        };
-        input.addEventListener("input", sync);
-        sync();
-      });
-
-      // Combobox: Keyboard, Selection, Filter, Panel-Anchoring.
-      document.querySelectorAll(".combobox").forEach((cb) => {
-        const trigger = cb.querySelector(".combobox__trigger");
-        const panel   = cb.querySelector(".combobox__panel");
-        const search  = panel.querySelector(".combobox__search-input");
-        const value   = trigger.querySelector(".combobox__value");
-        const opts    = () => panel.querySelectorAll(".combobox__option:not([hidden])");
-        let active = -1;
-
-        const setActive = (i) => {
-          const o = opts();
-          o.forEach((el, j) => el.classList.toggle("combobox__option--active", j === i));
-          if (i >= 0 && o[i]) o[i].scrollIntoView({ block: "nearest" });
-          active = i;
-        };
-
-        const select = (opt) => {
-          panel.querySelectorAll(".combobox__option")
-               .forEach((o) => o.setAttribute("aria-selected", "false"));
-          opt.setAttribute("aria-selected", "true");
-          value.textContent = (opt.querySelector(".combobox__option-label")?.textContent
-                              || opt.textContent).trim();
-          panel.hidePopover();
-        };
-
-        anchorPopoverByTrigger(panel, {
-          matchWidth: true,
-          onOpen: (e) => {
-            trigger.setAttribute("aria-expanded", e.newState === "open" ? "true" : "false");
-            if (e.newState !== "open") return;
-            setActive(-1);
-            requestAnimationFrame(() => search?.focus());
-          },
-        });
-
-        panel.addEventListener("click", (e) => {
-          const opt = e.target.closest(".combobox__option");
-          if (opt) select(opt);
-        });
-
-        cb.addEventListener("keydown", (e) => {
-          const o = opts();
-          if (e.key === "ArrowDown")    { e.preventDefault(); setActive(Math.min(active + 1, o.length - 1)); }
-          else if (e.key === "ArrowUp") { e.preventDefault(); setActive(Math.max(active - 1, 0)); }
-          else if (e.key === "Enter" && active >= 0) { e.preventDefault(); select(o[active]); }
-          else if (e.key === "Escape")  { panel.hidePopover(); trigger.focus(); }
-        });
-
-        search?.addEventListener("input", () => {
-          const q = search.value.toLowerCase();
-          panel.querySelectorAll(".combobox__option").forEach((o) => {
-            const hay = (o.dataset.search || o.textContent).toLowerCase();
-            o.hidden = q && !hay.includes(q);
-          });
-          setActive(-1);
-        });
-      });
-
-      // Popover-Trigger-Anchoring via shared utility.
-      document.querySelectorAll(".popover").forEach((pop) => anchorPopoverByTrigger(pop));
     })();
   </script>
+
+  <!--
+    Companion-JS: IIFE-Bundle für file://-Kompatibilität. ES-Module via
+    <script type="module"> wird von file:// vom Browser CORS-blockiert.
+    Für npm-Konsumenten (eigener Bundler): import { setupAll } from
+    "@gws/design-system-js" — siehe dist/js/index.js + setup-*.js.
+  -->
+  <script src="./dist/js/design-system.iife.js"></script>
+  <script>DS.setupAll();</script>
 
 </body>
 </html>
