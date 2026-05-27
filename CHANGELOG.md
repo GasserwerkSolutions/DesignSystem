@@ -1,5 +1,39 @@
 # Changelog
 
+## [Unreleased — v0.8.0-WIP] — Interactive Documentation Site (Etappe 1)
+
+Auftakt zu v0.8.0: statische Dokumentations-Site direkt aus den
+Component-Headern generiert. Eat-your-own-dogfood — die Site nutzt das DS
+selbst, Theme-/Mode-/Density-Switcher wirken live auf die Beispiele.
+
+### Hinzugefügt
+
+- **`scripts/build-site.js`** — statischer Generator. Parst die JSDoc-Header
+  aller 48 Components und extrahiert: Titel, Intro (mit Bullet-Listen),
+  CONTRACT (Required/Optional-Tokens), Struktur (HTML-Beispiele), Modifier.
+  Multi-line Section-Labels werden korrekt zusammengeführt (z.B.
+  `Struktur (mit korrektem A11Y-Markup …):` über zwei Header-Zeilen).
+- **`scripts/check-site.js`** — Smoke- und Interaction-Test der generierten
+  Site. Prüft pageerror/404/console.error auf 9 Seiten und verifiziert dass
+  Tone-/Mode-/Density-Switcher sowie Sidebar-Search funktionieren.
+- **`dist/site/`** — generierter Output: 48 Component-Pages,
+  Index-Übersicht (Kategorien-Grid), Stubs für Foundations / Themes /
+  Playground. Site-Shell via App-Shell-Component aus dem DS.
+- **npm-scripts** `build:site` und `check:site`. `check:full` ruft beide auf.
+- **Site-Assets**: `dist/site/assets/site.css` (Overlay-Layer mit
+  Sidebar/Topbar/Doc-Layout) und `dist/site/assets/site.js` (Axis-Persistierung
+  via localStorage, Sidebar-Filter).
+
+### Folgeschritte (v0.8.0 Etappe 2+)
+
+- Foundations-Seite mit Token-Browser (gruppiert nach color/space/font)
+- Live-Token-Editor mit `.style.setProperty()`
+- HEX-Picker → OKLCH-12-Step-Theme-Generator inkl. Color-Blind-Safety-Check
+- URL-State-Persistierung (`?tone=...&mode=...&token--btn-radius=...`)
+- GitHub-Pages-Deployment-Workflow
+
+---
+
 ## [0.7.3] — Vorschau-Fix: Ghost-Buttons + Topbar-Wrap
 
 User-Report (Folge-Bug): Demo-Vorschau hatte sichtbare Issues — Topbar wrappte

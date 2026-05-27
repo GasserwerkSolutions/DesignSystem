@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="de" data-tone="trust" data-mode="light" data-density="comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design System — Design System</title>
+  <link rel="stylesheet" href="./../../main.css">
+  <link rel="stylesheet" href="./assets/site.css">
+  <script defer src="./../../dist/js/design-system.iife.js"></script>
+  <script defer src="./assets/site.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-shell__topbar">
+      <div class="site-topbar">
+        <a class="site-topbar__brand" href="./index.html">
+          <strong>Design System</strong>
+          <span class="badge badge--neutral">v0.7.3</span>
+        </a>
+        <nav class="site-topbar__nav" aria-label="Hauptnavigation">
+          <a class="site-topbar__link is-active" href="./index.html">Overview</a>
+          <a class="site-topbar__link" href="./foundations.html">Foundations</a>
+          <a class="site-topbar__link" href="./components/button.html">Components</a>
+          <a class="site-topbar__link" href="./themes.html">Themes</a>
+          <a class="site-topbar__link" href="./playground.html">Playground</a>
+        </nav>
+        <div class="site-topbar__switches">
+          <label class="visually-hidden" for="site-tone">Tone</label>
+        <select id="site-tone" class="site-select" data-axis="tone">
+          <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option>
+        </select>
+          <button type="button" class="btn btn--ghost btn--sm" data-axis="mode">Light/Dark</button>
+          <label class="visually-hidden" for="site-density">Density</label>
+        <select id="site-density" class="site-select" data-axis="density">
+          <option value="comfortable">Comfortable</option>
+          <option value="compact">Compact</option>
+          <option value="spacious">Spacious</option>
+        </select>
+        </div>
+      </div>
+    </header>
+    <aside class="app-shell__sidebar">
+      <nav class="site-sidebar" aria-label="Components">
+        <input type="search" class="site-sidebar__search" placeholder="Suchen …" data-sidebar-search>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Layout</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/app-shell.html">App-Shell Layout-Primitive</a></li>
+            <li><a class="site-sidebar__link" href="./components/card.html">Card Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/divider.html">Divider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/list-row.html">List-Row Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/panel-list.html">Panel-List Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/section.html">Section Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Form</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/button.html">Button Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/checkbox.html">Checkbox + Radio Components</a></li>
+            <li><a class="site-sidebar__link" href="./components/combobox.html">Combobox Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/date-input.html">Date-Input Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/field.html">Field Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/file-upload.html">File-Upload Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/range.html">Range-Slider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/search.html">Search-Input Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/select.html">Select Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/slider.html">Slider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/switch.html">Switch Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Feedback</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/alert.html">Alert Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/banner.html">Banner Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/callout.html">Callout Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/empty-state.html">Empty-State Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/progress.html">Progress Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/skeleton.html">Skeleton Loader</a></li>
+            <li><a class="site-sidebar__link" href="./components/spinner.html">Spinner Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/toast.html">Toast / Notification Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Navigation</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/accordion.html">Accordion Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/breadcrumbs.html">Breadcrumbs Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/nav.html">Nav Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/pagination.html">Pagination Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/steps.html">Steps Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tabs.html">Tabs Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tree.html">Tree Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Overlay</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/drawer.html">Drawer Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/modal.html">Modal Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/popover.html">Popover Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tooltip.html">Tooltip Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Data Display</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/avatar.html">Avatar Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/avatar-stack.html">Avatar-Stack Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/badge.html">Badge Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/chart.html">Chart Container</a></li>
+            <li><a class="site-sidebar__link" href="./components/code-block.html">CodeBlock Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/funnel.html">Funnel Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/stat.html">Stat Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/table.html">Table Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tag.html">Tag Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/timeline.html">Timeline Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/trend.html">Trend Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Primitive</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/chevron.html">Chevron Component</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+    <main class="app-shell__main">
+      
+      <article class="site-doc">
+        <header class="site-doc__header">
+          <h1 class="site-doc__title">Design System</h1>
+          <p class="site-doc__lede">
+            Contract-basiertes Multi-Tone CSS-System.
+            6 Tones × 2 Modes × 3 Densities, 48 Components,
+            WCAG-AA validiert.
+          </p>
+          <div class="site-doc__cta">
+            <a class="btn" href="./components/button.html">Components durchsuchen</a>
+            <a class="btn btn--secondary" href="./themes.html">Theme generieren</a>
+            <a class="btn btn--ghost" href="./foundations.html">Foundations</a>
+          </div>
+        </header>
+
+        <section class="site-doc__section">
+          <h2>Components nach Kategorie</h2>
+          
+          <div class="site-category">
+            <h3 class="site-category__title">Layout <span class="site-muted">(6)</span></h3>
+            <ul class="site-component-grid">
+              
+              <li>
+                <a class="card site-component-card" href="./components/app-shell.html">
+                  <strong>App-Shell Layout-Primitive</strong>
+                  <span class="site-muted">Vollständiges Page-Grid für Dashboard- und App-Layouts: Header oben,</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/card.html">
+                  <strong>Card Component</strong>
+                  
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/divider.html">
+                  <strong>Divider Component</strong>
+                  <span class="site-muted">Horizontale Trennlinie — mit oder ohne Text in der Mitte.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/list-row.html">
+                  <strong>List-Row Component</strong>
+                  <span class="site-muted">Flexibles rich List-Item: Leading (Avatar/Icon) + Body (Title + Subtitle/Meta) + Trail (Ba…</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/panel-list.html">
+                  <strong>Panel-List Component</strong>
+                  <span class="site-muted">Key-Value-Reihen mit Trennlinien zwischen ihnen.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/section.html">
+                  <strong>Section Component</strong>
+                  
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="site-category">
+            <h3 class="site-category__title">Form <span class="site-muted">(11)</span></h3>
+            <ul class="site-component-grid">
+              
+              <li>
+                <a class="card site-component-card" href="./components/button.html">
+                  <strong>Button Component</strong>
+                  
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/checkbox.html">
+                  <strong>Checkbox + Radio Components</strong>
+                  <span class="site-muted">Custom-styled native inputs. Behalten alle A11Y-Eigenschaften</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/combobox.html">
+                  <strong>Combobox Component</strong>
+                  <span class="site-muted">Custom Single-Select für Use-Cases, die Native &lt;select&gt; nicht abdeckt:</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/date-input.html">
+                  <strong>Date-Input Component</strong>
+                  <span class="site-muted">Styled native &lt;input type=&quot;date&quot;&gt; / type=&quot;time&quot; / type=&quot;datetime-local&quot; /</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/field.html">
+                  <strong>Field Component</strong>
+                  <span class="site-muted">Form-Field-Wrapper: Label + Input + Hint/Error.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/file-upload.html">
+                  <strong>File-Upload Component</strong>
+                  <span class="site-muted">Styled &lt;label&gt; als Click- und Dropzone, mit verstecktem nativen</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/range.html">
+                  <strong>Range-Slider Component</strong>
+                  <span class="site-muted">Styled native &lt;input type=&quot;range&quot;&gt;. Cross-Browser-Styling für</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/search.html">
+                  <strong>Search-Input Component</strong>
+                  <span class="site-muted">Input mit Leading-Icon (Lupe) — für Filter-Bars, List-Suche.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/select.html">
+                  <strong>Select Component</strong>
+                  <span class="site-muted">Native &lt;select&gt; mit appearance:none + Custom-Arrow im Wrapper.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/slider.html">
+                  <strong>Slider Component</strong>
+                  <span class="site-muted">Wrapper um `&lt;input type=&quot;range&quot; class=&quot;range&quot;&gt;` mit Label, Value-Display</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/switch.html">
+                  <strong>Switch Component</strong>
+                  <span class="site-muted">Binary on/off-Toggle. Eigene Semantik vs. Checkbox:</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="site-category">
+            <h3 class="site-category__title">Feedback <span class="site-muted">(8)</span></h3>
+            <ul class="site-component-grid">
+              
+              <li>
+                <a class="card site-component-card" href="./components/alert.html">
+                  <strong>Alert Component</strong>
+                  <span class="site-muted">Status-Feedback im Content-Flow. Unterscheidet sich von:</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/banner.html">
+                  <strong>Banner Component</strong>
+                  <span class="site-muted">Horizontaler Page-Top-Alert. Unterscheidet sich vom Callout:</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/callout.html">
+                  <strong>Callout Component</strong>
+                  <span class="site-muted">Info-/Warning-/Error-Box mit akzentuiertem Rand.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/empty-state.html">
+                  <strong>Empty-State Component</strong>
+                  <span class="site-muted">Zentrierter Placeholder für leere Listen/Tables/Views.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/progress.html">
+                  <strong>Progress Component</strong>
+                  <span class="site-muted">Fill-Bar für Usage-Limits, Upload-Status, generische Fortschritts-Anzeigen.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/skeleton.html">
+                  <strong>Skeleton Loader</strong>
+                  <span class="site-muted">Animierte Placeholder für Loading-States — shimmernder Gradient.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/spinner.html">
+                  <strong>Spinner Component</strong>
+                  <span class="site-muted">Indeterminate Loading-Indicator. Pures CSS, kein SVG, kein JS.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/toast.html">
+                  <strong>Toast / Notification Component</strong>
+                  <span class="site-muted">Stapelbare Notifications unten rechts (oder konfigurierbar).</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="site-category">
+            <h3 class="site-category__title">Navigation <span class="site-muted">(7)</span></h3>
+            <ul class="site-component-grid">
+              
+              <li>
+                <a class="card site-component-card" href="./components/accordion.html">
+                  <strong>Accordion Component</strong>
+                  <span class="site-muted">Auf native &lt;details&gt;/&lt;summary&gt; aufgebaut — A11Y, Keyboard-Toggle,</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/breadcrumbs.html">
+                  <strong>Breadcrumbs Component</strong>
+                  <span class="site-muted">Navigations-Pfad: Home &gt; Settings &gt; Profile</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/nav.html">
+                  <strong>Nav Component</strong>
+                  <span class="site-muted">Application-Shell Navigation — Sidebar (Dashboard) oder Topbar (Marketing).</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/pagination.html">
+                  <strong>Pagination Component</strong>
+                  <span class="site-muted">Seiten-Navigation für Tables / Listen.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/steps.html">
+                  <strong>Steps Component</strong>
+                  <span class="site-muted">Schritt-Indikator für Onboarding / Multi-Step-Forms.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/tabs.html">
+                  <strong>Tabs Component</strong>
+                  <span class="site-muted">Horizontale Tab-Leiste mit Panels. ARIA-Rollen liefern die A11Y</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/tree.html">
+                  <strong>Tree Component</strong>
+                  <span class="site-muted">Hierarchische Liste mit Expand/Collapse. Nutzt native &lt;details&gt;/&lt;summary&gt;</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="site-category">
+            <h3 class="site-category__title">Overlay <span class="site-muted">(4)</span></h3>
+            <ul class="site-component-grid">
+              
+              <li>
+                <a class="card site-component-card" href="./components/drawer.html">
+                  <strong>Drawer Component</strong>
+                  <span class="site-muted">Slide-over von der Seite — für Mobile-Menüs, Side-Sheets, Detail-Panels.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/modal.html">
+                  <strong>Modal Component</strong>
+                  <span class="site-muted">Auf native &lt;dialog&gt;-Element aufgebaut — bringt A11Y gratis</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/popover.html">
+                  <strong>Popover Component</strong>
+                  <span class="site-muted">Interaktive Floating-Bubble auf Click. Differenzierung im DS:</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/tooltip.html">
+                  <strong>Tooltip Component</strong>
+                  <span class="site-muted">CSS-only Tooltip via Wrapper + Pseudo-Element.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="site-category">
+            <h3 class="site-category__title">Data Display <span class="site-muted">(11)</span></h3>
+            <ul class="site-component-grid">
+              
+              <li>
+                <a class="card site-component-card" href="./components/avatar.html">
+                  <strong>Avatar Component</strong>
+                  <span class="site-muted">Runder Kreis mit Initialen oder Bild. Für Staff, Kunden, User-Chips.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/avatar-stack.html">
+                  <strong>Avatar-Stack Component</strong>
+                  <span class="site-muted">Überlappende Avatar-Reihe — Team-Member, Teilnehmer-Liste, &quot;X andere&quot;.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/badge.html">
+                  <strong>Badge Component</strong>
+                  <span class="site-muted">Für Status-Tags (Live, Kostenlos, ENTERPRISE, Industry-Labels, etc.)</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/chart.html">
+                  <strong>Chart Container</strong>
+                  <span class="site-muted">Library-agnostischer Frame für Daten-Visualisierungen. Konsument bringt</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/code-block.html">
+                  <strong>CodeBlock Component</strong>
+                  <span class="site-muted">Prominente Code-Anzeige — für Embed-Snippets, API-Keys, Widget-Code.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/funnel.html">
+                  <strong>Funnel Component</strong>
+                  <span class="site-muted">Vertikale Conversion-Funnel-Visualisierung: Label + Count + Bar + Dropoff zum nächsten Ste…</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/stat.html">
+                  <strong>Stat Component</strong>
+                  <span class="site-muted">Metric-Display für Dashboards (UMSATZ, TERMINE, Besucher, etc.)</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/table.html">
+                  <strong>Table Component</strong>
+                  <span class="site-muted">Data-Table für Listen (Kunden, Buchungen, Services, etc.)</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/tag.html">
+                  <strong>Tag Component</strong>
+                  <span class="site-muted">Editierbares/clickbares Label. Differenzierung zu Badge:</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/timeline.html">
+                  <strong>Timeline Component</strong>
+                  <span class="site-muted">Vertikale Aktivitäts-Liste. Markers auf einer Linie, Inhalt rechts.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/trend.html">
+                  <strong>Trend Component</strong>
+                  <span class="site-muted">Richtungs-Indikator mit Farbe (↑↓→) für KPI-Änderungen,</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="site-category">
+            <h3 class="site-category__title">Primitive <span class="site-muted">(1)</span></h3>
+            <ul class="site-component-grid">
+              
+              <li>
+                <a class="card site-component-card" href="./components/chevron.html">
+                  <strong>Chevron Component</strong>
+                  <span class="site-muted">Zusammensetzbare CSS-only Caret/Triangle-Markierung. Pures CSS via</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
