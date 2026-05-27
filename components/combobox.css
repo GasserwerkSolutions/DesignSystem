@@ -30,10 +30,12 @@
  *     --combobox-trigger-bg / -fg / -border / -radius / -py / -px
  *     --combobox-panel-shadow / -max-h
  *
- * Struktur (mit korrektem A11Y-Markup):
- *   <label class="field__label" id="cb-1-label">Service</label>
+ * Struktur (mit korrektem A11Y-Markup — label hat for=, das den Button-id
+ * referenziert, damit Click-on-Label das Trigger-Button aktiviert):
+ *   <label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
  *   <div class="combobox">
  *     <button class="combobox__trigger" type="button"
+ *             id="cb-1-trigger"
  *             role="combobox"
  *             aria-labelledby="cb-1-label cb-1-value"
  *             aria-expanded="false"

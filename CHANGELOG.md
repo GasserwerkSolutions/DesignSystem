@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.6.2] — Self-Review-Pass: 2 echte Bugs in v0.6.0+v0.6.1 gefixt
+
+Vor dem nächsten Roadmap-Schritt (Visual-Regression) eine systematische
+Selbst-Review der frischen Quality-Gates. 4 Findings, 2 davon echte
+Bugs mit Puppeteer-Proben verifiziert.
+
+### Behoben
+
+- **Bug 1 (Logic-Error):** `check-a11y.js --strict`-Mode war effektiv ein No-Op. `HARD_FAIL`-Set wurde nicht erweitert; `SOFT_WARN` wurde leer; moderate/minor-Violations fielen in den `[info]`-Bucket ohne Exit-Code-Effekt. **Fix:** `HARD_FAIL` enthält in STRICT-Mode alle 4 Severities.
+- **Bug 2 (UX-Regress):** Combobox-Demo-Label hatte nach v0.6.1 zwar `id=` aber kein `for=` — Click auf den sichtbaren Label-Text fokussierte das Trigger-Button nicht (axe-Lint hat das nicht gemeldet, weil aria-labelledby den ARIA-Vertrag erfüllt). **Fix:** `<label for="cb-X-trigger">` + `<button id="cb-X-trigger">` + bestehendes `aria-labelledby`. Click-on-Label aktiviert jetzt das Trigger (Native Label-for-labelable-Element-Mechanik). Component-Header in combobox.css analog aktualisiert.
+
+### Hinzugefügt
+
+- **5 Integration-Tests in `test-lint.js`** (jetzt 18/18 statt 13/13). Spawnen `lint-themes.js` als Subprozess, prüfen Exit-Codes + stdout/stderr-Inhalte über tmp-Fixture-Themes. Schließt die Lücke, dass `test-lint.js` bisher nur PostCSS-Patterns isoliert testete, nicht das tatsächliche Programm. Coverage:
+  - Good theme → exit 0
+  - Forbidden `--container-max` → exit 1 mit Line-Number in stderr
+  - Forbidden `:root` selector → exit 1
+  - Destructive token default → exit 0 mit `[warn]` tag
+  - Destructive token + `--strict` → exit 1
+- **axe-`incomplete`-Results** im `--verbose`-Mode sichtbar (vorher komplett unterdrückt). Counter immer angezeigt, Details opt-in. Keine Exit-Code-Änderung — incomplete sind explizit "manual review", keine Violations.
+
+### Bewertet aber nicht gefixt (False Concerns)
+
+- **Parse-Error-Behandlung in lint-themes.js**: PostCSS toleriert auch krude Inputs wie `} } @@@ }` ohne Crash. Robustheits-Bedenken bestätigte sich nicht.
+
+---
+
 ## [0.6.1] — Quality-Gates Etappe 1: axe-core A11Y-Lint
 
 ### Hinzugefügt

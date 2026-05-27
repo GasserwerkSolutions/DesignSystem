@@ -226,6 +226,64 @@ test(":not([data-mode='light']) is correctly ignored as positive match", () => {
 });
 
 // ============================================================
+// Test-Suite: lint-themes.js Integration (spawn als child process)
+// ============================================================
+console.log("\nlint-themes.js Integration (spawnSync):");
+
+const { spawnSync } = require("child_process");
+
+function runLint(themesContent, flags = []) {
+  // Tmp-Fixture-Theme schreiben, lint laufen lassen, aufräumen.
+  const tmpFile = path.join(ROOT, "themes", "_test_fixture.css");
+  fs.writeFileSync(tmpFile, themesContent);
+  try {
+    const res = spawnSync("node", ["scripts/lint-themes.js", ...flags], {
+      cwd: ROOT,
+      encoding: "utf8",
+    });
+    return {
+      stdout: res.stdout,
+      stderr: res.stderr,
+      code: res.status,
+    };
+  } finally {
+    if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+  }
+}
+
+test("good theme: exit 0", () => {
+  const r = runLint(`[data-tone~="test"] { --btn-bg: green; }`);
+  assertEq(r.code, 0, "exit 0 for valid theme");
+});
+
+test("forbidden --container-max: exit 1 with line number", () => {
+  const r = runLint(`[data-tone~="test"] {\n  --container-max: 80ch;\n}`);
+  if (r.code !== 1) throw new Error(`expected exit 1, got ${r.code}\nstderr:\n${r.stderr}`);
+  if (!r.stderr.includes("--container-max")) throw new Error("missing token in output");
+  if (!r.stderr.includes("line 2")) throw new Error(`expected 'line 2' in output, got:\n${r.stderr}`);
+});
+
+test("forbidden :root selector: exit 1", () => {
+  const r = runLint(`:root { --x: 1; }`);
+  if (r.code !== 1) throw new Error(`expected exit 1, got ${r.code}`);
+  if (!r.stderr.includes(":root")) throw new Error("missing :root in error output");
+});
+
+test("destructive token + warn (default): exit 0", () => {
+  // --color-text-primary IS in dark.css, theme sets it → warning, not fail.
+  const r = runLint(`[data-tone~="test"] { --color-text-primary: red; }`);
+  assertEq(r.code, 0, "soft-warn default → exit 0");
+  if (!r.stdout.includes("[warn]") && !r.stderr.includes("[warn]")) {
+    throw new Error("expected [warn] tag in output");
+  }
+});
+
+test("destructive token + --strict: exit 1", () => {
+  const r = runLint(`[data-tone~="test"] { --color-text-primary: red; }`, ["--strict"]);
+  assertEq(r.code, 1, "strict mode → exit 1 for destructive token");
+});
+
+// ============================================================
 // Summary
 // ============================================================
 console.log("");

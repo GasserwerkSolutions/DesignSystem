@@ -40,7 +40,14 @@ try {
 
 const AXE_PATH = require.resolve("axe-core/axe.min.js");
 
-const HARD_FAIL = new Set(["critical", "serious"]);
+/* Severity-Buckets:
+   - Default: critical+serious sind hard-fail, moderate+minor sind soft-warn.
+   - --strict: ALLE Buckets werden hard-fail (auch moderate+minor).
+   Beide Sets müssen disjunkt sein, sonst zählen Violations doppelt. */
+const HARD_FAIL = new Set(
+  STRICT ? ["critical", "serious", "moderate", "minor"]
+         : ["critical", "serious"]
+);
 const SOFT_WARN = new Set(STRICT ? [] : ["moderate", "minor"]);
 
 async function openHiddenPanels(page) {
@@ -57,13 +64,13 @@ async function openHiddenPanels(page) {
 
 async function runAxe(page) {
   return await page.evaluate(async () => {
-    // axe.run() returns a Promise; default rules apply.
+    // axe.run() liefert violations + incomplete (manual-review-needed).
     const res = await axe.run(document, {
-      resultTypes: ["violations"],
+      resultTypes: ["violations", "incomplete"],
       // best-practice rules ausblenden — sind Hinweise, keine Bugs.
       runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"] },
     });
-    return res.violations;
+    return { violations: res.violations, incomplete: res.incomplete };
   });
 }
 
@@ -118,7 +125,7 @@ async function main() {
     // Open all hidden popover panels so axe can see their contents.
     await openHiddenPanels(page);
 
-    const violations = await runAxe(page);
+    const { violations, incomplete } = await runAxe(page);
     const buckets = bySeverity(violations);
 
     console.log("axe-core A11Y-Lint — Demo (trust / light, alle Popovers open)");
@@ -140,9 +147,21 @@ async function main() {
       else if (SOFT_WARN.has(sev)) totalSoft += list.length;
     }
 
+    // Incomplete: axe konnte nicht endgültig entscheiden → manual review.
+    // Im --verbose-Mode zeigen, sonst nur Zähler.
+    if (incomplete.length > 0) {
+      console.log("");
+      console.log(`  [info] incomplete (needs manual review): ${incomplete.length}`);
+      if (VERBOSE) {
+        for (const v of incomplete) reportViolation(v);
+      } else {
+        console.log(`         (Details mit --verbose)`);
+      }
+    }
+
     console.log("");
     if (totalHard > 0) {
-      console.error(`${totalHard} hard-fail violation(s) (critical/serious).`);
+      console.error(`${totalHard} hard-fail violation(s).`);
       process.exit(1);
     }
     if (totalSoft > 0) {
