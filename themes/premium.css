@@ -10,8 +10,10 @@
   --color-interactive:       var(--gray-900);
   --color-interactive-light: var(--gray-200);
   --color-interactive-dark:  var(--gray-950);
-  --color-text-primary:      var(--gray-950);
-  --color-text-secondary:    var(--gray-700);
+  /* Mode-aware via light-dark — premium-light bleibt extra-kontrastreich,
+     dark erbt globale defaults */
+  --color-text-primary:      light-dark(var(--gray-950), var(--gray-50));
+  --color-text-secondary:    light-dark(var(--gray-700), var(--gray-300));
   --color-focus:             var(--gray-900);
   --color-focus-ring:        var(--gray-300);
 

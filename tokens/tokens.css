@@ -202,6 +202,8 @@
      SHADOWS
      ======================================== */
 
+  /* Shadows bleiben über dark.css mode-overridden — light-dark() würde
+     mit multi-shadow Comma-Werten ambiguous parsen. */
   --shadow-none: none;
   --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);

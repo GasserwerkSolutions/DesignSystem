@@ -41,9 +41,9 @@
   --btn-weight:       600;
   --btn-hover-motion: translateY(-1px);
 
-  /* Card */
-  --card-bg:     white;
-  --card-border: 1px solid var(--trust-100);
+  /* Card — light-dark damit dark-mode trust nicht weiße Karten zeigt */
+  --card-bg:     light-dark(white, var(--gray-900));
+  --card-border: light-dark(1px solid var(--trust-100), 1px solid var(--gray-800));
   --card-radius: var(--radius-12);
   --card-shadow: 0 1px 3px 0 rgba(22, 163, 74, 0.1);
 

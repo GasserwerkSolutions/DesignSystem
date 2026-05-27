@@ -10,21 +10,29 @@
  */
 
 :root {
+  /* color-scheme treibt die Auflösung von light-dark(L, D) und steuert die
+     UA-Defaults (Scrollbars, Form-Controls). Default = auto (Browser-Pref);
+     [data-mode] in dark.css forciert. */
+  color-scheme: light dark;
+
   /* ========================================
      SEMANTIC COLORS
-     ======================================== */
+     ========================================
+     Mode-sensitive Tokens via light-dark(L, D). Resolution erfolgt automatisch
+     anhand der color-scheme-Property des Elements. data-mode-Wrapper setzen
+     color-scheme, kein Token-Re-Override mehr nötig (siehe dark.css). */
 
   /* Backgrounds */
-  --color-bg:           var(--gray-100);
-  --color-bg-secondary: var(--gray-50);
-  --color-bg-tertiary:  var(--gray-200);
-  --color-bg-inverse:   var(--gray-900);
+  --color-bg:           light-dark(var(--gray-100), var(--gray-950));
+  --color-bg-secondary: light-dark(var(--gray-50),  var(--gray-900));
+  --color-bg-tertiary:  light-dark(var(--gray-200), var(--gray-800));
+  --color-bg-inverse:   light-dark(var(--gray-900), var(--gray-100));
 
   /* Text */
-  --color-text-primary:   var(--gray-900);
-  --color-text-secondary: var(--gray-600);
-  --color-text-tertiary:  var(--gray-500);
-  --color-text-muted:     var(--gray-500);
+  --color-text-primary:   light-dark(var(--gray-900), var(--gray-50));
+  --color-text-secondary: light-dark(var(--gray-600), var(--gray-300));
+  --color-text-tertiary:  light-dark(var(--gray-500), var(--gray-500));
+  --color-text-muted:     light-dark(var(--gray-500), var(--gray-600));
   --color-text-light:     var(--gray-200);
   --color-text-lightest:  var(--gray-100);
   --color-text-on-dark:   var(--gray-50);
@@ -83,23 +91,26 @@
      Semantic-Aliases (--chart-positive/-negative/-neutral) ziehen aus
      den Status-Bordern, damit Trend-Färbung mit Callout/Badge konsistent
      bleibt. */
-  --chart-1: #E69F00;   /* orange */
-  --chart-2: #56B4E9;   /* sky-blue */
-  --chart-3: #009E73;   /* bluish-green */
-  --chart-4: #F0E442;   /* yellow */
-  --chart-5: #0072B2;   /* blue */
-  --chart-6: #D55E00;   /* vermillion */
-  --chart-7: #CC79A7;   /* reddish-purple */
-  --chart-8: #999999;   /* gray */
+  /* Light: Okabe-Ito original — heller, satter.
+     Dark: angepasst — leichter ent-sättigt + heller für Lesbarkeit auf
+     dunklem BG. Identitäts-Reihenfolge erhalten. */
+  --chart-1: light-dark(#E69F00, #FFB938);   /* orange */
+  --chart-2: light-dark(#56B4E9, #88CCEE);   /* sky-blue */
+  --chart-3: light-dark(#009E73, #44BBA4);   /* bluish-green */
+  --chart-4: light-dark(#F0E442, #FFEB75);   /* yellow */
+  --chart-5: light-dark(#0072B2, #4A9EE0);   /* blue */
+  --chart-6: light-dark(#D55E00, #E88556);   /* vermillion */
+  --chart-7: light-dark(#CC79A7, #DC9ABF);   /* reddish-purple */
+  --chart-8: light-dark(#999999, #BFBFBF);   /* gray */
 
   --chart-positive: var(--status-success-border);
   --chart-negative: var(--status-danger-border);
   --chart-neutral:  var(--chart-8);
 
   /* Borders */
-  --color-border:       var(--gray-200);
-  --color-border-light: var(--gray-100);
-  --color-border-dark:  var(--gray-400);
+  --color-border:       light-dark(var(--gray-200), var(--gray-700));
+  --color-border-light: light-dark(var(--gray-100), var(--gray-800));
+  --color-border-dark:  light-dark(var(--gray-400), var(--gray-600));
 
   /* Focus */
   --color-focus:      var(--trust-600);
@@ -249,7 +260,7 @@
   --btn-weight: 600;
 
   /* Card */
-  --card-bg:      white;
+  --card-bg:      light-dark(white, var(--gray-900));
   --card-radius:  var(--radius-lg);
   --card-shadow:  var(--shadow-card);
   --card-padding: var(--space-24);
@@ -265,8 +276,8 @@
      ihre volle Breite behalten. Siehe ADR-001. */
   --prose-max:     70ch;
 
-  /* Input */
-  --input-bg:           white;
+  /* Input — bg mode-aware via light-dark; text/border erbt von --color-* */
+  --input-bg:           light-dark(white, var(--gray-900));
   --input-border:       var(--color-border);
   --input-text:         var(--color-text-primary);
   --input-placeholder:  var(--color-text-tertiary);

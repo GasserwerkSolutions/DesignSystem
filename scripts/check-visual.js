@@ -255,6 +255,30 @@ async function selfTest() {
 
   let allPassed = true;
 
+  /* Crash-Safe Restore: bei SIGINT/SIGTERM/uncaught restoreAll() ausführen.
+     Sonst hinterlässt ein interrupted Self-Test mutated Theme-Files (siehe
+     v0.12.0 Kontrollrunde: trust+modern hatten radius-24 hardcoded weil
+     ein voriger Run aborted wurde). */
+  const pendingRestores = new Map();
+  const restoreAll = () => {
+    for (const [file, content] of pendingRestores) {
+      try { fs.writeFileSync(file, content); } catch {}
+    }
+    pendingRestores.clear();
+  };
+  const onSignal = (sig) => {
+    console.error(`\n[selfTest] ${sig} — restoring mutated files...`);
+    restoreAll();
+    process.exit(130);
+  };
+  process.on("SIGINT", () => onSignal("SIGINT"));
+  process.on("SIGTERM", () => onSignal("SIGTERM"));
+  process.on("uncaughtException", (e) => {
+    console.error(`\n[selfTest] uncaughtException — restoring:`, e.message);
+    restoreAll();
+    process.exit(1);
+  });
+
   for (const m of MUTATIONS) {
     const original = fs.readFileSync(m.file, "utf8");
     if (!original.includes(m.find)) {
@@ -265,6 +289,7 @@ async function selfTest() {
     }
 
     try {
+      pendingRestores.set(m.file, original);
       fs.writeFileSync(m.file, original.replace(m.find, m.replace));
 
       // Subprocess-Call ohne --self-test → normaler VRT-Run gegen Baselines.
@@ -331,6 +356,7 @@ async function selfTest() {
       }
     } finally {
       fs.writeFileSync(m.file, original);
+      pendingRestores.delete(m.file);
     }
   }
 

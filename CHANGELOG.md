@@ -1,5 +1,80 @@
 # Changelog
 
+## [0.12.0] — Modern CSS: light-dark() ersetzt die Override-Architektur
+
+Path A der Modern-CSS-Adoption. Vor v0.12.0 wurde Dark-Mode über zwei
+Mechanismen umgesetzt:
+
+  1. `[data-mode="dark"] { ... }` Re-Overrides aller mode-sensitiven
+     Tokens (manuell)
+  2. `@media (prefers-color-scheme: dark) { :root:not(...) { ... } }`
+     identische Re-Overrides für Auto-Dark
+
+Mit Descendant-Partner-Selektor (`[data-mode="dark"] [data-tone]`) damit
+nested Tone-Scopes nicht ihre Identity verlieren. dark.css: 125 Zeilen
+Duplikation.
+
+**Neue Architektur**: jeder mode-sensitive Token nutzt `light-dark(L, D)`
+in seiner Definition. `color-scheme` auf `:root` (oder `[data-mode]`)
+treibt die Auflösung. `color-scheme` erbt automatisch — der Descendant-
+Partner-Pattern entfällt.
+
+### Migriert
+
+- **`semantic.css`**: 11 Color-Tokens (--color-bg/-secondary/-tertiary/
+  -inverse, --color-text-primary/-secondary/-tertiary/-muted, --color-
+  border/-light/-dark, --card-bg, --input-bg) → `light-dark()`. Chart-
+  Palette (8 Tokens) ebenfalls. `:root` bekommt `color-scheme: light dark`.
+- **`dark.css`**: schrumpft von 125 Zeilen auf 67. Enthält nur noch:
+  (1) `data-mode → color-scheme` Mappings, (2) Multi-Shadow-Overrides
+  (light-dark() kann multi-comma values nicht parsen), (3) edge-case
+  `--code-block-bg` Override (kann nicht trivial via inversem Token
+  abgeleitet werden).
+- **`themes/`**: minimal (10 Tokens), trust (2), premium (2), industrial
+  (3) konvertiert zu light-dark(). Themes behalten ihre Light-Identity,
+  delegieren Dark an globale defaults.
+
+### Lint-Update
+
+- **Check 2 (destructive tokens)**: light-dark()-Werte gelten nicht mehr
+  als destruktiv. Themes können mode-sensitive Tokens überschreiben
+  WENN sie light-dark() nutzen (explizit + sicher).
+- **Check 3 (descendant-partner)**: komplett umgebaut. Beim alten Setup
+  Pflicht. Mit color-scheme-Inheritance obsolet. Stattdessen: dark.css
+  darf nur die definierten ALLOWED_DARK_OVERRIDES enthalten (Shadows,
+  code-block-bg, focus-ring). Alle anderen mode-sensitiven Tokens
+  müssen in semantic.css mit light-dark() leben.
+- **`readModeSensitiveTokens()`** scannt jetzt zusätzlich semantic.css
+  nach light-dark()-Verwendung. Themes die diese Tokens ohne light-dark()
+  überschreiben → soft-warn.
+
+### check:contrast erweitert
+
+- Parser unterstützt jetzt `light-dark(L, D)` und unwrappt basierend auf
+  ctx.mode/ctx.prefersColorScheme. Alle 1008 kritischen Paare über alle
+  4 Modi grün.
+
+### check:visual self-test crash-safe
+
+- Frühere Self-Test-Runs konnten mutated Theme-Files hinterlassen wenn
+  der Subprocess interrupted wurde (passiert während v0.12.0 Migration:
+  trust+modern hatten radius-24 hardcoded). Neue Implementation:
+  SIGINT/SIGTERM/uncaughtException Handler → restoreAll() auf alle
+  pending Mutationen.
+
+### Stats
+
+- **dark.css**: 125 → 67 Zeilen (-46%)
+- **Mode-sensitive Token-Coverage**: 11 Color-Tokens + 8 Chart-Tokens
+  in semantic.css statt 2× dupliziert in dark.css
+- **Bundle**: 114.3 KB raw / 17.5 KB gzip (-0.4 KB raw durch Reduktion
+  von Duplikation, gzip ~identisch)
+- **Pipeline**: lint, test:lint (21/21), contrast (1008/1008), visual
+  (12/12), self-test (3/3), journeys (6/6), site (34/34), measure
+  (4/4 budget), package (73/73 coverage) — alle grün
+
+---
+
 ## [0.11.0] — Interactive Component Pages
 
 Aus statischer Doc wird eine Spielwiese. Jedes Markup-Beispiel hat jetzt

@@ -1,30 +1,30 @@
 {
-  "timestamp": "2026-05-27T22:43:00.885Z",
-  "version": "0.11.0",
+  "timestamp": "2026-05-27T23:36:38.663Z",
+  "version": "0.12.0",
   "bundle": {
-    "raw": 117461,
-    "gzip": 17913,
-    "brotli": 15192
+    "raw": 117079,
+    "gzip": 17898,
+    "brotli": 15195
   },
   "minified": {
-    "raw": 93560,
-    "gzip": 16651,
-    "brotli": 14474
+    "raw": 93386,
+    "gzip": 16681,
+    "brotli": 14512
   },
   "layers": [
     {
       "label": "tokens",
-      "raw": 7705,
+      "raw": 7837,
       "files": 1
     },
     {
       "label": "semantic",
-      "raw": 17605,
+      "raw": 17091,
       "files": 3
     },
     {
       "label": "themes",
-      "raw": 10881,
+      "raw": 12035,
       "files": 6
     },
     {

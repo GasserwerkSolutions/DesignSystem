@@ -353,14 +353,32 @@ function resolveTokens(layers, ctx) {
   return tokens;
 }
 
-function resolveValue(name, tokens, depth = 0) {
+/* light-dark(L, D) — unwrap basierend auf ctx (mode/prefersColorScheme).
+   Argumente sind comma-separiert, aber Argumente können selbst Kommas
+   enthalten (color-mix, rgba). balancedSplit nutzen. */
+function unwrapLightDark(value, ctx) {
+  const m = /^light-dark\((.*)\)$/.exec(value.trim());
+  if (!m) return value;
+  const args = balancedSplit(m[1], ",");
+  if (args.length !== 2) return value;
+  const isDark =
+    ctx.mode === "dark" ||
+    (ctx.mode == null && ctx.prefersColorScheme === "dark");
+  return (isDark ? args[1] : args[0]).trim();
+}
+
+function resolveValue(name, tokens, depth = 0, ctx = {}) {
   if (depth > 30) return null;
   if (!tokens[name]) return null;
-  const value = tokens[name];
+  let value = tokens[name];
+
+  /* light-dark() Unwrap zuerst — sonst greift die var()-Regex auf das
+     innere var(--...) im L oder D Argument, was bedeutungs-verzerrend ist. */
+  value = unwrapLightDark(value, ctx);
 
   const varOnly = /^var\((--[a-zA-Z0-9-]+)(?:\s*,\s*([^)]+))?\)$/.exec(value);
   if (varOnly) {
-    const inner = resolveValue(varOnly[1], tokens, depth + 1);
+    const inner = resolveValue(varOnly[1], tokens, depth + 1, ctx);
     if (inner !== null) return inner;
     if (varOnly[2]) return varOnly[2].trim();
     return null;
@@ -415,12 +433,12 @@ let skips = 0;
 
 function checkScope(label, ctx) {
   const tokens = resolveTokens(LAYERS, ctx);
-  const resolveFn = (name) => resolveValue(name, tokens);
+  const resolveFn = (name) => resolveValue(name, tokens, 0, ctx);
 
   console.log(`=== ${label} ===`);
   for (const { fg, bg, threshold, label: pairLabel } of PAIRS) {
-    const fgRaw = resolveValue(fg, tokens);
-    const bgRaw = resolveValue(bg, tokens);
+    const fgRaw = resolveValue(fg, tokens, 0, ctx);
+    const bgRaw = resolveValue(bg, tokens, 0, ctx);
     if (!fgRaw || !bgRaw) {
       console.log(`  [skip] ${pairLabel}: token unresolvable`);
       skips++;

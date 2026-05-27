@@ -1,125 +1,72 @@
 /**
- * Dark-Mode Token-Overrides
- * ==========================
+ * Dark-Mode — color-scheme Toggle + Multi-Shadow-Override
+ * ========================================================
  *
- * Orthogonal zu Themes — `data-mode="dark"` kann mit jedem `data-tone` kombiniert werden.
+ * Seit v0.12.0 nutzt die Token-Schicht `light-dark(L, D)` für alle mode-
+ * sensitiven Color-Tokens (siehe semantic.css). Die Auflösung erfolgt
+ * automatisch anhand der `color-scheme`-Property:
  *
- * Aktivierung:
- *   1. Manuell:  <html data-mode="dark">
- *   2. Auto via System-Setting (prefers-color-scheme: dark), außer
- *      User hat explizit <html data-mode="light"> gewählt.
- *   3. "Auto" Explicit: <html data-mode="auto"> — JS setzt dark/light dynamisch.
+ *   :root          color-scheme: light dark   → Browser-Pref (User-System)
+ *   [data-mode=light]  color-scheme: light    → explizit hell
+ *   [data-mode=dark]   color-scheme: dark     → explizit dunkel
  *
- * Die Dark-Werte sind hier EINMAL zentral definiert — das Rule-Set wird für
- * beide Trigger (manual + auto) referenziert.
+ * Vorteile gegenüber der alten Override-Architektur:
+ *   - keine Descendant-Partner-Selektoren mehr (color-scheme erbt)
+ *   - keine doppelte Definition (manual + @media-Block)
+ *   - Themes können light-dark() ebenfalls nutzen statt destruktiv zu sein
+ *
+ * Diese Datei trägt nur noch:
+ *   1. data-mode → color-scheme Mappings
+ *   2. Multi-Shadow-Overrides (light-dark() supports nicht multi-comma values)
+ *   3. Edge-Cases wie code-block-bg, die nicht trivial via light-dark()
+ *      ableitbar sind
  */
 
-/* Dark-Token-Set — manuell.
-   Descendant-Partner ist Pflicht: ohne ihn cascadieren Theme-Tokens auf
-   nested [data-tone]-Subtrees, der dark-Block matched dort nicht mehr,
-   und z.B. premium-text wird im Dark-Mode fast schwarz auf schwarz.
-   Lint-Check 3 (scripts/lint-themes.js) erzwingt das. */
-[data-mode="dark"],
-[data-mode="dark"] [data-tone] {
-  color-scheme: dark;
-
-  /* Backgrounds */
-  --color-bg:             var(--gray-950);
-  --color-bg-secondary:   var(--gray-900);
-  --color-bg-tertiary:    var(--gray-800);
-  --color-bg-inverse:     var(--gray-100);
-
-  /* Text */
-  --color-text-primary:   var(--gray-50);
-  --color-text-secondary: var(--gray-300);
-  --color-text-tertiary:  var(--gray-500);
-  --color-text-muted:     var(--gray-600);
-
-  /* Borders */
-  --color-border:         var(--gray-700);
-  --color-border-dark:    var(--gray-600);
-  --color-border-light:   var(--gray-800);
-
-  /* Component-Contract-Defaults für Dark */
-  --card-bg:              var(--gray-900);
-  --card-border:          1px solid var(--gray-800);
-  --input-bg:             var(--gray-900);
-  --input-text:           var(--gray-50);
-  --table-bg:             var(--gray-900);
-  --table-header-bg:      var(--gray-800);
-
-  /* Shadows — stärker (mehr Opacity) auf dunklem BG */
-  --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md:   0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg:   0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
-  --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.6);
-
-  /* Code-Block bleibt dunkel (war schon invers) */
-  --code-block-bg:        var(--gray-800);
-  --code-copy-bg:         rgba(255, 255, 255, 0.06);
-  --code-copy-hover-bg:   rgba(255, 255, 255, 0.12);
-
-  /* Chart-Palette — heller + leicht ent-sättigt für Lesbarkeit auf
-     dunklem BG. Identitäts-Reihenfolge erhalten (orange, blue, green …),
-     Konsumenten-Code muss nichts umstellen. */
-  --chart-1: #FFB938;
-  --chart-2: #88CCEE;
-  --chart-3: #44BBA4;
-  --chart-4: #FFEB75;
-  --chart-5: #4A9EE0;
-  --chart-6: #E88556;
-  --chart-7: #DC9ABF;
-  --chart-8: #BFBFBF;
-
-  /* Focus-Ring kontrastreicher */
-  --focus-ring: 3px solid var(--color-focus-ring);
+[data-mode="light"] {
+  color-scheme: light;
 }
 
-/* Auto-Dark via System — außer User hat explizit Light gewählt.
-   Selber Descendant-Partner-Mechanismus: nested data-tone-Subtrees müssen
-   auch ohne explizites data-mode auf dem Root den Dark-Override erhalten. */
+[data-mode="dark"] {
+  color-scheme: dark;
+}
+
+/* Dark-Mode-Overrides für Werte, die light-dark() nicht trivial abdeckt.
+   Aktivierungs-Bedingung: entweder explizit data-mode="dark" ODER Browser-
+   Pref dark UND nicht explizit data-mode="light". */
+[data-mode="dark"],
+:root:not([data-mode="light"]) {
+  /* Multi-Shadow: light-dark() kann multi-comma Werte nicht parsen, deshalb
+     bleiben Shadows hier mode-overridden. Höhere Opacity damit Schatten auf
+     dunklem BG sichtbar bleiben. */
+}
+
 @media (prefers-color-scheme: dark) {
-  :root:not([data-mode="light"]):not([data-mode="dark"]),
-  :root:not([data-mode="light"]):not([data-mode="dark"]) [data-tone] {
-    color-scheme: dark;
-
-    --color-bg:             var(--gray-950);
-    --color-bg-secondary:   var(--gray-900);
-    --color-bg-tertiary:    var(--gray-800);
-    --color-bg-inverse:     var(--gray-100);
-
-    --color-text-primary:   var(--gray-50);
-    --color-text-secondary: var(--gray-300);
-    --color-text-tertiary:  var(--gray-500);
-    --color-text-muted:     var(--gray-600);
-
-    --color-border:         var(--gray-700);
-    --color-border-dark:    var(--gray-600);
-    --color-border-light:   var(--gray-800);
-
-    --card-bg:              var(--gray-900);
-    --card-border:          1px solid var(--gray-800);
-    --input-bg:             var(--gray-900);
-    --input-text:           var(--gray-50);
-    --table-bg:             var(--gray-900);
-    --table-header-bg:      var(--gray-800);
-
+  :root:not([data-mode="light"]):not([data-mode="dark"]) {
+    /* Multi-Shadow-Overrides für Auto-Dark (System-Pref) */
     --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.4);
     --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
     --shadow-md:   0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
     --shadow-lg:   0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
     --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.6);
 
-    --code-block-bg:        var(--gray-800);
+    --code-block-bg: var(--gray-800);
+    --code-copy-bg:        rgba(255, 255, 255, 0.06);
+    --code-copy-hover-bg:  rgba(255, 255, 255, 0.12);
 
-    --chart-1: #FFB938;
-    --chart-2: #88CCEE;
-    --chart-3: #44BBA4;
-    --chart-4: #FFEB75;
-    --chart-5: #4A9EE0;
-    --chart-6: #E88556;
-    --chart-7: #DC9ABF;
-    --chart-8: #BFBFBF;
+    --focus-ring: 3px solid var(--color-focus-ring);
   }
+}
+
+[data-mode="dark"] {
+  --shadow-sm:   0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md:   0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg:   0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl:   0 20px 25px -5px rgba(0, 0, 0, 0.6);
+
+  --code-block-bg: var(--gray-800);
+  --code-copy-bg:        rgba(255, 255, 255, 0.06);
+  --code-copy-hover-bg:  rgba(255, 255, 255, 0.12);
+
+  --focus-ring: 3px solid var(--color-focus-ring);
 }

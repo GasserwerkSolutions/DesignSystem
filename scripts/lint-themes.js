@@ -74,11 +74,28 @@ function walkAllRules(root, cb) {
 /** Liest mode-sensitive Tokens aus dark.css — alle Custom-Properties,
  *  die in irgendeiner Rule deklariert werden. */
 function readModeSensitiveTokens() {
-  const root = parseFile(DARK_CSS);
+  /* Quelle 1: tokens, die dark.css explizit überschreibt (Multi-Shadow etc.) */
   const tokens = new Set();
-  walkAllRules(root, (rule) => {
+  const dark = parseFile(DARK_CSS);
+  walkAllRules(dark, (rule) => {
     rule.walkDecls(/^--/, (decl) => tokens.add(decl.prop));
   });
+
+  /* Quelle 2: tokens, die in semantic.css mit light-dark() definiert sind.
+     Diese sind mode-sensitiv per Definition — themes müssen light-dark() nutzen
+     wenn sie sie überschreiben, sonst kollabieren beide Modes auf einen Wert. */
+  const semanticFile = path.join(SEMANTIC_DIR, "semantic.css");
+  if (fs.existsSync(semanticFile)) {
+    const semantic = parseFile(semanticFile);
+    walkAllRules(semantic, (rule) => {
+      rule.walkDecls(/^--/, (decl) => {
+        if (/\blight-dark\(/.test(decl.value)) tokens.add(decl.prop);
+      });
+    });
+  }
+
+  /* Quelle 3: tokens.css — Shadow-Tokens sind mode-sensitiv via dark.css-
+     Override. Bereits in Quelle 1 erfasst, deshalb hier kein zusätzlicher Pass. */
   return tokens;
 }
 
@@ -159,7 +176,14 @@ function lintTheme(file, modeSensitive, axisSensitive) {
     // Check 2 + 4 + 5: Token-Setzungen prüfen.
     rule.walkDecls(/^--/, (decl) => {
       const line = decl.source?.start?.line ?? 0;
-      if (modeSensitive.has(decl.prop) && !destructiveTokens.has(decl.prop)) {
+      /* Mode-sensitive Token gilt als destruktiv NUR wenn der Value NICHT
+         light-dark() nutzt. Mit light-dark(L, D) ist der Override explizit
+         und sicher — color-scheme treibt die Auflösung. */
+      if (
+        modeSensitive.has(decl.prop) &&
+        !destructiveTokens.has(decl.prop) &&
+        !/\blight-dark\(/.test(decl.value)
+      ) {
         destructiveTokens.set(decl.prop, line);
       }
       if (FORBIDDEN_LAYOUT_TOKENS.has(decl.prop) && !layoutViolations.has(decl.prop)) {
@@ -180,50 +204,45 @@ function lintTheme(file, modeSensitive, axisSensitive) {
 }
 
 /**
- * Check 3: Für jeden Selector in dark.css mit [data-mode="X"] muss
- * ein Descendant-Partner [data-mode="X"] [data-tone] in derselben
- * Komma-Liste existieren. Sonst verlieren nested Tone-Scopes Dark-Mode.
+ * Check 3 (v0.12.0+): Mode-sensitive Tokens in dark.css müssen entweder
+ *   (a) via light-dark() in semantic.css definiert sein (Resolution
+ *       erfolgt automatisch via color-scheme-Inheritance), oder
+ *   (b) Multi-Comma-Werte sein, die light-dark() syntaktisch nicht
+ *       parsen kann (Shadows). Diese dürfen in dark.css als explizite
+ *       Mode-Overrides leben.
  *
- * Robuste Selector-Analyse: PostCSS gibt uns rule.selectors als
- * Komma-getrennte Liste. Wir entfernen :not(...) per Regex (PostCSS
- * splittet die nicht intern auf, aber für unsere Erkennung reicht das),
- * dann checken wir auf positive [data-mode="X"]-Vorkommen.
+ * Der frühere Descendant-Partner-Check ist obsolet: color-scheme erbt
+ * automatisch und alle light-dark()-Resolution folgt der Inheritance.
+ *
+ * Stattdessen prüfen wir: jedes Token, das dark.css setzt, MUSS entweder
+ * ein erlaubtes Multi-Shadow-Pattern sein, oder ein dokumentierter
+ * Edge-Case (chart-Palette etc.). Sonst sollte es in semantic.css mit
+ * light-dark() leben, nicht hier.
  */
+const ALLOWED_DARK_OVERRIDES = new Set([
+  "--shadow-sm", "--shadow-base", "--shadow-md", "--shadow-lg", "--shadow-xl",
+  "--code-block-bg", "--code-copy-bg", "--code-copy-hover-bg",
+  "--focus-ring",
+]);
+
 function lintDarkCss() {
   const root = parseFile(DARK_CSS);
   const issues = [];
 
   walkAllRules(root, (rule) => {
-    const modeOnly = [];
-    const descendants = new Set();
-
-    for (const part of rule.selectors) {
-      // Entferne :not(...) damit nur POSITIVE [data-mode]-Vorkommen zählen.
-      const positiveOnly = part.replace(/:not\([^)]+\)/g, "");
-      const modeMatch = /\[data-mode="([^"]+)"\]/.exec(positiveOnly);
-      if (!modeMatch) continue;
-      const mode = modeMatch[1];
-
-      if (/\[data-mode="[^"]+"\]\s+\[data-tone/.test(positiveOnly)) {
-        descendants.add(mode);
-      } else {
-        modeOnly.push({ mode, raw: part, line: rule.source?.start?.line ?? 0 });
-      }
-    }
-
-    for (const { mode, raw, line } of modeOnly) {
-      if (!descendants.has(mode)) {
+    rule.walkDecls(/^--/, (decl) => {
+      if (!ALLOWED_DARK_OVERRIDES.has(decl.prop)) {
         issues.push({
-          selector: raw,
-          mode,
-          line,
+          selector: rule.selector,
+          mode: "dark",
+          line: decl.source?.start?.line ?? 0,
           message:
-            `[data-mode="${mode}"]-selector hat keinen Descendant-Partner ` +
-            `(z.B. ', [data-mode="${mode}"] [data-tone]'). ` +
-            `Nested Tone-Scopes verlieren ihren Dark-Mode.`,
+            `Token ${decl.prop} sollte in semantic.css via light-dark() ` +
+            `definiert sein statt in dark.css überschrieben. dark.css ist ` +
+            `nur für Multi-Comma-Werte (Shadows) und dokumentierte Edge-Cases.`,
         });
       }
-    }
+    });
   });
 
   return issues;
