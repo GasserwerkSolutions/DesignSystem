@@ -128,7 +128,61 @@
   .site-example { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-24); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
   .site-example__caption { margin: 0; font-size: var(--font-sm); color: var(--color-text-secondary); font-weight: var(--fw-600); }
   .site-example__preview { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-16); background: var(--color-background); border-radius: var(--radius-md); border: 1px dashed var(--color-border); }
-  .site-example__source pre { margin: 0; max-height: 320px; overflow: auto; }
+  .site-example__toolbar { display: flex; gap: var(--space-8); align-items: center; }
+  /* hidden-attribute wird sonst von .btn display:inline-flex überstimmt */
+  .site-example__toolbar [hidden] { display: none; }
+  .site-example__source { display: block; }
+  .site-example__source[hidden] { display: none; }
+  .site-example__editor {
+    width: 100%;
+    min-height: 8rem;
+    padding: var(--space-12);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: var(--font-sm);
+    line-height: var(--lh-normal);
+    resize: vertical;
+    tab-size: 2;
+  }
+  .site-example.is-editing { outline: 2px solid var(--color-interactive); outline-offset: -2px; }
+
+  .site-tone-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--space-12);
+  }
+  .site-tone-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-12);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--easing-fast), box-shadow var(--duration-fast) var(--easing-fast);
+  }
+  .site-tone-tile:hover { transform: translateY(-2px); box-shadow: var(--elevation-3); }
+  .site-tone-tile__label {
+    font-size: var(--font-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: var(--fw-700);
+    color: var(--color-text-tertiary, var(--color-text-secondary));
+  }
+  .site-tone-tile__preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    align-items: stretch;
+    pointer-events: none;
+    transform: scale(0.85);
+    transform-origin: top left;
+    width: calc(100% / 0.85);
+  }
 
   .site-token-table code { font-size: var(--font-sm); }
 

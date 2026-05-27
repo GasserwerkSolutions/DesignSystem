@@ -233,6 +233,76 @@ async function runInteractions(browser) {
   return errors;
 }
 
+async function runExampleEditor(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+  /* Alert hat ein einfaches Beispiel — guter Kandidat zum Editieren. */
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "components/alert.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+
+  /* Edit-Toggle aufklappen */
+  await page.evaluate(() => {
+    document.querySelector("[data-edit-toggle]").click();
+  });
+  await new Promise((r) => setTimeout(r, 50));
+  const sourceVisible = await page.evaluate(() => {
+    const src = document.querySelector("[data-source]").parentElement;
+    return !src.hasAttribute("hidden");
+  });
+
+  /* Edit den Markup: ändere den Alert-Titel */
+  await page.evaluate(() => {
+    const ta = document.querySelector("[data-source]");
+    ta.value = ta.value.replace("Buchung gespeichert", "Geändert via Editor");
+    ta.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+  await new Promise((r) => setTimeout(r, 100));
+  const previewChanged = await page.evaluate(() => {
+    return document.querySelector("[data-preview]").textContent.includes("Geändert via Editor");
+  });
+  const resetVisible = await page.evaluate(() => {
+    return !document.querySelector("[data-reset]").hidden;
+  });
+
+  /* Reset zurück */
+  await page.evaluate(() => {
+    document.querySelector("[data-reset]").click();
+  });
+  await new Promise((r) => setTimeout(r, 50));
+  const previewReverted = await page.evaluate(() => {
+    return document.querySelector("[data-preview]").textContent.includes("Buchung gespeichert");
+  });
+
+  /* Tone-Jump aus dem Strip */
+  await page.evaluate(() => {
+    const tile = document.querySelector('[data-tone-jump="premium"]');
+    tile.click();
+  });
+  await new Promise((r) => setTimeout(r, 50));
+  const toneAfterJump = await page.evaluate(() =>
+    document.documentElement.getAttribute("data-tone")
+  );
+
+  await page.close();
+
+  const checks = [
+    ["editor: edit-toggle reveals source-textarea", sourceVisible === true],
+    ["editor: textarea input re-renders preview", previewChanged === true],
+    ["editor: reset button visible after edit", resetVisible === true],
+    ["editor: reset restores original markup", previewReverted === true],
+    ["tone-strip: click tile switches root data-tone", toneAfterJump === "premium"],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
 async function runContainerQueries(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
@@ -513,12 +583,14 @@ async function runFoundationsEdit(browser) {
   const foundationErrs = await runFoundationsEdit(browser);
   console.log("[check-site] Theme-Generator:");
   const themeGenErrs = await runThemeGenerator(browser);
+  console.log("[check-site] Example-Editor + Tone-Strip:");
+  const editorErrs = await runExampleEditor(browser);
   console.log("[check-site] Container-Queries:");
   const cqErrs = await runContainerQueries(browser);
   console.log("[check-site] URL-State:");
   const urlStateErrs = await runUrlState(browser);
   await browser.close();
-  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + cqErrs + urlStateErrs;
+  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs;
   console.log(
     total === 0
       ? "[check-site] passed."

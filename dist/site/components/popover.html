@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -150,9 +150,9 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><button class="btn" popovertarget="menu-1">Optionen</button>
+      <div class="site-example__preview" data-preview><button class="btn" popovertarget="menu-1">Optionen</button>
 <div class="popover" id="menu-1" popover>
   <ul class="popover__menu" role="menu">
     <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
@@ -160,33 +160,126 @@
     <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Löschen</button></li>
   </ul>
 </div></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;button class=&quot;btn&quot; popovertarget=&quot;menu-1&quot;&gt;Optionen&lt;/button&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;button class=&quot;btn&quot; popovertarget=&quot;menu-1&quot;&gt;Optionen&lt;/button&gt;
 &lt;div class=&quot;popover&quot; id=&quot;menu-1&quot; popover&gt;
   &lt;ul class=&quot;popover__menu&quot; role=&quot;menu&quot;&gt;
     &lt;li&gt;&lt;button class=&quot;popover__item&quot; role=&quot;menuitem&quot; type=&quot;button&quot;&gt;Bearbeiten&lt;/button&gt;&lt;/li&gt;
     &lt;li&gt;&lt;button class=&quot;popover__item&quot; role=&quot;menuitem&quot; type=&quot;button&quot;&gt;Duplizieren&lt;/button&gt;&lt;/li&gt;
     &lt;li&gt;&lt;button class=&quot;popover__item popover__item--danger&quot; role=&quot;menuitem&quot; type=&quot;button&quot;&gt;Löschen&lt;/button&gt;&lt;/li&gt;
   &lt;/ul&gt;
-&lt;/div&gt;</code></pre>
-      </details>
+&lt;/div&gt;">&lt;button class=&quot;btn&quot; popovertarget=&quot;menu-1&quot;&gt;Optionen&lt;/button&gt;
+&lt;div class=&quot;popover&quot; id=&quot;menu-1&quot; popover&gt;
+  &lt;ul class=&quot;popover__menu&quot; role=&quot;menu&quot;&gt;
+    &lt;li&gt;&lt;button class=&quot;popover__item&quot; role=&quot;menuitem&quot; type=&quot;button&quot;&gt;Bearbeiten&lt;/button&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;button class=&quot;popover__item&quot; role=&quot;menuitem&quot; type=&quot;button&quot;&gt;Duplizieren&lt;/button&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;button class=&quot;popover__item popover__item--danger&quot; role=&quot;menuitem&quot; type=&quot;button&quot;&gt;Löschen&lt;/button&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</textarea>
+      </div>
     </section>
 
-    <section class="site-example">
+    <section class="site-example" data-example>
       <h3 class="site-example__caption">Generic Info-Popover</h3>
-      <div class="site-example__preview"><button class="btn btn--ghost" popovertarget="info-1">?</button>
+      <div class="site-example__preview" data-preview><button class="btn btn--ghost" popovertarget="info-1">?</button>
 <div class="popover" id="info-1" popover>
   <p>Erklärungstext mit <a href="#">Link</a>.</p>
 </div></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;button class=&quot;btn btn--ghost&quot; popovertarget=&quot;info-1&quot;&gt;?&lt;/button&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;button class=&quot;btn btn--ghost&quot; popovertarget=&quot;info-1&quot;&gt;?&lt;/button&gt;
 &lt;div class=&quot;popover&quot; id=&quot;info-1&quot; popover&gt;
   &lt;p&gt;Erklärungstext mit &lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;.&lt;/p&gt;
-&lt;/div&gt;</code></pre>
-      </details>
+&lt;/div&gt;">&lt;button class=&quot;btn btn--ghost&quot; popovertarget=&quot;info-1&quot;&gt;?&lt;/button&gt;
+&lt;div class=&quot;popover&quot; id=&quot;info-1&quot; popover&gt;
+  &lt;p&gt;Erklärungstext mit &lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><button class="btn" popovertarget="menu-1">Optionen</button>
+<div class="popover" id="menu-1" popover>
+  <ul class="popover__menu" role="menu">
+    <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+    <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+    <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Löschen</button></li>
+  </ul>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><button class="btn" popovertarget="menu-1">Optionen</button>
+<div class="popover" id="menu-1" popover>
+  <ul class="popover__menu" role="menu">
+    <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+    <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+    <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Löschen</button></li>
+  </ul>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><button class="btn" popovertarget="menu-1">Optionen</button>
+<div class="popover" id="menu-1" popover>
+  <ul class="popover__menu" role="menu">
+    <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+    <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+    <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Löschen</button></li>
+  </ul>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><button class="btn" popovertarget="menu-1">Optionen</button>
+<div class="popover" id="menu-1" popover>
+  <ul class="popover__menu" role="menu">
+    <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+    <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+    <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Löschen</button></li>
+  </ul>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><button class="btn" popovertarget="menu-1">Optionen</button>
+<div class="popover" id="menu-1" popover>
+  <ul class="popover__menu" role="menu">
+    <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+    <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+    <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Löschen</button></li>
+  </ul>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><button class="btn" popovertarget="menu-1">Optionen</button>
+<div class="popover" id="menu-1" popover>
+  <ul class="popover__menu" role="menu">
+    <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+    <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+    <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Löschen</button></li>
+  </ul>
+</div></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

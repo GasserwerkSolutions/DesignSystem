@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -147,41 +147,121 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><label class="file-upload">
+      <div class="site-example__preview" data-preview><label class="file-upload">
   <input type="file" class="file-upload__input" accept="image/*">
   <span class="file-upload__icon" aria-hidden="true">📁</span>
   <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
   <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
 </label></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;label class=&quot;file-upload&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;label class=&quot;file-upload&quot;&gt;
   &lt;input type=&quot;file&quot; class=&quot;file-upload__input&quot; accept=&quot;image/*&quot;&gt;
   &lt;span class=&quot;file-upload__icon&quot; aria-hidden=&quot;true&quot;&gt;📁&lt;/span&gt;
   &lt;span class=&quot;file-upload__text&quot;&gt;Datei wählen oder hierher ziehen&lt;/span&gt;
   &lt;span class=&quot;file-upload__hint&quot;&gt;PNG, JPG · max 10 MB&lt;/span&gt;
-&lt;/label&gt;</code></pre>
-      </details>
+&lt;/label&gt;">&lt;label class=&quot;file-upload&quot;&gt;
+  &lt;input type=&quot;file&quot; class=&quot;file-upload__input&quot; accept=&quot;image/*&quot;&gt;
+  &lt;span class=&quot;file-upload__icon&quot; aria-hidden=&quot;true&quot;&gt;📁&lt;/span&gt;
+  &lt;span class=&quot;file-upload__text&quot;&gt;Datei wählen oder hierher ziehen&lt;/span&gt;
+  &lt;span class=&quot;file-upload__hint&quot;&gt;PNG, JPG · max 10 MB&lt;/span&gt;
+&lt;/label&gt;</textarea>
+      </div>
     </section>
 
-    <section class="site-example">
+    <section class="site-example" data-example>
       <h3 class="site-example__caption">Compact-Variante (inline in Form)</h3>
-      <div class="site-example__preview"><label class="file-upload file-upload--compact">
+      <div class="site-example__preview" data-preview><label class="file-upload file-upload--compact">
   <input type="file" class="file-upload__input">
   <span class="file-upload__icon" aria-hidden="true">📎</span>
   <span class="file-upload__text">Anhang …</span>
 </label></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;label class=&quot;file-upload file-upload--compact&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;label class=&quot;file-upload file-upload--compact&quot;&gt;
   &lt;input type=&quot;file&quot; class=&quot;file-upload__input&quot;&gt;
   &lt;span class=&quot;file-upload__icon&quot; aria-hidden=&quot;true&quot;&gt;📎&lt;/span&gt;
   &lt;span class=&quot;file-upload__text&quot;&gt;Anhang …&lt;/span&gt;
-&lt;/label&gt;</code></pre>
-      </details>
+&lt;/label&gt;">&lt;label class=&quot;file-upload file-upload--compact&quot;&gt;
+  &lt;input type=&quot;file&quot; class=&quot;file-upload__input&quot;&gt;
+  &lt;span class=&quot;file-upload__icon&quot; aria-hidden=&quot;true&quot;&gt;📎&lt;/span&gt;
+  &lt;span class=&quot;file-upload__text&quot;&gt;Anhang …&lt;/span&gt;
+&lt;/label&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><label class="file-upload">
+  <input type="file" class="file-upload__input" accept="image/*">
+  <span class="file-upload__icon" aria-hidden="true">📁</span>
+  <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+  <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><label class="file-upload">
+  <input type="file" class="file-upload__input" accept="image/*">
+  <span class="file-upload__icon" aria-hidden="true">📁</span>
+  <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+  <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><label class="file-upload">
+  <input type="file" class="file-upload__input" accept="image/*">
+  <span class="file-upload__icon" aria-hidden="true">📁</span>
+  <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+  <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><label class="file-upload">
+  <input type="file" class="file-upload__input" accept="image/*">
+  <span class="file-upload__icon" aria-hidden="true">📁</span>
+  <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+  <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><label class="file-upload">
+  <input type="file" class="file-upload__input" accept="image/*">
+  <span class="file-upload__icon" aria-hidden="true">📁</span>
+  <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+  <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><label class="file-upload">
+  <input type="file" class="file-upload__input" accept="image/*">
+  <span class="file-upload__icon" aria-hidden="true">📁</span>
+  <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+  <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+</label></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

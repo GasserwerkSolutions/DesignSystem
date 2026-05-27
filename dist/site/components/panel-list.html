@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -147,43 +147,124 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><ul class="panel-list">
+      <div class="site-example__preview" data-preview><ul class="panel-list">
   <li class="panel-list__row">
     <span class="panel-list__key">/homepage</span>
     <span class="panel-list__value">1'234</span>
   </li>
 </ul></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;ul class=&quot;panel-list&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;ul class=&quot;panel-list&quot;&gt;
   &lt;li class=&quot;panel-list__row&quot;&gt;
     &lt;span class=&quot;panel-list__key&quot;&gt;/homepage&lt;/span&gt;
     &lt;span class=&quot;panel-list__value&quot;&gt;1'234&lt;/span&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</code></pre>
-      </details>
+&lt;/ul&gt;">&lt;ul class=&quot;panel-list&quot;&gt;
+  &lt;li class=&quot;panel-list__row&quot;&gt;
+    &lt;span class=&quot;panel-list__key&quot;&gt;/homepage&lt;/span&gt;
+    &lt;span class=&quot;panel-list__value&quot;&gt;1'234&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</textarea>
+      </div>
     </section>
 
-    <section class="site-example">
+    <section class="site-example" data-example>
       <h3 class="site-example__caption">Semantisch korrekt als &lt;dl&gt;</h3>
-      <div class="site-example__preview"><dl class="panel-list panel-list--dl">
+      <div class="site-example__preview" data-preview><dl class="panel-list panel-list--dl">
   <div class="panel-list__row">
     <dt class="panel-list__key">/homepage</dt>
     <dd class="panel-list__value">1'234</dd>
   </div>
 </dl></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;dl class=&quot;panel-list panel-list--dl&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;dl class=&quot;panel-list panel-list--dl&quot;&gt;
   &lt;div class=&quot;panel-list__row&quot;&gt;
     &lt;dt class=&quot;panel-list__key&quot;&gt;/homepage&lt;/dt&gt;
     &lt;dd class=&quot;panel-list__value&quot;&gt;1'234&lt;/dd&gt;
   &lt;/div&gt;
-&lt;/dl&gt;</code></pre>
-      </details>
+&lt;/dl&gt;">&lt;dl class=&quot;panel-list panel-list--dl&quot;&gt;
+  &lt;div class=&quot;panel-list__row&quot;&gt;
+    &lt;dt class=&quot;panel-list__key&quot;&gt;/homepage&lt;/dt&gt;
+    &lt;dd class=&quot;panel-list__value&quot;&gt;1'234&lt;/dd&gt;
+  &lt;/div&gt;
+&lt;/dl&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><ul class="panel-list">
+  <li class="panel-list__row">
+    <span class="panel-list__key">/homepage</span>
+    <span class="panel-list__value">1'234</span>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><ul class="panel-list">
+  <li class="panel-list__row">
+    <span class="panel-list__key">/homepage</span>
+    <span class="panel-list__value">1'234</span>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><ul class="panel-list">
+  <li class="panel-list__row">
+    <span class="panel-list__key">/homepage</span>
+    <span class="panel-list__value">1'234</span>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><ul class="panel-list">
+  <li class="panel-list__row">
+    <span class="panel-list__key">/homepage</span>
+    <span class="panel-list__value">1'234</span>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><ul class="panel-list">
+  <li class="panel-list__row">
+    <span class="panel-list__key">/homepage</span>
+    <span class="panel-list__value">1'234</span>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><ul class="panel-list">
+  <li class="panel-list__row">
+    <span class="panel-list__key">/homepage</span>
+    <span class="panel-list__value">1'234</span>
+  </li>
+</ul></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

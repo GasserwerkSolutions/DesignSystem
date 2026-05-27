@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -147,24 +147,96 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><div class="tabs" role="tablist">
+      <div class="site-example__preview" data-preview><div class="tabs" role="tablist">
   <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
   <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
 </div>
 <div id="p1" role="tabpanel" class="tab-panel">…</div>
 <div id="p2" role="tabpanel" class="tab-panel" hidden>…</div></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;div class=&quot;tabs&quot; role=&quot;tablist&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;div class=&quot;tabs&quot; role=&quot;tablist&quot;&gt;
   &lt;button class=&quot;tab&quot; role=&quot;tab&quot; aria-selected=&quot;true&quot;  aria-controls=&quot;p1&quot;&gt;Übersicht&lt;/button&gt;
   &lt;button class=&quot;tab&quot; role=&quot;tab&quot; aria-selected=&quot;false&quot; aria-controls=&quot;p2&quot;&gt;Kunden&lt;/button&gt;
 &lt;/div&gt;
 &lt;div id=&quot;p1&quot; role=&quot;tabpanel&quot; class=&quot;tab-panel&quot;&gt;…&lt;/div&gt;
-&lt;div id=&quot;p2&quot; role=&quot;tabpanel&quot; class=&quot;tab-panel&quot; hidden&gt;…&lt;/div&gt;</code></pre>
-      </details>
+&lt;div id=&quot;p2&quot; role=&quot;tabpanel&quot; class=&quot;tab-panel&quot; hidden&gt;…&lt;/div&gt;">&lt;div class=&quot;tabs&quot; role=&quot;tablist&quot;&gt;
+  &lt;button class=&quot;tab&quot; role=&quot;tab&quot; aria-selected=&quot;true&quot;  aria-controls=&quot;p1&quot;&gt;Übersicht&lt;/button&gt;
+  &lt;button class=&quot;tab&quot; role=&quot;tab&quot; aria-selected=&quot;false&quot; aria-controls=&quot;p2&quot;&gt;Kunden&lt;/button&gt;
+&lt;/div&gt;
+&lt;div id=&quot;p1&quot; role=&quot;tabpanel&quot; class=&quot;tab-panel&quot;&gt;…&lt;/div&gt;
+&lt;div id=&quot;p2&quot; role=&quot;tabpanel&quot; class=&quot;tab-panel&quot; hidden&gt;…&lt;/div&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
+</div>
+<div id="p1" role="tabpanel" class="tab-panel">…</div>
+<div id="p2" role="tabpanel" class="tab-panel" hidden>…</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
+</div>
+<div id="p1" role="tabpanel" class="tab-panel">…</div>
+<div id="p2" role="tabpanel" class="tab-panel" hidden>…</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
+</div>
+<div id="p1" role="tabpanel" class="tab-panel">…</div>
+<div id="p2" role="tabpanel" class="tab-panel" hidden>…</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
+</div>
+<div id="p1" role="tabpanel" class="tab-panel">…</div>
+<div id="p2" role="tabpanel" class="tab-panel" hidden>…</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
+</div>
+<div id="p1" role="tabpanel" class="tab-panel">…</div>
+<div id="p2" role="tabpanel" class="tab-panel" hidden>…</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="true"  aria-controls="p1">Übersicht</button>
+  <button class="tab" role="tab" aria-selected="false" aria-controls="p2">Kunden</button>
+</div>
+<div id="p1" role="tabpanel" class="tab-panel">…</div>
+<div id="p2" role="tabpanel" class="tab-panel" hidden>…</div></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

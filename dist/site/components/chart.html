@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -149,9 +149,9 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><figure class="chart">
+      <div class="site-example__preview" data-preview><figure class="chart">
   <figcaption class="chart__header">
     <div>
       <h3 class="chart__title">Umsatz Q1</h3>
@@ -168,9 +168,13 @@
   </ul>
   <p class="chart__source">Stand: 14:32 · Buchungssystem</p>
 </figure></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;figure class=&quot;chart&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;figure class=&quot;chart&quot;&gt;
   &lt;figcaption class=&quot;chart__header&quot;&gt;
     &lt;div&gt;
       &lt;h3 class=&quot;chart__title&quot;&gt;Umsatz Q1&lt;/h3&gt;
@@ -186,9 +190,154 @@
     &lt;li&gt;&lt;span class=&quot;chart__swatch&quot; style=&quot;--swatch: var(--chart-3)&quot;&gt;&lt;/span&gt; Buchungen&lt;/li&gt;
   &lt;/ul&gt;
   &lt;p class=&quot;chart__source&quot;&gt;Stand: 14:32 · Buchungssystem&lt;/p&gt;
-&lt;/figure&gt;</code></pre>
-      </details>
+&lt;/figure&gt;">&lt;figure class=&quot;chart&quot;&gt;
+  &lt;figcaption class=&quot;chart__header&quot;&gt;
+    &lt;div&gt;
+      &lt;h3 class=&quot;chart__title&quot;&gt;Umsatz Q1&lt;/h3&gt;
+      &lt;p class=&quot;chart__subtitle&quot;&gt;CHF, monatlich&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;span class=&quot;chart__trend chart__trend--positive&quot;&gt;+12.4%&lt;/span&gt;
+  &lt;/figcaption&gt;
+  &lt;div class=&quot;chart__body&quot;&gt;
+    &lt;!-- Konsument-SVG, Canvas, Library-Output --&gt;
+  &lt;/div&gt;
+  &lt;ul class=&quot;chart__legend&quot;&gt;
+    &lt;li&gt;&lt;span class=&quot;chart__swatch&quot; style=&quot;--swatch: var(--chart-1)&quot;&gt;&lt;/span&gt; Umsatz&lt;/li&gt;
+    &lt;li&gt;&lt;span class=&quot;chart__swatch&quot; style=&quot;--swatch: var(--chart-3)&quot;&gt;&lt;/span&gt; Buchungen&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p class=&quot;chart__source&quot;&gt;Stand: 14:32 · Buchungssystem&lt;/p&gt;
+&lt;/figure&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><figure class="chart">
+  <figcaption class="chart__header">
+    <div>
+      <h3 class="chart__title">Umsatz Q1</h3>
+      <p class="chart__subtitle">CHF, monatlich</p>
+    </div>
+    <span class="chart__trend chart__trend--positive">+12.4%</span>
+  </figcaption>
+  <div class="chart__body">
+    <!-- Konsument-SVG, Canvas, Library-Output -->
+  </div>
+  <ul class="chart__legend">
+    <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> Umsatz</li>
+    <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+  </ul>
+  <p class="chart__source">Stand: 14:32 · Buchungssystem</p>
+</figure></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><figure class="chart">
+  <figcaption class="chart__header">
+    <div>
+      <h3 class="chart__title">Umsatz Q1</h3>
+      <p class="chart__subtitle">CHF, monatlich</p>
+    </div>
+    <span class="chart__trend chart__trend--positive">+12.4%</span>
+  </figcaption>
+  <div class="chart__body">
+    <!-- Konsument-SVG, Canvas, Library-Output -->
+  </div>
+  <ul class="chart__legend">
+    <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> Umsatz</li>
+    <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+  </ul>
+  <p class="chart__source">Stand: 14:32 · Buchungssystem</p>
+</figure></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><figure class="chart">
+  <figcaption class="chart__header">
+    <div>
+      <h3 class="chart__title">Umsatz Q1</h3>
+      <p class="chart__subtitle">CHF, monatlich</p>
+    </div>
+    <span class="chart__trend chart__trend--positive">+12.4%</span>
+  </figcaption>
+  <div class="chart__body">
+    <!-- Konsument-SVG, Canvas, Library-Output -->
+  </div>
+  <ul class="chart__legend">
+    <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> Umsatz</li>
+    <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+  </ul>
+  <p class="chart__source">Stand: 14:32 · Buchungssystem</p>
+</figure></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><figure class="chart">
+  <figcaption class="chart__header">
+    <div>
+      <h3 class="chart__title">Umsatz Q1</h3>
+      <p class="chart__subtitle">CHF, monatlich</p>
+    </div>
+    <span class="chart__trend chart__trend--positive">+12.4%</span>
+  </figcaption>
+  <div class="chart__body">
+    <!-- Konsument-SVG, Canvas, Library-Output -->
+  </div>
+  <ul class="chart__legend">
+    <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> Umsatz</li>
+    <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+  </ul>
+  <p class="chart__source">Stand: 14:32 · Buchungssystem</p>
+</figure></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><figure class="chart">
+  <figcaption class="chart__header">
+    <div>
+      <h3 class="chart__title">Umsatz Q1</h3>
+      <p class="chart__subtitle">CHF, monatlich</p>
+    </div>
+    <span class="chart__trend chart__trend--positive">+12.4%</span>
+  </figcaption>
+  <div class="chart__body">
+    <!-- Konsument-SVG, Canvas, Library-Output -->
+  </div>
+  <ul class="chart__legend">
+    <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> Umsatz</li>
+    <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+  </ul>
+  <p class="chart__source">Stand: 14:32 · Buchungssystem</p>
+</figure></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><figure class="chart">
+  <figcaption class="chart__header">
+    <div>
+      <h3 class="chart__title">Umsatz Q1</h3>
+      <p class="chart__subtitle">CHF, monatlich</p>
+    </div>
+    <span class="chart__trend chart__trend--positive">+12.4%</span>
+  </figcaption>
+  <div class="chart__body">
+    <!-- Konsument-SVG, Canvas, Library-Output -->
+  </div>
+  <ul class="chart__legend">
+    <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> Umsatz</li>
+    <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+  </ul>
+  <p class="chart__source">Stand: 14:32 · Buchungssystem</p>
+</figure></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

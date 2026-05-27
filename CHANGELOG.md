@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.11.0] — Interactive Component Pages
+
+Aus statischer Doc wird eine Spielwiese. Jedes Markup-Beispiel hat jetzt
+einen Live-Editor (HTML-Änderungen reaktivieren die Preview sofort), einen
+Copy-Button, einen Reset-Button. Plus: pro Component eine Tone-Übersicht
+mit allen 6 Tones nebeneinander — Klick auf eine Kachel schaltet die ganze
+Seite auf diesen Tone.
+
+### Hinzugefügt
+
+- **Live HTML-Editor pro Beispiel**: Klick auf "Edit" enthüllt ein
+  Textarea mit dem Markup. Tippen modifiziert die Preview live. `DS.setupAll()`
+  wird nach jedem Input neu aufgerufen, damit Popovers/Combobox-Trigger
+  weiter funktionieren wenn man den Markup editiert hat.
+- **Copy-Button**: kopiert das aktuelle (ggf. editierte) Markup in die
+  Zwischenablage. ✓-Confirm + Reset nach 1.2s.
+- **Reset-Button**: Restored das Original aus dem `data-original`-
+  Attribut. Sichtbar nur wenn Markup vom Original abweicht.
+- **Tone-Übersicht-Strip**: jede Component zeigt sich in 6 Tile-Previews
+  (trust / playful / premium / industrial / modern / minimal). Klick auf
+  eine Tile setzt `data-tone` global — komplette Seite wechselt den Tone.
+- **`check-site` +5 Asserts** für die neue Interaktion: edit-toggle
+  reveals source, textarea input re-renders preview, reset visibility,
+  reset restores, tone-strip tile click switches root.
+
+### Bugfix
+
+- **`hidden`-attribut versteckte die Reset-Buttons nicht**, weil
+  `.btn { display: inline-flex }` aus der components-Layer das UA-default
+  `[hidden] { display: none }` überstimmte. Specific CSS-Rule:
+  `.site-example__toolbar [hidden] { display: none }` fixt das.
+
+### Stats
+
+  Bundled:    114.7 KB raw · 17.5 KB gzip (unchanged)
+  Site-Asserts: 39 / 39 grün (war 34, +5 für Editor/Tone-Strip)
+  Pipeline:     6 / 6 grün
+
+---
+
 ## [0.10.0] — Bundle Discipline (Measurement + Budget + Minified Output)
 
 Was Konsumenten interessiert ist die ausgelieferte Größe. Bisher gemessen:

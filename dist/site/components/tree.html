@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -149,9 +149,9 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><ul class="tree">
+      <div class="site-example__preview" data-preview><ul class="tree">
   <li>
     <details class="tree__node" open>
       <summary class="tree__summary">
@@ -165,9 +165,13 @@
     </details>
   </li>
 </ul></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;ul class=&quot;tree&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;ul class=&quot;tree&quot;&gt;
   &lt;li&gt;
     &lt;details class=&quot;tree__node&quot; open&gt;
       &lt;summary class=&quot;tree__summary&quot;&gt;
@@ -180,9 +184,133 @@
       &lt;/ul&gt;
     &lt;/details&gt;
   &lt;/li&gt;
-&lt;/ul&gt;</code></pre>
-      </details>
+&lt;/ul&gt;">&lt;ul class=&quot;tree&quot;&gt;
+  &lt;li&gt;
+    &lt;details class=&quot;tree__node&quot; open&gt;
+      &lt;summary class=&quot;tree__summary&quot;&gt;
+        &lt;span class=&quot;chevron chevron--right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+        &lt;span class=&quot;tree__label&quot;&gt;📂 Dokumente&lt;/span&gt;
+        &lt;span class=&quot;badge badge--neutral&quot;&gt;12&lt;/span&gt;
+      &lt;/summary&gt;
+      &lt;ul class=&quot;tree__children&quot;&gt;
+        &lt;li&gt;&lt;a class=&quot;tree__leaf&quot; href=&quot;#&quot;&gt;📄 invoice.pdf&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/details&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><ul class="tree">
+  <li>
+    <details class="tree__node" open>
+      <summary class="tree__summary">
+        <span class="chevron chevron--right" aria-hidden="true"></span>
+        <span class="tree__label">📂 Dokumente</span>
+        <span class="badge badge--neutral">12</span>
+      </summary>
+      <ul class="tree__children">
+        <li><a class="tree__leaf" href="#">📄 invoice.pdf</a></li>
+      </ul>
+    </details>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><ul class="tree">
+  <li>
+    <details class="tree__node" open>
+      <summary class="tree__summary">
+        <span class="chevron chevron--right" aria-hidden="true"></span>
+        <span class="tree__label">📂 Dokumente</span>
+        <span class="badge badge--neutral">12</span>
+      </summary>
+      <ul class="tree__children">
+        <li><a class="tree__leaf" href="#">📄 invoice.pdf</a></li>
+      </ul>
+    </details>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><ul class="tree">
+  <li>
+    <details class="tree__node" open>
+      <summary class="tree__summary">
+        <span class="chevron chevron--right" aria-hidden="true"></span>
+        <span class="tree__label">📂 Dokumente</span>
+        <span class="badge badge--neutral">12</span>
+      </summary>
+      <ul class="tree__children">
+        <li><a class="tree__leaf" href="#">📄 invoice.pdf</a></li>
+      </ul>
+    </details>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><ul class="tree">
+  <li>
+    <details class="tree__node" open>
+      <summary class="tree__summary">
+        <span class="chevron chevron--right" aria-hidden="true"></span>
+        <span class="tree__label">📂 Dokumente</span>
+        <span class="badge badge--neutral">12</span>
+      </summary>
+      <ul class="tree__children">
+        <li><a class="tree__leaf" href="#">📄 invoice.pdf</a></li>
+      </ul>
+    </details>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><ul class="tree">
+  <li>
+    <details class="tree__node" open>
+      <summary class="tree__summary">
+        <span class="chevron chevron--right" aria-hidden="true"></span>
+        <span class="tree__label">📂 Dokumente</span>
+        <span class="badge badge--neutral">12</span>
+      </summary>
+      <ul class="tree__children">
+        <li><a class="tree__leaf" href="#">📄 invoice.pdf</a></li>
+      </ul>
+    </details>
+  </li>
+</ul></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><ul class="tree">
+  <li>
+    <details class="tree__node" open>
+      <summary class="tree__summary">
+        <span class="chevron chevron--right" aria-hidden="true"></span>
+        <span class="tree__label">📂 Dokumente</span>
+        <span class="badge badge--neutral">12</span>
+      </summary>
+      <ul class="tree__children">
+        <li><a class="tree__leaf" href="#">📄 invoice.pdf</a></li>
+      </ul>
+    </details>
+  </li>
+</ul></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

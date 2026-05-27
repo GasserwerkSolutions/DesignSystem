@@ -700,16 +700,42 @@ function renderMarkupExamples(markup) {
   return markup
     .map(
       (ex, i) => `
-    <section class="site-example">
+    <section class="site-example" data-example>
       ${ex.caption ? `<h3 class="site-example__caption">${escapeHtml(ex.caption)}</h3>` : ""}
-      <div class="site-example__preview">${ex.html}</div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>${escapeHtml(ex.html)}</code></pre>
-      </details>
+      <div class="site-example__preview" data-preview>${ex.html}</div>
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="${escapeHtml(ex.html)}">${escapeHtml(ex.html)}</textarea>
+      </div>
     </section>`
     )
     .join("\n");
+}
+
+function renderToneStrip(meta) {
+  if (!meta.markup.length) return "";
+  const tones = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
+  const sample = meta.markup[0].html;
+  return `
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            ${tones
+              .map(
+                (t) => `
+            <article class="site-tone-tile" data-tone="${t}" data-tone-jump="${t}">
+              <header class="site-tone-tile__label">${t}</header>
+              <div class="site-tone-tile__preview">${sample}</div>
+            </article>`
+              )
+              .join("")}
+          </div>
+        </section>`;
 }
 
 function renderIntro(intro) {
@@ -801,6 +827,8 @@ function renderComponentPage(meta, allComponents) {
           <h2>Beispiele</h2>
           ${renderMarkupExamples(meta.markup) || `<p class="site-muted">Kein Markup-Beispiel im Header — siehe Source.</p>`}
         </section>
+
+        ${renderToneStrip(meta)}
 
         <section class="site-doc__section">
           <h2>Token-Contract</h2>
@@ -1329,7 +1357,61 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
   .site-example { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-24); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
   .site-example__caption { margin: 0; font-size: var(--font-sm); color: var(--color-text-secondary); font-weight: var(--fw-600); }
   .site-example__preview { display: flex; flex-direction: column; gap: var(--space-12); padding: var(--space-16); background: var(--color-background); border-radius: var(--radius-md); border: 1px dashed var(--color-border); }
-  .site-example__source pre { margin: 0; max-height: 320px; overflow: auto; }
+  .site-example__toolbar { display: flex; gap: var(--space-8); align-items: center; }
+  /* hidden-attribute wird sonst von .btn display:inline-flex überstimmt */
+  .site-example__toolbar [hidden] { display: none; }
+  .site-example__source { display: block; }
+  .site-example__source[hidden] { display: none; }
+  .site-example__editor {
+    width: 100%;
+    min-height: 8rem;
+    padding: var(--space-12);
+    background: var(--color-bg);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: var(--font-sm);
+    line-height: var(--lh-normal);
+    resize: vertical;
+    tab-size: 2;
+  }
+  .site-example.is-editing { outline: 2px solid var(--color-interactive); outline-offset: -2px; }
+
+  .site-tone-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--space-12);
+  }
+  .site-tone-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-12);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--easing-fast), box-shadow var(--duration-fast) var(--easing-fast);
+  }
+  .site-tone-tile:hover { transform: translateY(-2px); box-shadow: var(--elevation-3); }
+  .site-tone-tile__label {
+    font-size: var(--font-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: var(--fw-700);
+    color: var(--color-text-tertiary, var(--color-text-secondary));
+  }
+  .site-tone-tile__preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    align-items: stretch;
+    pointer-events: none;
+    transform: scale(0.85);
+    transform-origin: top left;
+    width: calc(100% / 0.85);
+  }
 
   .site-token-table code { font-size: var(--font-sm); }
 
@@ -1661,6 +1743,70 @@ const SITE_JS = `/* Site-Runtime — axis-switchers, sidebar-search, URL-state, 
         shareBtn.textContent = "× Fehler";
       });
     }
+
+    /* Example-Editor: Edit / Copy / Reset / Tone-Jump */
+    const editToggle = e.target.closest("[data-edit-toggle]");
+    if (editToggle) {
+      const ex = editToggle.closest("[data-example]");
+      const source = ex.querySelector("[data-source]").parentElement;
+      const isHidden = source.hasAttribute("hidden");
+      if (isHidden) {
+        source.removeAttribute("hidden");
+        editToggle.setAttribute("aria-pressed", "true");
+        editToggle.textContent = "Hide source";
+        ex.classList.add("is-editing");
+      } else {
+        source.setAttribute("hidden", "");
+        editToggle.setAttribute("aria-pressed", "false");
+        editToggle.textContent = "Edit";
+        ex.classList.remove("is-editing");
+      }
+      return;
+    }
+
+    const copyBtn = e.target.closest("[data-copy]");
+    if (copyBtn) {
+      const ex = copyBtn.closest("[data-example]");
+      const ta = ex.querySelector("[data-source]");
+      navigator.clipboard.writeText(ta.value).then(() => {
+        const original = copyBtn.textContent;
+        copyBtn.textContent = "✓";
+        setTimeout(() => (copyBtn.textContent = original), 1200);
+      }).catch(() => (copyBtn.textContent = "×"));
+      return;
+    }
+
+    const exampleReset = e.target.closest("[data-reset]");
+    if (exampleReset) {
+      const ex = exampleReset.closest("[data-example]");
+      const ta = ex.querySelector("[data-source]");
+      const original = ta.getAttribute("data-original");
+      ta.value = original;
+      ex.querySelector("[data-preview]").innerHTML = original;
+      exampleReset.hidden = true;
+      return;
+    }
+
+    const toneJump = e.target.closest("[data-tone-jump]");
+    if (toneJump) {
+      const tone = toneJump.getAttribute("data-tone-jump");
+      root.setAttribute("data-tone", tone);
+      document.querySelectorAll('[data-axis="tone"]').forEach((el) => (el.value = tone));
+      persist();
+    }
+  });
+
+  /* Live-Editor: on input in source-textarea, re-render preview. */
+  document.addEventListener("input", (e) => {
+    const ta = e.target.closest("[data-source]");
+    if (!ta) return;
+    const ex = ta.closest("[data-example]");
+    const preview = ex.querySelector("[data-preview]");
+    preview.innerHTML = ta.value;
+    const original = ta.getAttribute("data-original");
+    const resetBtn = ex.querySelector("[data-reset]");
+    if (resetBtn) resetBtn.hidden = ta.value === original;
+    if (window.DS && typeof DS.setupAll === "function") DS.setupAll();
   });
 
   readState();

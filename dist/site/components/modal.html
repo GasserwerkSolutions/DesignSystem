@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -147,9 +147,9 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><dialog class="modal" id="m1">
+      <div class="site-example__preview" data-preview><dialog class="modal" id="m1">
   <header class="modal__header">
     <h3 class="modal__title">Buchung bestätigen</h3>
     <button class="modal__close" aria-label="Schließen">×</button>
@@ -162,9 +162,13 @@
 </dialog>
 
 JS: document.getElementById('m1').showModal();</div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;dialog class=&quot;modal&quot; id=&quot;m1&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;dialog class=&quot;modal&quot; id=&quot;m1&quot;&gt;
   &lt;header class=&quot;modal__header&quot;&gt;
     &lt;h3 class=&quot;modal__title&quot;&gt;Buchung bestätigen&lt;/h3&gt;
     &lt;button class=&quot;modal__close&quot; aria-label=&quot;Schließen&quot;&gt;×&lt;/button&gt;
@@ -176,9 +180,126 @@ JS: document.getElementById('m1').showModal();</div>
   &lt;/footer&gt;
 &lt;/dialog&gt;
 
-JS: document.getElementById('m1').showModal();</code></pre>
-      </details>
+JS: document.getElementById('m1').showModal();">&lt;dialog class=&quot;modal&quot; id=&quot;m1&quot;&gt;
+  &lt;header class=&quot;modal__header&quot;&gt;
+    &lt;h3 class=&quot;modal__title&quot;&gt;Buchung bestätigen&lt;/h3&gt;
+    &lt;button class=&quot;modal__close&quot; aria-label=&quot;Schließen&quot;&gt;×&lt;/button&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;modal__body&quot;&gt;…&lt;/div&gt;
+  &lt;footer class=&quot;modal__actions&quot;&gt;
+    &lt;button class=&quot;btn btn--secondary&quot;&gt;Abbrechen&lt;/button&gt;
+    &lt;button class=&quot;btn&quot;&gt;Bestätigen&lt;/button&gt;
+  &lt;/footer&gt;
+&lt;/dialog&gt;
+
+JS: document.getElementById('m1').showModal();</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><dialog class="modal" id="m1">
+  <header class="modal__header">
+    <h3 class="modal__title">Buchung bestätigen</h3>
+    <button class="modal__close" aria-label="Schließen">×</button>
+  </header>
+  <div class="modal__body">…</div>
+  <footer class="modal__actions">
+    <button class="btn btn--secondary">Abbrechen</button>
+    <button class="btn">Bestätigen</button>
+  </footer>
+</dialog>
+
+JS: document.getElementById('m1').showModal();</div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><dialog class="modal" id="m1">
+  <header class="modal__header">
+    <h3 class="modal__title">Buchung bestätigen</h3>
+    <button class="modal__close" aria-label="Schließen">×</button>
+  </header>
+  <div class="modal__body">…</div>
+  <footer class="modal__actions">
+    <button class="btn btn--secondary">Abbrechen</button>
+    <button class="btn">Bestätigen</button>
+  </footer>
+</dialog>
+
+JS: document.getElementById('m1').showModal();</div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><dialog class="modal" id="m1">
+  <header class="modal__header">
+    <h3 class="modal__title">Buchung bestätigen</h3>
+    <button class="modal__close" aria-label="Schließen">×</button>
+  </header>
+  <div class="modal__body">…</div>
+  <footer class="modal__actions">
+    <button class="btn btn--secondary">Abbrechen</button>
+    <button class="btn">Bestätigen</button>
+  </footer>
+</dialog>
+
+JS: document.getElementById('m1').showModal();</div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><dialog class="modal" id="m1">
+  <header class="modal__header">
+    <h3 class="modal__title">Buchung bestätigen</h3>
+    <button class="modal__close" aria-label="Schließen">×</button>
+  </header>
+  <div class="modal__body">…</div>
+  <footer class="modal__actions">
+    <button class="btn btn--secondary">Abbrechen</button>
+    <button class="btn">Bestätigen</button>
+  </footer>
+</dialog>
+
+JS: document.getElementById('m1').showModal();</div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><dialog class="modal" id="m1">
+  <header class="modal__header">
+    <h3 class="modal__title">Buchung bestätigen</h3>
+    <button class="modal__close" aria-label="Schließen">×</button>
+  </header>
+  <div class="modal__body">…</div>
+  <footer class="modal__actions">
+    <button class="btn btn--secondary">Abbrechen</button>
+    <button class="btn">Bestätigen</button>
+  </footer>
+</dialog>
+
+JS: document.getElementById('m1').showModal();</div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><dialog class="modal" id="m1">
+  <header class="modal__header">
+    <h3 class="modal__title">Buchung bestätigen</h3>
+    <button class="modal__close" aria-label="Schließen">×</button>
+  </header>
+  <div class="modal__body">…</div>
+  <footer class="modal__actions">
+    <button class="btn btn--secondary">Abbrechen</button>
+    <button class="btn">Bestätigen</button>
+  </footer>
+</dialog>
+
+JS: document.getElementById('m1').showModal();</div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -152,9 +152,9 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
+      <div class="site-example__preview" data-preview><label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
 <div class="combobox">
   <button class="combobox__trigger" type="button"
           id="cb-1-trigger"
@@ -181,9 +181,13 @@
     </ul>
   </div>
 </div></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;label class=&quot;field__label&quot; id=&quot;cb-1-label&quot; for=&quot;cb-1-trigger&quot;&gt;Service&lt;/label&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;label class=&quot;field__label&quot; id=&quot;cb-1-label&quot; for=&quot;cb-1-trigger&quot;&gt;Service&lt;/label&gt;
 &lt;div class=&quot;combobox&quot;&gt;
   &lt;button class=&quot;combobox__trigger&quot; type=&quot;button&quot;
           id=&quot;cb-1-trigger&quot;
@@ -209,9 +213,224 @@
       &lt;/li&gt;
     &lt;/ul&gt;
   &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-      </details>
+&lt;/div&gt;">&lt;label class=&quot;field__label&quot; id=&quot;cb-1-label&quot; for=&quot;cb-1-trigger&quot;&gt;Service&lt;/label&gt;
+&lt;div class=&quot;combobox&quot;&gt;
+  &lt;button class=&quot;combobox__trigger&quot; type=&quot;button&quot;
+          id=&quot;cb-1-trigger&quot;
+          role=&quot;combobox&quot;
+          aria-labelledby=&quot;cb-1-label cb-1-value&quot;
+          aria-expanded=&quot;false&quot;
+          aria-haspopup=&quot;listbox&quot;
+          aria-controls=&quot;cb-1-list&quot;
+          popovertarget=&quot;cb-1-panel&quot;&gt;
+    &lt;span class=&quot;combobox__value&quot; id=&quot;cb-1-value&quot;&gt;Service wählen …&lt;/span&gt;
+    &lt;span class=&quot;chevron&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;combobox__panel&quot; id=&quot;cb-1-panel&quot; popover&gt;
+    &lt;div class=&quot;combobox__search&quot;&gt;
+      &lt;input type=&quot;text&quot; class=&quot;combobox__search-input&quot;
+             placeholder=&quot;Suchen …&quot;
+             aria-autocomplete=&quot;list&quot;
+             aria-controls=&quot;cb-1-list&quot;&gt;
+    &lt;/div&gt;
+    &lt;ul class=&quot;combobox__listbox&quot; id=&quot;cb-1-list&quot; role=&quot;listbox&quot; aria-labelledby=&quot;cb-1-label&quot;&gt;
+      &lt;li class=&quot;combobox__option&quot; role=&quot;option&quot; aria-selected=&quot;false&quot; tabindex=&quot;-1&quot;&gt;
+        Damen-Haarschnitt
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
+<div class="combobox">
+  <button class="combobox__trigger" type="button"
+          id="cb-1-trigger"
+          role="combobox"
+          aria-labelledby="cb-1-label cb-1-value"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="cb-1-list"
+          popovertarget="cb-1-panel">
+    <span class="combobox__value" id="cb-1-value">Service wählen …</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </button>
+  <div class="combobox__panel" id="cb-1-panel" popover>
+    <div class="combobox__search">
+      <input type="text" class="combobox__search-input"
+             placeholder="Suchen …"
+             aria-autocomplete="list"
+             aria-controls="cb-1-list">
+    </div>
+    <ul class="combobox__listbox" id="cb-1-list" role="listbox" aria-labelledby="cb-1-label">
+      <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
+        Damen-Haarschnitt
+      </li>
+    </ul>
+  </div>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
+<div class="combobox">
+  <button class="combobox__trigger" type="button"
+          id="cb-1-trigger"
+          role="combobox"
+          aria-labelledby="cb-1-label cb-1-value"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="cb-1-list"
+          popovertarget="cb-1-panel">
+    <span class="combobox__value" id="cb-1-value">Service wählen …</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </button>
+  <div class="combobox__panel" id="cb-1-panel" popover>
+    <div class="combobox__search">
+      <input type="text" class="combobox__search-input"
+             placeholder="Suchen …"
+             aria-autocomplete="list"
+             aria-controls="cb-1-list">
+    </div>
+    <ul class="combobox__listbox" id="cb-1-list" role="listbox" aria-labelledby="cb-1-label">
+      <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
+        Damen-Haarschnitt
+      </li>
+    </ul>
+  </div>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
+<div class="combobox">
+  <button class="combobox__trigger" type="button"
+          id="cb-1-trigger"
+          role="combobox"
+          aria-labelledby="cb-1-label cb-1-value"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="cb-1-list"
+          popovertarget="cb-1-panel">
+    <span class="combobox__value" id="cb-1-value">Service wählen …</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </button>
+  <div class="combobox__panel" id="cb-1-panel" popover>
+    <div class="combobox__search">
+      <input type="text" class="combobox__search-input"
+             placeholder="Suchen …"
+             aria-autocomplete="list"
+             aria-controls="cb-1-list">
+    </div>
+    <ul class="combobox__listbox" id="cb-1-list" role="listbox" aria-labelledby="cb-1-label">
+      <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
+        Damen-Haarschnitt
+      </li>
+    </ul>
+  </div>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
+<div class="combobox">
+  <button class="combobox__trigger" type="button"
+          id="cb-1-trigger"
+          role="combobox"
+          aria-labelledby="cb-1-label cb-1-value"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="cb-1-list"
+          popovertarget="cb-1-panel">
+    <span class="combobox__value" id="cb-1-value">Service wählen …</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </button>
+  <div class="combobox__panel" id="cb-1-panel" popover>
+    <div class="combobox__search">
+      <input type="text" class="combobox__search-input"
+             placeholder="Suchen …"
+             aria-autocomplete="list"
+             aria-controls="cb-1-list">
+    </div>
+    <ul class="combobox__listbox" id="cb-1-list" role="listbox" aria-labelledby="cb-1-label">
+      <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
+        Damen-Haarschnitt
+      </li>
+    </ul>
+  </div>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
+<div class="combobox">
+  <button class="combobox__trigger" type="button"
+          id="cb-1-trigger"
+          role="combobox"
+          aria-labelledby="cb-1-label cb-1-value"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="cb-1-list"
+          popovertarget="cb-1-panel">
+    <span class="combobox__value" id="cb-1-value">Service wählen …</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </button>
+  <div class="combobox__panel" id="cb-1-panel" popover>
+    <div class="combobox__search">
+      <input type="text" class="combobox__search-input"
+             placeholder="Suchen …"
+             aria-autocomplete="list"
+             aria-controls="cb-1-list">
+    </div>
+    <ul class="combobox__listbox" id="cb-1-list" role="listbox" aria-labelledby="cb-1-label">
+      <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
+        Damen-Haarschnitt
+      </li>
+    </ul>
+  </div>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><label class="field__label" id="cb-1-label" for="cb-1-trigger">Service</label>
+<div class="combobox">
+  <button class="combobox__trigger" type="button"
+          id="cb-1-trigger"
+          role="combobox"
+          aria-labelledby="cb-1-label cb-1-value"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="cb-1-list"
+          popovertarget="cb-1-panel">
+    <span class="combobox__value" id="cb-1-value">Service wählen …</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </button>
+  <div class="combobox__panel" id="cb-1-panel" popover>
+    <div class="combobox__search">
+      <input type="text" class="combobox__search-input"
+             placeholder="Suchen …"
+             aria-autocomplete="list"
+             aria-controls="cb-1-list">
+    </div>
+    <ul class="combobox__listbox" id="cb-1-list" role="listbox" aria-labelledby="cb-1-label">
+      <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
+        Damen-Haarschnitt
+      </li>
+    </ul>
+  </div>
+</div></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

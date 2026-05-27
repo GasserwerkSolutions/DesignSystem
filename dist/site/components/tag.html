@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -150,38 +150,86 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><span class="tag">React</span></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;span class=&quot;tag&quot;&gt;React&lt;/span&gt;</code></pre>
-      </details>
+      <div class="site-example__preview" data-preview><span class="tag">React</span></div>
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;span class=&quot;tag&quot;&gt;React&lt;/span&gt;">&lt;span class=&quot;tag&quot;&gt;React&lt;/span&gt;</textarea>
+      </div>
     </section>
 
-    <section class="site-example">
+    <section class="site-example" data-example>
       <h3 class="site-example__caption">Removable (User kann ×-Button klicken)</h3>
-      <div class="site-example__preview"><span class="tag">
+      <div class="site-example__preview" data-preview><span class="tag">
   Filter: Bestätigt
   <button class="tag__remove" type="button" aria-label="Filter entfernen">×</button>
 </span></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;span class=&quot;tag&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;span class=&quot;tag&quot;&gt;
   Filter: Bestätigt
   &lt;button class=&quot;tag__remove&quot; type=&quot;button&quot; aria-label=&quot;Filter entfernen&quot;&gt;×&lt;/button&gt;
-&lt;/span&gt;</code></pre>
-      </details>
+&lt;/span&gt;">&lt;span class=&quot;tag&quot;&gt;
+  Filter: Bestätigt
+  &lt;button class=&quot;tag__remove&quot; type=&quot;button&quot; aria-label=&quot;Filter entfernen&quot;&gt;×&lt;/button&gt;
+&lt;/span&gt;</textarea>
+      </div>
     </section>
 
-    <section class="site-example">
+    <section class="site-example" data-example>
       <h3 class="site-example__caption">Clickable (ganzes Tag als Filter-Toggle)</h3>
-      <div class="site-example__preview"><button class="tag tag--clickable" type="button">React</button></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;button class=&quot;tag tag--clickable&quot; type=&quot;button&quot;&gt;React&lt;/button&gt;</code></pre>
-      </details>
+      <div class="site-example__preview" data-preview><button class="tag tag--clickable" type="button">React</button></div>
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;button class=&quot;tag tag--clickable&quot; type=&quot;button&quot;&gt;React&lt;/button&gt;">&lt;button class=&quot;tag tag--clickable&quot; type=&quot;button&quot;&gt;React&lt;/button&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><span class="tag">React</span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><span class="tag">React</span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><span class="tag">React</span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><span class="tag">React</span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><span class="tag">React</span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><span class="tag">React</span></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">

@@ -173,6 +173,70 @@
         shareBtn.textContent = "× Fehler";
       });
     }
+
+    /* Example-Editor: Edit / Copy / Reset / Tone-Jump */
+    const editToggle = e.target.closest("[data-edit-toggle]");
+    if (editToggle) {
+      const ex = editToggle.closest("[data-example]");
+      const source = ex.querySelector("[data-source]").parentElement;
+      const isHidden = source.hasAttribute("hidden");
+      if (isHidden) {
+        source.removeAttribute("hidden");
+        editToggle.setAttribute("aria-pressed", "true");
+        editToggle.textContent = "Hide source";
+        ex.classList.add("is-editing");
+      } else {
+        source.setAttribute("hidden", "");
+        editToggle.setAttribute("aria-pressed", "false");
+        editToggle.textContent = "Edit";
+        ex.classList.remove("is-editing");
+      }
+      return;
+    }
+
+    const copyBtn = e.target.closest("[data-copy]");
+    if (copyBtn) {
+      const ex = copyBtn.closest("[data-example]");
+      const ta = ex.querySelector("[data-source]");
+      navigator.clipboard.writeText(ta.value).then(() => {
+        const original = copyBtn.textContent;
+        copyBtn.textContent = "✓";
+        setTimeout(() => (copyBtn.textContent = original), 1200);
+      }).catch(() => (copyBtn.textContent = "×"));
+      return;
+    }
+
+    const exampleReset = e.target.closest("[data-reset]");
+    if (exampleReset) {
+      const ex = exampleReset.closest("[data-example]");
+      const ta = ex.querySelector("[data-source]");
+      const original = ta.getAttribute("data-original");
+      ta.value = original;
+      ex.querySelector("[data-preview]").innerHTML = original;
+      exampleReset.hidden = true;
+      return;
+    }
+
+    const toneJump = e.target.closest("[data-tone-jump]");
+    if (toneJump) {
+      const tone = toneJump.getAttribute("data-tone-jump");
+      root.setAttribute("data-tone", tone);
+      document.querySelectorAll('[data-axis="tone"]').forEach((el) => (el.value = tone));
+      persist();
+    }
+  });
+
+  /* Live-Editor: on input in source-textarea, re-render preview. */
+  document.addEventListener("input", (e) => {
+    const ta = e.target.closest("[data-source]");
+    if (!ta) return;
+    const ex = ta.closest("[data-example]");
+    const preview = ex.querySelector("[data-preview]");
+    preview.innerHTML = ta.value;
+    const original = ta.getAttribute("data-original");
+    const resetBtn = ex.querySelector("[data-reset]");
+    if (resetBtn) resetBtn.hidden = ta.value === original;
+    if (window.DS && typeof DS.setupAll === "function") DS.setupAll();
   });
 
   readState();

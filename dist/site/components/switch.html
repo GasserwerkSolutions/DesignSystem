@@ -16,7 +16,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.10.0</span>
+          <span class="badge badge--neutral">v0.11.0</span>
         </a>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation">
           <a class="site-topbar__link" href="../index.html">Overview</a>
@@ -149,41 +149,109 @@
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
-    <section class="site-example">
+    <section class="site-example" data-example>
       
-      <div class="site-example__preview"><label class="choice">
+      <div class="site-example__preview" data-preview><label class="choice">
   <input type="checkbox" class="switch" role="switch">
   <span>Push-Benachrichtigungen</span>
 </label></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;label class=&quot;choice&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;label class=&quot;choice&quot;&gt;
   &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot;&gt;
   &lt;span&gt;Push-Benachrichtigungen&lt;/span&gt;
-&lt;/label&gt;</code></pre>
-      </details>
+&lt;/label&gt;">&lt;label class=&quot;choice&quot;&gt;
+  &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot;&gt;
+  &lt;span&gt;Push-Benachrichtigungen&lt;/span&gt;
+&lt;/label&gt;</textarea>
+      </div>
     </section>
 
-    <section class="site-example">
+    <section class="site-example" data-example>
       <h3 class="site-example__caption">Mit Hint</h3>
-      <div class="site-example__preview"><label class="choice">
+      <div class="site-example__preview" data-preview><label class="choice">
   <input type="checkbox" class="switch" role="switch" checked>
   <span>
     Auto-Backup
     <span class="choice__hint">Täglich um 03:00</span>
   </span>
 </label></div>
-      <details class="site-example__source">
-        <summary>HTML anzeigen</summary>
-        <pre class="code-block"><code>&lt;label class=&quot;choice&quot;&gt;
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;label class=&quot;choice&quot;&gt;
   &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot; checked&gt;
   &lt;span&gt;
     Auto-Backup
     &lt;span class=&quot;choice__hint&quot;&gt;Täglich um 03:00&lt;/span&gt;
   &lt;/span&gt;
-&lt;/label&gt;</code></pre>
-      </details>
+&lt;/label&gt;">&lt;label class=&quot;choice&quot;&gt;
+  &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot; checked&gt;
+  &lt;span&gt;
+    Auto-Backup
+    &lt;span class=&quot;choice__hint&quot;&gt;Täglich um 03:00&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</textarea>
+      </div>
     </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><label class="choice">
+  <input type="checkbox" class="switch" role="switch">
+  <span>Push-Benachrichtigungen</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><label class="choice">
+  <input type="checkbox" class="switch" role="switch">
+  <span>Push-Benachrichtigungen</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><label class="choice">
+  <input type="checkbox" class="switch" role="switch">
+  <span>Push-Benachrichtigungen</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><label class="choice">
+  <input type="checkbox" class="switch" role="switch">
+  <span>Push-Benachrichtigungen</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><label class="choice">
+  <input type="checkbox" class="switch" role="switch">
+  <span>Push-Benachrichtigungen</span>
+</label></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><label class="choice">
+  <input type="checkbox" class="switch" role="switch">
+  <span>Push-Benachrichtigungen</span>
+</label></div>
+            </article>
+          </div>
         </section>
 
         <section class="site-doc__section">
