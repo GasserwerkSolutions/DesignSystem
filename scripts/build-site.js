@@ -716,6 +716,27 @@ function renderMarkupExamples(markup) {
     .join("\n");
 }
 
+/* Rewriting tile-Markup: vermeidet HTML5-ID-Duplicate-Verletzung wenn der
+   Tone-Strip dasselbe Markup 6× cloned. Alle id= und ihre Refernzen
+   (for=, aria-*, popovertarget, href="#…") bekommen einen pro-Tile-Prefix.
+   Components mit IDs (combobox, popover, modal, tabs, field, date-input,
+   slider) wurden vorher 7× mit derselben ID geladen — kaputte ARIA. */
+function rewriteIdsInHtml(html, prefix) {
+  const ids = new Set();
+  for (const m of html.matchAll(/\bid="([^"]+)"/g)) ids.add(m[1]);
+  let out = html;
+  for (const id of ids) {
+    const newId = `${prefix}${id}`;
+    /* Escape regex-Sonderzeichen in id (cb-1-trigger ist ok, aber sicher ist
+       sicher): */
+    const esc = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    /* Word-Boundary auf jeder Seite verhindert "menu-1" matching "menu-10". */
+    const refRe = new RegExp(`(\\bid="|\\bfor="|\\bpopovertarget="|\\baria-(?:labelledby|controls|describedby|owns|activedescendant)="|\\bhref="#)((?:[^"]*\\s)?)${esc}((?:\\s[^"]*)?")`, "g");
+    out = out.replace(refRe, `$1$2${newId}$3`);
+  }
+  return out;
+}
+
 function renderToneStrip(meta) {
   if (!meta.markup.length) return "";
   const tones = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
@@ -730,7 +751,7 @@ function renderToneStrip(meta) {
                 (t) => `
             <article class="site-tone-tile" data-tone="${t}" data-tone-jump="${t}">
               <header class="site-tone-tile__label">${t}</header>
-              <div class="site-tone-tile__preview">${sample}</div>
+              <div class="site-tone-tile__preview">${rewriteIdsInHtml(sample, `t-${t}-`)}</div>
             </article>`
               )
               .join("")}
