@@ -34,6 +34,109 @@ const SMOKE_PAGES = [
   "playground.html",
 ];
 
+/* =========================================================================
+   Parser Self-Test
+   =========================================================================
+   Sensitivity-Suite für den Header-Parser. Jeder Fall war mal ein echter
+   stiller Bug — die Mutation isoliert das Pattern, der Self-Test verhindert
+   Regressionen, ohne dass eine echte Component für jede Edge-Case existieren
+   muss. Verwendet den ECHTEN parseHeader aus build-site.js — kein
+   duplicate-drift möglich. */
+function runParserSelfTest() {
+  const { parseHeaderFromString } = require("./build-site.js");
+
+  const tests = [
+    {
+      label: "single-line label: Required: --foo, --bar (inline tokens)",
+      source: `/**
+ * Test
+ * ====
+ *
+ * CONTRACT:
+ *   Required: --foo, --bar
+ */`,
+      expect: (r) => r.contract.required.map((t) => t.name).join(",") === "--foo,--bar",
+    },
+    {
+      label: "single-line label: Optional: --baz (one inline token)",
+      source: `/**
+ * Test
+ * ====
+ *
+ * CONTRACT:
+ *   Optional: --baz
+ */`,
+      expect: (r) => r.contract.optional.length === 1 && r.contract.optional[0].name === "--baz",
+    },
+    {
+      label: "bare tokens under CONTRACT without Required:/Optional:",
+      source: `/**
+ * Test
+ * ====
+ *
+ * CONTRACT:
+ *   --foo   description here
+ *   --bar
+ */`,
+      expect: (r) => r.contract.optional.map((t) => t.name).join(",") === "--foo,--bar",
+    },
+    {
+      label: "multi-line label: 'Struktur (parenthetical):' parsing",
+      source: `/**
+ * Test
+ * ====
+ *
+ * CONTRACT:
+ *   Required: --foo
+ *
+ * Struktur (mit ausführlichem Kommentar
+ * über mehrere Zeilen):
+ *   <div class="test">x</div>
+ */`,
+      expect: (r) => r.contract.required[0]?.name === "--foo",
+    },
+    {
+      label: "intro-prose starting with label-word is NOT a label",
+      source: `/**
+ * Test
+ * ====
+ *
+ * Markup nutzt native <input type="checkbox"> via appearance:none
+ * und behält Form-Integration.
+ *
+ * CONTRACT:
+ *   Required: --foo
+ */`,
+      expect: (r) => r.contract.required[0]?.name === "--foo",
+    },
+    {
+      label: "CONTRACT with em-dash and description on label line",
+      source: `/**
+ * Test
+ * ====
+ *
+ * CONTRACT — Token-Werte, die ein Theme setzen darf:
+ *
+ * Required:
+ *   --foo, --bar
+ */`,
+      expect: (r) => r.contract.required.map((t) => t.name).sort().join(",") === "--bar,--foo",
+    },
+  ];
+
+  let errors = 0;
+  for (const t of tests) {
+    const result = parseHeaderFromString(t.source);
+    const ok = t.expect(result);
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${t.label}`);
+    if (!ok) {
+      console.log(`        got contract:`, JSON.stringify(result.contract));
+      errors++;
+    }
+  }
+  return errors;
+}
+
 async function runSmoke(browser) {
   let errors = 0;
   for (const rel of SMOKE_PAGES) {
@@ -248,9 +351,12 @@ async function runThemeGenerator(browser) {
   const newCss = await page.evaluate(() =>
     document.querySelector("[data-theme-gen-css]").textContent
   );
-  const previewBg = await page.evaluate(() => {
+  const previewBtnBg = await page.evaluate(() => {
     const btn = document.querySelector(".theme-gen__preview .btn");
-    return getComputedStyle(btn).backgroundColor;
+    /* --btn-bg custom property is robust gegen hover-state — backgroundColor
+       würde die :hover-Variante einfangen wenn der Puppeteer-Cursor über
+       dem Button steht. */
+    return getComputedStyle(btn).getPropertyValue("--btn-bg").trim().toLowerCase();
   });
 
   await page.close();
@@ -267,7 +373,10 @@ async function runThemeGenerator(browser) {
       "theme-gen: CSS export updates with new name",
       newCss.includes("--fire-500") && newCss.includes('[data-tone~="fire"]'),
     ],
-    ["theme-gen: live preview button color reflects new tone", /rgb\((1[0-9]{2}|2[0-9]{2}),/.test(previewBg)],
+    [
+      "theme-gen: live preview --btn-bg reflects new tone palette",
+      /^#[0-9a-f]{6}$/.test(previewBtnBg) && newCss.includes(previewBtnBg),
+    ],
   ];
   let errors = 0;
   for (const [label, ok] of checks) {
@@ -339,6 +448,8 @@ async function runFoundationsEdit(browser) {
     console.error(`[check-site] dist/site missing. Run 'npm run build:site' first.`);
     process.exit(1);
   }
+  console.log("[check-site] Parser self-test:");
+  const parserErrs = runParserSelfTest();
   const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   console.log("[check-site] Smoke:");
   const smokeErrs = await runSmoke(browser);
@@ -351,7 +462,7 @@ async function runFoundationsEdit(browser) {
   console.log("[check-site] URL-State:");
   const urlStateErrs = await runUrlState(browser);
   await browser.close();
-  const total = smokeErrs + interactionErrs + foundationErrs + themeGenErrs + urlStateErrs;
+  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + urlStateErrs;
   console.log(
     total === 0
       ? "[check-site] passed."

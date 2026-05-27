@@ -325,12 +325,31 @@ function parseHeader(filePath) {
     return null;
   };
 
+  const contractSection = findSection(/^CONTRACT|^Contract/i);
+  const contract = parseContract(contractSection);
+
+  /* Coverage-Self-Check: jedes Token, das im Source-CONTRACT-Block als
+     `--name-*` erwähnt wird, MUSS im parsed contract landen. Findet
+     Parser-Drift, bevor sie still in die generierte Site eindringt. */
+  const tokensInSource = new Set();
+  if (contractSection) {
+    const text = contractSection.join("\n");
+    for (const m of text.matchAll(/--[a-z0-9-]+/gi)) {
+      tokensInSource.add(m[0]);
+    }
+  }
+  const parsedTokenNames = new Set(
+    [...contract.required, ...contract.optional].map((t) => t.name)
+  );
+  const missing = [...tokensInSource].filter((t) => !parsedTokenNames.has(t));
+
   return {
     file: filePath,
     title: title.replace(/\s*\([^)]+\)\s*$/, "").trim() || title,
     titleFull: title,
     intro,
-    contract: parseContract(findSection(/^CONTRACT|^Contract/i)),
+    contract,
+    contractCoverageMissing: missing,
     markup: parseMarkup(
       findSection(/^Struktur|^Markup|^Beispiel/i)
     ),
@@ -1931,12 +1950,8 @@ const THEME_GEN_JS = `/* Theme-Generator: HEX → OKLCH-Palette + Color-Blind-Ch
    ========================================================================= */
 
 function main() {
-  if (fs.existsSync(OUT_DIR)) {
-    fs.rmSync(OUT_DIR, { recursive: true });
-  }
-  fs.mkdirSync(path.join(OUT_DIR, "components"), { recursive: true });
-  fs.mkdirSync(path.join(OUT_DIR, "assets"), { recursive: true });
-
+  /* Parse FIRST, validate, then destroy/rebuild. Sonst löscht ein
+     Coverage-Fehler dist/site/ und lässt einen halb-leeren Stand zurück. */
   const files = fs
     .readdirSync(COMPONENTS_DIR)
     .filter((f) => f.endsWith(".css"))
@@ -1955,6 +1970,26 @@ function main() {
       missing.map((m) => m.name).join(", ")
     );
   }
+
+  const coverageGaps = components.filter(
+    (c) => c.contractCoverageMissing && c.contractCoverageMissing.length
+  );
+  if (coverageGaps.length) {
+    console.error(
+      `[build-site] CONTRACT-Coverage-Gaps in ${coverageGaps.length} component(s):`
+    );
+    for (const c of coverageGaps) {
+      console.error(`  ${c.name}.css → tokens in source CONTRACT-block not in parsed contract:`);
+      for (const t of c.contractCoverageMissing) console.error(`    - ${t}`);
+    }
+    process.exit(1);
+  }
+
+  if (fs.existsSync(OUT_DIR)) {
+    fs.rmSync(OUT_DIR, { recursive: true });
+  }
+  fs.mkdirSync(path.join(OUT_DIR, "components"), { recursive: true });
+  fs.mkdirSync(path.join(OUT_DIR, "assets"), { recursive: true });
 
   for (const c of components) {
     const html = renderComponentPage(c, components);
@@ -2006,4 +2041,20 @@ function main() {
   );
 }
 
-main();
+if (require.main === module) main();
+
+/* Test-Adapter: parse a synthetic header from a string. Verwendet von
+   scripts/check-site.js für den Parser-Self-Test. Stellt sicher, dass der
+   Test denselben Parser nutzt wie der Generator — kein silent drift. */
+function parseHeaderFromString(source) {
+  const tmpDir = require("node:os").tmpdir();
+  const tmpPath = path.join(tmpDir, `parser-test-${Date.now()}-${Math.random()}.css`);
+  fs.writeFileSync(tmpPath, source);
+  try {
+    return parseHeader(tmpPath);
+  } finally {
+    if (fs.existsSync(tmpPath)) fs.unlinkSync(tmpPath);
+  }
+}
+
+module.exports = { parseHeader, parseHeaderFromString };
