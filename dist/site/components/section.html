@@ -193,15 +193,44 @@
 
         <section class="site-doc__section">
           <h2>Token-Contract</h2>
-          <p class="site-muted">Keine eigenen Tokens — Component nutzt zentrale semantic-Tokens.</p>
+          <table class="table site-token-table">
+    <thead>
+      <tr><th>Token</th><th>Status</th><th>Notiz</th></tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td><code>--section-py</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--space-48</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--section-bg</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>Hintergrund (Default: transparent)</td>
+      </tr>
+      <tr>
+        <td><code>--section-divider</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>Top-Border, z. B. &quot;2px solid …&quot; (Default: none)</td>
+      </tr>
+    </tbody>
+  </table>
         </section>
 
         
-  <h2>Modifier</h2>
-  <ul class="site-modifier-list">
-    <li><code>.section--hero</code> — großes padding</li>
-    <li><code>.section--compact</code> — reduziertes padding</li>
-  </ul>
+        <section class="site-doc__section">
+          <h2>Modifier</h2>
+          <ul class="site-modifier-list">
+            <li><code>.section--hero</code> — großes padding</li>
+            <li><code>.section--compact</code> — reduziertes padding</li>
+          </ul>
+        </section>
 
         <footer class="site-doc__footer">
           <a class="btn btn--ghost btn--sm" href="../../../components/section.css">Source-CSS ansehen</a>

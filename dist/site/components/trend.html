@@ -165,16 +165,30 @@
 
         <section class="site-doc__section">
           <h2>Token-Contract</h2>
-          <p class="site-muted">Keine eigenen Tokens — Component nutzt zentrale semantic-Tokens.</p>
+          <table class="table site-token-table">
+    <thead>
+      <tr><th>Token</th><th>Status</th><th>Notiz</th></tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td><code>--trend-color</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
         </section>
 
         
-  <h2>Modifier</h2>
-  <ul class="site-modifier-list">
-    <li><code>.trend--up</code> — positiv (Success-Farbe)</li>
-    <li><code>.trend--down</code> — negativ (Error-Farbe)</li>
-    <li><code>.trend--flat</code> — neutral (tertiärer Text)</li>
-  </ul>
+        <section class="site-doc__section">
+          <h2>Modifier</h2>
+          <ul class="site-modifier-list">
+            <li><code>.trend--up</code> — positiv (Success-Farbe)</li>
+            <li><code>.trend--down</code> — negativ (Error-Farbe)</li>
+            <li><code>.trend--flat</code> — neutral (tertiärer Text)</li>
+          </ul>
+        </section>
 
         <footer class="site-doc__footer">
           <a class="btn btn--ghost btn--sm" href="../../../components/trend.css">Source-CSS ansehen</a>

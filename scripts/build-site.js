@@ -168,26 +168,34 @@ function parseContract(bodyLines) {
   const out = { required: [], optional: [] };
   if (!bodyLines || !bodyLines.length) return out;
 
-  let bucket = null;
+  let bucket = "optional";
+
+  const extractTokens = (line) => {
+    const tokens = line.match(/--[a-z0-9-]+/gi);
+    if (!tokens || !bucket) return;
+    const comment = line.split(/--[a-z0-9-]+/i).pop().trim();
+    const note = comment.replace(/^[,/\s]+/, "").trim();
+    for (const t of tokens) {
+      out[bucket].push({ name: t, note: tokens.length === 1 ? note : "" });
+    }
+  };
+
   for (const raw of bodyLines) {
     const line = raw.trim();
     if (!line) continue;
-    if (/^Required:?$/i.test(line)) {
+    const required = line.match(/^Required:\s*(.*)$/i);
+    if (required) {
       bucket = "required";
+      if (required[1].trim()) extractTokens(required[1]);
       continue;
     }
-    if (/^Optional:?$/i.test(line)) {
+    const optional = line.match(/^Optional:\s*(.*)$/i);
+    if (optional) {
       bucket = "optional";
+      if (optional[1].trim()) extractTokens(optional[1]);
       continue;
     }
-    const tokens = line.match(/--[a-z0-9-]+/gi);
-    if (tokens && bucket) {
-      const comment = line.split(/--[a-z0-9-]+/i).pop().trim();
-      const note = comment.replace(/^[,/\s]+/, "").trim();
-      for (const t of tokens) {
-        out[bucket].push({ name: t, note: tokens.length === 1 ? note : "" });
-      }
-    }
+    extractTokens(line);
   }
   return out;
 }
@@ -732,17 +740,19 @@ function renderIntro(intro) {
 function renderModifiers(mods) {
   if (!mods.length) return "";
   return `
-  <h2>Modifier</h2>
-  <ul class="site-modifier-list">
-    ${mods
-      .map(
-        (m) =>
-          `<li><code>${escapeHtml(m.selector)}</code> — ${escapeHtml(
-            m.description
-          )}</li>`
-      )
-      .join("\n    ")}
-  </ul>`;
+        <section class="site-doc__section">
+          <h2>Modifier</h2>
+          <ul class="site-modifier-list">
+            ${mods
+              .map(
+                (m) =>
+                  `<li><code>${escapeHtml(m.selector)}</code> — ${escapeHtml(
+                    m.description
+                  )}</li>`
+              )
+              .join("\n            ")}
+          </ul>
+        </section>`;
 }
 
 function renderComponentPage(meta, allComponents) {
