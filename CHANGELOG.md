@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.5.9] — Shared Chevron-Utility (Konsolidierung)
+
+Three-Chevron-Refactor aus dem Code-Review angegangen. Tree und Combobox
+ziehen jetzt aus einer gemeinsamen `.chevron`-Utility statt jeweils
+eigenen Triangle-Border-Trick zu pflegen.
+
+### Hinzugefügt
+
+- **`components/chevron.css`** als zusammensetzbare CSS-only Utility. Border-Trick (kein SVG-Mask, kein Image), `currentColor`-aware, configurable über `--chevron-size`, `--chevron-thickness`, `--chevron-color`.
+- **`.chevron`-Default** = pointing-down (▼) für Dropdowns / Disclosure-Down.
+- **`.chevron--right`** = pointing-right (▸) für Tree / Accordion-Expand.
+- **`prefers-reduced-motion: reduce`** killt die Rotation-Transition.
+
+### Geändert
+
+- **Tree:** `tree__chevron` → `chevron chevron--right` (Markup + CSS). Rotation-Rule (`90°` auf `[open]`) zieht jetzt direkt auf `.chevron`. `--tree-chevron-color`-Token entfernt; Tinting via `.tree__summary > .chevron { --chevron-color: var(--color-text-tertiary); }`.
+- **Combobox:** `combobox__chevron` → `chevron` (Markup + CSS). Rotation-Rule (`180°` auf `[aria-expanded="true"]`) zieht jetzt direkt auf `.chevron`. Tinting analog via `--chevron-color`-Override.
+- **9 Chevron-Instances in der Demo** auf die neue Class umgestellt (Tree + Combobox + nested Folder-Hierarchie).
+
+### Bewusst belassen
+
+- **Select** behält das Pseudo-Element-Pattern (`.select-wrap::after` mit SVG-mask). Begründung: markup-light API — Konsumenten brauchen kein Extra-DOM-Element für den Arrow. Im Component-Header dokumentiert.
+
+### Validierung
+
+- Smoke (puppeteer, mit `transition: none` injection um Headless-RAF-Quirk zu umgehen):
+  - Tree open: `matrix(0, 1, -1, 0, 0, 0)` = exakt `rotate(90deg)` ✓
+  - Combobox expanded: `matrix(-1, 0, 0, -1, 0, 0)` = exakt `rotate(180deg)` ✓
+- Lint + Static-Contrast (1008/1008) + Browser-Contrast (180/180) WCAG-AA grün.
+
+### Headless-Test-Note
+
+Puppeteer-Headless tickt Animation-Frames nicht selbstständig — Transitions bleiben mid-flight stehen, `getComputedStyle().transform` zeigt fälschlich Identity-Matrix. Die `transition: none`-Injection im Probe-Skript spiegelt den finalen Render-State. Im echten Browser keine Rolle.
+
+---
+
 ## [0.5.8] — Combobox (Custom-Listbox mit Search)
 
 ### Hinzugefügt

@@ -21,37 +21,24 @@
  *     --tree-indent          Padding pro Hierarchie-Ebene (default --space-16)
  *     --tree-item-py / -px   Padding pro Item-Zeile
  *     --tree-hover-bg
- *     --tree-chevron-color
  *
- * Struktur:
+ * Struktur (Chevron via shared .chevron-Utility):
  *   <ul class="tree">
  *     <li>
  *       <details class="tree__node" open>
  *         <summary class="tree__summary">
- *           <span class="tree__chevron" aria-hidden="true"></span>
+ *           <span class="chevron chevron--right" aria-hidden="true"></span>
  *           <span class="tree__label">📂 Dokumente</span>
  *           <span class="badge badge--neutral">12</span>
  *         </summary>
  *         <ul class="tree__children">
  *           <li><a class="tree__leaf" href="#">📄 invoice.pdf</a></li>
- *           <li>
- *             <details class="tree__node">
- *               <summary class="tree__summary">
- *                 <span class="tree__chevron" aria-hidden="true"></span>
- *                 <span class="tree__label">📂 Archiv</span>
- *               </summary>
- *               <ul class="tree__children">
- *                 <li><a class="tree__leaf" href="#">📄 alt.txt</a></li>
- *               </ul>
- *             </details>
- *           </li>
  *         </ul>
  *       </details>
  *     </li>
  *   </ul>
  *
- * `.tree__node[open]` rotiert das Chevron automatisch — gleicher Pattern
- * wie Accordion in v0.x.
+ * `.tree__node[open]` rotiert das Chevron automatisch (90° → ▾).
  */
 
 .tree {
@@ -103,28 +90,15 @@
   outline-offset: -2px;
 }
 
-/* Chevron als CSS-only Caret. Rotiert auf [open]. */
-.tree__chevron {
-  display: inline-block;
-  width: 0.6rem;
-  height: 0.6rem;
-  flex-shrink: 0;
-  color: var(--tree-chevron-color, var(--color-text-tertiary));
-  transition: transform var(--motion-feedback);
-}
-
-.tree__chevron::before {
-  content: "";
-  display: block;
-  width: 0;
-  height: 0;
-  border-block-start: 0.3rem solid transparent;
-  border-block-end:   0.3rem solid transparent;
-  border-inline-start: 0.4rem solid currentColor;
-}
-
-.tree__node[open] > .tree__summary > .tree__chevron {
+/* Chevron-Rotation: shared .chevron rotiert 90° wenn das umgebende
+   <details> offen ist. Visual von ▸ zu ▾. */
+.tree__node[open] > .tree__summary > .chevron {
   transform: rotate(90deg);
+}
+
+/* Tree-spezifisches Chevron-Tinting (optional, opt-in via Token). */
+.tree__summary > .chevron {
+  --chevron-color: var(--color-text-tertiary);
 }
 
 .tree__label {

@@ -33,7 +33,7 @@
  *             aria-controls="cb-list-1"
  *             popovertarget="cb-panel-1">
  *       <span class="combobox__value">Service wählen …</span>
- *       <span class="combobox__chevron" aria-hidden="true"></span>
+ *       <span class="chevron" aria-hidden="true"></span>
  *     </button>
  *     <div class="combobox__panel" id="cb-panel-1" popover>
  *       <div class="combobox__search">
@@ -158,18 +158,14 @@
   white-space: nowrap;
 }
 
-/* Chevron via CSS-only Triangle, analog zu .tree__chevron. */
-.combobox__chevron {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  flex-shrink: 0;
-  border-inline: 0.3rem solid transparent;
-  border-block-start: 0.4rem solid var(--color-text-tertiary);
-  transition: transform var(--motion-feedback);
+/* Chevron-Rotation: shared .chevron-Component (pointing-down default),
+   rotiert 180° wenn der Trigger expanded ist (▼ → ▲). Tinting via
+   Combobox-spezifisches Override. */
+.combobox__trigger > .chevron {
+  --chevron-color: var(--color-text-tertiary);
 }
 
-.combobox__trigger[aria-expanded="true"] .combobox__chevron {
+.combobox__trigger[aria-expanded="true"] > .chevron {
   transform: rotate(180deg);
 }
 
