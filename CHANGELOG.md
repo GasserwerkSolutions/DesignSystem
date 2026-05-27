@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.6.5] — User-Journey-Tests (adressiert Schwäche #4)
+
+End-to-End-Behauptungen über echte User-Interaktionen. Schließt die Lücke
+zwischen den Spezialisten-Tools — fängt Bugs die zwischen ARIA-Vertrag,
+Lint-Source-Patterns und visueller Render-Verifikation liegen.
+
+### Hinzugefügt
+
+- **`scripts/check-journeys.js`** mit 6 Journeys, die kritische interactive Components durch echte User-Flows verifizieren:
+  - **Combobox**: Label-Click → 3-stufen-Kaskade (Trigger-Focus synchron + Popover öffnet via dispatched click + Search-Focus async)
+  - **Popover**: Trigger-Click → open, `hidePopover()` → close
+  - **Alert**: `data-dismiss`-Click → Element aus DOM entfernt
+  - **Slider**: Input-Event → `<output>` text synchronisiert + `--range-fill-pct` Custom-Property aktualisiert
+  - **File-Upload**: Drag-Counter durch nested dragenter/dragleave robust
+  - **Tree**: Summary-Click toggelt `[open]`-Attribut
+- **`npm run check:journeys`** + Integration in `check:full` als 7. Pipeline-Schritt.
+
+### Diagnostik-Erkenntnisse (während Implementation)
+
+- **Puppeteer-Headless behandelt `page.click()` teils nicht als "trusted"** für native browser-Mechaniken (label-for, popovertarget). Lösung: `element.click()` via `page.evaluate()` triggert nativ korrekt. Im Code-Comment dokumentiert.
+- **Async-Round-Trips zwischen Node und Browser-Context** können synchron gesetzte `document.activeElement` verlieren. Lösung: Aktion + Assertion in einem einzigen `page.evaluate()`-Block bündeln.
+- **Combobox-Label-Click ist eine 3-stufen-Kaskade** (Trigger-Focus → Popover-Open → Search-Focus). Vorher implizit, jetzt explizit getestet.
+
+### Schwäche #5 (Pipeline-Konsolidierung) — bewusst verschoben
+
+3 puppeteer-Skripte zu einer Chrome-Instanz konsolidieren würde ~5-10 s sparen, kostet Refactor von 3 Skripten zu Modulen + Risiko von Cross-Test-Leakage. Bei aktueller Pipeline-Zeit (~32 s) ist das proaktiv, nicht akut. Wird natürlich in v0.6.6 mit Playwright-Migration kommen (Playwright hat One-Browser-Many-Tests-Pattern eingebaut).
+
+### Pipeline-Stand
+
+- `check:full` (7 Schritte): Lint(4) → Test-Lint(18) → Static-Contrast(1008) → Browser-Contrast(180) → A11Y(0) → Visual(12) → Journeys(6)
+- `check:tools` (2 Self-Tests): VRT-Sensitivität + A11Y-Mutations
+
+### Schwächen-Hardening-Status
+
+- #1 (Tests ohne Beweise): ✓ v0.6.4
+- #2 (empirische Thresholds): ✓ v0.6.4
+- #3 (Cross-Host-Determinismus): → v0.6.6 (Playwright bundled Chromium)
+- #4 (Tool-Vertrauen): ✓ v0.6.5
+- #5 (Pipeline linear): → v0.6.6 (natural mit Playwright-Migration)
+
+---
+
 ## [0.6.4] — Tools-Self-Test-Pattern (adressiert Schwächen #1 + #2)
 
 Erste Etappe nach der ehrlichen Schwächen-Analyse v0.6.3. Pattern-Etablierung:
