@@ -63,11 +63,32 @@ selbst, Theme-/Mode-/Density-Switcher wirken live auf die Beispiele.
 - **Check-Site erweitert** um 4 Theme-Generator-Asserts (Palette-Init,
   Palette-Update, CSS-Export, Live-Preview-Farbänderung).
 
-### Folgeschritte (v0.8.0 Etappe 4+)
+### Etappe 4 — URL-State + GitHub-Pages-Deployment
 
-- URL-State-Persistierung (`?tone=...&mode=...&token--btn-radius=...`)
-- GitHub-Pages-Deployment-Workflow
-- Fehlende `Struktur:`-Blöcke in 13 Component-Headern (button, badge, etc.)
+- **URL-State-Persistierung**: Tone/Mode/Density wandern automatisch in
+  `?tone=...&mode=...&density=...`. Token-Edits in `?t.--btn-radius=2rem`-
+  Format. Theme-Generator schreibt `?hex=...&name=...`. Beim Page-Load
+  werden alle Werte aus der URL gelesen — Links sind shareable.
+- **Share-URL-Button** auf Foundations: kopiert `location.href` mit
+  aktuellem Stand in die Zwischenablage.
+- **`--asset-root=PFAD` / `DS_ASSET_ROOT` Env-Var**: Override für den
+  Project-Root-Pfad. Default ist relativ (`../../`) für `file://`-
+  Demo-Öffnen; deployment-Workflow setzt `./_ds/` damit Assets unter
+  einem Subpfad gestaged werden können (Naming-Collision-Vermeidung
+  mit Site-Pages).
+- **`.github/workflows/deploy-site.yml`**: GitHub-Pages-Workflow. Stages
+  Site nach `_pages/`, DS-Assets nach `_pages/_ds/`. Trigger: push auf
+  main + manuelles workflow_dispatch.
+- **Check-Site +4 URL-State-Asserts**: query-params-Read, tone-change-
+  Write, token-edit-Write, theme-gen-URL-Roundtrip.
+
+28/28 site-checks bestehen.
+
+### Folgeschritte (v0.8.0 Etappe 5)
+
+- Fehlende `Struktur:`-Blöcke in 13 Component-Headern (button, badge,
+  tag, card, avatar, switch, select, section, spinner, toast, tree, nav).
+- Version-Bump auf 0.8.0 + Release.
 
 ---
 

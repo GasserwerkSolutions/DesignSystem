@@ -130,6 +130,92 @@ async function runInteractions(browser) {
   return errors;
 }
 
+async function runUrlState(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+
+  await page.goto(
+    "file://" +
+      path.join(SITE_DIR, "components/alert.html") +
+      "?tone=premium&mode=dark&density=compact",
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+  const stateFromUrl = await page.evaluate(() => ({
+    tone: document.documentElement.getAttribute("data-tone"),
+    mode: document.documentElement.getAttribute("data-mode"),
+    density: document.documentElement.getAttribute("data-density"),
+  }));
+
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "foundations.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+  await page.select('[data-axis="tone"]', "playful");
+  await new Promise((r) => setTimeout(r, 100));
+  const urlAfterToneChange = await page.evaluate(() => location.search);
+
+  await page.evaluate(() => {
+    const btn = document.querySelector('[data-edit-token="--radius-12"]');
+    btn.click();
+  });
+  await new Promise((r) => setTimeout(r, 50));
+  await page.evaluate(() => {
+    const input = document.querySelector(".foundation-token__edit-input");
+    input.value = "3rem";
+    input.dispatchEvent(new Event("blur"));
+  });
+  await new Promise((r) => setTimeout(r, 100));
+  const urlAfterEdit = await page.evaluate(() => location.search);
+
+  await page.goto(
+    "file://" +
+      path.join(SITE_DIR, "themes.html") +
+      "?hex=%23ef4444&name=fire",
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 400));
+  const themeGenFromUrl = await page.evaluate(() => ({
+    hex: document.querySelector("[data-theme-gen-hex]").value,
+    name: document.querySelector("[data-theme-gen-name]").value,
+    cssHasFire: document
+      .querySelector("[data-theme-gen-css]")
+      .textContent.includes('[data-tone~="fire"]'),
+  }));
+
+  await page.close();
+
+  const checks = [
+    [
+      "url-state: axis from query params on load",
+      stateFromUrl.tone === "premium" &&
+        stateFromUrl.mode === "dark" &&
+        stateFromUrl.density === "compact",
+    ],
+    [
+      "url-state: tone change writes ?tone=playful",
+      urlAfterToneChange.includes("tone=playful"),
+    ],
+    [
+      "url-state: token edit writes ?t.--radius-12=...",
+      urlAfterEdit.includes("t.--radius-12=3rem"),
+    ],
+    [
+      "url-state: theme-gen reads hex+name from URL",
+      themeGenFromUrl.hex === "#ef4444" &&
+        themeGenFromUrl.name === "fire" &&
+        themeGenFromUrl.cssHasFire,
+    ],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
 async function runThemeGenerator(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
@@ -262,8 +348,10 @@ async function runFoundationsEdit(browser) {
   const foundationErrs = await runFoundationsEdit(browser);
   console.log("[check-site] Theme-Generator:");
   const themeGenErrs = await runThemeGenerator(browser);
+  console.log("[check-site] URL-State:");
+  const urlStateErrs = await runUrlState(browser);
   await browser.close();
-  const total = smokeErrs + interactionErrs + foundationErrs + themeGenErrs;
+  const total = smokeErrs + interactionErrs + foundationErrs + themeGenErrs + urlStateErrs;
   console.log(
     total === 0
       ? "[check-site] passed."

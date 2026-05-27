@@ -301,6 +301,24 @@ ${lines}
     code.textContent = css;
   }
 
+  let urlSyncQueued = false;
+  function syncThemeGenUrl(hex, name) {
+    if (urlSyncQueued) return;
+    urlSyncQueued = true;
+    requestAnimationFrame(() => {
+      urlSyncQueued = false;
+      const params = new URLSearchParams(location.search);
+      params.set("hex", hex);
+      if (name && name !== "custom") params.set("name", name);
+      else params.delete("name");
+      history.replaceState(
+        null,
+        "",
+        location.pathname + "?" + params.toString() + location.hash
+      );
+    });
+  }
+
   function regenerate() {
     const hex = document.querySelector("[data-theme-gen-hex]").value.trim();
     const name = (document.querySelector("[data-theme-gen-name]").value.trim() || "custom").toLowerCase().replace(/[^a-z0-9-]/g, "-");
@@ -312,8 +330,25 @@ ${lines}
       renderColorBlind(palette, verdicts);
       renderPreview(palette, name);
       renderCss(palette, name);
+      syncThemeGenUrl(hex, name);
     } catch (e) {
       console.error("[theme-gen] error:", e);
+    }
+  }
+
+  function readUrlState() {
+    const params = new URLSearchParams(location.search);
+    const hex = params.get("hex");
+    const name = params.get("name");
+    if (hex && /^#[0-9a-f]{6}$/i.test(hex)) {
+      const hexInput = document.querySelector("[data-theme-gen-hex]");
+      const colorInput = document.querySelector("[data-theme-gen-color]");
+      if (hexInput) hexInput.value = hex;
+      if (colorInput) colorInput.value = hex;
+    }
+    if (name) {
+      const nameInput = document.querySelector("[data-theme-gen-name]");
+      if (nameInput) nameInput.value = name;
     }
   }
 
@@ -322,6 +357,8 @@ ${lines}
     const hexInput = document.querySelector("[data-theme-gen-hex]");
     const nameInput = document.querySelector("[data-theme-gen-name]");
     if (!colorInput || !hexInput || !nameInput) return;
+
+    readUrlState();
 
     colorInput.addEventListener("input", () => {
       hexInput.value = colorInput.value;

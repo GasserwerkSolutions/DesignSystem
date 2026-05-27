@@ -34,6 +34,11 @@ const PKG_VERSION = JSON.parse(
   fs.readFileSync(path.join(ROOT, "package.json"), "utf8")
 ).version;
 
+const ASSET_ROOT_ARG = process.argv
+  .find((a) => a.startsWith("--asset-root="))
+  ?.split("=")[1];
+const ASSET_ROOT_OVERRIDE = ASSET_ROOT_ARG || process.env.DS_ASSET_ROOT || null;
+
 /* =========================================================================
    1) HEADER PARSER
    ========================================================================= */
@@ -493,7 +498,7 @@ function escapeHtml(s) {
  * Topbar = Tone/Mode/Density-Switcher.
  */
 function pageShell({ title, navHref, body, sidebar, relRoot = "./", extraScripts = [] }) {
-  const projectRoot = `${relRoot}../../`;
+  const projectRoot = ASSET_ROOT_OVERRIDE || `${relRoot}../../`;
   const extraScriptTags = extraScripts
     .map((src) => `<script defer src="${relRoot}${src}"></script>`)
     .join("\n  ");
@@ -762,7 +767,7 @@ function renderComponentPage(meta, allComponents) {
         ${renderModifiers(meta.modifiers)}
 
         <footer class="site-doc__footer">
-          <a class="btn btn--ghost btn--sm" href="../../../components/${meta.name}.css">Source-CSS ansehen</a>
+          <a class="btn btn--ghost btn--sm" href="${ASSET_ROOT_OVERRIDE || "../../../"}components/${meta.name}.css">Source-CSS ansehen</a>
         </footer>
       </article>`;
 
@@ -858,8 +863,13 @@ function renderFoundationsPage(components, allTokens) {
           <p class="site-doc__lede">
             ${tokenCount} Design-Tokens — die Atome des Systems. Klicke
             <strong>Edit</strong> bei einem Token, um seinen Wert live zu
-            ändern. Resette via <button type="button" class="btn btn--ghost btn--sm" data-foundation-reset>Alle Edits zurücksetzen</button>.
+            ändern. Aktive Edits + Tone/Mode/Density wandern in die URL —
+            teilbar via Copy.
           </p>
+          <div class="site-doc__cta">
+            <button type="button" class="btn btn--sm" data-share-url>URL kopieren</button>
+            <button type="button" class="btn btn--ghost btn--sm" data-foundation-reset>Edits zurücksetzen</button>
+          </div>
           <nav class="foundation-toc" aria-label="Token-Gruppen">
             <ul>${toc}</ul>
           </nav>
@@ -1324,12 +1334,43 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
 }
 `;
 
-const SITE_JS = `/* Site-Runtime — axis-switchers (tone/mode/density) + sidebar-search. */
+const SITE_JS = `/* Site-Runtime — axis-switchers, sidebar-search, URL-state, token-edits.
+   URL-State-Konvention:
+     ?tone=premium&mode=dark&density=compact
+     &t.--btn-radius=2rem&t.--color-interactive=%231db954
+   Token-Edits werden mit "t."-Prefix vor dem Token-Namen kodiert. */
 (function () {
   const root = document.documentElement;
+  const editedTokens = new Map();
+  let urlSyncQueued = false;
+
+  function getUrlParams() {
+    return new URLSearchParams(location.search);
+  }
+
+  function syncUrl() {
+    if (urlSyncQueued) return;
+    urlSyncQueued = true;
+    requestAnimationFrame(() => {
+      urlSyncQueued = false;
+      const params = new URLSearchParams();
+      const tone = root.getAttribute("data-tone");
+      const mode = root.getAttribute("data-mode");
+      const density = root.getAttribute("data-density");
+      if (tone && tone !== "trust") params.set("tone", tone);
+      if (mode && mode !== "light") params.set("mode", mode);
+      if (density && density !== "comfortable") params.set("density", density);
+      for (const [name, value] of editedTokens) {
+        params.set("t." + name, value);
+      }
+      const search = params.toString();
+      const url = location.pathname + (search ? "?" + search : "") + location.hash;
+      history.replaceState(null, "", url);
+    });
+  }
 
   function readState() {
-    const params = new URLSearchParams(location.search);
+    const params = getUrlParams();
     const tone = params.get("tone") || localStorage.getItem("ds-tone") || "trust";
     const mode = params.get("mode") || localStorage.getItem("ds-mode") || "light";
     const density = params.get("density") || localStorage.getItem("ds-density") || "comfortable";
@@ -1338,12 +1379,20 @@ const SITE_JS = `/* Site-Runtime — axis-switchers (tone/mode/density) + sideba
     root.setAttribute("data-density", density);
     document.querySelectorAll('[data-axis="tone"]').forEach((el) => (el.value = tone));
     document.querySelectorAll('[data-axis="density"]').forEach((el) => (el.value = density));
+
+    for (const [key, value] of params) {
+      if (key.startsWith("t.")) {
+        const tokenName = key.slice(2);
+        applyTokenEdit(tokenName, value);
+      }
+    }
   }
 
   function persist() {
     localStorage.setItem("ds-tone", root.getAttribute("data-tone"));
     localStorage.setItem("ds-mode", root.getAttribute("data-mode"));
     localStorage.setItem("ds-density", root.getAttribute("data-density"));
+    syncUrl();
   }
 
   document.addEventListener("change", (e) => {
@@ -1373,13 +1422,20 @@ const SITE_JS = `/* Site-Runtime — axis-switchers (tone/mode/density) + sideba
   });
 
   /* Foundations: Live-Token-Edit */
-  const editedTokens = new Map();
-
-  function setTokenValue(name, value) {
+  function applyTokenEdit(name, value) {
     root.style.setProperty(name, value);
     editedTokens.set(name, value);
     const item = document.querySelector(\`[data-token-name="\${name}"]\`);
-    if (item) item.classList.add("foundation-token--edited");
+    if (item) {
+      item.classList.add("foundation-token--edited");
+      const valueEl = item.querySelector(".foundation-token__value");
+      if (valueEl && valueEl.tagName === "SPAN") valueEl.textContent = value;
+    }
+  }
+
+  function setTokenValue(name, value) {
+    applyTokenEdit(name, value);
+    syncUrl();
   }
 
   function resetTokenValue(name) {
@@ -1387,10 +1443,17 @@ const SITE_JS = `/* Site-Runtime — axis-switchers (tone/mode/density) + sideba
     editedTokens.delete(name);
     const item = document.querySelector(\`[data-token-name="\${name}"]\`);
     if (item) item.classList.remove("foundation-token--edited");
+    syncUrl();
   }
 
   function resetAllTokens() {
-    for (const name of [...editedTokens.keys()]) resetTokenValue(name);
+    for (const name of [...editedTokens.keys()]) {
+      root.style.removeProperty(name);
+      const item = document.querySelector(\`[data-token-name="\${name}"]\`);
+      if (item) item.classList.remove("foundation-token--edited");
+    }
+    editedTokens.clear();
+    syncUrl();
   }
 
   document.addEventListener("click", (e) => {
@@ -1434,6 +1497,16 @@ const SITE_JS = `/* Site-Runtime — axis-switchers (tone/mode/density) + sideba
       resetAllTokens();
       document.querySelectorAll(".foundation-token__value").forEach((el) => {
         el.textContent = el.getAttribute("data-original-value");
+      });
+    }
+    const shareBtn = e.target.closest("[data-share-url]");
+    if (shareBtn) {
+      navigator.clipboard.writeText(location.href).then(() => {
+        const original = shareBtn.textContent;
+        shareBtn.textContent = "✓ Kopiert";
+        setTimeout(() => (shareBtn.textContent = original), 1500);
+      }).catch(() => {
+        shareBtn.textContent = "× Fehler";
       });
     }
   });
@@ -1746,6 +1819,24 @@ const THEME_GEN_JS = `/* Theme-Generator: HEX → OKLCH-Palette + Color-Blind-Ch
     code.textContent = css;
   }
 
+  let urlSyncQueued = false;
+  function syncThemeGenUrl(hex, name) {
+    if (urlSyncQueued) return;
+    urlSyncQueued = true;
+    requestAnimationFrame(() => {
+      urlSyncQueued = false;
+      const params = new URLSearchParams(location.search);
+      params.set("hex", hex);
+      if (name && name !== "custom") params.set("name", name);
+      else params.delete("name");
+      history.replaceState(
+        null,
+        "",
+        location.pathname + "?" + params.toString() + location.hash
+      );
+    });
+  }
+
   function regenerate() {
     const hex = document.querySelector("[data-theme-gen-hex]").value.trim();
     const name = (document.querySelector("[data-theme-gen-name]").value.trim() || "custom").toLowerCase().replace(/[^a-z0-9-]/g, "-");
@@ -1757,8 +1848,25 @@ const THEME_GEN_JS = `/* Theme-Generator: HEX → OKLCH-Palette + Color-Blind-Ch
       renderColorBlind(palette, verdicts);
       renderPreview(palette, name);
       renderCss(palette, name);
+      syncThemeGenUrl(hex, name);
     } catch (e) {
       console.error("[theme-gen] error:", e);
+    }
+  }
+
+  function readUrlState() {
+    const params = new URLSearchParams(location.search);
+    const hex = params.get("hex");
+    const name = params.get("name");
+    if (hex && /^#[0-9a-f]{6}$/i.test(hex)) {
+      const hexInput = document.querySelector("[data-theme-gen-hex]");
+      const colorInput = document.querySelector("[data-theme-gen-color]");
+      if (hexInput) hexInput.value = hex;
+      if (colorInput) colorInput.value = hex;
+    }
+    if (name) {
+      const nameInput = document.querySelector("[data-theme-gen-name]");
+      if (nameInput) nameInput.value = name;
     }
   }
 
@@ -1767,6 +1875,8 @@ const THEME_GEN_JS = `/* Theme-Generator: HEX → OKLCH-Palette + Color-Blind-Ch
     const hexInput = document.querySelector("[data-theme-gen-hex]");
     const nameInput = document.querySelector("[data-theme-gen-name]");
     if (!colorInput || !hexInput || !nameInput) return;
+
+    readUrlState();
 
     colorInput.addEventListener("input", () => {
       hexInput.value = colorInput.value;
