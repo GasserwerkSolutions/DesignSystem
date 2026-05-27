@@ -45,6 +45,7 @@ const TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal"]
 const MODES = ["light", "dark"];
 
 const VIEWPORT = { width: 1280, height: 900 };
+const METADATA_FILE = path.join(ROOT, "tests", "visual", ".metadata.json");
 // Anti-Aliasing-Toleranz pro Pixel; pixelmatch-default ist 0.1 (mild).
 const PIXEL_THRESHOLD = 0.1;
 // Absolute Pixel-Toleranz (catches AA-drift + Font-Hinting, fängt aber
@@ -96,7 +97,44 @@ async function setupPage(page) {
   ]);
 }
 
+/**
+ * Host-Info: Browser-Version + Platform. Wird in tests/visual/.metadata.json
+ * geschrieben beim --update + bei normalen Runs verglichen. Drift macht
+ * Pixel-Diffs wahrscheinlicher → Konsumenten sehen die Ursache vor dem
+ * Run statt nach dem Debug.
+ */
+async function getHostInfo(browser) {
+  return {
+    chromiumVersion: await browser.version(),
+    platform: process.platform,
+    arch: process.arch,
+    nodeVersion: process.version,
+    viewport: VIEWPORT,
+  };
+}
+
+function compareHostInfo(baseline, current) {
+  const drifts = [];
+  if (baseline.chromiumVersion !== current.chromiumVersion) {
+    drifts.push(`chromium: baseline=${baseline.chromiumVersion}, current=${current.chromiumVersion}`);
+  }
+  if (baseline.platform !== current.platform) {
+    drifts.push(`platform: baseline=${baseline.platform}, current=${current.platform}`);
+  }
+  if (baseline.arch !== current.arch) {
+    drifts.push(`arch: baseline=${baseline.arch}, current=${current.arch}`);
+  }
+  if (baseline.viewport.width !== current.viewport.width || baseline.viewport.height !== current.viewport.height) {
+    drifts.push(`viewport: baseline=${baseline.viewport.width}x${baseline.viewport.height}, current=${current.viewport.width}x${current.viewport.height}`);
+  }
+  return drifts;
+}
+
 async function captureCombination(page, tone, mode) {
+  // networkidle0 ist notwendig: domcontentloaded führt zu Dimension-Drift
+  // (Page noch nicht voll gerendert wenn screenshot läuft, Font-Fallback-
+  // Layout-Shifts produzieren unterschiedliche Höhen zwischen Runs).
+  // Verifiziert in v0.6.6-Experimenten — Trade-off Zeit vs Determinismus.
   await page.goto("file://" + path.resolve(ROOT, "index.html"), {
     waitUntil: "networkidle0",
   });
@@ -326,6 +364,26 @@ async function main() {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
+  const currentHost = await getHostInfo(browser);
+
+  // Host-Drift gegen Baseline-Metadata prüfen — sichtbar machen, dass
+  // Pixel-Diffs auf Browser/Platform-Drift zurückgehen könnten.
+  if (fs.existsSync(METADATA_FILE)) {
+    const baselineMeta = JSON.parse(fs.readFileSync(METADATA_FILE, "utf8"));
+    const drifts = compareHostInfo(baselineMeta, currentHost);
+    if (drifts.length > 0) {
+      console.warn("  [warn] Host-Drift gegenüber Baseline-Metadata:");
+      drifts.forEach((d) => console.warn(`         → ${d}`));
+      console.warn("         Pixel-Diffs könnten auf Browser/Platform-Drift zurückgehen.");
+      console.warn("         Baseline auf aktuellem Host regenerieren: npm run check:visual:update");
+      console.warn("");
+    }
+  } else if (!UPDATE && !CREATE) {
+    console.warn("  [warn] Keine Baseline-Metadata gefunden — VRT kann Cross-Host-Drift nicht erkennen.");
+    console.warn("         Initialisieren mit: npm run check:visual:update");
+    console.warn("");
+  }
+
   let createdCount = 0;
   let failCount = 0;
   let okCount = 0;
@@ -389,6 +447,13 @@ async function main() {
           okCount++;
         }
       }
+    }
+
+    // Metadata bei Update/Create-Run mit aktuellem Host schreiben —
+    // serves as Vertrag: "diese Baselines wurden auf DIESEM Browser erstellt".
+    if (UPDATE || (CREATE && createdCount > 0)) {
+      fs.writeFileSync(METADATA_FILE, JSON.stringify(currentHost, null, 2));
+      console.log(`  [meta]  baseline-metadata aktualisiert: ${currentHost.chromiumVersion} auf ${currentHost.platform}/${currentHost.arch}`);
     }
   } finally {
     await browser.close();

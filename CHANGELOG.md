@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.6.6] — Host-Diagnostic + Pipeline-Orchestrator (Schwächen #3 + #5 — ehrlich partial)
+
+Ursprünglich geplant: "Playwright-Migration löst #3 + #5 magisch". Realität:
+in der sandboxed Dev-Umgebung kein Internet für Playwright-Browser-Binaries,
+plus zwei eigene Optimierungs-Versuche brachen den Determinismus (Wait-
+Strategy) oder hatten keinen Effekt (Parallelisierung auf single-vCPU).
+
+Resultat: pragmatische Teil-Lösungen statt Big-Bang-Migration.
+
+### Hinzugefügt
+
+- **Host-Metadata für VRT** (Schwäche #3 partial): bei `--update`/`--create` schreibt `check-visual.js` `tests/visual/.metadata.json` mit `chromiumVersion`, `platform`, `arch`, `viewport`. Bei normalen Runs wird die aktuelle Host-Info verglichen → Drifts werden **soft-warned** mit klarer Diff-Anzeige. Aktiv verifiziert durch injizierten `darwin/Chrome120 vs linux/Chrome149`-Test.
+  - **Pattern:** sichtbar machen statt magisch verhindern. Konsumenten sehen vor dem Debug, dass Pixel-Diffs auf Browser-Drift zurückgehen könnten.
+- **`scripts/check-rendered.js`** als Parallel-Orchestrator für die 3 Puppeteer-Skripte (a11y, visual, journeys). Funktional korrekt, default-pipeline nutzt es nicht weil Sandbox-CPU-Limit Parallelisierung neutralisiert. **In CI mit Multi-Core wird Win realisiert** (Schwäche #5 partial — Werkzeug vorhanden, Aktivierung in v0.7 mit CI).
+- **`playwright` als devDep** für künftige Cross-Browser-Aktivierung in v0.7+. Heute nicht produktiv genutzt — Browser-Binaries-Download in Sandbox nicht möglich.
+
+### Diagnostische Erkenntnisse
+
+- **Wait-Strategy-Optimization fehlgeschlagen:** `domcontentloaded` statt `networkidle0` sparte 7 s pro Run, brach aber Determinismus (Font-Fallback-Layout-Shifts → Dimension-Mismatch in 3/12 Baselines). `networkidle0` ist notwendig, im Code-Comment dokumentiert.
+- **Parallelisierung neutralisiert** auf single-vCPU-Sandbox: parallel 50 s ≈ serial 50 s. Real-Time-Win nur mit echtem CPU-Headroom. `--serial`-Flag im Orchestrator für constrained Environments.
+- **Visual-Real-Cost: ~38 s** (vorher fälschlich auf 12 s geschätzt). Dominiert die Pipeline. Echte Optimierung-Vektoren: weniger Tone×Mode-Kombinationen, kleinerer Viewport, oder Page-Reuse statt 12 page.goto-Calls (letztes ist riskant für State-Leakage).
+
+### Schwächen-Hardening-Status (ehrlich)
+
+- #1 ✓ v0.6.4 (Self-Tests)
+- #2 ✓ v0.6.4 (Sensitivity-Suite)
+- **#3 partial v0.6.6** (Host-Diagnostic sichtbar, echte Prevention erfordert Docker-pinned CI in v0.7+)
+- #4 ✓ v0.6.5 (Journey-Tests)
+- **#5 partial v0.6.6** (Orchestrator vorhanden, Aktivierung mit CI)
+
+### Lehre
+
+Mein v0.6.5-Versprechen "v0.6.6 löst #3 + #5 via Playwright-Migration" war über-optimistisch. Bundled-Chromium löst Cross-Host-Determinismus **nicht magisch** (Drift bei Updates bleibt). Parallelisierung bringt **nur unter bestimmten Bedingungen** Wert. Ehrliche partial-Lösungen + transparent dokumentierte Limitations > false-Promise-Big-Bang.
+
+---
+
 ## [0.6.5] — User-Journey-Tests (adressiert Schwäche #4)
 
 End-to-End-Behauptungen über echte User-Interaktionen. Schließt die Lücke
