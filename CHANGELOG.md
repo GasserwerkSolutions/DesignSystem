@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.6.3] — Visual-Regression-Testing (pixelmatch + Puppeteer)
+
+Sechster Pipeline-Schritt: das visuelle Render wird jetzt deterministisch
+gegen Baselines geprüft. Schließt die letzte Test-Lücke — Lint deckt
+Source-Patterns, Contrast deckt numerische Cascade, A11Y deckt ARIA-
+Verträge; VRT deckt **"sieht's gerendert noch aus wie erwartet?"**.
+
+### Hinzugefügt
+
+- **`scripts/check-visual.js`**: Puppeteer fährt 12 Tone × Mode-Kombinationen ab, macht full-page-Screenshots, vergleicht mit Baselines via `pixelmatch` (Anti-Aliasing-Toleranz pro Pixel: 0.1, max absolute Pixel-Diff: 500).
+- **`tests/visual/<tone>-<mode>.png`** als Baselines (12 PNGs, total ~4.3 MB).
+- **`tests/visual/_diff/`** (gitignored) für Fail-Cases — schreibt Diff-Image + Actual-Image, damit lokale Inspection möglich.
+- **`npm run check:visual`** + **`check:visual:update`** + Integration in `check:full` als 6. Schritt.
+
+### Determinismus-Fixes (entdeckt + behoben während Entwicklung)
+
+- **Animation-Stop**: `prefers-reduced-motion: reduce` reichte NICHT — Spinner-CSS verlangsamt darunter nur (2.5s/Umdrehung statt 700ms). Headless Chromium tickt animation-frames non-deterministisch → erster Run failt mit 0.7% Diff in einem Theme, andere identisch. **Lösung:** vor jedem Screenshot injizierter Style-Tag setzt `animation-duration: 0.001ms !important` global → End-State sofort gerendert. Plus 2× `requestAnimationFrame()`-Wait für letzten Layout-Tick.
+- **`localStorage.clear()` Reihenfolge**: lief vor `page.goto()` → SecurityError ("Access is denied for this document"). Reihenfolge umgekehrt.
+- **Threshold-Kalibrierung**: erste Implementierung mit `MAX_DIFF_RATIO = 0.005` (0.5%) ließ einen 16px-Radius-Change in trust-Theme (= 2502 px Diff = 0.010%) durch. Negative-Test fing das, Threshold auf absolute `MAX_DIFF_PIXELS = 500` umgestellt — fängt jetzt realistische CSS-Token-Änderungen.
+- **Stale-`_diff/`-Cleanup**: Diff-Files aus früheren Fail-Runs blieben liegen → Confusion mit veralteten Spuren. Beim Start des Skripts wird `_diff/` geleert.
+
+### Validierung
+
+- **Deterministisch:** zwei aufeinanderfolgende Runs → 12/12 pixel-identical ✓
+- **Negative-Test (verifiziert):** trust `--btn-radius: 8 → 24` injiziert → trust-light + trust-dark fail mit 2502/2528 px Diff, exit=1, Diff-Bilder geschrieben ✓
+- **Pipeline 6-stufig grün:** Lint (4) → Test-Lint (18) → Static-Contrast (1008) → Browser-Contrast (180) → A11Y (0) → Visual (12) ✓
+
+### Bewusste Grenzen (für spätere Etappen)
+
+- **Nur full-page-Screenshots, default-state.** Interaktive States (Popover/Combobox/Modal open, Drag-State, Hover) bekommen ihre eigenen Snapshots in v0.9 mit per-Component-Showcase.
+- **Nur Chromium.** Cross-Browser (Firefox + Webkit) folgt in v0.6.5.
+- **Demo als single Render-Quelle.** Pro-Component-Isolation kommt mit der Showcase-Site in v0.9.
+
+---
+
 ## [0.6.2] — Self-Review-Pass: 2 echte Bugs in v0.6.0+v0.6.1 gefixt
 
 Vor dem nächsten Roadmap-Schritt (Visual-Regression) eine systematische

@@ -1,3 +1,6 @@
 node_modules/
 .DS_Store
 *.log
+
+# Visual-Regression-Diffs (Baselines werden committed, Diffs nur lokal)
+tests/visual/_diff/
