@@ -1,5 +1,104 @@
 # Changelog
 
+## [0.31.0] — Reduced-Motion-Bewusstsein als Two-Layer-Garantie (CLEAR 4 Prinzip 5)
+
+Fünfte konkrete Umsetzung der Nervensystem-Verfassung. Der letzte
+Pfad-Filter: das Bewusstsein für `prefers-reduced-motion`.
+
+### Vorher — zwei Lücken
+
+**Lücke 1: Spinner-Override greift faktisch nicht.**
+
+`reset.css` setzt `animation-duration: 0.01ms !important` global.
+`spinner.css` hatte einen Override:
+```css
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 2500ms; }   /* OHNE !important */
+}
+```
+
+Mit `!important` kehrt sich die Layer-Order um — `reset` schlägt
+`components`. Der Override war faktisch toter Code. Der CSS-Header
+log: er versprach "langsam statt aus", real war es "aus". Stille
+Diskrepanz, kein Test hat es je gemeldet.
+
+**Lücke 2: Bewusstsein war Konvention, nicht Pflicht.**
+
+Component-Autoren konnten `animation:` schreiben ohne sich aktiv
+mit reduced-motion zu beschäftigen. Globaler `!important` fängt
+den Default — aber wer bewusst override wollte hatte keinen
+Hinweis, und Reviewer mussten raten ob die Frage gestellt wurde.
+
+### Nachher
+
+**Spinner-Strategie umgekehrt.** Der Override-Block wird entfernt.
+Unter reduced-motion stoppt die Rotation vollständig. Loading-
+Affordance kommt aus dem `spinner-block`-Pattern via visible-text.
+Ein standalone Indeterminate-Spinner ohne visible-text ist nicht
+verboten, aber **erklärungspflichtig** — Header dokumentiert das
+explizit.
+
+Begründung (User-Wortlaut):
+> "Die ursprüngliche Idee 'langsame Rotation ist besser als
+> Opacity-Pulse' war korrekt INNERHALB der Annahme, dass ein
+> Indeterminate-Indicator Bewegung braucht. Aber für P5 ist die
+> stärkere Regel: Bewegung darf nicht die einzige Quelle von
+> Zustandsverständnis sein."
+
+### Two-Layer-Garantie
+
+> "Lint prüft Bewusstsein; Browser-Test prüft Wahrheit."
+> — User, ADR-007
+
+**Layer-1: Lint Check 7 (mandatory).** Jede `.css` mit `animation:`
+muss EINE von drei Bedingungen erfüllen:
+
+- **(a)** Lokaler `@media (prefers-reduced-motion: reduce)` Block
+  in der Datei
+- **(b)** `/* reduced-motion: handled by reset.css */` Comment vor
+  der `animation:`-Declaration
+- **(c)** Mikro-Feedback: duration ≤ 100ms UND NICHT `infinite`
+
+Die `nicht infinite`-Klausel schließt den Flimmer-Escape: `100ms
+infinite` ist kurz, aber pathologisch wenn unbeschränkt.
+
+**Layer-2: `runReducedMotionTruth()` in check-site.js.** Browser
+emuliert `prefers-reduced-motion: reduce`, Fixture rendert spinner,
+skeleton, toast, back-to-top, probt `getComputedStyle().
+animationDuration` ≤ 50ms. Fängt den `!important`-Layer-Inversion-
+Bug ein den Lint nicht sehen kann.
+
+### Test-Coverage
+
+`scripts/test-lint.js` +6 Fixtures:
+- naked animation 1s infinite → exit 1 ✓
+- lokaler reduced-motion-Block → exit 0 ✓
+- preceding "reduced-motion" Comment → exit 0 ✓
+- 50ms one-shot (Mikro-Feedback) → exit 0 ✓
+- **100ms infinite (Flimmer-Escape geschlossen) → exit 1 ✓**
+- var(--duration) ohne Marker → exit 1 ✓
+
+`scripts/check-site.js` +4 Truth-Checks:
+- spinner / skeleton / toast / back-to-top: animation gestoppt
+  unter reduced-motion ✓
+
+### Files
+
+- `components/spinner.css` — Header umgeschrieben, Override
+  entfernt, Comment vor `animation:`
+- `components/toast.css` — Comment vor `animation:`
+- `scripts/lint-themes.js` — Check 7 (~80 LOC)
+- `scripts/test-lint.js` — 6 Fixtures (Total: 31 passed, 0 failed)
+- `scripts/check-site.js` — `runReducedMotionTruth()` + Pipeline-
+  Hook
+- `ADR-007-reduced-motion-awareness.md` — neu
+
+### Pipeline
+
+lint, test:lint (31/31), contrast (1008 Paare), visual (12/12
+pixel-identical), journeys (6/6), site (inkl. 4 neuer truth-
+checks), package, measure (alle Budgets <100%).
+
 ## [0.30.0] — Exit-Path-Enforcement via `:has()` (CLEAR 4 Prinzip 2)
 
 Vierte konkrete Umsetzung der Nervensystem-Verfassung. v0.27/0.28 haben

@@ -341,6 +341,62 @@ test("cubic-bezier ohne Overshoot (Y <= 1): exit 0", () => {
 });
 
 // ============================================================
+// Check 7: Reduced-Motion-Bewusstsein (CLEAR 4 Prinzip 5)
+// Fixtures landen in components/_test_fixture.css damit Check 7 sie sieht.
+// ============================================================
+function runLintComponent(componentContent) {
+  const tmpFile = path.join(ROOT, "components", "_test_fixture.css");
+  fs.writeFileSync(tmpFile, componentContent);
+  try {
+    const res = spawnSync("node", ["scripts/lint-themes.js"], {
+      cwd: ROOT,
+      encoding: "utf8",
+    });
+    return { stdout: res.stdout, stderr: res.stderr, code: res.status };
+  } finally {
+    if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
+  }
+}
+
+test("animation 1s infinite ohne reduced-motion-Marker: exit 1", () => {
+  const r = runLintComponent(`.fx { animation: spin 1s linear infinite; }`);
+  assertEq(r.code, 1, "naked long-running animation must fail Check 7");
+});
+
+test("animation mit lokalem @media reduced-motion Block: exit 0", () => {
+  const r = runLintComponent(
+    `.fx { animation: spin 1s linear infinite; }\n` +
+      `@media (prefers-reduced-motion: reduce) { .fx { animation: none; } }`
+  );
+  assertEq(r.code, 0, "local reduced-motion block satisfies Bedingung (a)");
+});
+
+test("animation mit preceding 'reduced-motion' Comment: exit 0", () => {
+  const r = runLintComponent(
+    `.fx {\n  /* reduced-motion: handled by reset.css */\n  animation: spin 1s linear infinite;\n}`
+  );
+  assertEq(r.code, 0, "preceding comment satisfies Bedingung (b)");
+});
+
+test("animation 50ms one-shot (Mikro-Feedback): exit 0", () => {
+  const r = runLintComponent(`.fx { animation: pulse 50ms ease-out; }`);
+  assertEq(r.code, 0, "micro-feedback duration ≤100ms non-infinite satisfies Bedingung (c)");
+});
+
+test("animation 100ms infinite (Flimmer-Escape-Hatch): exit 1", () => {
+  // Bedingung (c) gilt nur wenn nicht infinite — Flimmern muss erkannt werden.
+  const r = runLintComponent(`.fx { animation: flicker 100ms linear infinite; }`);
+  assertEq(r.code, 1, "100ms infinite must fail despite short duration");
+});
+
+test("animation mit var(--duration) und keinerlei Marker: exit 1", () => {
+  // var() lässt sich nicht statisch lösen → Bedingung (c) disqualifiziert →
+  // braucht zwingend (a) oder (b).
+  const r = runLintComponent(`.fx { animation: spin var(--duration) linear infinite; }`);
+  assertEq(r.code, 1, "var-based duration ohne marker must fail");
+});
+
+// ============================================================
 // Summary
 // ============================================================
 console.log("");

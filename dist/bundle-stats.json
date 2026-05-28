@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T06:24:49.867Z",
-  "version": "0.29.0",
+  "timestamp": "2026-05-28T18:39:00.122Z",
+  "version": "0.30.0",
   "bundle": {
-    "raw": 140714,
-    "gzip": 21170,
-    "brotli": 17818
+    "raw": 140611,
+    "gzip": 21150,
+    "brotli": 17743
   },
   "minified": {
-    "raw": 112298,
-    "gzip": 19650,
-    "brotli": 16973
+    "raw": 112226,
+    "gzip": 19637,
+    "brotli": 16959
   },
   "layers": [
     {
@@ -39,7 +39,7 @@
     },
     {
       "label": "components",
-      "raw": 175790,
+      "raw": 176359,
       "files": 57
     }
   ],
@@ -81,6 +81,10 @@
       "raw": 3989
     },
     {
+      "name": "spinner",
+      "raw": 3970
+    },
+    {
       "name": "tree",
       "raw": 3787
     },
@@ -111,10 +115,6 @@
     {
       "name": "otp-input",
       "raw": 3582
-    },
-    {
-      "name": "spinner",
-      "raw": 3531
     },
     {
       "name": "modal",
@@ -165,6 +165,10 @@
       "raw": 2863
     },
     {
+      "name": "toast",
+      "raw": 2715
+    },
+    {
       "name": "callout",
       "raw": 2710
     },
@@ -175,10 +179,6 @@
     {
       "name": "code-block",
       "raw": 2610
-    },
-    {
-      "name": "toast",
-      "raw": 2585
     },
     {
       "name": "avatar-stack",

@@ -3,7 +3,7 @@
  * Theme Lint (PostCSS-AST-basiert)
  * =================================
  *
- * Vier Checks:
+ * Sieben Checks (Check 7 läuft über components/, nicht themes/):
  *
  * 1. SELECTOR-CONTRACT (hard-fail)
  *    Themes dürfen nur [data-tone~="..."] selektieren.
@@ -190,6 +190,99 @@ function isMotionDefaultSlot(prop) {
   if (/^--motion-/.test(prop)) return true;
   if (/-transition$/.test(prop)) return true;
   return false;
+}
+
+/**
+ * Check 7 (v0.31.0+): CLEAR 4 Prinzip 5 — Reduced-Motion-Bewusstsein.
+ *
+ * Jede CSS-Datei mit `animation:`-Property MUSS reduced-motion-Verhalten
+ * explizit machen. Drei valide Cases:
+ *
+ *   (a) Lokaler `@media (prefers-reduced-motion: reduce)` Block in der
+ *       Datei. Layer-1-Garantie: der Autor hat die Frage gestellt.
+ *   (b) `/* reduced-motion: handled by reset.css *\/` Comment direkt vor
+ *       der animation-Declaration. Für Cases wo der globale Override aus
+ *       reset.css reicht und der Autor das bewusst dokumentiert.
+ *   (c) Micro-Feedback: Duration ≤ 100ms UND NICHT `infinite`. Die
+ *       infinite-Klausel verhindert dass `100ms infinite` als Flimmer-
+ *       Escape-Hatch durchschmuggelt.
+ *
+ * Trennung: Lint prüft das BEWUSSTSEIN (existiert ein Marker?), der
+ * Layer-2-Self-Test in check-site.js prüft die WAHRHEIT (animation ist
+ * unter reduced-motion tatsächlich gestoppt). Lint allein reicht nicht,
+ * weil reset.css's `animation-duration: 0.01ms !important` die Layer-
+ * Reihenfolge umkehrt — Component-Overrides ohne !important verlieren
+ * und der Browser-Test ist der einzige Weg das zu erwischen.
+ */
+const MICRO_FEEDBACK_MAX_MS = 100;
+
+function parseAnimationDurationMs(value) {
+  /* Erste Time-Literal-Occurrence im shorthand value. var() wird ignoriert
+     (nicht statisch lösbar — wir disqualifizieren dann Bedingung c). */
+  const m = value.match(/(?:^|[\s,])(-?\d*\.?\d+)(ms|s)\b/);
+  if (!m) return null;
+  const n = parseFloat(m[1]);
+  return m[2] === "s" ? n * 1000 : n;
+}
+
+function hasInfinite(value) {
+  return /\binfinite\b/.test(value);
+}
+
+function hasLocalReducedMotionBlock(root) {
+  let found = false;
+  root.walkAtRules("media", (atRule) => {
+    if (/prefers-reduced-motion\s*:\s*reduce/i.test(atRule.params)) {
+      found = true;
+    }
+  });
+  return found;
+}
+
+function precedingCommentMentionsReducedMotion(decl) {
+  /* Check direkt vorausgehender Sibling oder Comment im raws.before. */
+  const prev = decl.prev();
+  if (prev && prev.type === "comment" && /reduced-motion/i.test(prev.text)) {
+    return true;
+  }
+  /* Inline-Comment vor decl: PostCSS speichert das im raws.before. */
+  if (decl.raws && decl.raws.before && /reduced-motion/i.test(decl.raws.before)) {
+    return true;
+  }
+  return false;
+}
+
+function lintComponentReducedMotion(file) {
+  const root = parseFile(file);
+  const violations = [];
+
+  /* Bedingung (a) ist file-global — einmal prüfen. */
+  const hasGlobalRMBlock = hasLocalReducedMotionBlock(root);
+
+  root.walkDecls("animation", (decl) => {
+    const line = decl.source?.start?.line ?? 0;
+    const value = decl.value;
+
+    /* (c) Micro-Feedback */
+    const ms = parseAnimationDurationMs(value);
+    if (ms !== null && ms <= MICRO_FEEDBACK_MAX_MS && !hasInfinite(value)) {
+      return; /* OK — Mikro-Feedback unter Schwellwert */
+    }
+
+    /* (b) Preceding reset-handled comment */
+    if (precedingCommentMentionsReducedMotion(decl)) {
+      return; /* OK — bewusste Reset-Delegation */
+    }
+
+    /* (a) Lokaler reduced-motion-Block */
+    if (hasGlobalRMBlock) {
+      return; /* OK — Autor hat lokalen Override */
+    }
+
+    violations.push({ line, value: value.trim() });
+  });
+
+  return violations;
 }
 
 function lintTheme(file, modeSensitive, axisSensitive) {
@@ -397,6 +490,30 @@ function main() {
     nestedIssues = darkIssues.length;
   }
 
+  // ===== Check 7: Reduced-Motion-Bewusstsein (CLEAR 4 Prinzip 5) =====
+  console.log("");
+  let reducedMotionGaps = 0;
+  for (const dir of [COMPONENTS_DIR, BASE_DIR, SEMANTIC_DIR]) {
+    if (!fs.existsSync(dir)) continue;
+    for (const f of fs.readdirSync(dir).filter((x) => x.endsWith(".css")).sort()) {
+      const filePath = path.join(dir, f);
+      const violations = lintComponentReducedMotion(filePath);
+      if (violations.length === 0) continue;
+      const rel = path.relative(ROOT, filePath);
+      console.error(`[fail]  ${rel}  animation ohne reduced-motion-Bewusstsein (CLEAR 4 Prinzip 5):`);
+      for (const v of violations) {
+        console.error(`        -> line ${v.line}: animation: ${v.value}`);
+      }
+      console.error(`        Erlaubt: (a) lokaler @media (prefers-reduced-motion: reduce) Block,`);
+      console.error(`                 (b) /* reduced-motion: handled by reset.css */ Comment vor decl,`);
+      console.error(`                 (c) duration ≤ 100ms UND nicht infinite.`);
+      reducedMotionGaps += violations.length;
+    }
+  }
+  if (reducedMotionGaps === 0) {
+    console.log("[ok]    components/base/semantic  (reduced-motion-Bewusstsein, Check 7)");
+  }
+
   console.log("");
 
   if (selectorViolations > 0) {
@@ -417,6 +534,10 @@ function main() {
   }
   if (bounceDefaults > 0) {
     console.error(`${bounceDefaults} Bounce-Default-Verletzung(en) (CLEAR 4 Prinzip 1).`);
+    process.exit(1);
+  }
+  if (reducedMotionGaps > 0) {
+    console.error(`${reducedMotionGaps} animation ohne reduced-motion-Bewusstsein (CLEAR 4 Prinzip 5).`);
     process.exit(1);
   }
   if (destructiveWarnings > 0) {

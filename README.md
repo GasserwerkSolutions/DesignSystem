@@ -277,7 +277,8 @@ open dist/site/index.html
 - [ADR-004 — Tone-Paletten Chroma-Filter (CLEAR 4 Prinzip 3)](./ADR-004-palette-chroma-filter.md)
 - [ADR-005 — Bounce nur als explizites Opt-In (CLEAR 4 Prinzip 1)](./ADR-005-bounce-only-as-explicit-opt-in.md)
 - [ADR-006 — Exit-Path-Enforcement via `:has()` (CLEAR 4 Prinzip 2)](./ADR-006-exit-path-enforcement.md)
-- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.30
+- [ADR-007 — Reduced-Motion-Bewusstsein als Two-Layer-Garantie (CLEAR 4 Prinzip 5)](./ADR-007-reduced-motion-awareness.md)
+- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.31
 
 ---
 

@@ -32,6 +32,16 @@
  * Aria-label ist NICHT optional; ohne ihn ist der Spinner ein
  * Verfassungs-Verstoß (Loading ohne erkennbares Ende für SR-Nutzer).
  *
+ * CLEAR 4 Prinzip 5 — Nutzer behält Kontrolle:
+ * Unter `prefers-reduced-motion: reduce` stoppt die Rotation vollständig
+ * (durch den globalen Override in reset.css). Der Loading-Zustand MUSS
+ * dann durch umgebenden visible-text kommuniziert werden, bevorzugt via
+ * `spinner-block`-Pattern. Ein standalone Indeterminate-Spinner ohne
+ * visible-text ist NICHT ausreichend — falls verwendet, MUSS er
+ * dokumentieren wie Progress/Horizont ohne Bewegung kommuniziert wird.
+ *
+ * Bewegung darf nicht die einzige Quelle des Zustandsverständnisses sein.
+ *
  * Struktur:
  *   <span class="spinner" role="status" aria-label="Lädt Buchungen …"></span>
  *
@@ -65,6 +75,8 @@
   border: var(--_stroke) solid var(--_track);
   border-top-color: var(--_color);
   border-radius: var(--radius-full);
+  /* reduced-motion: handled by reset.css — global !important stoppt die
+     Rotation; Horizont kommt aus spinner-block visible-text. */
   animation: spinner-rotate var(--_duration) linear infinite;
   flex-shrink: 0;
   vertical-align: -0.2em;
@@ -94,11 +106,3 @@
   color: var(--color-text-secondary);
 }
 
-/* Reduced-Motion: nicht stoppen — Loading-Affordance bleibt sichtbar.
-   Stattdessen deutlich verlangsamen, sodass keine flackernde Rotation
-   das Auge irritiert. */
-@media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation-duration: 2500ms;
-  }
-}

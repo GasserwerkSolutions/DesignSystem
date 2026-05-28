@@ -54,6 +54,8 @@
   border-radius: var(--radius-md);
   box-shadow: var(--elevation-4);
   pointer-events: auto;
+  /* reduced-motion: handled by reset.css — one-shot 350ms entrance,
+     globaler !important-Override reduziert auf 0.01ms. */
   animation: toast-in var(--motion-entrance);
 }
 

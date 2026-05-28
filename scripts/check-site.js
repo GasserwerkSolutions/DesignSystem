@@ -452,6 +452,86 @@ async function runExitPathEnforcement(browser) {
   return errors;
 }
 
+/* CLEAR 4 P5 — Reduced-Motion-Wahrheit: Lint Check 7 prüft das BEWUSSTSEIN
+   (existiert ein Marker?). Hier prüfen wir die WAHRHEIT (ist die Animation
+   unter reduced-motion tatsächlich neutralisiert?). Layer-2-Self-Test,
+   weil reset.css's `animation-duration: 0.01ms !important` die Layer-
+   Reihenfolge umkehrt — Component-Overrides ohne !important verlieren und
+   nur der Browser kann das definitiv beantworten. */
+async function runReducedMotionTruth(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 800, height: 800 });
+  await page.emulateMediaFeatures([
+    { name: "prefers-reduced-motion", value: "reduce" },
+  ]);
+
+  const fixturePath = path.join(ROOT, ".reduced-motion-fixture.html");
+  fs.writeFileSync(
+    fixturePath,
+    `<!DOCTYPE html>
+<html data-tone="trust" data-mode="light">
+<head><meta charset="utf-8"><link rel="stylesheet" href="main.css"></head>
+<body>
+  <span class="spinner" id="spinner" role="status" aria-label="Lädt Buchungen …"></span>
+  <div class="skeleton" id="skel" style="width:200px;height:1rem"></div>
+  <div class="toast-region"><div class="toast" id="toast"><div class="toast__body">Test</div></div></div>
+  <button class="back-to-top is-visible" id="btt" aria-label="Nach oben">↑</button>
+</body></html>`
+  );
+
+  await page.goto("file://" + fixturePath, { waitUntil: "load" });
+  await new Promise((r) => setTimeout(r, 200));
+
+  const probe = await page.evaluate(() => {
+    const ms = (s) => {
+      if (!s) return 0;
+      const m = String(s).match(/(-?\d*\.?\d+)(ms|s)/);
+      if (!m) return 0;
+      return m[2] === "s" ? parseFloat(m[1]) * 1000 : parseFloat(m[1]);
+    };
+    const probeId = (id) => {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const cs = getComputedStyle(el);
+      return {
+        animationName: cs.animationName,
+        animationDurationMs: ms(cs.animationDuration),
+      };
+    };
+    return {
+      spinner: probeId("spinner"),
+      skel: probeId("skel"),
+      toast: probeId("toast"),
+      btt: probeId("btt"),
+    };
+  });
+
+  await page.close();
+  try { fs.unlinkSync(fixturePath); } catch {}
+
+  /* Schwellwert: 50ms. reset.css setzt 0.01ms via !important; sollte deutlich
+     unter 50ms landen. Component-Override mit !important wäre nominell
+     erlaubt (z.B. wenn jemand bewusst slow-rotation rettet), wird hier aber
+     nicht erwartet — Spinner-Strategie ist Stoppen + visible-text. */
+  const STOPPED_MS = 50;
+  const checks = [
+    ["spinner: rotation stoppt unter reduced-motion",
+      probe.spinner && probe.spinner.animationDurationMs <= STOPPED_MS],
+    ["skeleton: shimmer stoppt unter reduced-motion",
+      probe.skel && probe.skel.animationDurationMs <= STOPPED_MS],
+    ["toast: entrance stoppt unter reduced-motion",
+      probe.toast && probe.toast.animationDurationMs <= STOPPED_MS],
+    ["back-to-top: reveal stoppt unter reduced-motion",
+      probe.btt && probe.btt.animationDurationMs <= STOPPED_MS],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
 async function runRtlSupport(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
@@ -891,8 +971,10 @@ async function runFoundationsEdit(browser) {
   const rtlErrs = await runRtlSupport(browser);
   console.log("[check-site] CLEAR 4 P2 — Exit-Path-Enforcement:");
   const exitErrs = await runExitPathEnforcement(browser);
+  console.log("[check-site] CLEAR 4 P5 — Reduced-Motion-Wahrheit:");
+  const rmErrs = await runReducedMotionTruth(browser);
   await browser.close();
-  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs + headerErrs + modErrs + rtlErrs + exitErrs;
+  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs + headerErrs + modErrs + rtlErrs + exitErrs + rmErrs;
   console.log(
     total === 0
       ? "[check-site] passed."
