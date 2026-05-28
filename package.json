@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
@@ -36,7 +36,8 @@
     "dist/tokens.d.ts",
     "ADR-001-container-max-inheritance.md",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "CONTRIBUTING.md"
   ],
   "scripts": {
     "lint": "node scripts/lint-themes.js",

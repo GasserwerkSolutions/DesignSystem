@@ -1,9 +1,11 @@
 # Design System
 
-Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, Density-Achse, 50 Components, WCAG AA validated.
+Contract-based Multi-Tone CSS Design System.
+**6 Tones × 2 Modes × 3 Densities × Container-Queries** = 4 orthogonale Achsen.
+**54 Components**, **WCAG-AA validiert**, **17.5 KB gzip**.
 
 ```html
-<link rel="stylesheet" href="main.css">
+<link rel="stylesheet" href="./node_modules/@gws/design-system/main.css">
 <html data-tone="trust" data-mode="light" data-density="comfortable">
   <body>
     <button class="btn">Call to action</button>
@@ -11,100 +13,269 @@ Contract-based Multi-Tone CSS Design-System. 6 Themes, Dark-Mode, Density-Achse,
 </html>
 ```
 
-> **Wichtig:** `data-tone`, `data-mode` und `data-density` müssen auf demselben Element sitzen (idiomatisch: `<html>`). Sind sie auf verschiedenen Elementen, überschreibt das innere Element via Custom-Property-Vererbung das äußere — Dark-Mode greift dann nicht für tone-spezifische Token.
-
-`data-density` ist optional; ohne Attribut gilt `comfortable`. Themes mit eigenen Sizing-Tokens (Premium, Playful, Industrial, Minimal) gewinnen über Density — Density-Achse wirkt auf alle anderen interaktiven Components und auf nicht-opinionated Themes (Trust, Modern).
+Drei Achsen-Attribute auf `<html>`, ein Stylesheet, los geht's.
 
 ---
 
-## Core Principles
+## Install
 
-1. **Contract-based** — Components define required/optional Tokens. Themes set only Tokens, never Selectors. Enforced via Lint.
-2. **`@layer`-deterministic cascade** — `reset < tokens < semantic < themes < mode < base < state < components`.
-3. **Tone × Mode matrix** — 6 Tones × 2 Modes. Mode-Layer kommt nach Themes — Dark-Mode überschreibt destruktive Theme-Tokens (z. B. `--color-text-primary` in premium/industrial/minimal) zuverlässig.
-4. **Nested Tone-Scopes funktionieren auch im Dark-Mode** — `dark.css`-Selektoren matchen auch verschachtelte Tone-Subtrees (`[data-mode="dark"] [data-tone]`). Sonst würden destruktive Theme-Tokens im nested Scope ohne Mode-Override gelten.
-5. **A11Y by construction** — WCAG AA contrast verifiziert pro Theme × Mode × kritisches Paar, inklusive Nested-Tone-Kombinationen (336 Checks).
+```bash
+npm install @gws/design-system
+```
+
+```css
+@import "@gws/design-system";              /* alles, 17.5 KB gzip */
+@import "@gws/design-system/min";          /* pre-minified */
+```
+
+Per-Component-Import (CSS-Tree-Shaking):
+
+```css
+@import "@gws/design-system/tokens/tokens.css";
+@import "@gws/design-system/semantic/semantic.css";
+@import "@gws/design-system/themes/trust.css";
+@import "@gws/design-system/components/button.css";
+/* … nur was du brauchst */
+```
+
+Optional: Companion-JS (TypeScript) für interactive Components (Combobox,
+File-Upload, Slider, Theme-Toggle, OTP-Input, Copy-Button, Popover-Anchor):
+
+```js
+import { setupAll } from "@gws/design-system/js";
+setupAll();
+```
+
+Tree-shakable per Component:
+
+```js
+import { setupCombobox } from "@gws/design-system/js/setup-combobox";
+import { setupThemeToggle } from "@gws/design-system/js/setup-theme-toggle";
+```
+
+IIFE-Variante für `file://` ohne Build-Step:
+
+```html
+<script src="./node_modules/@gws/design-system/dist/js/design-system.iife.js"></script>
+<script>DS.setupAll()</script>
+```
 
 ---
 
-## Architecture
+## 4 Achsen
 
-```
-tokens/           Primitive values (rem-based, fluid typography)
-semantic/         Meaning mapping (--color-interactive, --card-bg, ...)
-  dark.css        Dark-mode orthogonal overrides — lebt im 'mode'-Layer
-themes/           6 tones, each setting only tokens
-base/             Reset, Typography, Layout, Print
-state/            Global interaction defaults, prefers-* media queries
-components/       29 components — each a contract (tokens in) + selectors (CSS out)
-scripts/          Lint, Contrast-Check, Token-Export, Type-Generator
-dist/             Generated — tokens.json (W3C DTCG) + tokens.d.ts
-```
+| Achse | Werte | Wie | Beispiel |
+|---|---|---|---|
+| **Tone** | trust, playful, premium, industrial, modern, minimal | `<html data-tone="trust">` | Brand-Identität |
+| **Mode** | light, dark, auto | `<html data-mode="dark">` | Light/Dark/System |
+| **Density** | comfortable, compact, spacious | `<html data-density="compact">` | Touch vs Desktop |
+| **Container** | inline-size queries | `<div class="cq">…</div>` | Component reagiert auf Container, nicht Viewport |
 
-### Layer Order
+Achsen sind **orthogonal** — jede Kombination funktioniert (über 100 Modi
+× Tones validiert, 1008 WCAG-AA-Paare im static-Contrast-Check).
 
-```css
-@layer reset, tokens, semantic, themes, mode, base, state, components;
-```
+---
 
-**Warum `mode` nach `themes`?** Themes setzen Tone-Identität für Light-Mode (z. B. premium: `--color-text-primary: var(--gray-950)`). Ohne den Mode-Layer würde diese hart gesetzte Light-Farbe auch im Dark-Mode greifen — schwarz auf schwarz. Mode-Layer-Reihenfolge stellt sicher, dass Dark-Overrides gewinnen, ohne dass jedes Theme einen Dark-Block pflegen muss.
+## Framework Integration
 
-### Nested-Scope-Pattern in `dark.css`
+CSS-First-DS — funktioniert mit jedem Framework via CSS-Import.
 
-Jede Mode-Rule in `dark.css` matched **zwei** Selektoren via Komma-Liste:
+### React
 
-```css
-[data-mode="dark"],
-[data-mode="dark"] [data-tone] {
-  --color-bg: var(--gray-950);
-  /* ... */
+```jsx
+// main.jsx
+import "@gws/design-system";
+import { setupAll } from "@gws/design-system/js";
+
+function App() {
+  useEffect(() => { setupAll(); }, []);
+  return (
+    <html data-tone="trust" data-mode="light">
+      <button className="btn">CTA</button>
+    </html>
+  );
 }
 ```
 
-Der zweite Selektor ist nötig, weil bei `<html data-mode="dark"><div data-tone="premium">` der nested `<div>` ein eigenes Custom-Property-Setup vom themes-Layer bekommt. Ohne den Descendant-Selektor würde der premium-Token (`--color-text-primary: var(--gray-950)` = fast schwarz) im Dark-Mode greifen — wieder schwarz auf schwarz. Der Lint prüft, dass jeder Mode-Selektor einen Descendant-Partner hat.
+### Vue
+
+```vue
+<!-- main.js -->
+import "@gws/design-system";
+import { setupAll } from "@gws/design-system/js";
+
+<!-- App.vue -->
+<script setup>
+import { onMounted } from "vue";
+onMounted(setupAll);
+</script>
+
+<template>
+  <button class="btn">CTA</button>
+</template>
+```
+
+### Svelte
+
+```svelte
+<!-- App.svelte -->
+<script>
+  import "@gws/design-system";
+  import { setupAll } from "@gws/design-system/js";
+  import { onMount } from "svelte";
+  onMount(setupAll);
+</script>
+
+<button class="btn">CTA</button>
+```
+
+### Astro / Next.js / SvelteKit
+
+CSS-Import in der jeweiligen entry-Datei. `setupAll()` in einem
+client-only-Hook (Astro: `<script>`, Next: `useEffect`, SvelteKit:
+`onMount`).
+
+---
+
+## Theme Generator
+
+HEX → 11-Step-OKLCH-Skala mit Color-Blind-Safety-Check und CSS-Export.
+Doc-Site: `/dist/site/themes.html`.
+
+```bash
+npm run build:site
+open dist/site/themes.html
+```
+
+Generierten Block in `themes/my-tone.css` speichern, in `main.css`
+importieren, fertig.
+
+---
+
+## Theming-Architektur
+
+Layer-Cascade (`reset → tokens → semantic → themes → mode → base → state →
+components`). **Themes setzen nur Tokens, niemals Selektoren** — Lint
+enforced das.
+
+Dark-Mode via **`light-dark(L, D)`** in semantic.css. `color-scheme` auf
+`<html>` triggert die Resolution. Themes können light-dark() ebenfalls
+nutzen für tone-spezifische Mode-Variants.
+
+```css
+[data-tone~="custom"] {
+  --color-interactive: light-dark(#0080ff, #4da8ff);
+  /* anderes Token */
+}
+```
 
 ---
 
 ## Scripts
 
 ```bash
-npm run lint                    # Contract + destruktive-Token-Warnung + nested-mode-coverage
-npm run lint:strict             # destruktive Tokens als hard-fail
-npm run check:contrast          # Static checker: 336 Tone×Mode×Pair Checks (inkl. nested)
-npm run check:contrast:browser  # Browser checker: lädt index.html, klickt durch
-npm run check:contrast:compare  # Beide + Diff
-npm run check                   # lint + static
-npm run check:full              # lint + static + browser
+npm run lint                 # Theme-Contract + axis-blocker (5 checks)
+npm run test:lint            # Lint regression tests (21 cases)
+npm run check:contrast       # 1008 WCAG-AA Paare (6×4×kritisch + nested)
+npm run check:a11y           # axe-core lint + self-test mutations
+npm run check:visual         # VRT — 12 baselines + 3 sensitivity-suite
+npm run check:journeys       # Puppeteer user flows (6 journeys)
+npm run check:site           # Site smoke + 50 interaction asserts
+npm run check:package        # @imports in main.css ∈ files-list + exports map
+npm run measure              # Bundle-Size-Report (raw/gzip/brotli per Layer)
+npm run measure:check        # Bundle-Budget-Check (fails if exceeded)
+npm run build                # Tokens + JS
+npm run build:site           # Static doc-site → dist/site/
+npm run check:full           # Alles, blocking gate vor publish
 ```
 
-### Lint
+---
 
-Vier Checks:
+## Production Stats
 
-1. **Selector-Contract (hard-fail):** Themes dürfen nur `[data-tone~="..."]` selektieren.
-2. **Destruktive mode-sensitive Tokens (warn):** Themes, die Tokens setzen, die auch in `semantic/dark.css` stehen, werden gewarnt. Funktionieren nur wegen `mode`-Layer-Reihenfolge.
-3. **Nested-Mode-Coverage (hard-fail):** Jeder `[data-mode="X"]`-Selektor in `dark.css` braucht einen `[data-mode="X"] [data-tone]`-Descendant-Partner. Sonst verlieren nested Tone-Scopes ihren Dark-Mode.
-4. **Layout-Token-Verbot (hard-fail):** Themes dürfen `--container-max` nicht setzen. Custom-Property-Cascade verengt sonst jeden `.container` (auch UI-Chrome). Editorial-Verengung gehört in `--prose-max` + `.container--prose`. Siehe ADR-001.
+- **54 Components**
+- **271 Design Tokens** (DTCG-konform exportiert in `dist/tokens.json`)
+- **17.5 KB** gzipped (bundle)
+- **6 Tones × 2 Modes × 3 Densities × Container-Queries**
+- **1008** WCAG-AA-Paare verifiziert
+- **50** automated Site-Asserts (smoke + interactions + parser self-test)
+- **6** End-to-End User-Journey-Tests
+- **3** VRT Sensitivity-Suite Mutationen
+- **0** pageerror in der generierten Doc-Site
 
-### Static-Contrast-Checker
+---
 
-Liest Layer-Reihenfolge aus `main.css`, simuliert die Kaskade, resolved Token-References + `color-mix(in oklch, …)`. Prüft:
+## Modern CSS Foundation
 
-- **Root-Scope (96 Checks):** 6 Tones × 4 Modi (light/dark/auto-light/auto-dark) × 4 Pairs
-- **Nested-Scope (240 Checks):** Jedes verschachtelte `<div data-tone="X">` innerhalb von jedem anderen Tone, in Light + Dark, × 4 Pairs
+Aggressiv adoptiert (Baseline 2024+):
 
-### Browser-Checker
+- `color-mix(in oklch, ...)` — perceptually-uniform color mixing
+- `light-dark(L, D)` — single-source-of-truth mode-aware tokens
+- `@container (inline-size)` — Component-level responsive
+- `@property` — typed custom properties (animatable, color-picker in DevTools)
+- `@starting-style` + `transition-behavior: allow-discrete` — smooth
+  enter/exit für popover, modal, drawer
+- `interpolate-size: allow-keywords` — height: auto Animation
+- `field-sizing: content` — auto-grow textarea
+- `accent-color` — branding für native form controls
+- `scrollbar-gutter: stable` — kein Layout-Shift
+- `@scope` — vorbereitet (nicht aktiv)
+- `view-transitions` — smooth Cross-Fade beim Tone/Mode-Switch (Chrome 111+)
 
-Lädt die echte `index.html` in headless Chromium, klickt sich durch alle Theme-Buttons + Dark-Toggle, misst `getComputedStyle()` auf echten DOM-Elementen — inklusive der `.scoped-demo[data-tone~=premium]`-Section. Damit ist die Demo selbst Teil der Validierung: ändert jemand die DOM-Konvention falsch, schreit der Browser-Check.
+Logical Properties durchgehend (RTL-bereit), `prefers-*` media queries
+flächendeckend, forced-colors-mode (Windows HC) für 20 Surfaces explicit.
+
+---
+
+## Architektur
+
+```
+tokens/           Primitive Werte (rem-based, fluid typography)
+semantic/         Bedeutungs-Mapping (--color-interactive, --card-bg, ...)
+  semantic.css    light-dark() Mode-Resolution + Status-Token-Tripel
+  dark.css        Multi-Shadow-Overrides + color-scheme-Mappings
+  density.css     3 Density-Tiers (control/row/item)
+themes/           6 Tones, jeder setzt nur Tokens
+base/             Reset, Typography, Layout, Print
+state/            Global interaction defaults, prefers-* + forced-colors
+components/       54 Components — Contract (Tokens in) + Selektoren (CSS out)
+js/               TypeScript Companion JS für interactive Components
+scripts/          Lint, Contrast, A11Y, Visual, Journeys, Site-Builder, Release
+dist/             Generated artifacts:
+  main.min.css        Minified CSS
+  tokens.json         W3C DTCG Token export
+  tokens.d.ts         TypeScript types
+  bundle-stats.json   Größen-Report
+  js/                 Compiled JS bundles (ESM + IIFE)
+  site/               Interactive Documentation Site
+```
+
+---
+
+## Doc-Site
+
+Generierte interactive Documentation:
+- **Index**: Component-Grid nach Kategorien
+- **Foundations**: 271 Tokens mit Live-Editor
+- **Themes**: HEX → OKLCH-Palette-Generator + Color-Blind-Safety
+- **Components/X**: Live-Beispiele, Tone-Übersicht (6 Tiles), Modifier-Demos
+- **Mega-Menu**: alle 54 Components in 7 Kategorien
+- **Mobile-optimized**
+
+```bash
+npm run build:site
+open dist/site/index.html
+```
+
+---
+
+## Architektur-Entscheidungen
+
+- [ADR-001 — Container-Width-Inheritance](./ADR-001-container-max-inheritance.md)
+- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.20
 
 ---
 
 ## License
 
 [MIT](./LICENSE)
-
----
-
-## Architektur-Entscheidungen
-
-- [ADR-001 — Container-Width-Inheritance bei tone-spezifischen Overrides](./ADR-001-container-max-inheritance.md)

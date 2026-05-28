@@ -1,5 +1,47 @@
 # Changelog
 
+## [0.21.0] — Documentation Expansion (README + CONTRIBUTING)
+
+README.md von 110 auf 290 Zeilen erweitert. Adoptions-orientiert.
+
+### Hinzugefügt
+
+- **README.md** Neu-Struktur:
+  - Quick-Start (3 Zeilen, Achsen-Attribute auf html)
+  - Install via npm + 4 Distribution-Optionen (full, min, per-component,
+    per-theme)
+  - Companion-JS-Setup (setupAll + tree-shakable per-component)
+  - 4-Achsen-Tabelle (Tone × Mode × Density × Container)
+  - **Framework-Integration**: React, Vue, Svelte, Astro/Next/SvelteKit
+    konkrete Code-Snippets
+  - Theme-Generator-Section mit Beispiel-Workflow
+  - Theming-Architektur (light-dark + color-scheme)
+  - 12 Scripts erklärt mit Anwendungsfall
+  - Production-Stats-Block (54 components, 271 tokens, 17.5 KB gzip,
+    1008 WCAG-AA-Paare, 50 site-asserts)
+  - **Modern CSS Foundation** — komplette Liste der adoptierten 2024+
+    Features (color-mix, light-dark, @container, @property,
+    @starting-style, interpolate-size, field-sizing, accent-color,
+    scrollbar-gutter, view-transitions)
+  - Doc-Site-Übersicht mit allen Seiten + Features
+
+- **CONTRIBUTING.md** (Neu):
+  - Setup + Architektur-Regeln
+  - "Neue Component hinzufügen" Workflow mit Header-Konvention
+  - Tests-Tabelle mit allen 9 Check-Scripts
+  - Commit-Style (Etappen-orientiert)
+  - Kontrollrunden-Pattern (Layer-1-Prevention + Layer-2-Self-Test)
+  - Release-Workflow
+  - Browser-Support-Matrix mit Baseline-Hinweisen
+  - ADR-Template-Beschreibung
+
+### Distribution
+
+- CONTRIBUTING.md zu package.json:files hinzugefügt — wird im Tarball
+  ausgeliefert.
+
+---
+
 ## [0.20.0] — View-Transitions + Companion-JS für neue Components
 
 ### Hinzugefügt — View-Transitions
