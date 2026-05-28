@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.19.0] — Forced-Colors-Mode (Windows High Contrast) Erweiterte Coverage
+
+`@media (forced-colors: active)` Block in state.css von 7 Components auf
+20 erweitert — komplette Surface-Coverage für Windows-HC + Edge-HC-User.
+
+### Hinzugefügt zu Forced-Colors-Block
+
+**Surfaces** (sichtbare Trennung zu Canvas via `border: 1px solid CanvasText`):
+btn, card, stat, callout, banner, **alert**, **toast**, **modal**, **drawer**,
+**popover**, **tooltip**, table-wrap, badge, **tag**, **kbd**, **segmented**,
+**copy-btn**, **cmd-palette**, **otp-input__field**, **theme-toggle**.
+
+**State-Indikatoren**:
+- `.btn:hover/:focus-visible` → `Highlight` / `HighlightText`
+- `input/textarea/select:focus-visible` → `Highlight` outline + border
+- `.segmented__item:has(input:checked)` → `Highlight` aktiv
+- `.spinner, .skeleton` → `forced-color-adjust: none` + CanvasText-Border
+
+**Disabled-State** (universell): `color: GrayText; border-color: GrayText`
+für `:disabled` und `[aria-disabled="true"]`.
+
+### Pipeline
+
+Lint, contrast (1008), visual (12 pixel-identical — forced-colors greift
+nur unter Forced-Colors-Mode, Normal-Render unverändert), journeys (6),
+site (50) — alle grün.
+
+---
+
 ## [0.18.0] — Drei komplexere Components: command-palette + otp-input + theme-toggle
 
 Schließt die letzten 3 Standard-Lücken aus der Research-Phase.
