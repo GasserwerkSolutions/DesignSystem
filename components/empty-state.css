@@ -64,3 +64,23 @@
   height: 2.5rem;
   font-size: 1.5rem;
 }
+
+/* CLEAR 4 Prinzip 2: "Kein Zustand ohne Ausgang. Jeder Empty-State zeigt
+   eine nächste Handlung." Strukturelle Durchsetzung via :has() — wenn
+   weder Button noch Link enthalten ist, erscheint ein kalmer Hint nach
+   dem Body. Hint ist visible auch in Production weil Verfassungs-
+   Verletzung ein Bug ist, kein zu versteckendes Detail. */
+.empty-state:not(:has(button, a))::after {
+  content: "ℹ Empty-State braucht eine nächste Handlung (CLEAR 4 P2)";
+  display: block;
+  margin-block-start: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--status-info-bg);
+  color: var(--color-text-secondary);
+  border-inline-start: 3px solid var(--color-info);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  font-family: var(--font-mono);
+  text-align: start;
+  max-width: 36ch;
+}

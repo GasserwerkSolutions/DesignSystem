@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T05:51:29.000Z",
-  "version": "0.28.0",
+  "timestamp": "2026-05-28T06:24:49.867Z",
+  "version": "0.29.0",
   "bundle": {
-    "raw": 139435,
-    "gzip": 20885,
-    "brotli": 17611
+    "raw": 140714,
+    "gzip": 21170,
+    "brotli": 17818
   },
   "minified": {
-    "raw": 111239,
-    "gzip": 19377,
-    "brotli": 16771
+    "raw": 112298,
+    "gzip": 19650,
+    "brotli": 16973
   },
   "layers": [
     {
@@ -34,12 +34,12 @@
     },
     {
       "label": "state",
-      "raw": 4080,
+      "raw": 4389,
       "files": 1
     },
     {
       "label": "components",
-      "raw": 173178,
+      "raw": 175790,
       "files": 57
     }
   ],
@@ -65,16 +65,16 @@
       "raw": 4966
     },
     {
+      "name": "alert",
+      "raw": 4919
+    },
+    {
       "name": "select",
       "raw": 4337
     },
     {
       "name": "timeline",
       "raw": 4052
-    },
-    {
-      "name": "alert",
-      "raw": 3994
     },
     {
       "name": "card",
@@ -111,6 +111,10 @@
     {
       "name": "otp-input",
       "raw": 3582
+    },
+    {
+      "name": "spinner",
+      "raw": 3531
     },
     {
       "name": "modal",
@@ -165,10 +169,6 @@
       "raw": 2710
     },
     {
-      "name": "spinner",
-      "raw": 2676
-    },
-    {
       "name": "funnel",
       "raw": 2626
     },
@@ -191,6 +191,10 @@
     {
       "name": "field",
       "raw": 2439
+    },
+    {
+      "name": "empty-state",
+      "raw": 2426
     },
     {
       "name": "range",
@@ -255,10 +259,6 @@
     {
       "name": "section",
       "raw": 1627
-    },
-    {
-      "name": "empty-state",
-      "raw": 1594
     },
     {
       "name": "breadcrumbs",

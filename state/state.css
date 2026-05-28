@@ -145,6 +145,16 @@ textarea:invalid:focus {
     color: GrayText;
     border-color: GrayText;
   }
+
+  /* CLEAR 4 P2 Exit-Path-Hints bleiben in forced-colors lesbar via
+     System-Palette. */
+  .empty-state:not(:has(button, a))::after,
+  .alert--danger:not(:has(button, a))::after {
+    background: Canvas;
+    color: CanvasText;
+    border-inline-start-color: CanvasText;
+    forced-color-adjust: none;
+  }
 }
 
 /* prefers-reduced-data \u2014 Background-Images, Shadows etc. zur\u00fccknehmen */

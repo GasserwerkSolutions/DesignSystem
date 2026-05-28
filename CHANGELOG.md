@@ -1,5 +1,87 @@
 # Changelog
 
+## [0.30.0] — Exit-Path-Enforcement via `:has()` (CLEAR 4 Prinzip 2)
+
+Vierte konkrete Umsetzung der Nervensystem-Verfassung. v0.27/0.28 haben
+den Color-Pfad gefiltert, v0.29 den Motion-Pfad, v0.30 nimmt sich den
+**Strukturpfad** vor:
+
+> "Kein Zustand ohne Ausgang. Jeder Fehlerzustand zeigt einen Weg nach
+> vorn. Jeder Empty-State zeigt eine nächste Handlung. Jeder Ladezustand
+> hat ein erkennbares Ende."
+
+### Vorher
+
+Drei Stellen verletzten Prinzip 2 still:
+
+- `.empty-state` ohne `button`/`a` war markup-legal — keine Anzeige
+  irgendeiner Art, dass die Verfassung verletzt wurde.
+- `.alert--danger` ohne action / close-button — ein Fehler ohne
+  Vorwärts-Bewegung, ebenfalls markup-legal.
+- `.spinner` mit generischem `aria-label="Lädt …"` — kein benannter
+  Horizont für Screen-Reader-Nutzer.
+
+### Nachher
+
+**Strukturelle Selbst-Anzeige via `:has()`** direkt in der Komponenten-CSS.
+Verletzungen sind production-visible Hints, nicht stille Bugs.
+
+- `components/empty-state.css`:
+  `.empty-state:not(:has(button, a))::after` → status-info-gefärbter
+  Hint "ℹ Empty-State braucht eine nächste Handlung (CLEAR 4 P2)"
+- `components/alert.css`:
+  `.alert--danger:not(:has(button, a))::after` → Hint
+  "ℹ Fehler braucht einen Weg nach vorn (CLEAR 4 P2)"; bonus
+  `flex-wrap: wrap` damit der Hint im violations-Fall auf eine
+  neue Zeile rutscht
+- `components/spinner.css`: Header umgeschrieben — `aria-label`
+  ist nicht mehr "ARIA-Hinweis" sondern **mandatory**. Beispiel-
+  Markup zeigt Subjekt-benannten Horizont (`aria-label="Lädt
+  Buchungen …"`), `spinner-block`-Pattern als visible-text-
+  Companion-Empfehlung. Ohne Sprach-Horizont ist ein
+  Indeterminate-Spinner ein Verfassungs-Verstoß.
+- `state/state.css`: `@media (forced-colors: active)` hat
+  Override-Block damit die Hints unter Windows-High-Contrast
+  lesbar bleiben (Canvas/CanvasText).
+
+### Layer-2-Self-Test — `runExitPathEnforcement()`
+
+`scripts/check-site.js` verifiziert die `:has()`-Regeln am
+echten Browser-Computed-Style. Fixture-HTML neben `main.css`
+rendert vier Markup-Varianten und probt
+`getComputedStyle(el, "::after").content`:
+
+- empty-state ohne CTA → Hint sichtbar ✓
+- empty-state mit CTA → KEIN Hint ✓
+- alert--danger ohne button/a → Hint sichtbar ✓
+- alert--danger mit close-button → KEIN Hint ✓
+
+Failing-Check exited 1 — Self-Test verhindert deterministisch,
+dass die `:has()`-Regel versehentlich broken commitet wird.
+
+### Begründung der Production-Visibility
+
+Konsumenten-HTML steht außerhalb des Library-Repos; Layer-1-Lint
+greift nicht. Eine Verletzung soll sehen, wer sie produziert hat,
+solange sie da ist — nicht erst beim nächsten Audit. Der Hint
+nutzt `status-info` (ruhige Farbe, nicht alarm-rot, Prinzip 4-konform)
+und enthält die Verfassungs-Referenz, damit der Reviewer sofort weiß,
+woran es liegt.
+
+### ADR
+
+[ADR-006: Exit-Path-Enforcement via `:has()`](./ADR-006-exit-path-enforcement.md)
+
+### Files changed
+
+- `components/empty-state.css` — `:has()`-Hint hinzugefügt
+- `components/alert.css` — `:has()`-Hint für `.alert--danger`
+- `components/spinner.css` — Header umgeschrieben (aria-label
+  mandatory, visible-text-Companion-Pattern)
+- `state/state.css` — forced-colors-Override für Hints
+- `scripts/check-site.js` — `runExitPathEnforcement()` neu
+- `ADR-006-exit-path-enforcement.md` — neu
+
 ## [0.29.0] — Bounce nur als explizites Opt-In (CLEAR 4 Prinzip 1)
 
 Dritte konkrete Umsetzung der Nervensystem-Verfassung. ADR-003/004 haben

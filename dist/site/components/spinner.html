@@ -17,7 +17,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="../index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.29.0</span>
+          <span class="badge badge--neutral">v0.30.0</span>
         </a>
         <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
@@ -264,14 +264,14 @@
           
     <section class="site-example" data-example>
       
-      <div class="site-example__preview" data-preview><span class="spinner" role="status" aria-label="Laden …"></span></div>
+      <div class="site-example__preview" data-preview><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
       <div class="site-example__toolbar">
         <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
         <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
         <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
       </div>
       <div class="site-example__source" hidden>
-        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;span class=&quot;spinner&quot; role=&quot;status&quot; aria-label=&quot;Laden …&quot;&gt;&lt;/span&gt;">&lt;span class=&quot;spinner&quot; role=&quot;status&quot; aria-label=&quot;Laden …&quot;&gt;&lt;/span&gt;</textarea>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;span class=&quot;spinner&quot; role=&quot;status&quot; aria-label=&quot;Lädt Buchungen …&quot;&gt;&lt;/span&gt;">&lt;span class=&quot;spinner&quot; role=&quot;status&quot; aria-label=&quot;Lädt Buchungen …&quot;&gt;&lt;/span&gt;</textarea>
       </div>
     </section>
 
@@ -279,7 +279,7 @@
       <h3 class="site-example__caption">Inline in Button (Loading-State)</h3>
       <div class="site-example__preview" data-preview><button class="btn" disabled>
   <span class="spinner spinner--sm" aria-hidden="true"></span>
-  Speichern
+  Speichere …
 </button></div>
       <div class="site-example__toolbar">
         <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
@@ -289,18 +289,19 @@
       <div class="site-example__source" hidden>
         <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;button class=&quot;btn&quot; disabled&gt;
   &lt;span class=&quot;spinner spinner--sm&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
-  Speichern
+  Speichere …
 &lt;/button&gt;">&lt;button class=&quot;btn&quot; disabled&gt;
   &lt;span class=&quot;spinner spinner--sm&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
-  Speichern
+  Speichere …
 &lt;/button&gt;</textarea>
       </div>
     </section>
 
     <section class="site-example" data-example>
-      <h3 class="site-example__caption">Block-centered Loading-State</h3>
+      <h3 class="site-example__caption">Block-centered mit visible-text-Horizont (empfohlene Variante)</h3>
       <div class="site-example__preview" data-preview><div class="spinner-block">
-  <span class="spinner spinner--lg" role="status" aria-label="Lädt …"></span>
+  <span class="spinner spinner--lg" aria-hidden="true"></span>
+  <p>Lädt Buchungen …</p>
 </div></div>
       <div class="site-example__toolbar">
         <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
@@ -309,9 +310,11 @@
       </div>
       <div class="site-example__source" hidden>
         <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;div class=&quot;spinner-block&quot;&gt;
-  &lt;span class=&quot;spinner spinner--lg&quot; role=&quot;status&quot; aria-label=&quot;Lädt …&quot;&gt;&lt;/span&gt;
+  &lt;span class=&quot;spinner spinner--lg&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  &lt;p&gt;Lädt Buchungen …&lt;/p&gt;
 &lt;/div&gt;">&lt;div class=&quot;spinner-block&quot;&gt;
-  &lt;span class=&quot;spinner spinner--lg&quot; role=&quot;status&quot; aria-label=&quot;Lädt …&quot;&gt;&lt;/span&gt;
+  &lt;span class=&quot;spinner spinner--lg&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  &lt;p&gt;Lädt Buchungen …&lt;/p&gt;
 &lt;/div&gt;</textarea>
       </div>
     </section>
@@ -325,27 +328,27 @@
             
             <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
               <header class="site-tone-tile__label">trust</header>
-              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Laden …"></span></div>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
             </article>
             <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
               <header class="site-tone-tile__label">playful</header>
-              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Laden …"></span></div>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
             </article>
             <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
               <header class="site-tone-tile__label">premium</header>
-              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Laden …"></span></div>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
             </article>
             <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
               <header class="site-tone-tile__label">industrial</header>
-              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Laden …"></span></div>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
             </article>
             <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
               <header class="site-tone-tile__label">modern</header>
-              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Laden …"></span></div>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
             </article>
             <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
               <header class="site-tone-tile__label">minimal</header>
-              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Laden …"></span></div>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
             </article>
           </div>
         </section>
@@ -407,14 +410,14 @@
           <code>.spinner--sm</code>
           <span class="site-muted">kleiner (z.B. inline in btn--sm)</span>
         </header>
-        <div class="site-modifier-tile__preview"><span class="spinner spinner--sm" role="status" aria-label="Laden …"></span></div>
+        <div class="site-modifier-tile__preview"><span class="spinner spinner--sm" role="status" aria-label="Lädt Buchungen …"></span></div>
       </article>
       <article class="site-modifier-tile">
         <header class="site-modifier-tile__label">
           <code>.spinner--lg</code>
           <span class="site-muted">größer (für Page-Level-Loading)</span>
         </header>
-        <div class="site-modifier-tile__preview"><span class="spinner spinner--lg" role="status" aria-label="Laden …"></span></div>
+        <div class="site-modifier-tile__preview"><span class="spinner spinner--lg" role="status" aria-label="Lädt Buchungen …"></span></div>
       </article>
           </div>
         </section>

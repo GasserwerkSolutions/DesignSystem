@@ -15,21 +15,36 @@
  * currentColor als Default: Spinner inline in einem Button erbt automatisch
  * die Button-Textfarbe. Standalone erbt von der umgebenden Textfarbe.
  *
- * ARIA: Spinner ist visuell — Konsument setzt role="status" + aria-label,
- * damit Screen-Reader den Loading-Zustand bekanntgeben.
+ * CLEAR 4 Prinzip 2: "Jeder Ladezustand hat ein erkennbares Ende."
+ * Bei einem Indeterminate-Spinner ist die Rotation selbst die Aussage
+ * "etwas geschieht" — aber für das Nervensystem ist unbegrenzte
+ * Bewegung ohne Horizont ein eigener Stressor. Der HORIZONT wird durch
+ * Sprache hergestellt:
+ *
+ *   - aria-label nennt was gerade lädt ("Lädt Buchungen …", nicht nur
+ *     "Lädt …") — Screen-Reader-Nutzer bekommen den Horizont via Sprache.
+ *   - VISIBLE-TEXT-Companion in spinner-block-Pattern (siehe Struktur)
+ *     gibt sehenden Nutzern denselben Horizont.
+ *   - Für längere Operationen (>3s) sollte ein .progress mit
+ *     determinable Anteil verwendet werden, nicht ein Spinner.
+ *
+ * ARIA: Spinner ist visuell — Konsument setzt role="status" + aria-label.
+ * Aria-label ist NICHT optional; ohne ihn ist der Spinner ein
+ * Verfassungs-Verstoß (Loading ohne erkennbares Ende für SR-Nutzer).
  *
  * Struktur:
- *   <span class="spinner" role="status" aria-label="Laden …"></span>
+ *   <span class="spinner" role="status" aria-label="Lädt Buchungen …"></span>
  *
  *   Inline in Button (Loading-State):
  *   <button class="btn" disabled>
  *     <span class="spinner spinner--sm" aria-hidden="true"></span>
- *     Speichern
+ *     Speichere …
  *   </button>
  *
- *   Block-centered Loading-State:
+ *   Block-centered mit visible-text-Horizont (empfohlene Variante):
  *   <div class="spinner-block">
- *     <span class="spinner spinner--lg" role="status" aria-label="Lädt …"></span>
+ *     <span class="spinner spinner--lg" aria-hidden="true"></span>
+ *     <p>Lädt Buchungen …</p>
  *   </div>
  *
  * Modifier:

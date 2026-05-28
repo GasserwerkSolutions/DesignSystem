@@ -360,6 +360,98 @@ async function runContainerQueries(browser) {
   return errors;
 }
 
+/* CLEAR 4 P2 — Exit-Path-Enforcement: empty-state ohne CTA und
+   .alert--danger ohne Action/Close müssen einen sichtbaren Hint zeigen.
+   Wir rendern beide Varianten on-the-fly und prüfen ob die ::after-Hint
+   computed wird. */
+async function runExitPathEnforcement(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 800, height: 800 });
+
+  /* Fixture liegt neben main.css im Repo-Root, damit der relative
+     href="main.css" via file:// auflöst. data:URLs dürfen aus
+     Sicherheitsgründen keine file://-Stylesheets laden. */
+  const fixturePath = path.join(ROOT, ".exit-path-fixture.html");
+  fs.writeFileSync(
+    fixturePath,
+    `<!DOCTYPE html>
+<html data-tone="trust" data-mode="light">
+<head><meta charset="utf-8"><link rel="stylesheet" href="main.css"></head>
+<body>
+  <div class="empty-state" id="es-bad">
+    <div class="empty-state__icon">📭</div>
+    <h3 class="empty-state__title">Keine Daten</h3>
+    <p class="empty-state__body">Body-Text.</p>
+  </div>
+  <div class="empty-state" id="es-good">
+    <div class="empty-state__icon">📭</div>
+    <h3 class="empty-state__title">Keine Daten</h3>
+    <p class="empty-state__body">Body-Text.</p>
+    <button class="btn">Aktion</button>
+  </div>
+  <div class="alert alert--danger" id="al-bad">
+    <span class="alert__icon">!</span>
+    <div class="alert__body">
+      <strong class="alert__title">Fehler</strong>
+      <p>Verbindung verloren.</p>
+    </div>
+  </div>
+  <div class="alert alert--danger" id="al-good">
+    <span class="alert__icon">!</span>
+    <div class="alert__body">
+      <strong class="alert__title">Fehler</strong>
+      <p>Verbindung verloren.</p>
+    </div>
+    <button class="alert__close">×</button>
+  </div>
+</body></html>`
+  );
+
+  await page.goto("file://" + fixturePath, { waitUntil: "load" });
+  await new Promise((r) => setTimeout(r, 300));
+
+  const probe = await page.evaluate(() => {
+    const get = (id) => {
+      const el = document.getElementById(id);
+      const css = getComputedStyle(el, "::after");
+      return {
+        content: css.content,
+        display: css.display,
+        background: css.background,
+      };
+    };
+    return {
+      esBad: get("es-bad"),
+      esGood: get("es-good"),
+      alBad: get("al-bad"),
+      alGood: get("al-good"),
+    };
+  });
+
+  await page.close();
+  try { fs.unlinkSync(fixturePath); } catch {}
+
+  /* Hint vorhanden = content ist non-empty / non-"none" Quoted-String */
+  const hasHint = (p) =>
+    typeof p.content === "string" &&
+    p.content !== "none" &&
+    p.content !== "normal" &&
+    p.content.length > 5;
+
+  const checks = [
+    ["empty-state ohne CTA → ::after Hint sichtbar", hasHint(probe.esBad)],
+    ["empty-state mit CTA → KEIN ::after Hint", !hasHint(probe.esGood)],
+    ["alert--danger ohne button/a → ::after Hint sichtbar", hasHint(probe.alBad)],
+    ["alert--danger mit close-button → KEIN ::after Hint", !hasHint(probe.alGood)],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
 async function runRtlSupport(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
@@ -797,8 +889,10 @@ async function runFoundationsEdit(browser) {
   const modErrs = await runModifierPreviews(browser);
   console.log("[check-site] RTL-Support:");
   const rtlErrs = await runRtlSupport(browser);
+  console.log("[check-site] CLEAR 4 P2 — Exit-Path-Enforcement:");
+  const exitErrs = await runExitPathEnforcement(browser);
   await browser.close();
-  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs + headerErrs + modErrs + rtlErrs;
+  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs + headerErrs + modErrs + rtlErrs + exitErrs;
   console.log(
     total === 0
       ? "[check-site] passed."
