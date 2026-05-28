@@ -538,7 +538,7 @@ function escapeHtml(s) {
  * Page-Shell — App-Shell-Layout aus dem DS, Sidebar = Component-Index,
  * Topbar = Tone/Mode/Density-Switcher.
  */
-function pageShell({ title, navHref, body, sidebar, relRoot = "./", extraScripts = [] }) {
+function pageShell({ title, navHref, body, sidebar, relRoot = "./", extraScripts = [], components = [] }) {
   const projectRoot = ASSET_ROOT_OVERRIDE || `${relRoot}../../`;
   const extraScriptTags = extraScripts
     .map((src) => `<script defer src="${relRoot}${src}"></script>`)
@@ -549,6 +549,7 @@ function pageShell({ title, navHref, body, sidebar, relRoot = "./", extraScripts
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(title)} — Design System</title>
+  <link rel="icon" href="${relRoot}assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="${projectRoot}main.css">
   <link rel="stylesheet" href="${relRoot}assets/site.css">
   <script defer src="${projectRoot}dist/js/design-system.iife.js"></script>
@@ -563,21 +564,15 @@ function pageShell({ title, navHref, body, sidebar, relRoot = "./", extraScripts
           <strong>Design System</strong>
           <span class="badge badge--neutral">v${PKG_VERSION}</span>
         </a>
-        <nav class="site-topbar__nav" aria-label="Hauptnavigation">
-          ${NAV_ITEMS.map(
-            (n) =>
-              `<a class="site-topbar__link${
-                n.href.endsWith(navHref) ? " is-active" : ""
-              }" href="${relRoot}${n.href.replace(/^\.\//, "")}">${escapeHtml(
-                n.label
-              )}</a>`
-          ).join("\n          ")}
+        <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
+        <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
+          ${renderNav(navHref, relRoot, components)}
+          <div class="site-topbar__switches">
+            ${toneSwitcher()}
+            ${modeSwitcher()}
+            ${densitySwitcher()}
+          </div>
         </nav>
-        <div class="site-topbar__switches">
-          ${toneSwitcher()}
-          ${modeSwitcher()}
-          ${densitySwitcher()}
-        </div>
       </div>
     </header>
     <aside class="app-shell__sidebar">
@@ -589,6 +584,56 @@ function pageShell({ title, navHref, body, sidebar, relRoot = "./", extraScripts
   </div>
 </body>
 </html>`;
+}
+
+/* Nav-Items mit optionalem Mega-Menu pro Eintrag. Components-Eintrag bekommt
+   ein Mega-Menu mit allen Kategorien + Components. Andere bleiben einfache Links.
+   Mega-Menu öffnet auf Hover (Desktop) ODER Click (Touch). */
+function renderNav(navHref, relRoot, components) {
+  return NAV_ITEMS.map((n) => {
+    const isActive = n.href.endsWith(navHref);
+    const hasMega = n.label === "Components" && components.length > 0;
+    if (!hasMega) {
+      return `<a class="site-topbar__link${isActive ? " is-active" : ""}" href="${relRoot}${n.href.replace(/^\.\//, "")}">${escapeHtml(n.label)}</a>`;
+    }
+    return renderMegaMenu(navHref, relRoot, components, isActive);
+  }).join("\n          ");
+}
+
+function renderMegaMenu(navHref, relRoot, components, isActive) {
+  const groups = {};
+  for (const c of components) {
+    const cat = categoryOf(c.name);
+    (groups[cat] ??= []).push(c);
+  }
+  const order = [
+    "Layout", "Form", "Feedback", "Navigation",
+    "Overlay", "Data Display", "Primitive", "Other",
+  ];
+  const orderedGroups = order.filter((g) => groups[g]);
+
+  return `<div class="site-topbar__mega" data-mega>
+            <button type="button" class="site-topbar__link site-topbar__link--mega${isActive ? " is-active" : ""}" aria-haspopup="true" aria-expanded="false" data-mega-trigger>Components<span class="site-topbar__chevron" aria-hidden="true">▾</span></button>
+            <div class="site-topbar__mega-panel" data-mega-panel hidden role="menu" aria-label="Components nach Kategorie">
+              ${orderedGroups
+                .map(
+                  (cat) => `
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">${escapeHtml(cat)}</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  ${groups[cat]
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map(
+                      (c) => `
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="${relRoot}components/${c.name}.html">${escapeHtml(c.title)}</a></li>`
+                    )
+                    .join("")}
+                </ul>
+              </section>`
+                )
+                .join("")}
+            </div>
+          </div>`;
 }
 
 function toneSwitcher() {
@@ -834,6 +879,113 @@ function renderModifiers(mods) {
         </section>`;
 }
 
+/* Live-Preview pro Modifier: nimmt das erste Markup-Beispiel, injiziert die
+   Modifier-Klasse ins root-Element. Macht Modifier wie .avatar-stack--sm
+   sichtbar funktional (vorher waren sie nur im Header dokumentiert, kein
+   visueller Beweis dass sie tun was sie sollen). */
+function renderModifierPreviews(meta) {
+  if (!meta.modifiers.length || !meta.markup.length) return "";
+  const baseHtml = meta.markup[0].html;
+  const baseName = meta.name;
+
+  /* root-Class aus dem ersten Element extrahieren (z.B. "alert alert--success"
+     → ["alert", "alert--success"]). Modifier wird hier ersetzt oder appended. */
+  const rootClassMatch = baseHtml.match(/class="([^"]+)"/);
+  if (!rootClassMatch) return "";
+  const rootClasses = rootClassMatch[1].split(/\s+/);
+  const baseClass = rootClasses[0]; // e.g. "alert"
+
+  /* Expandiere Convenience-Syntax ".foo--sm / --lg" zu einzelnen Modifier-
+     Einträgen. Parser-Ausgabe: selector=".foo--sm", description="/ --lg ...".
+     Die Variants stehen im description-String — wir extrahieren beides. */
+  const expanded = [];
+  for (const mod of meta.modifiers) {
+    const firstClsMatch = mod.selector.match(/\.[a-z][a-z0-9_-]+/i);
+    if (!firstClsMatch) continue;
+    const firstCls = firstClsMatch[0].slice(1);
+    /* Konvention: "--sm / --lg Größen-Presets" → /--lg/ Token sind Variants,
+       restliches Wort/Phrase ist die echte description. Wir extrahieren am
+       Anfang stehende "/ --foo" Tokens. */
+    let desc = mod.description;
+    const trailingSuffixes = [];
+    /* Match "/ --foo" am Anfang, eat alle die direkt aneinander hängen. */
+    const variantTokenRe = /^\s*\/\s*(--[a-z][a-z0-9_-]*)/;
+    while (variantTokenRe.test(desc)) {
+      const m = desc.match(variantTokenRe);
+      trailingSuffixes.push(m[1]);
+      desc = desc.slice(m[0].length);
+    }
+    desc = desc.trim();
+    const prefix = firstCls.includes("--")
+      ? firstCls.slice(0, firstCls.indexOf("--"))
+      : firstCls;
+    const variants = [firstCls, ...trailingSuffixes.map((t) => prefix + t)];
+    const seen = new Set();
+    for (const cls of variants) {
+      if (seen.has(cls)) continue;
+      seen.add(cls);
+      expanded.push({ cls, description: desc, selector: `.${cls}` });
+    }
+  }
+
+  /* Filter: nur Modifier-Klassen die das Root-Element ansprechen
+     (Selector startet mit . + baseClass-Prefix oder ist eine .baseClass--*).
+     Skip child-modifiers (.foo__bar--qux), die brauchen anderes Markup. */
+  const renderable = expanded.filter(({ cls }) =>
+    cls === baseName ||
+    cls.startsWith(baseName + "--") ||
+    cls.startsWith(baseName + "-")
+  );
+
+  if (!renderable.length) return "";
+
+  const tiles = renderable.map(({ cls: newCls, description, selector }) => {
+    if (!newCls.startsWith(baseName)) return "";
+    /* Wenn der Modifier bereits im Markup ist (z.B. .alert--success in der
+       Demo-Variante), ersetze ihn durch den neuen Modifier statt zu duplizieren. */
+    const hasOtherModifier = rootClasses.some(
+      (c) => c.startsWith(baseName + "--") && c !== newCls
+    );
+    let modifiedHtml;
+    if (hasOtherModifier) {
+      const replaced = rootClasses
+        .map((c) =>
+          c.startsWith(baseName + "--") ? newCls : c
+        )
+        .join(" ");
+      modifiedHtml = baseHtml.replace(
+        /class="[^"]+"/,
+        `class="${replaced}"`
+      );
+    } else {
+      modifiedHtml = baseHtml.replace(
+        /class="([^"]+)"/,
+        (_, classes) => `class="${classes} ${newCls}"`
+      );
+    }
+    /* IDs prefixen damit Modifier-Tiles nicht mit dem Original-Beispiel
+       oder dem Tone-Strip kollidieren (siehe rewriteIdsInHtml). */
+    modifiedHtml = rewriteIdsInHtml(modifiedHtml, `m-${newCls}-`);
+    return `
+      <article class="site-modifier-tile">
+        <header class="site-modifier-tile__label">
+          <code>${escapeHtml(selector)}</code>
+          <span class="site-muted">${escapeHtml(description)}</span>
+        </header>
+        <div class="site-modifier-tile__preview">${modifiedHtml}</div>
+      </article>`;
+  });
+
+  return `
+        <section class="site-doc__section">
+          <h2>Modifier-Vorschau</h2>
+          <p class="site-muted">Jeder Modifier auf das Basis-Markup angewandt — visueller Beweis, dass die Klasse funktioniert.</p>
+          <div class="site-modifier-grid">
+            ${tiles.join("")}
+          </div>
+        </section>`;
+}
+
 function renderComponentPage(meta, allComponents) {
   const sidebar = componentSidebar(allComponents, meta.name, "../");
   const body = `
@@ -858,6 +1010,8 @@ function renderComponentPage(meta, allComponents) {
 
         ${renderModifiers(meta.modifiers)}
 
+        ${renderModifierPreviews(meta)}
+
         <footer class="site-doc__footer">
           <a class="btn btn--ghost btn--sm" href="${ASSET_ROOT_OVERRIDE || "../../../"}components/${meta.name}.css">Source-CSS ansehen</a>
         </footer>
@@ -869,6 +1023,7 @@ function renderComponentPage(meta, allComponents) {
     body,
     sidebar,
     relRoot: "../",
+    components: allComponents,
   });
 }
 
@@ -1047,6 +1202,7 @@ function renderFoundationsPage(components, allTokens) {
     body,
     sidebar,
     relRoot: "./",
+    components,
   });
 }
 
@@ -1136,6 +1292,7 @@ function renderThemesPage(components) {
     sidebar,
     relRoot: "./",
     extraScripts: ["assets/theme-generator.js"],
+    components,
   });
 }
 
@@ -1154,7 +1311,7 @@ function renderStubPage({ title, navHref, intro, components, relRoot = "./" }) {
           </div>
         </section>
       </article>`;
-  return pageShell({ title, navHref, body, sidebar, relRoot });
+  return pageShell({ title, navHref, body, sidebar, relRoot, components });
 }
 
 function firstIntroLine(intro) {
@@ -1241,12 +1398,24 @@ function renderIndexPage(components) {
     body,
     sidebar,
     relRoot: "./",
+    components,
   });
 }
 
 /* =========================================================================
    4) SITE ASSETS (CSS + JS)
    ========================================================================= */
+
+/* Favicon: DS-Identity. Stilisierter Layered-Block aus 4 farbigen Quadraten,
+   die das Achsenmodell Tone × Mode × Density × Container symbolisieren.
+   Nutzt OKLCH-Werte der 4 prominentesten Theme-Tones (trust/playful/modern/
+   premium-dark) auf transparentem Hintergrund. SVG — Vector, dark-mode-fähig. */
+const SITE_FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Design System">
+  <rect x="3"  y="3"  width="12" height="12" rx="2" fill="oklch(0.62 0.18 142)"/>
+  <rect x="17" y="3"  width="12" height="12" rx="2" fill="oklch(0.74 0.16 75)"/>
+  <rect x="3"  y="17" width="12" height="12" rx="2" fill="oklch(0.55 0.18 230)"/>
+  <rect x="17" y="17" width="12" height="12" rx="2" fill="oklch(0.22 0 0)"/>
+</svg>`;
 
 const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs DS auf. */
 @layer site-overlay {
@@ -1274,6 +1443,19 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
   .app-shell__sidebar { grid-area: sidebar; border-right: 1px solid var(--color-border); background: var(--color-surface-subtle, var(--color-surface)); overflow-y: auto; max-height: calc(100vh - var(--topbar-height)); position: sticky; top: var(--topbar-height); }
   .app-shell__main    { grid-area: main;    padding: var(--space-32); max-width: 980px; }
 
+  /* Mobile: Sidebar verschwindet — die Mega-Menu im Burger ersetzt die
+     Component-Navigation. Main belegt die volle Breite. */
+  @media (max-width: 768px) {
+    .app-shell {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "topbar"
+        "main";
+    }
+    .app-shell__sidebar { display: none; }
+    .app-shell__main    { padding: var(--space-16); max-width: none; }
+  }
+
   .site-topbar {
     display: flex;
     align-items: center;
@@ -1290,8 +1472,10 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
   }
   .site-topbar__nav {
     display: flex;
+    align-items: center;
     gap: var(--space-4);
     margin-inline-start: var(--space-16);
+    flex: 1;
   }
   .site-topbar__link {
     padding: var(--space-6) var(--space-12);
@@ -1311,6 +1495,140 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
     gap: var(--space-8);
     margin-inline-start: auto;
     align-items: center;
+  }
+  .site-topbar__menu-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-12);
+    font-size: var(--font-lg);
+    cursor: pointer;
+    margin-inline-start: auto;
+  }
+
+  /* Mega-Menu für Components-Nav-Item.
+     Desktop: hover-open + click-toggle. Touch: click-toggle.
+     Panel als Pop-Layer absolute unter dem Trigger. */
+  .site-topbar__mega { position: relative; }
+  .site-topbar__link--mega {
+    background: transparent;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .site-topbar__chevron {
+    font-size: 0.75em;
+    transition: transform var(--duration-fast) var(--easing-fast);
+  }
+  .site-topbar__mega[data-open="true"] .site-topbar__chevron { transform: rotate(180deg); }
+  /* Hover-Intent (Desktop, fine pointer). Touch öffnet nur via click. */
+  @media (hover: hover) and (pointer: fine) {
+    .site-topbar__mega:hover .site-topbar__mega-panel,
+    .site-topbar__mega:focus-within .site-topbar__mega-panel { display: grid; }
+    .site-topbar__mega:hover .site-topbar__chevron { transform: rotate(180deg); }
+  }
+  .site-topbar__mega-panel {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: calc(100% + 4px);
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-16);
+    min-width: min(640px, 80vw);
+    max-width: 80vw;
+    max-height: calc(100vh - var(--topbar-height) - 16px);
+    overflow: auto;
+    padding: var(--space-16);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--elevation-4);
+    z-index: 100;
+  }
+  .site-topbar__mega-panel[data-open="true"] { display: grid; }
+  .site-topbar__mega-cat {
+    font-size: var(--font-xs);
+    font-weight: var(--fw-700);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-tertiary, var(--color-text-secondary));
+    margin: 0 0 var(--space-8);
+  }
+  .site-topbar__mega-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .site-topbar__mega-list li { padding: 0; margin: 0; position: static; }
+  .site-topbar__mega-list li::before { content: none; }
+  .site-topbar__mega-link {
+    display: block;
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: var(--font-sm);
+  }
+  .site-topbar__mega-link:hover {
+    background: var(--color-interactive-light);
+    color: var(--color-interactive-dark);
+  }
+
+  /* Mobile-Optimierung (< 768px Viewport).
+     Topbar bleibt schmal mit Brand + Hamburger. Hamburger öffnet die Nav
+     als Full-Width-Drawer; switches sind DOM-Kinder der Nav und stacken
+     natürlich am Ende des Drawers (margin-start: auto fällt weg → bleiben
+     im Flow). Mega-Menu kollabiert zu accordion-Items (click-only). */
+  @media (max-width: 768px) {
+    .site-topbar { gap: var(--space-12); padding-inline: var(--space-12); }
+    .site-topbar__menu-toggle { display: inline-flex; margin-inline-start: auto; }
+    .site-topbar__nav {
+      display: none;
+      position: absolute;
+      inset-block-start: var(--topbar-height);
+      inset-inline-start: 0;
+      inset-inline-end: 0;
+      flex: initial;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-2);
+      margin: 0;
+      padding: var(--space-16);
+      background: var(--color-surface);
+      border-block-end: 1px solid var(--color-border);
+      box-shadow: var(--elevation-3);
+      max-height: calc(100vh - var(--topbar-height));
+      overflow: auto;
+      z-index: 9;
+    }
+    .site-topbar__nav[data-mobile-open="true"] { display: flex; }
+    .site-topbar__link { padding: var(--space-12) var(--space-16); border-radius: var(--radius-md); }
+    .site-topbar__mega { display: block; }
+    .site-topbar__mega-panel {
+      position: static;
+      display: none;
+      grid-template-columns: 1fr;
+      min-width: 0;
+      max-width: none;
+      padding: var(--space-8) 0 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      margin-inline-start: var(--space-16);
+    }
+    .site-topbar__mega:hover .site-topbar__mega-panel { display: none; }
+    .site-topbar__mega-panel[data-open="true"] { display: block; }
+    /* Switches: in DOM jetzt innerhalb von .site-topbar__nav, einfach am Ende
+       des Drawer-Stacks mit eigenem Border-Separator. */
+    .site-topbar__switches {
+      flex-wrap: wrap;
+      gap: var(--space-8);
+      margin-inline-start: 0;
+      padding-block-start: var(--space-16);
+      margin-block-start: var(--space-8);
+      border-block-start: 1px solid var(--color-border);
+    }
   }
 
   .site-select {
@@ -1442,6 +1760,43 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
   .site-modifier-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-8); }
   .site-modifier-list li { padding: var(--space-8) var(--space-12); background: var(--color-surface); border-radius: var(--radius-md); border: 1px solid var(--color-border); position: static; margin: 0; }
   .site-modifier-list li::before { content: none; }
+
+  /* Modifier-Vorschau-Tiles: jede Modifier-Klasse aufs Basis-Markup angewandt */
+  .site-modifier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-12);
+  }
+  .site-modifier-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-12);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .site-modifier-tile__label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--font-xs);
+  }
+  .site-modifier-tile__label code {
+    font-family: var(--font-mono);
+    font-size: var(--font-xs);
+    color: var(--color-text-primary);
+  }
+  .site-modifier-tile__preview {
+    padding: var(--space-12);
+    background: var(--color-bg);
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--color-border);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
 
   .site-category { display: flex; flex-direction: column; gap: var(--space-12); margin-bottom: var(--space-32); }
   .site-category__title { font-size: var(--font-lg); margin: 0; }
@@ -1828,6 +2183,53 @@ const SITE_JS = `/* Site-Runtime — axis-switchers, sidebar-search, URL-state, 
     const resetBtn = ex.querySelector("[data-reset]");
     if (resetBtn) resetBtn.hidden = ta.value === original;
     if (window.DS && typeof DS.setupAll === "function") DS.setupAll();
+  });
+
+  /* Mega-Menu (Components-Nav-Item):
+     - Click auf Trigger → toggle das Panel (Touch + Mobile)
+     - Hover (Desktop, fine-pointer) wird im CSS gehandhabt
+     - Escape oder click-outside schließt das Panel
+     Mobile-Menu-Toggle (Hamburger) öffnet/schließt das ganze topbar__nav. */
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest("[data-mega-trigger]");
+    if (trigger) {
+      const mega = trigger.closest("[data-mega]");
+      const panel = mega.querySelector("[data-mega-panel]");
+      const isOpen = panel.getAttribute("data-open") === "true";
+      panel.setAttribute("data-open", isOpen ? "false" : "true");
+      mega.setAttribute("data-open", isOpen ? "false" : "true");
+      trigger.setAttribute("aria-expanded", isOpen ? "false" : "true");
+      if (!isOpen) panel.removeAttribute("hidden");
+      e.stopPropagation();
+      return;
+    }
+    /* click-outside schließt Mega-Menu */
+    document.querySelectorAll("[data-mega][data-open='true']").forEach((m) => {
+      if (!m.contains(e.target)) {
+        m.querySelector("[data-mega-panel]").setAttribute("data-open", "false");
+        m.setAttribute("data-open", "false");
+        m.querySelector("[data-mega-trigger]")?.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    const burger = e.target.closest("[data-mobile-menu]");
+    if (burger) {
+      const nav = document.getElementById("site-topbar-nav");
+      const isOpen = nav.getAttribute("data-mobile-open") === "true";
+      nav.setAttribute("data-mobile-open", isOpen ? "false" : "true");
+      burger.setAttribute("aria-expanded", isOpen ? "false" : "true");
+      burger.setAttribute("aria-label", isOpen ? "Menü öffnen" : "Menü schließen");
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      document.querySelectorAll("[data-mega][data-open='true']").forEach((m) => {
+        m.querySelector("[data-mega-panel]").setAttribute("data-open", "false");
+        m.setAttribute("data-open", "false");
+        m.querySelector("[data-mega-trigger]")?.setAttribute("aria-expanded", "false");
+      });
+    }
   });
 
   readState();
@@ -2340,6 +2742,7 @@ function main() {
 
   fs.writeFileSync(path.join(OUT_DIR, "assets", "site.css"), SITE_CSS);
   fs.writeFileSync(path.join(OUT_DIR, "assets", "site.js"), SITE_JS);
+  fs.writeFileSync(path.join(OUT_DIR, "assets", "favicon.svg"), SITE_FAVICON);
   fs.writeFileSync(
     path.join(OUT_DIR, "assets", "theme-generator.js"),
     THEME_GEN_JS

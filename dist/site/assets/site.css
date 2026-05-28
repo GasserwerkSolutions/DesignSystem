@@ -24,6 +24,19 @@
   .app-shell__sidebar { grid-area: sidebar; border-right: 1px solid var(--color-border); background: var(--color-surface-subtle, var(--color-surface)); overflow-y: auto; max-height: calc(100vh - var(--topbar-height)); position: sticky; top: var(--topbar-height); }
   .app-shell__main    { grid-area: main;    padding: var(--space-32); max-width: 980px; }
 
+  /* Mobile: Sidebar verschwindet — die Mega-Menu im Burger ersetzt die
+     Component-Navigation. Main belegt die volle Breite. */
+  @media (max-width: 768px) {
+    .app-shell {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "topbar"
+        "main";
+    }
+    .app-shell__sidebar { display: none; }
+    .app-shell__main    { padding: var(--space-16); max-width: none; }
+  }
+
   .site-topbar {
     display: flex;
     align-items: center;
@@ -40,8 +53,10 @@
   }
   .site-topbar__nav {
     display: flex;
+    align-items: center;
     gap: var(--space-4);
     margin-inline-start: var(--space-16);
+    flex: 1;
   }
   .site-topbar__link {
     padding: var(--space-6) var(--space-12);
@@ -61,6 +76,140 @@
     gap: var(--space-8);
     margin-inline-start: auto;
     align-items: center;
+  }
+  .site-topbar__menu-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-12);
+    font-size: var(--font-lg);
+    cursor: pointer;
+    margin-inline-start: auto;
+  }
+
+  /* Mega-Menu für Components-Nav-Item.
+     Desktop: hover-open + click-toggle. Touch: click-toggle.
+     Panel als Pop-Layer absolute unter dem Trigger. */
+  .site-topbar__mega { position: relative; }
+  .site-topbar__link--mega {
+    background: transparent;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .site-topbar__chevron {
+    font-size: 0.75em;
+    transition: transform var(--duration-fast) var(--easing-fast);
+  }
+  .site-topbar__mega[data-open="true"] .site-topbar__chevron { transform: rotate(180deg); }
+  /* Hover-Intent (Desktop, fine pointer). Touch öffnet nur via click. */
+  @media (hover: hover) and (pointer: fine) {
+    .site-topbar__mega:hover .site-topbar__mega-panel,
+    .site-topbar__mega:focus-within .site-topbar__mega-panel { display: grid; }
+    .site-topbar__mega:hover .site-topbar__chevron { transform: rotate(180deg); }
+  }
+  .site-topbar__mega-panel {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: calc(100% + 4px);
+    display: none;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--space-16);
+    min-width: min(640px, 80vw);
+    max-width: 80vw;
+    max-height: calc(100vh - var(--topbar-height) - 16px);
+    overflow: auto;
+    padding: var(--space-16);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--elevation-4);
+    z-index: 100;
+  }
+  .site-topbar__mega-panel[data-open="true"] { display: grid; }
+  .site-topbar__mega-cat {
+    font-size: var(--font-xs);
+    font-weight: var(--fw-700);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-tertiary, var(--color-text-secondary));
+    margin: 0 0 var(--space-8);
+  }
+  .site-topbar__mega-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .site-topbar__mega-list li { padding: 0; margin: 0; position: static; }
+  .site-topbar__mega-list li::before { content: none; }
+  .site-topbar__mega-link {
+    display: block;
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: var(--font-sm);
+  }
+  .site-topbar__mega-link:hover {
+    background: var(--color-interactive-light);
+    color: var(--color-interactive-dark);
+  }
+
+  /* Mobile-Optimierung (< 768px Viewport).
+     Topbar bleibt schmal mit Brand + Hamburger. Hamburger öffnet die Nav
+     als Full-Width-Drawer; switches sind DOM-Kinder der Nav und stacken
+     natürlich am Ende des Drawers (margin-start: auto fällt weg → bleiben
+     im Flow). Mega-Menu kollabiert zu accordion-Items (click-only). */
+  @media (max-width: 768px) {
+    .site-topbar { gap: var(--space-12); padding-inline: var(--space-12); }
+    .site-topbar__menu-toggle { display: inline-flex; margin-inline-start: auto; }
+    .site-topbar__nav {
+      display: none;
+      position: absolute;
+      inset-block-start: var(--topbar-height);
+      inset-inline-start: 0;
+      inset-inline-end: 0;
+      flex: initial;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-2);
+      margin: 0;
+      padding: var(--space-16);
+      background: var(--color-surface);
+      border-block-end: 1px solid var(--color-border);
+      box-shadow: var(--elevation-3);
+      max-height: calc(100vh - var(--topbar-height));
+      overflow: auto;
+      z-index: 9;
+    }
+    .site-topbar__nav[data-mobile-open="true"] { display: flex; }
+    .site-topbar__link { padding: var(--space-12) var(--space-16); border-radius: var(--radius-md); }
+    .site-topbar__mega { display: block; }
+    .site-topbar__mega-panel {
+      position: static;
+      display: none;
+      grid-template-columns: 1fr;
+      min-width: 0;
+      max-width: none;
+      padding: var(--space-8) 0 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      margin-inline-start: var(--space-16);
+    }
+    .site-topbar__mega:hover .site-topbar__mega-panel { display: none; }
+    .site-topbar__mega-panel[data-open="true"] { display: block; }
+    /* Switches: in DOM jetzt innerhalb von .site-topbar__nav, einfach am Ende
+       des Drawer-Stacks mit eigenem Border-Separator. */
+    .site-topbar__switches {
+      flex-wrap: wrap;
+      gap: var(--space-8);
+      margin-inline-start: 0;
+      padding-block-start: var(--space-16);
+      margin-block-start: var(--space-8);
+      border-block-start: 1px solid var(--color-border);
+    }
   }
 
   .site-select {
@@ -192,6 +341,43 @@
   .site-modifier-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-8); }
   .site-modifier-list li { padding: var(--space-8) var(--space-12); background: var(--color-surface); border-radius: var(--radius-md); border: 1px solid var(--color-border); position: static; margin: 0; }
   .site-modifier-list li::before { content: none; }
+
+  /* Modifier-Vorschau-Tiles: jede Modifier-Klasse aufs Basis-Markup angewandt */
+  .site-modifier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-12);
+  }
+  .site-modifier-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-12);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+  .site-modifier-tile__label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--font-xs);
+  }
+  .site-modifier-tile__label code {
+    font-family: var(--font-mono);
+    font-size: var(--font-xs);
+    color: var(--color-text-primary);
+  }
+  .site-modifier-tile__preview {
+    padding: var(--space-12);
+    background: var(--color-bg);
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--color-border);
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
 
   .site-category { display: flex; flex-direction: column; gap: var(--space-12); margin-bottom: var(--space-32); }
   .site-category__title { font-size: var(--font-lg); margin: 0; }

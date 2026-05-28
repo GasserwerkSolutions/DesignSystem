@@ -357,6 +357,147 @@ async function runContainerQueries(browser) {
   return errors;
 }
 
+async function runHeaderNav(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "components/alert.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+
+  /* Favicon-Link existiert + Datei vorhanden */
+  const hasFavicon = await page.evaluate(() => {
+    const link = document.querySelector('link[rel="icon"]');
+    return link?.getAttribute("href") || null;
+  });
+
+  /* Mega-Menu click opens panel */
+  await page.evaluate(() => {
+    document.querySelector("[data-mega-trigger]").click();
+  });
+  await new Promise((r) => setTimeout(r, 100));
+  const megaOpen = await page.evaluate(() => {
+    const panel = document.querySelector("[data-mega-panel]");
+    const cs = getComputedStyle(panel);
+    return {
+      ariaExpanded: document.querySelector("[data-mega-trigger]").getAttribute("aria-expanded"),
+      dataOpen: panel.getAttribute("data-open"),
+      visible: cs.display !== "none",
+      links: panel.querySelectorAll(".site-topbar__mega-link").length,
+    };
+  });
+
+  /* Escape schließt */
+  await page.keyboard.press("Escape");
+  await new Promise((r) => setTimeout(r, 50));
+  const megaClosedAfterEsc = await page.evaluate(() => {
+    return document.querySelector("[data-mega]").getAttribute("data-open");
+  });
+
+  await page.close();
+
+  /* Mobile-Menu prüfen — Viewport schmal machen */
+  const m = await browser.newPage();
+  await m.setViewport({ width: 480, height: 800 });
+  await m.goto(
+    "file://" + path.join(SITE_DIR, "components/alert.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+  const burgerVisible = await m.evaluate(() => {
+    return getComputedStyle(document.querySelector("[data-mobile-menu]")).display !== "none";
+  });
+  await m.evaluate(() => {
+    document.querySelector("[data-mobile-menu]").click();
+  });
+  await new Promise((r) => setTimeout(r, 100));
+  const mobileNavOpen = await m.evaluate(() => {
+    return document.getElementById("site-topbar-nav").getAttribute("data-mobile-open");
+  });
+  await m.close();
+
+  const checks = [
+    ["favicon: link rel=icon im head + assets/favicon.svg referenziert", hasFavicon && hasFavicon.endsWith("favicon.svg")],
+    ["mega-menu: click öffnet Panel (data-open=true, aria-expanded=true)", megaOpen.ariaExpanded === "true" && megaOpen.dataOpen === "true" && megaOpen.visible],
+    ["mega-menu: enthält Component-Links (>= 40)", megaOpen.links >= 40],
+    ["mega-menu: Escape schließt", megaClosedAfterEsc === "false"],
+    ["mobile: burger-toggle wird bei < 768px Viewport sichtbar", burgerVisible === true],
+    ["mobile: burger-click öffnet Nav (data-mobile-open=true)", mobileNavOpen === "true"],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
+async function runModifierPreviews(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+
+  /* Avatar-Stack: --sm und --lg müssen DIFFERENT avatar.width produzieren.
+     Das war das ursprüngliche User-Report-Symptom — Größen-Modifier "nicht
+     funktional" weil keine Demo. */
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "components/avatar-stack.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+  const stackSizes = await page.evaluate(() => {
+    const out = {};
+    document.querySelectorAll(".site-modifier-tile").forEach((t) => {
+      const label = t.querySelector("code")?.textContent;
+      const av = t.querySelector(".avatar");
+      out[label] = av ? getComputedStyle(av).width : null;
+    });
+    return out;
+  });
+
+  /* Alert: --info / --success / --warning / --danger müssen unterschiedliche
+     background-colors haben. */
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "components/alert.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+  const alertBgs = await page.evaluate(() => {
+    const out = {};
+    document.querySelectorAll(".site-modifier-tile").forEach((t) => {
+      const label = t.querySelector("code")?.textContent;
+      const el = t.querySelector(".alert");
+      out[label] = el ? getComputedStyle(el).backgroundColor : null;
+    });
+    return out;
+  });
+
+  await page.close();
+
+  const sizeDifferent = stackSizes[".avatar-stack--sm"] && stackSizes[".avatar-stack--lg"] &&
+    stackSizes[".avatar-stack--sm"] !== stackSizes[".avatar-stack--lg"];
+  const alertVariantsCovered =
+    alertBgs[".alert--info"] && alertBgs[".alert--success"] &&
+    alertBgs[".alert--warning"] && alertBgs[".alert--danger"] &&
+    new Set(Object.values(alertBgs)).size === 4;
+
+  const checks = [
+    ["modifier-preview: avatar-stack--sm vs --lg produzieren verschiedene Avatar-Sizes", sizeDifferent],
+    ["modifier-preview: avatar-stack expandiert --sm/--lg/--hoverable korrekt", Object.keys(stackSizes).length >= 3],
+    ["modifier-preview: alert expandiert --info/--success/--warning/--danger (4 verschiedene bgs)", alertVariantsCovered],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) {
+      console.log(`        stackSizes:`, JSON.stringify(stackSizes));
+      console.log(`        alertBgs:`, JSON.stringify(alertBgs));
+      errors++;
+    }
+  }
+  return errors;
+}
+
 async function runUrlState(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
@@ -589,8 +730,12 @@ async function runFoundationsEdit(browser) {
   const cqErrs = await runContainerQueries(browser);
   console.log("[check-site] URL-State:");
   const urlStateErrs = await runUrlState(browser);
+  console.log("[check-site] Header-Nav (Mega-Menu + Mobile):");
+  const headerErrs = await runHeaderNav(browser);
+  console.log("[check-site] Modifier-Previews:");
+  const modErrs = await runModifierPreviews(browser);
   await browser.close();
-  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs;
+  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs + headerErrs + modErrs;
   console.log(
     total === 0
       ? "[check-site] passed."

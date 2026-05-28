@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-27T23:36:38.663Z",
+  "timestamp": "2026-05-27T23:58:42.713Z",
   "version": "0.12.0",
   "bundle": {
-    "raw": 117079,
-    "gzip": 17898,
-    "brotli": 15195
+    "raw": 117317,
+    "gzip": 17937,
+    "brotli": 15206
   },
   "minified": {
-    "raw": 93386,
-    "gzip": 16681,
-    "brotli": 14512
+    "raw": 93604,
+    "gzip": 16718,
+    "brotli": 14548
   },
   "layers": [
     {
@@ -19,7 +19,7 @@
     },
     {
       "label": "semantic",
-      "raw": 17091,
+      "raw": 17599,
       "files": 3
     },
     {

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Foundations — Design System</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./../../main.css">
   <link rel="stylesheet" href="./assets/site.css">
   <script defer src="./../../dist/js/design-system.iife.js"></script>
@@ -16,28 +17,124 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="./index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.12.0</span>
+          <span class="badge badge--neutral">v0.13.0</span>
         </a>
-        <nav class="site-topbar__nav" aria-label="Hauptnavigation">
+        <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
+        <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
           <a class="site-topbar__link" href="./index.html">Overview</a>
           <a class="site-topbar__link is-active" href="./foundations.html">Foundations</a>
-          <a class="site-topbar__link" href="./components/button.html">Components</a>
+          <div class="site-topbar__mega" data-mega>
+            <button type="button" class="site-topbar__link site-topbar__link--mega" aria-haspopup="true" aria-expanded="false" data-mega-trigger>Components<span class="site-topbar__chevron" aria-hidden="true">▾</span></button>
+            <div class="site-topbar__mega-panel" data-mega-panel hidden role="menu" aria-label="Components nach Kategorie">
+              
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Layout</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/app-shell.html">App-Shell Layout-Primitive</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/card.html">Card Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/divider.html">Divider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/list-row.html">List-Row Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/panel-list.html">Panel-List Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/section.html">Section Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Form</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/button.html">Button Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/checkbox.html">Checkbox + Radio Components</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/combobox.html">Combobox Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/date-input.html">Date-Input Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/field.html">Field Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/file-upload.html">File-Upload Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/range.html">Range-Slider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/search.html">Search-Input Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/select.html">Select Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/slider.html">Slider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/switch.html">Switch Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Feedback</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/alert.html">Alert Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/banner.html">Banner Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/callout.html">Callout Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/empty-state.html">Empty-State Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/progress.html">Progress Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/skeleton.html">Skeleton Loader</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/spinner.html">Spinner Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/toast.html">Toast / Notification Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Navigation</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/accordion.html">Accordion Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/breadcrumbs.html">Breadcrumbs Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/nav.html">Nav Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/pagination.html">Pagination Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/steps.html">Steps Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tabs.html">Tabs Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tree.html">Tree Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Overlay</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/drawer.html">Drawer Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/modal.html">Modal Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/popover.html">Popover Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tooltip.html">Tooltip Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Data Display</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/avatar.html">Avatar Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/avatar-stack.html">Avatar-Stack Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/badge.html">Badge Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/chart.html">Chart Container</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/code-block.html">CodeBlock Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/funnel.html">Funnel Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/stat.html">Stat Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/table.html">Table Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tag.html">Tag Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/timeline.html">Timeline Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/trend.html">Trend Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Primitive</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/chevron.html">Chevron Component</a></li>
+                </ul>
+              </section>
+            </div>
+          </div>
           <a class="site-topbar__link" href="./themes.html">Themes</a>
           <a class="site-topbar__link" href="./playground.html">Playground</a>
-        </nav>
-        <div class="site-topbar__switches">
-          <label class="visually-hidden" for="site-tone">Tone</label>
+          <div class="site-topbar__switches">
+            <label class="visually-hidden" for="site-tone">Tone</label>
         <select id="site-tone" class="site-select" data-axis="tone">
           <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option>
         </select>
-          <button type="button" class="btn btn--ghost btn--sm" data-axis="mode">Light/Dark</button>
-          <label class="visually-hidden" for="site-density">Density</label>
+            <button type="button" class="btn btn--ghost btn--sm" data-axis="mode">Light/Dark</button>
+            <label class="visually-hidden" for="site-density">Density</label>
         <select id="site-density" class="site-select" data-axis="density">
           <option value="comfortable">Comfortable</option>
           <option value="compact">Compact</option>
           <option value="spacious">Spacious</option>
         </select>
-        </div>
+          </div>
+        </nav>
       </div>
     </header>
     <aside class="app-shell__sidebar">
@@ -141,7 +238,7 @@
         <header class="site-doc__header">
           <h1 class="site-doc__title">Foundations</h1>
           <p class="site-doc__lede">
-            267 Design-Tokens — die Atome des Systems. Klicke
+            271 Design-Tokens — die Atome des Systems. Klicke
             <strong>Edit</strong> bei einem Token, um seinen Wert live zu
             ändern. Aktive Edits + Tone/Mode/Density wandern in die URL —
             teilbar via Copy.
@@ -149,8 +246,8 @@
           
         <div class="foundation-bundle-stats">
           <strong>Bundle</strong>
-          <span><code>114.3 KB</code> raw · <code>17.5 KB</code> gzip · <code>91.2 KB</code> min · <code>16.3 KB</code> min+gzip</span>
-          <span class="site-muted">v0.11.0 · 48 Components</span>
+          <span><code>114.6 KB</code> raw · <code>17.5 KB</code> gzip · <code>91.4 KB</code> min · <code>16.3 KB</code> min+gzip</span>
+          <span class="site-muted">v0.12.0 · 48 Components</span>
         </div>
           <div class="site-doc__cta">
             <button type="button" class="btn btn--sm" data-share-url>URL kopieren</button>
@@ -535,7 +632,7 @@
     </section>
 
     <section class="foundation-group" id="group-semantic-color">
-      <h2 class="foundation-group__title">Farben — Semantic <span class="site-muted">(38)</span></h2>
+      <h2 class="foundation-group__title">Farben — Semantic <span class="site-muted">(42)</span></h2>
       <ul class="foundation-group__list">
         <li class="foundation-token" data-token-name="--color-bg">
           <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-bg);" data-token="--color-bg" aria-hidden="true"></span></div>
@@ -568,6 +665,38 @@
             <span class="foundation-token__value" data-original-value="light-dark(var(--gray-900), var(--gray-100))" title="light-dark(var(--gray-900), var(--gray-100))">light-dark(var(--gray-900), var(--gray-100))</span>
           </div>
           <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-bg-inverse" aria-label="Token bearbeiten">Edit</button>
+        </li>
+        <li class="foundation-token" data-token-name="--color-surface">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-surface);" data-token="--color-surface" aria-hidden="true"></span></div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">--color-surface</code>
+            <span class="foundation-token__value" data-original-value="light-dark(white,            var(--gray-900))" title="light-dark(white,            var(--gray-900))">light-dark(white,            var(--gray-900))</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-surface" aria-label="Token bearbeiten">Edit</button>
+        </li>
+        <li class="foundation-token" data-token-name="--color-surface-subtle">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-surface-subtle);" data-token="--color-surface-subtle" aria-hidden="true"></span></div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">--color-surface-subtle</code>
+            <span class="foundation-token__value" data-original-value="light-dark(var(--gray-50),   var(--gray-900))" title="light-dark(var(--gray-50),   var(--gray-900))">light-dark(var(--gray-50),   var(--gray-900))</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-surface-subtle" aria-label="Token bearbeiten">Edit</button>
+        </li>
+        <li class="foundation-token" data-token-name="--color-surface-hover">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-surface-hover);" data-token="--color-surface-hover" aria-hidden="true"></span></div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">--color-surface-hover</code>
+            <span class="foundation-token__value" data-original-value="light-dark(var(--gray-100),  var(--gray-800))" title="light-dark(var(--gray-100),  var(--gray-800))">light-dark(var(--gray-100),  var(--gray-800))</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-surface-hover" aria-label="Token bearbeiten">Edit</button>
+        </li>
+        <li class="foundation-token" data-token-name="--color-on-interactive">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-on-interactive);" data-token="--color-on-interactive" aria-hidden="true"></span></div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">--color-on-interactive</code>
+            <span class="foundation-token__value" data-original-value="white" title="white">white</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-on-interactive" aria-label="Token bearbeiten">Edit</button>
         </li>
         <li class="foundation-token" data-token-name="--color-text-primary">
           <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-text-primary);" data-token="--color-text-primary" aria-hidden="true"></span></div>

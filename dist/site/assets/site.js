@@ -239,6 +239,53 @@
     if (window.DS && typeof DS.setupAll === "function") DS.setupAll();
   });
 
+  /* Mega-Menu (Components-Nav-Item):
+     - Click auf Trigger → toggle das Panel (Touch + Mobile)
+     - Hover (Desktop, fine-pointer) wird im CSS gehandhabt
+     - Escape oder click-outside schließt das Panel
+     Mobile-Menu-Toggle (Hamburger) öffnet/schließt das ganze topbar__nav. */
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest("[data-mega-trigger]");
+    if (trigger) {
+      const mega = trigger.closest("[data-mega]");
+      const panel = mega.querySelector("[data-mega-panel]");
+      const isOpen = panel.getAttribute("data-open") === "true";
+      panel.setAttribute("data-open", isOpen ? "false" : "true");
+      mega.setAttribute("data-open", isOpen ? "false" : "true");
+      trigger.setAttribute("aria-expanded", isOpen ? "false" : "true");
+      if (!isOpen) panel.removeAttribute("hidden");
+      e.stopPropagation();
+      return;
+    }
+    /* click-outside schließt Mega-Menu */
+    document.querySelectorAll("[data-mega][data-open='true']").forEach((m) => {
+      if (!m.contains(e.target)) {
+        m.querySelector("[data-mega-panel]").setAttribute("data-open", "false");
+        m.setAttribute("data-open", "false");
+        m.querySelector("[data-mega-trigger]")?.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    const burger = e.target.closest("[data-mobile-menu]");
+    if (burger) {
+      const nav = document.getElementById("site-topbar-nav");
+      const isOpen = nav.getAttribute("data-mobile-open") === "true";
+      nav.setAttribute("data-mobile-open", isOpen ? "false" : "true");
+      burger.setAttribute("aria-expanded", isOpen ? "false" : "true");
+      burger.setAttribute("aria-label", isOpen ? "Menü öffnen" : "Menü schließen");
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      document.querySelectorAll("[data-mega][data-open='true']").forEach((m) => {
+        m.querySelector("[data-mega-panel]").setAttribute("data-open", "false");
+        m.setAttribute("data-open", "false");
+        m.querySelector("[data-mega-trigger]")?.setAttribute("aria-expanded", "false");
+      });
+    }
+  });
+
   readState();
   if (window.DS && typeof DS.setupAll === "function") DS.setupAll();
 })();

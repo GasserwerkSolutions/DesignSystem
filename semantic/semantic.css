@@ -22,11 +22,20 @@
      anhand der color-scheme-Property des Elements. data-mode-Wrapper setzen
      color-scheme, kein Token-Re-Override mehr nötig (siehe dark.css). */
 
-  /* Backgrounds */
+  /* Backgrounds — Page-Level */
   --color-bg:           light-dark(var(--gray-100), var(--gray-950));
   --color-bg-secondary: light-dark(var(--gray-50),  var(--gray-900));
   --color-bg-tertiary:  light-dark(var(--gray-200), var(--gray-800));
   --color-bg-inverse:   light-dark(var(--gray-900), var(--gray-100));
+
+  /* Surfaces — Elevated-Block-Level (Topbar, Sidebar, Card-Container,
+     Tile-Backgrounds). Subtil unterscheidet sich von --color-bg, damit
+     stacked Surfaces sichtbar getrennt sind. Hover-Variant für interactive
+     Surfaces. */
+  --color-surface:        light-dark(white,            var(--gray-900));
+  --color-surface-subtle: light-dark(var(--gray-50),   var(--gray-900));
+  --color-surface-hover:  light-dark(var(--gray-100),  var(--gray-800));
+  --color-on-interactive: white;
 
   /* Text */
   --color-text-primary:   light-dark(var(--gray-900), var(--gray-50));

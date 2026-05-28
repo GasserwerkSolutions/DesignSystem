@@ -1,5 +1,89 @@
 # Changelog
 
+## [0.13.0] — Interactive Header + Modifier-Coverage + Favicon
+
+User-Report-getrieben (fünf Wünsche in einer Session):
+  1. Avatar-Stack-Größen-Modifier "nicht funktional"
+  2. "Überprüfe alles auf Funktionen"
+  3. Header verbessern, Kategorien werden zur Liste auf Hover
+  4. Mobile-Optimierung
+  5. Site braucht ein Favicon
+
+Plus ein verstecktes Pre-existing Bug während der Session entdeckt:
+  6. `var(--color-surface)` war an 15+ Stellen referenziert aber NIE definiert
+     → alle "Surfaces" rendeten transparent. Heimlich-broken seit der ersten
+     Site-Etappe.
+
+### Hinzugefügt — Modifier-Vorschau-Sektion
+
+Jede Component-Doc-Page bekommt unter "Beispiele" + "Tone-Übersicht" eine
+neue Sektion: für jede dokumentierte Modifier-Klasse wird das Basis-Markup
+mit dieser Klasse gerendert. Visueller Beweis, dass die Klasse funktional
+ist.
+
+- **Convenience-Syntax-Expander**: ".btn--sm / --lg" wird in [btn--sm,
+  btn--lg] expandiert (vorher: Parser nahm nur das erste, Demo zeigte nur
+  eine Variante). Genauso für ".alert--info / --success / --warning /
+  --danger" und 8 weitere Components mit Slash-Syntax.
+- **ID-Rewriting wiederverwendet** (siehe v0.11.0 Tone-Strip-Fix):
+  Modifier-Tiles bekommen `m-<class>-` Prefix damit das Cloning keine
+  HTML5-ID-Verletzungen + ARIA-Mishits produziert.
+
+### Hinzugefügt — Mega-Menu im Header
+
+- **Components-Nav-Item** wird zu einem Mega-Menu. Desktop: hover ODER click
+  öffnet ein Panel mit allen 8 Kategorien + ihren Components (sortiert).
+  Touch/Mobile: click-toggle. ARIA: aria-haspopup, aria-expanded, role=menu,
+  role=menuitem. Escape schließt.
+- **Hover-Intent** via `@media (hover: hover) and (pointer: fine)` — Touch-
+  Devices (die hover-Events emulieren) öffnen NUR via click, kein
+  versehentliches Aufpoppen.
+- **Click-outside** schließt das Panel.
+
+### Hinzugefügt — Mobile-Optimierung
+
+- **Burger-Toggle** (`☰`) bei < 768px Viewport. Topbar-Nav wird zum
+  Slide-Down-Drawer.
+- **Switches im Drawer**: DOM-Restructure verschiebt Tone/Mode/Density-
+  Switches DAS DRAWER-Ende. Stack natürlich, mit Border-Separator.
+- **Sidebar versteckt** bei < 768px — Mega-Menu im Burger ersetzt die
+  Component-Navigation. Main belegt die volle Breite.
+- **Mega-Menu kollabiert** zu Inline-Accordion im Drawer (click-only,
+  kein Hover-Pop-Layer auf Touch).
+
+### Hinzugefügt — Favicon
+
+- **`dist/site/assets/favicon.svg`**: SVG mit 4 OKLCH-Quadraten in den
+  prominentesten Theme-Tones (trust-green, playful-amber, modern-blue,
+  premium-dark). Vector, dark-mode-kompatibel, ~290 Byte.
+- **`<link rel="icon" type="image/svg+xml">`** in pageShell().
+
+### Behoben — Pre-existing: --color-surface nicht definiert
+
+- `var(--color-surface)`, `var(--color-surface-subtle)`,
+  `var(--color-surface-hover)`, `var(--color-on-interactive)` waren in 15+
+  CSS-Regeln im Site-Stack referenziert, aber NIE in semantic.css definiert.
+  Resultat: transparente Surfaces für Topbar, Sidebar, Cards, Mega-Panel,
+  Drawer, Foundations-Token-Tiles, Theme-Gen-Preview etc.
+- Jetzt in semantic.css als light-dark()-Tokens. Stack-Bug der mobile-
+  Optimierung sichtbar gemacht hat (Drawer war transparent → unleserlich).
+
+### Tests
+
+- **+9 Site-Asserts**:
+  - 6× Header-Nav (favicon-link, mega-click, mega-link-count, mega-Escape,
+    mobile-burger-visibility, mobile-burger-click)
+  - 3× Modifier-Preview (avatar-stack --sm vs --lg verschieden, count
+    >= 3, alert-variants 4 verschiedene bgs)
+- **Gesamt site-asserts**: 48 (war 34, +14)
+
+### Pipeline-Status
+
+  lint, test:lint (21), contrast (1008), visual (12), journeys (6),
+  measure (4 budgets), site (48), package (73 coverage) — alle grün.
+
+---
+
 ## [0.12.0] — Modern CSS: light-dark() ersetzt die Override-Architektur
 
 Path A der Modern-CSS-Adoption. Vor v0.12.0 wurde Dark-Mode über zwei
