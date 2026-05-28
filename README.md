@@ -274,7 +274,8 @@ open dist/site/index.html
 - [ADR-001 — Container-Width-Inheritance](./ADR-001-container-max-inheritance.md)
 - [ADR-002 — Modern-CSS-Architektur (light-dark, @starting-style, @property)](./ADR-002-modern-css-architecture.md)
 - [ADR-003 — Status-Farben Sand-Filter (CLEAR 4 Prinzip 4)](./ADR-003-status-color-sand-filter.md)
-- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.27
+- [ADR-004 — Tone-Paletten Chroma-Filter (CLEAR 4 Prinzip 3)](./ADR-004-palette-chroma-filter.md)
+- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.28
 
 ---
 

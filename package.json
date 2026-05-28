@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.27.0",
+  "version": "0.28.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
@@ -37,6 +37,7 @@
     "ADR-001-container-max-inheritance.md",
     "ADR-002-modern-css-architecture.md",
     "ADR-003-status-color-sand-filter.md",
+    "ADR-004-palette-chroma-filter.md",
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md"
@@ -76,7 +77,7 @@
   "bundleBudget": {
     "_comment": "Größenbudgets in Bytes, gemessen via scripts/measure-size.js. Reserve ~10% über aktuellem Stand. Überschreitung failt npm run measure:check.",
     "bundle": {
-      "raw": 140000,
+      "raw": 145000,
       "gzip": 22000
     },
     "minified": {

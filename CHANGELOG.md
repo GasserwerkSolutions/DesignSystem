@@ -1,5 +1,96 @@
 # Changelog
 
+## [0.28.0] — Tone-Paletten Chroma-Filter (CLEAR 4 Prinzip 3)
+
+Zweite konkrete Umsetzung der Nervensystem-Verfassung. ADR-003 hat die
+Status-Basisfarben gefiltert, v0.28 schließt das Bild ab: die Tone-
+Paletten selbst werden chroma-reduziert.
+
+### Vorher
+
+`tokens/tokens.css` hatte Tailwind-Vollsättigung in den drei
+expressiven Tones:
+
+```css
+--trust-500:   #22c55e;   /* OKLCH chroma ~0.18 */
+--playful-500: #f59e0b;   /* OKLCH chroma ~0.17 */
+--modern-500:  #0ea5e9;   /* OKLCH chroma ~0.16 */
+```
+
+Per Prinzip 3 ("Sättigung wird gefiltert. Die Palette ist bewusst
+gedämpft") direkte Verletzung. Premium/Industrial/Minimal waren bereits
+low-chroma — verfassungskonform.
+
+### Nachher
+
+Alle Steps der drei Paletten via Relative-Color-Syntax chroma-reduziert:
+
+```css
+--trust-500: oklch(from #22c55e l calc(c * 0.7) h);
+/* L unverändert (Step-Hierarchie!), C × 0.7, H unverändert */
+```
+
+10 Steps × 3 Paletten = 30 Tokens umgestellt. Industrial/Premium/Minimal
+unverändert.
+
+### Warum Relative-Color-Syntax statt color-mix
+
+ADR-003 nutzte `color-mix(in oklch, signal 78%, text-primary 22%)` für
+Status-Farben — pulls L toward text-primary. Für Tone-Paletten fatal: 50
+und 900 sind absichtlich an den L-Extremen und müssen dort bleiben.
+
+`oklch(from <orig> l calc(c * 0.7) h)` greift chirurgisch:
+- L unverändert → 50 bleibt zarter Pastell, 900 bleibt tiefer Schatten
+- C × 0.7 → Chroma -30%
+- H unverändert → Identität bleibt
+
+### Cascade-Effekt
+
+Jeder Button, Link, Focus-Ring, Avatar-Akzent, Badge, Chart-Datenpunkt
+in Trust/Playful/Modern Themes wird automatisch ruhiger. Eine Stelle in
+tokens.css, sichtbar in 100+ Component-Slots.
+
+### Contrast-Parser erweitert
+
+`scripts/check-contrast.js` bekommt einen Mini-OKLCH-Evaluator:
+- `oklch(L C H)` literal
+- `oklch(from <color> L C H)` Relative-Color-Syntax
+- L/C/H als Identifier (Substitution mit dem from-color)
+- `calc()` mit *, /, +, -, parens, identifier-substitution
+
+Nutzt das bereits existierende `scripts/_oklch.js`-Modul. ~150 LOC.
+1008/1008 Paare grün ohne Re-Kalibrierung — L-preserving Filter ändert
+Kontrast-Verhältnisse minimal.
+
+### Verifikation
+
+- **Visuell A/B**: Paletten-Sweeps (50→900) für alle 3 Tones gerendert.
+  Identität bleibt eindeutig (Grün ist Sage-Grün, Amber ist Tan, Blau
+  ist Steel) — Wahrnehmung "noch derselbe Tone, aber kalmer".
+- **Buttons im gefilterten Stack** weiter klar Primary/Secondary/Ghost
+  distinct.
+- **VRT**: 12 Baselines neu generiert. 3 unaffected (Premium/Industrial/
+  Minimal pixel-identical zur vorigen), 6 mit ~80k Pixel-Diff (~0.5%
+  Color-Shift cascade-weit).
+- **Self-Test**: 3 kalibrierte Mutationen weiterhin gecatcht.
+
+### Stats
+
+- 275 Tokens (unverändert — die 30 Palette-Tokens haben gleiche Namen,
+  nur neue Werte)
+- Bundle: 136.3 KB raw (+0.9 KB für die verbosen oklch-Expressions) /
+  20.4 KB gzip (unverändert)
+- Budget: bundle.raw 137 → 145 KB Reserve
+
+### Dokumentation
+
+- **ADR-004**: Kalibrierung, Trade-Offs, Alternatives (color-mix vs
+  Relative-Color, per-Tone-Stärke, *-signal-Escape-Hatch reject).
+- Verfassungs-Mapping pro CLEAR-4-Prinzip in ADR.
+- README + package.json:files erweitert.
+
+---
+
 ## [0.27.0] — Status-Farben Sand-Filter (CLEAR 4 Prinzip 4)
 
 Erste konkrete Umsetzung der Nervensystem-Verfassung CLEAR 4 nach

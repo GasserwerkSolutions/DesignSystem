@@ -59,51 +59,65 @@
 
   /* ========================================
      COLORS — Tone Palettes
-     (Theme-spezifische Scales. premium/minimal/modern
-      wurden entfernt — keine Verwendung.)
-     ======================================== */
+     ========================================
+     Sand-gefiltert via Relative-Color-Syntax (CLEAR 4 Prinzip 3:
+     "Sättigung wird gefiltert. Die Palette ist bewusst gedämpft.")
 
-  /* Trust (Green) */
-  --trust-50:  #f0fdf4;
-  --trust-100: #dcfce7;
-  --trust-200: #bbf7d0;
-  --trust-300: #86efac;
-  --trust-400: #4ade80;
-  --trust-500: #22c55e;
-  --trust-600: #16a34a;
-  --trust-700: #15803d;
-  --trust-800: #166534;
-  --trust-900: #14532d;
+     Pro Step: oklch(from <orig> l calc(c * 0.7) h)
+       - L unverändert → Step-Hierarchie 50→900 erhalten, Kontrast-
+         Verhältnisse bleiben
+       - C × 0.7 → Chroma -30%, perceptually-uniform Reduktion
+       - H unverändert → Tone-Identität (Grün bleibt Grün) bleibt
 
-  /* Playful (Amber/Gold) */
-  --playful-50:  #fefce8;
-  --playful-100: #fef3c7;
-  --playful-200: #fde68a;
-  --playful-300: #fcd34d;
-  --playful-400: #fbbf24;
-  --playful-500: #f59e0b;
-  --playful-600: #d97706;
-  --playful-700: #b45309;
-  --playful-800: #92400e;
-  --playful-900: #78350f;
+     Industrial/Premium/Minimal sind bereits low-chroma — keine Filterung
+     nötig. Trust/Playful/Modern werden gefiltert.
 
-  /* Industrial (Dark Gray accent) */
+     Baseline: oklch(from...) ist Baseline 2024+ (Chrome 119, Safari 16.4,
+     Firefox 128). Bei Browser ohne Support: invalid declaration, Token
+     ist undefined — Konsumenten brauchen explizite Fallbacks. Unsere
+     Components nutzen `var(--token, <static-fallback>)` durchgehend. */
+
+  /* Trust (Green) — sand-filtered */
+  --trust-50:  oklch(from #f0fdf4 l calc(c * 0.7) h);
+  --trust-100: oklch(from #dcfce7 l calc(c * 0.7) h);
+  --trust-200: oklch(from #bbf7d0 l calc(c * 0.7) h);
+  --trust-300: oklch(from #86efac l calc(c * 0.7) h);
+  --trust-400: oklch(from #4ade80 l calc(c * 0.7) h);
+  --trust-500: oklch(from #22c55e l calc(c * 0.7) h);
+  --trust-600: oklch(from #16a34a l calc(c * 0.7) h);
+  --trust-700: oklch(from #15803d l calc(c * 0.7) h);
+  --trust-800: oklch(from #166534 l calc(c * 0.7) h);
+  --trust-900: oklch(from #14532d l calc(c * 0.7) h);
+
+  /* Playful (Amber/Gold) — sand-filtered */
+  --playful-50:  oklch(from #fefce8 l calc(c * 0.7) h);
+  --playful-100: oklch(from #fef3c7 l calc(c * 0.7) h);
+  --playful-200: oklch(from #fde68a l calc(c * 0.7) h);
+  --playful-300: oklch(from #fcd34d l calc(c * 0.7) h);
+  --playful-400: oklch(from #fbbf24 l calc(c * 0.7) h);
+  --playful-500: oklch(from #f59e0b l calc(c * 0.7) h);
+  --playful-600: oklch(from #d97706 l calc(c * 0.7) h);
+  --playful-700: oklch(from #b45309 l calc(c * 0.7) h);
+  --playful-800: oklch(from #92400e l calc(c * 0.7) h);
+  --playful-900: oklch(from #78350f l calc(c * 0.7) h);
+
+  /* Industrial (Dark Gray accent) — bereits low-chroma, unverändert */
   --industrial-100: #eeeeee;
   --industrial-400: #a3a3a3;
   --industrial-600: #525252;
   --industrial-900: #171717;
 
-  /* Modern (Blue) */
-  --modern-50:  #f0f9ff;
-  --modern-100: #e0f2fe;
-  --modern-200: #bae6fd;
-  --modern-300: #7dd3fc;
-  --modern-400: #38bdf8;
-  --modern-500: #0ea5e9;
-  --modern-600: #0284c7;
-  --modern-700: #0369a1;
-  --modern-800: #075985;
-  --modern-900: #0c4a6e;
+  /* Modern (Blue) — sand-filtered */
+  --modern-50:  oklch(from #f0f9ff l calc(c * 0.7) h);
+  --modern-100: oklch(from #e0f2fe l calc(c * 0.7) h);
+  --modern-200: oklch(from #bae6fd l calc(c * 0.7) h);
+  --modern-300: oklch(from #7dd3fc l calc(c * 0.7) h);
+  --modern-400: oklch(from #38bdf8 l calc(c * 0.7) h);
+  --modern-500: oklch(from #0ea5e9 l calc(c * 0.7) h);
+  --modern-600: oklch(from #0284c7 l calc(c * 0.7) h);
+  --modern-700: oklch(from #0369a1 l calc(c * 0.7) h);
+  --modern-800: oklch(from #075985 l calc(c * 0.7) h);
+  --modern-900: oklch(from #0c4a6e l calc(c * 0.7) h);
 
   /* Minimal nutzt die neutrale Gray-Skala — keine eigene Palette nötig */
 

@@ -133,6 +133,7 @@ function parseColor(value, resolve) {
   }
   if (/^#[0-9a-f]{3,8}$/i.test(v)) return hexToRgb(v);
   if (v.startsWith("color-mix(")) return parseColorMix(v, resolve);
+  if (v.startsWith("oklch(")) return parseOklch(v, resolve);
 
   const varMatch = /^var\((--[a-zA-Z0-9-]+)(?:\s*,\s*(.+))?\)$/.exec(v);
   if (varMatch) {
@@ -142,6 +143,168 @@ function parseColor(value, resolve) {
     return null;
   }
   return null;
+}
+
+/* OKLCH-Parser: unterstützt zwei Varianten
+   1. oklch(L C H)               — absolute LCH-Werte, L als 0-1 oder %
+   2. oklch(from <color> L C H)  — Relative-Color-Syntax, derived from <color>
+                                   L/C/H können l/c/h-Identifier sein oder
+                                   calc()-Expressions mit denen
+   Reused: scripts/_oklch.js für die Math (gleiche Funktionen wie in der
+   Theme-Generator-JS). */
+const oklchMath = require("./_oklch.js");
+
+function evalLchExpr(expr, ctx) {
+  /* ctx = { l, c, h } in OKLCH-Skala (l 0-1, c 0+, h 0-360) */
+  const e = expr.trim();
+  /* Pure identifier */
+  if (e === "l") return ctx.l;
+  if (e === "c") return ctx.c;
+  if (e === "h") return ctx.h;
+  /* Numeric: 50% → 0.5, 0.7, 180deg → 180 */
+  let m;
+  if ((m = /^(-?\d+(?:\.\d+)?)%$/.exec(e))) return parseFloat(m[1]) / 100;
+  if ((m = /^(-?\d+(?:\.\d+)?)(deg|rad|grad|turn)?$/.exec(e))) {
+    const n = parseFloat(m[1]);
+    const unit = m[2];
+    if (unit === "rad") return (n * 180) / Math.PI;
+    if (unit === "grad") return (n * 360) / 400;
+    if (unit === "turn") return n * 360;
+    return n;
+  }
+  /* calc(...) — vereinfachte Evaluation für unsere Use-Cases.
+     Unterstützt: identifier, number, *, /, +, -, parens. */
+  if ((m = /^calc\(\s*(.+)\s*\)$/.exec(e))) {
+    return evalCalc(m[1], ctx);
+  }
+  return NaN;
+}
+
+function evalCalc(expr, ctx) {
+  /* Tokenize: numbers, identifiers (l/c/h), operators (*, /, +, -),
+     parens. Wir machen einen winzigen Recursive-Descent-Parser. */
+  let pos = 0;
+  const src = expr;
+
+  const peek = () => {
+    while (pos < src.length && /\s/.test(src[pos])) pos++;
+    return src[pos];
+  };
+  const consume = (ch) => {
+    if (peek() !== ch) throw new Error(`expected ${ch} at ${pos}`);
+    pos++;
+  };
+  const parseAtom = () => {
+    peek();
+    const start = pos;
+    if (src[pos] === "(") {
+      pos++;
+      const v = parseExpr();
+      consume(")");
+      return v;
+    }
+    if (src[pos] === "l" || src[pos] === "c" || src[pos] === "h") {
+      const ch = src[pos++];
+      return ctx[ch];
+    }
+    while (pos < src.length && /[0-9.\-]/.test(src[pos])) pos++;
+    return parseFloat(src.slice(start, pos));
+  };
+  const parseMul = () => {
+    let v = parseAtom();
+    while (true) {
+      peek();
+      if (src[pos] === "*") { pos++; v *= parseAtom(); }
+      else if (src[pos] === "/") { pos++; v /= parseAtom(); }
+      else break;
+    }
+    return v;
+  };
+  const parseExpr = () => {
+    let v = parseMul();
+    while (true) {
+      peek();
+      if (src[pos] === "+") { pos++; v += parseMul(); }
+      else if (src[pos] === "-") { pos++; v -= parseMul(); }
+      else break;
+    }
+    return v;
+  };
+  return parseExpr();
+}
+
+function parseOklch(value, resolve) {
+  /* Inneres wegnehmen */
+  const inner = value.slice("oklch(".length, -1).trim();
+  let parts;
+  let baseLch = null;
+  if (/^from\s+/i.test(inner)) {
+    /* Relative-Color-Syntax: 'from <color> L C H [/ A]' */
+    const rest = inner.replace(/^from\s+/i, "");
+    /* <color> kann selbst eine Funktion sein (var(...), #hex, color-mix(...)).
+       Wir extrahieren bis zum ersten balanced Whitespace außerhalb von Klammern. */
+    let depth = 0, i = 0;
+    while (i < rest.length) {
+      const ch = rest[i];
+      if (ch === "(") depth++;
+      else if (ch === ")") depth--;
+      else if (/\s/.test(ch) && depth === 0) break;
+      i++;
+    }
+    const colorStr = rest.slice(0, i).trim();
+    const lchExprsStr = rest.slice(i).trim();
+    const baseRgb = parseColor(colorStr, resolve);
+    if (!baseRgb) return null;
+    const [R, G, B] = baseRgb;
+    baseLch = oklchMath.hexToOklch(
+      rgbToHexLocal(R, G, B)
+    );
+    /* baseLch.L is 0..1, .C is 0..0.4ish, .H is 0..360 */
+    parts = splitOklchArgs(lchExprsStr);
+  } else {
+    parts = splitOklchArgs(inner);
+  }
+  if (parts.length < 3) return null;
+
+  const ctx = baseLch
+    ? { l: baseLch.L, c: baseLch.C, h: baseLch.H }
+    : { l: 0, c: 0, h: 0 };
+
+  const L = evalLchExpr(parts[0], ctx);
+  const C = evalLchExpr(parts[1], ctx);
+  const H = evalLchExpr(parts[2], ctx);
+  if (isNaN(L) || isNaN(C) || isNaN(H)) return null;
+
+  /* Back to hex via oklchMath, then to rgb */
+  const hex = oklchMath.oklchToHex({ L, C: Math.max(0, C), H });
+  return hexToRgb(hex);
+}
+
+function splitOklchArgs(str) {
+  /* Split by whitespace, but respect parens for calc(...). Optional "/ alpha"
+     wird ignoriert (Kontrast egal bei Alpha). */
+  const parts = [];
+  let depth = 0, start = 0;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    if (ch === "(") depth++;
+    else if (ch === ")") depth--;
+    else if (/\s/.test(ch) && depth === 0) {
+      if (i > start) parts.push(str.slice(start, i));
+      start = i + 1;
+    } else if (ch === "/" && depth === 0) {
+      if (i > start) parts.push(str.slice(start, i));
+      /* Skip rest (alpha) */
+      return parts;
+    }
+  }
+  if (start < str.length) parts.push(str.slice(start));
+  return parts;
+}
+
+function rgbToHexLocal(r, g, b) {
+  const to = (v) => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, "0");
+  return "#" + to(r) + to(g) + to(b);
 }
 
 function parseColorMix(value, resolve) {
