@@ -391,6 +391,20 @@
   .site-muted { color: var(--color-text-secondary); }
   .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
 
+  /* View-Transitions Cross-Fade beim Tone/Mode/Density-Switch.
+     Chrome 111+, Safari 18+. Andere Browser: instant. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 240ms;
+    animation-timing-function: var(--ease-smooth, ease-in-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+    }
+  }
+
   /* Foundations-Page — Token-Browser & Swatches */
   .foundation-toc { margin: var(--space-16) 0 0; }
   .foundation-toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-8); }

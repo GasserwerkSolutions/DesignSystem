@@ -1825,6 +1825,20 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
   .site-muted { color: var(--color-text-secondary); }
   .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
 
+  /* View-Transitions Cross-Fade beim Tone/Mode/Density-Switch.
+     Chrome 111+, Safari 18+. Andere Browser: instant. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 240ms;
+    animation-timing-function: var(--ease-smooth, ease-in-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation: none;
+    }
+  }
+
   /* Foundations-Page — Token-Browser & Swatches */
   .foundation-toc { margin: var(--space-16) 0 0; }
   .foundation-toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-8); }
@@ -2020,18 +2034,38 @@ const SITE_JS = `/* Site-Runtime — axis-switchers, sidebar-search, URL-state, 
     syncUrl();
   }
 
+  /* View-Transitions wrap: wenn die API verfügbar ist (Chrome 111+,
+     Safari 18+), wird der Axis-Switch in eine startViewTransition gewrapt.
+     Browser nimmt einen Snapshot vor + nach der Änderung und blendet
+     smooth über (crossfade). Andere Browser: instant switch wie zuvor. */
+  function withTransition(fn) {
+    if (document.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.startViewTransition(fn);
+    } else {
+      fn();
+    }
+  }
+
   document.addEventListener("change", (e) => {
     const t = e.target.closest('[data-axis="tone"]');
-    if (t) { root.setAttribute("data-tone", t.value); persist(); return; }
+    if (t) {
+      withTransition(() => root.setAttribute("data-tone", t.value));
+      persist();
+      return;
+    }
     const d = e.target.closest('[data-axis="density"]');
-    if (d) { root.setAttribute("data-density", d.value); persist(); return; }
+    if (d) {
+      withTransition(() => root.setAttribute("data-density", d.value));
+      persist();
+      return;
+    }
   });
 
   document.addEventListener("click", (e) => {
     const m = e.target.closest('[data-axis="mode"]');
     if (m) {
       const next = root.getAttribute("data-mode") === "dark" ? "light" : "dark";
-      root.setAttribute("data-mode", next);
+      withTransition(() => root.setAttribute("data-mode", next));
       persist();
     }
   });

@@ -59,18 +59,38 @@
     syncUrl();
   }
 
+  /* View-Transitions wrap: wenn die API verfügbar ist (Chrome 111+,
+     Safari 18+), wird der Axis-Switch in eine startViewTransition gewrapt.
+     Browser nimmt einen Snapshot vor + nach der Änderung und blendet
+     smooth über (crossfade). Andere Browser: instant switch wie zuvor. */
+  function withTransition(fn) {
+    if (document.startViewTransition && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.startViewTransition(fn);
+    } else {
+      fn();
+    }
+  }
+
   document.addEventListener("change", (e) => {
     const t = e.target.closest('[data-axis="tone"]');
-    if (t) { root.setAttribute("data-tone", t.value); persist(); return; }
+    if (t) {
+      withTransition(() => root.setAttribute("data-tone", t.value));
+      persist();
+      return;
+    }
     const d = e.target.closest('[data-axis="density"]');
-    if (d) { root.setAttribute("data-density", d.value); persist(); return; }
+    if (d) {
+      withTransition(() => root.setAttribute("data-density", d.value));
+      persist();
+      return;
+    }
   });
 
   document.addEventListener("click", (e) => {
     const m = e.target.closest('[data-axis="mode"]');
     if (m) {
       const next = root.getAttribute("data-mode") === "dark" ? "light" : "dark";
-      root.setAttribute("data-mode", next);
+      withTransition(() => root.setAttribute("data-mode", next));
       persist();
     }
   });

@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.20.0] — View-Transitions + Companion-JS für neue Components
+
+### Hinzugefügt — View-Transitions
+
+- **Doc-Site `site.js`**: Tone/Mode/Density-Switches in `withTransition()`
+  gewrapt. Wenn `document.startViewTransition` verfügbar (Chrome 111+,
+  Safari 18+) und kein `prefers-reduced-motion: reduce`: smooth Cross-Fade
+  zwischen Themes. Andere Browser: instant switch wie zuvor.
+- **`::view-transition-old(root)` + `::view-transition-new(root)`**:
+  240ms Crossfade-Timing in site.css. Reduced-motion respektiert.
+
+### Hinzugefügt — TypeScript-Setups
+
+- **`js/setup-copy-button.ts`** — wires `.copy-btn` mit data-copy-target /
+  data-copy-text. Sets data-state="copied" / "error". Auto-clear nach
+  1500ms (copied) / 2000ms (error).
+- **`js/setup-otp-input.ts`** — auto-advance, Backspace-zurück, Arrow-Key-
+  Navigation, Paste-Verteilung über alle Felder.
+- **`js/setup-theme-toggle.ts`** — toggle data-mode mit View-Transition-
+  Support + localStorage-Persistierung + aria-label-Update für Ziel-State.
+
+### Exports
+
+Alle drei via `@gws/design-system/js/setup-copy-button`,
+`@gws/design-system/js/setup-otp-input`, `@gws/design-system/js/setup-
+theme-toggle`. Auto-Init in `setupAll()`.
+
+### Bundle
+
+  JS-Bundle:  9.75 KB ESM (war 6.40, +3.35 für 3 neue Setups)
+              11.59 KB IIFE (+3.6)
+  CSS-Bundle: 128.9 KB raw / 19.5 KB gzip (+0.7 KB raw, +0.2 KB gzip durch
+              view-transition pseudo-elements)
+
+### Pipeline
+
+Alle grün: lint, contrast (1008), visual (12), journeys (6), site (50),
+package (69 imports), measure (4 budgets).
+
+---
+
 ## [0.19.0] — Forced-Colors-Mode (Windows High Contrast) Erweiterte Coverage
 
 `@media (forced-colors: active)` Block in state.css von 7 Components auf

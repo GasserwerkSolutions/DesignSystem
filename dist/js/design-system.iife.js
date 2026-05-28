@@ -25,14 +25,17 @@ var DS = (() => {
     setupAll: () => setupAll,
     setupCombobox: () => setupCombobox,
     setupComboboxes: () => setupComboboxes,
+    setupCopyButton: () => setupCopyButton,
     setupDismisser: () => setupDismisser,
     setupDismissers: () => setupDismissers,
     setupFileUpload: () => setupFileUpload,
     setupFileUploads: () => setupFileUploads,
+    setupOtpInput: () => setupOtpInput,
     setupPopover: () => setupPopover,
     setupPopovers: () => setupPopovers,
     setupSlider: () => setupSlider,
-    setupSliders: () => setupSliders
+    setupSliders: () => setupSliders,
+    setupThemeToggle: () => setupThemeToggle
   });
 
   // js/setup-dismiss.ts
@@ -220,6 +223,100 @@ var DS = (() => {
     root.querySelectorAll(".slider").forEach((el) => setupSlider(el));
   }
 
+  // js/setup-copy-button.ts
+  function setupCopyButton(root = document) {
+    const buttons = root.querySelectorAll(".copy-btn");
+    buttons.forEach((btn) => {
+      if (btn.dataset.copyInit === "1") return;
+      btn.dataset.copyInit = "1";
+      btn.addEventListener("click", async () => {
+        const target = btn.dataset.copyTarget ? document.getElementById(btn.dataset.copyTarget) : null;
+        const text = btn.dataset.copyText ?? target?.textContent?.trim() ?? "";
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          btn.dataset.state = "copied";
+          setTimeout(() => delete btn.dataset.state, 1500);
+        } catch {
+          btn.dataset.state = "error";
+          setTimeout(() => delete btn.dataset.state, 2e3);
+        }
+      });
+    });
+  }
+
+  // js/setup-otp-input.ts
+  function setupOtpInput(root = document) {
+    const groups = root.querySelectorAll(".otp-input");
+    groups.forEach((group) => {
+      if (group.dataset.otpInit === "1") return;
+      group.dataset.otpInit = "1";
+      const fields = Array.from(
+        group.querySelectorAll(".otp-input__field")
+      );
+      fields.forEach((field, i) => {
+        field.addEventListener("input", () => {
+          field.value = field.value.replace(/[^0-9]/g, "").slice(0, 1);
+          if (field.value && i < fields.length - 1) {
+            fields[i + 1].focus();
+          }
+        });
+        field.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !field.value && i > 0) {
+            fields[i - 1].focus();
+          } else if (e.key === "ArrowLeft" && i > 0) {
+            fields[i - 1].focus();
+            e.preventDefault();
+          } else if (e.key === "ArrowRight" && i < fields.length - 1) {
+            fields[i + 1].focus();
+            e.preventDefault();
+          }
+        });
+        field.addEventListener("paste", (e) => {
+          e.preventDefault();
+          const data = (e.clipboardData?.getData("text") || "").replace(/[^0-9]/g, "");
+          for (let j = 0; j < data.length && i + j < fields.length; j++) {
+            fields[i + j].value = data[j];
+          }
+          const focusIdx = Math.min(i + data.length, fields.length - 1);
+          fields[focusIdx].focus();
+        });
+      });
+    });
+  }
+
+  // js/setup-theme-toggle.ts
+  function setupThemeToggle(root = document) {
+    const buttons = root.querySelectorAll("[data-theme-toggle]");
+    buttons.forEach((btn) => {
+      if (btn.dataset.toggleInit === "1") return;
+      btn.dataset.toggleInit = "1";
+      btn.addEventListener("click", () => {
+        const html = document.documentElement;
+        const current = html.getAttribute("data-mode") ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        const next = current === "dark" ? "light" : "dark";
+        const apply = () => {
+          html.setAttribute("data-mode", next);
+          try {
+            localStorage.setItem("ds-mode", next);
+          } catch {
+          }
+          btn.setAttribute(
+            "aria-label",
+            next === "dark" ? "Auf Light Mode wechseln" : "Auf Dark Mode wechseln"
+          );
+        };
+        const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const docWithVT = document;
+        if (docWithVT.startViewTransition && !reducedMotion) {
+          docWithVT.startViewTransition(apply);
+        } else {
+          apply();
+        }
+      });
+    });
+  }
+
   // js/index.ts
   function setupAll(root = document) {
     setupDismissers(root);
@@ -227,6 +324,9 @@ var DS = (() => {
     setupComboboxes(root);
     setupFileUploads(root);
     setupSliders(root);
+    setupCopyButton(root);
+    setupOtpInput(root);
+    setupThemeToggle(root);
   }
   return __toCommonJS(index_exports);
 })();
