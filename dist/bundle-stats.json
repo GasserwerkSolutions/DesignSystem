@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T00:56:08.524Z",
-  "version": "0.23.0",
+  "timestamp": "2026-05-28T03:09:09.317Z",
+  "version": "0.25.0",
   "bundle": {
-    "raw": 137890,
-    "gzip": 20749,
-    "brotli": 17507
+    "raw": 138248,
+    "gzip": 20800,
+    "brotli": 17569
   },
   "minified": {
-    "raw": 109896,
-    "gzip": 19231,
-    "brotli": 16637
+    "raw": 110148,
+    "gzip": 19286,
+    "brotli": 16725
   },
   "layers": [
     {
@@ -34,12 +34,12 @@
     },
     {
       "label": "state",
-      "raw": 3494,
+      "raw": 4080,
       "files": 1
     },
     {
       "label": "components",
-      "raw": 172965,
+      "raw": 173178,
       "files": 57
     }
   ],
@@ -253,6 +253,10 @@
       "raw": 1653
     },
     {
+      "name": "section",
+      "raw": 1627
+    },
+    {
       "name": "empty-state",
       "raw": 1594
     },
@@ -263,10 +267,6 @@
     {
       "name": "search",
       "raw": 1447
-    },
-    {
-      "name": "section",
-      "raw": 1414
     },
     {
       "name": "trend",

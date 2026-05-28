@@ -1224,6 +1224,83 @@ function renderFoundationsPage(components, allTokens) {
 }
 
 function renderThemesPage(components) {
+  /* Pre-render initial Palette + CB-Rows + CSS-Export für default #22c55e.
+     Verhindert CLS — JS schreibt nach Mount dieselben Werte und löst keinen
+     Layout-Shift aus. Identische Math wie in der client-side Version. */
+  const oklch = require("./_oklch.js");
+  const DEFAULT_HEX = "#22c55e";
+  const DEFAULT_NAME = "custom";
+  const initialPalette = oklch.generatePalette(DEFAULT_HEX);
+  const initialVerdicts = oklch.checkColorBlindSafety(initialPalette);
+  const initialPaletteHtml = initialPalette
+    .map(
+      (s) => `
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:${s.hex};"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>${s.step}</strong>
+            <code>${s.hex}</code>
+            <span class="site-muted">L ${s.L.toFixed(2)} · C ${s.C.toFixed(3)} · H ${Math.round(s.H)}°</span>
+          </div>
+        </li>`
+    )
+    .join("");
+  const cbTypes = [
+    ["deutan", "Deuteranopie"],
+    ["protan", "Protanopie"],
+    ["tritan", "Tritanopie"],
+  ];
+  const initialCbHtml = cbTypes
+    .map(([type, label]) => {
+      const row = initialPalette
+        .map(
+          (s) =>
+            `<div class="theme-gen__cb-swatch" style="background:${oklch.simulateColorBlind(s.hex, type)};" title="${s.step}"></div>`
+        )
+        .join("");
+      const v = initialVerdicts[type];
+      return `
+          <div class="theme-gen__cb-row">
+            <div class="theme-gen__cb-label">
+              <strong>${label}</strong>
+              <span class="badge ${v.safe ? "badge--success" : "badge--warning"}">
+                ${v.safe ? "ok" : "knapp"} · Δ${v.minDelta.toFixed(3)} (${v.worstPair})
+              </span>
+            </div>
+            <div class="theme-gen__cb-strip">${row}</div>
+          </div>`;
+    })
+    .join("");
+  const initialAllSafe = Object.values(initialVerdicts).every((v) => v.safe);
+  const initialCbVerdictHtml = initialAllSafe
+    ? `<div class="alert alert--success" role="status"><span class="alert__icon" aria-hidden="true">✓</span><div class="alert__body"><strong>Color-Blind-safe</strong><p>Alle adjacenten Steps haben ein Lightness-Delta ≥ 0.04 unter Deutan-, Protan- und Tritan-Simulation.</p></div></div>`
+    : `<div class="alert alert--warning" role="alert"><span class="alert__icon" aria-hidden="true">!</span><div class="alert__body"><strong>Knappe Stufen</strong><p>Mindestens ein adjacenter Schritt fließt unter einer CB-Simulation ineinander. Wähle eine andere Hauptfarbe oder akzeptiere bewusst, dass diese Stufen nicht als Encoding-Differenz taugen.</p></div></div>`;
+  const initialCssExport = `:root {
+${initialPalette.map((s) => `  --${DEFAULT_NAME}-${s.step}: ${s.hex};`).join("\n")}
+}
+
+[data-tone~="${DEFAULT_NAME}"] {
+  --color-interactive:       var(--${DEFAULT_NAME}-600);
+  --color-interactive-light: var(--${DEFAULT_NAME}-100);
+  --color-interactive-dark:  var(--${DEFAULT_NAME}-800);
+  --color-focus:             var(--${DEFAULT_NAME}-600);
+  --color-focus-ring:        var(--${DEFAULT_NAME}-100);
+
+  --btn-bg:       var(--${DEFAULT_NAME}-600);
+  --btn-bg-hover: var(--${DEFAULT_NAME}-700);
+  --btn-fg:       white;
+  --btn-radius:   var(--radius-8);
+
+  --card-bg:     white;
+  --card-border: 1px solid var(--${DEFAULT_NAME}-100);
+  --card-radius: var(--radius-12);
+
+  --color-success: var(--${DEFAULT_NAME}-600);
+
+  --input-focus-border: var(--${DEFAULT_NAME}-600);
+  --input-focus-ring:   var(--${DEFAULT_NAME}-100);
+}`;
+
   const sidebar = componentSidebar(components, null, "./");
   const body = `
       <article class="site-doc">
@@ -1242,27 +1319,27 @@ function renderThemesPage(components) {
             <label class="theme-gen__field">
               <span>HEX-Wert</span>
               <div class="theme-gen__hex-row">
-                <input type="color" id="tg-color" value="#22c55e" data-theme-gen-color>
-                <input type="text" id="tg-hex" value="#22c55e" data-theme-gen-hex spellcheck="false">
+                <input type="color" id="tg-color" value="${DEFAULT_HEX}" data-theme-gen-color>
+                <input type="text" id="tg-hex" value="${DEFAULT_HEX}" data-theme-gen-hex spellcheck="false">
               </div>
             </label>
             <label class="theme-gen__field">
               <span>Tone-Name</span>
-              <input type="text" id="tg-name" value="custom" data-theme-gen-name spellcheck="false">
+              <input type="text" id="tg-name" value="${DEFAULT_NAME}" data-theme-gen-name spellcheck="false">
             </label>
           </div>
         </section>
 
         <section class="site-doc__section">
           <h2>2. Generierte Palette (OKLCH)</h2>
-          <ol class="theme-gen__palette" data-theme-gen-palette aria-label="11-Step-Palette"></ol>
+          <ol class="theme-gen__palette" data-theme-gen-palette aria-label="11-Step-Palette">${initialPaletteHtml}</ol>
         </section>
 
         <section class="site-doc__section">
           <h2>3. Color-Blind-Safety</h2>
           <p class="site-muted">Simulation via Brettel/Viénot-Mollon. Adjacent steps brauchen ein wahrnehmbares Lightness-Delta in jedem Modus — sonst fließen sie ineinander.</p>
-          <div class="theme-gen__cb-rows" data-theme-gen-cb></div>
-          <div class="theme-gen__cb-verdict" data-theme-gen-cb-verdict></div>
+          <div class="theme-gen__cb-rows" data-theme-gen-cb>${initialCbHtml}</div>
+          <div class="theme-gen__cb-verdict" data-theme-gen-cb-verdict>${initialCbVerdictHtml}</div>
         </section>
 
         <section class="site-doc__section">
@@ -1298,7 +1375,7 @@ function renderThemesPage(components) {
           <p class="site-muted">Kopiere den Block nach <code>themes/&lt;name&gt;.css</code>, ergänze die Import-Zeile in <code>main.css</code>, und das Theme ist via <code>data-tone="&lt;name&gt;"</code> verfügbar.</p>
           <div class="theme-gen__export">
             <button class="btn btn--sm" data-theme-gen-copy>In Zwischenablage kopieren</button>
-            <pre class="code-block"><code data-theme-gen-css></code></pre>
+            <pre class="code-block"><code data-theme-gen-css>${escapeHtml(initialCssExport)}</code></pre>
           </div>
         </section>
       </article>`;

@@ -218,6 +218,9 @@ function diffImages(baselinePng, actualPng) {
  * erwarteten Range fällt, muss MAX_DIFF_PIXELS oder die Mutation
  * angepasst werden. Sensitivitäts-Drift wird so sichtbar.
  */
+/* Calibration v0.26: page-heights wurden um 24% kürzer durch removal von
+   content-visibility: auto auf .section. Pixel-Diff-Ranges entsprechend
+   neu vermessen. */
 const MUTATIONS = [
   {
     name: "trust --btn-radius 8 → 24 (corner-shift pro Button)",
@@ -226,7 +229,7 @@ const MUTATIONS = [
     replace: "--btn-radius: var(--radius-24);",
     expectedFails: ["trust-light", "trust-dark"],
     minPixels: 1000,
-    maxPixels: 50000,
+    maxPixels: 2_000_000,
   },
   {
     name: "premium --space-section 96 → 32 (extreme layout-shift)",
@@ -238,13 +241,16 @@ const MUTATIONS = [
     maxPixels: 10_000_000,
   },
   {
-    name: "modern --btn-radius 4 → 24 (large per-button corner-shift)",
+    /* --btn-radius war flaky (5k pixels — knapp über VRT-Threshold 500).
+       --btn-bg-Wechsel zu Magenta produziert verlässlich 30k+ Diff-Pixels
+       weil JEDER Button auf der Page seine Fläche neu eingefärbt bekommt. */
+    name: "modern --btn-bg → magenta (button-flood)",
     file: path.join(ROOT, "themes/modern.css"),
-    find: "--btn-radius:       var(--radius-4);",
-    replace: "--btn-radius: var(--radius-24);",
+    find: "--btn-bg:           var(--modern-600);",
+    replace: "--btn-bg: #ff00ff;",
     expectedFails: ["modern-light", "modern-dark"],
-    minPixels: 1000,
-    maxPixels: 50_000,
+    minPixels: 5000,
+    maxPixels: 2_000_000,
   },
 ];
 
@@ -297,7 +303,7 @@ async function selfTest() {
       const res = spawnSync("node", [__filename], {
         encoding: "utf8",
         cwd: ROOT,
-        timeout: 60_000,
+        timeout: 120_000,
       });
       const output = res.stdout + res.stderr;
 

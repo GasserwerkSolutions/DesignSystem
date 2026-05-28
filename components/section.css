@@ -36,9 +36,12 @@
   padding-block: var(--section-py, var(--space-48));
   background: var(--section-bg, transparent);
   border-block-start: var(--section-divider, none);
-  /* Off-Screen-Sections werden nicht gerendert bis sichtbar \u2014 Perf-Boost */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 40rem;
+  /* Performance: layout/paint Containment. Browser kann jede Section
+     unabh\u00e4ngig vom Page-Layout berechnen. content-visibility wurde
+     entfernt (v0.26) weil es CLS=0.05 produzierte beim Scroll-Reveal \u2014
+     der Layout-Skip-Win wiegt das Layout-Stability-Loss nicht auf
+     (Core Web Vitals priorisiert Stability). */
+  contain: layout paint;
 }
 
 .section:first-child {

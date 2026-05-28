@@ -1,5 +1,71 @@
 # Changelog
 
+## [0.26.0] — Performance: Layout-Stability + Measurement-Infrastructure
+
+Erster gemessener Perf-Pass. Reproduzierbare Baseline + 2 konkrete Wins
+basierend auf den Zahlen.
+
+### Hinzugefügt — Measurement
+
+- **`scripts/perf-measure.js`** + **`npm run measure`** (Erweiterung — Bundle-
+  Measure wurde umbenannt, perf-Measure ist die Render-Performance-Variante).
+  Misst LCP, FCP, DOM-Nodes, Style-Recalc-Duration, Layout-Duration,
+  Layout-Count, JSHeap, CLS — Median von 3 Runs nach Warm-up, prefers-
+  reduced-motion emuliert. Output: `dist/perf-stats.json`.
+- **`scripts/_oklch.js`** — Node-Modul mit der OKLCH-Math (1:1 Port der
+  in-browser Version). Wird für Pre-Rendering der initial-Palette in
+  themes.html verwendet.
+
+### Behoben — CLS auf themes-Page (0.193 → 0.000)
+
+Theme-Generator-Page hatte den höchsten CLS-Score: ~0.19. Quelle: die
+JS-populated Sektionen (Palette, CB-Rows, CSS-Export) waren initial leer,
+JS schrieb sie nach Mount → Layout-Shift schob die Live-Vorschau und den
+Export-Block nach unten.
+
+Fix: `renderThemesPage()` rendert die initial-Palette + CB-Verdicts +
+CSS-Export für Default-`#22c55e` direkt ins HTML. JS schreibt nach Mount
+dieselben Werte — kein Layout-Shift weil die Höhen bereits stehen.
+
+### Behoben — CLS auf demo (0.053 → 0.000) + Layout-Passes (8-10 → 3)
+
+`content-visibility: auto` auf `.section` produzierte kleine CLS-Shifts
+(jede Section schoss beim Scroll-Reveal um wenige px nach unten weil
+`contain-intrinsic-size: auto 40rem` die echte Höhe unterschätzte).
+
+Entfernt zugunsten von `contain: layout paint` — Sections sind weiterhin
+unabhängig vom Page-Layout berechnet, aber kein Skip-Render-Toggle der
+zu Shifts führen kann.
+
+**Side-Effect**: Demo-Page schrumpft von 18945 auf 14425 px Höhe (24% kürzer)
+weil die `contain-intrinsic-size`-Placeholder die Page künstlich verlängert
+haben. Layout-Passes 8-10 → 3 (-66%), Style-Recalc 62 → 42ms (-32%).
+
+### Recalibrate VRT Self-Test
+
+Page-Heights um 24% kürzer → Pixel-Diff-Ranges für die Self-Test-Mutationen
+neu vermessen. Modern-Self-Test umgestellt von `--btn-radius` (war flaky,
+~5k Pixel-Diff knapp über Threshold) auf `--btn-bg → magenta` (stabil
+50k+ pixels weil JEDER Button neu eingefärbt wird). Subprocess-Timeout
+60s → 120s (3 mutations × VRT-Run sequenziell).
+
+### Stats
+
+| Page | LCP | FCP | Recalc | Layout | CLS |
+|---|---|---|---|---|---|
+| demo (vor/nach) | 244/300ms | 244/300ms | 62→42ms | 59→71ms | **0.05→0.00** |
+| themes | 228/248ms | 228/248ms | 16/16ms | 28/28ms | **0.19→0.00** |
+| foundations | 280/296ms | 280/296ms | 23/27ms | 53/57ms | 0.00/0.00 |
+| site-index | 220/248ms | 220/248ms | 10/11ms | 22/23ms | 0.00/0.00 |
+
+CLS für ALLE Pages auf 0.00 — Core Web Vitals "Good"-Range erreicht.
+
+### Pipeline
+
+Alle 9 Stufen grün, plus Tools-Self-Test (3 kalibrierte Mutations).
+
+---
+
 ## [0.25.0] — ADR-002 (Modern-CSS) + prefers-reduced-transparency
 
 ### Hinzugefügt — ADR-002

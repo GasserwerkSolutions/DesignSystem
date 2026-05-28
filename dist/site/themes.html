@@ -17,7 +17,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="./index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.25.0</span>
+          <span class="badge badge--neutral">v0.26.0</span>
         </a>
         <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
@@ -281,14 +281,129 @@
 
         <section class="site-doc__section">
           <h2>2. Generierte Palette (OKLCH)</h2>
-          <ol class="theme-gen__palette" data-theme-gen-palette aria-label="11-Step-Palette"></ol>
+          <ol class="theme-gen__palette" data-theme-gen-palette aria-label="11-Step-Palette">
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#dfffe4;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>50</strong>
+            <code>#dfffe4</code>
+            <span class="site-muted">L 0.97 · C 0.049 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#bbfac6;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>100</strong>
+            <code>#bbfac6</code>
+            <span class="site-muted">L 0.93 · C 0.094 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#99e6a8;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>200</strong>
+            <code>#99e6a8</code>
+            <span class="site-muted">L 0.86 · C 0.115 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#66ca7e;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>300</strong>
+            <code>#66ca7e</code>
+            <span class="site-muted">L 0.76 · C 0.145 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#1fae53;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>400</strong>
+            <code>#1fae53</code>
+            <span class="site-muted">L 0.66 · C 0.174 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#00893c;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>500</strong>
+            <code>#00893c</code>
+            <span class="site-muted">L 0.55 · C 0.153 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#006b2d;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>600</strong>
+            <code>#006b2d</code>
+            <span class="site-muted">L 0.46 · C 0.128 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#005422;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>700</strong>
+            <code>#005422</code>
+            <span class="site-muted">L 0.39 · C 0.109 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#004219;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>800</strong>
+            <code>#004219</code>
+            <span class="site-muted">L 0.33 · C 0.092 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#003010;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>900</strong>
+            <code>#003010</code>
+            <span class="site-muted">L 0.27 · C 0.075 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#001f08;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>950</strong>
+            <code>#001f08</code>
+            <span class="site-muted">L 0.21 · C 0.058 · H 150°</span>
+          </div>
+        </li></ol>
         </section>
 
         <section class="site-doc__section">
           <h2>3. Color-Blind-Safety</h2>
           <p class="site-muted">Simulation via Brettel/Viénot-Mollon. Adjacent steps brauchen ein wahrnehmbares Lightness-Delta in jedem Modus — sonst fließen sie ineinander.</p>
-          <div class="theme-gen__cb-rows" data-theme-gen-cb></div>
-          <div class="theme-gen__cb-verdict" data-theme-gen-cb-verdict></div>
+          <div class="theme-gen__cb-rows" data-theme-gen-cb>
+          <div class="theme-gen__cb-row">
+            <div class="theme-gen__cb-label">
+              <strong>Deuteranopie</strong>
+              <span class="badge badge--warning">
+                knapp · Δ0.005 (100↔200)
+              </span>
+            </div>
+            <div class="theme-gen__cb-strip"><div class="theme-gen__cb-swatch" style="background:#00ffc5;" title="50"></div><div class="theme-gen__cb-swatch" style="background:#00ffad;" title="100"></div><div class="theme-gen__cb-swatch" style="background:#00ff94;" title="200"></div><div class="theme-gen__cb-swatch" style="background:#00ff71;" title="300"></div><div class="theme-gen__cb-swatch" style="background:#00f94d;" title="400"></div><div class="theme-gen__cb-swatch" style="background:#00b638;" title="500"></div><div class="theme-gen__cb-swatch" style="background:#008a2a;" title="600"></div><div class="theme-gen__cb-swatch" style="background:#006920;" title="700"></div><div class="theme-gen__cb-swatch" style="background:#004f18;" title="800"></div><div class="theme-gen__cb-swatch" style="background:#003410;" title="900"></div><div class="theme-gen__cb-swatch" style="background:#061c08;" title="950"></div></div>
+          </div>
+          <div class="theme-gen__cb-row">
+            <div class="theme-gen__cb-label">
+              <strong>Protanopie</strong>
+              <span class="badge badge--warning">
+                knapp · Δ0.006 (100↔200)
+              </span>
+            </div>
+            <div class="theme-gen__cb-strip"><div class="theme-gen__cb-swatch" style="background:#00ffda;" title="50"></div><div class="theme-gen__cb-swatch" style="background:#00ffbe;" title="100"></div><div class="theme-gen__cb-swatch" style="background:#00ffa2;" title="200"></div><div class="theme-gen__cb-swatch" style="background:#00ff7a;" title="300"></div><div class="theme-gen__cb-swatch" style="background:#00f851;" title="400"></div><div class="theme-gen__cb-swatch" style="background:#00b63b;" title="500"></div><div class="theme-gen__cb-swatch" style="background:#008a2c;" title="600"></div><div class="theme-gen__cb-swatch" style="background:#006921;" title="700"></div><div class="theme-gen__cb-swatch" style="background:#004f19;" title="800"></div><div class="theme-gen__cb-swatch" style="background:#003410;" title="900"></div><div class="theme-gen__cb-swatch" style="background:#0e1c08;" title="950"></div></div>
+          </div>
+          <div class="theme-gen__cb-row">
+            <div class="theme-gen__cb-label">
+              <strong>Tritanopie</strong>
+              <span class="badge badge--warning">
+                knapp · Δ0.019 (50↔100)
+              </span>
+            </div>
+            <div class="theme-gen__cb-strip"><div class="theme-gen__cb-swatch" style="background:#c9ff4e;" title="50"></div><div class="theme-gen__cb-swatch" style="background:#a9ff4c;" title="100"></div><div class="theme-gen__cb-swatch" style="background:#8bf446;" title="200"></div><div class="theme-gen__cb-swatch" style="background:#5dd33d;" title="300"></div><div class="theme-gen__cb-swatch" style="background:#1bb235;" title="400"></div><div class="theme-gen__cb-swatch" style="background:#008c2a;" title="500"></div><div class="theme-gen__cb-swatch" style="background:#006d20;" title="600"></div><div class="theme-gen__cb-swatch" style="background:#005519;" title="700"></div><div class="theme-gen__cb-swatch" style="background:#004314;" title="800"></div><div class="theme-gen__cb-swatch" style="background:#00300e;" title="900"></div><div class="theme-gen__cb-swatch" style="background:#001f09;" title="950"></div></div>
+          </div></div>
+          <div class="theme-gen__cb-verdict" data-theme-gen-cb-verdict><div class="alert alert--warning" role="alert"><span class="alert__icon" aria-hidden="true">!</span><div class="alert__body"><strong>Knappe Stufen</strong><p>Mindestens ein adjacenter Schritt fließt unter einer CB-Simulation ineinander. Wähle eine andere Hauptfarbe oder akzeptiere bewusst, dass diese Stufen nicht als Encoding-Differenz taugen.</p></div></div></div>
         </section>
 
         <section class="site-doc__section">
@@ -324,7 +439,41 @@
           <p class="site-muted">Kopiere den Block nach <code>themes/&lt;name&gt;.css</code>, ergänze die Import-Zeile in <code>main.css</code>, und das Theme ist via <code>data-tone="&lt;name&gt;"</code> verfügbar.</p>
           <div class="theme-gen__export">
             <button class="btn btn--sm" data-theme-gen-copy>In Zwischenablage kopieren</button>
-            <pre class="code-block"><code data-theme-gen-css></code></pre>
+            <pre class="code-block"><code data-theme-gen-css>:root {
+  --custom-50: #dfffe4;
+  --custom-100: #bbfac6;
+  --custom-200: #99e6a8;
+  --custom-300: #66ca7e;
+  --custom-400: #1fae53;
+  --custom-500: #00893c;
+  --custom-600: #006b2d;
+  --custom-700: #005422;
+  --custom-800: #004219;
+  --custom-900: #003010;
+  --custom-950: #001f08;
+}
+
+[data-tone~=&quot;custom&quot;] {
+  --color-interactive:       var(--custom-600);
+  --color-interactive-light: var(--custom-100);
+  --color-interactive-dark:  var(--custom-800);
+  --color-focus:             var(--custom-600);
+  --color-focus-ring:        var(--custom-100);
+
+  --btn-bg:       var(--custom-600);
+  --btn-bg-hover: var(--custom-700);
+  --btn-fg:       white;
+  --btn-radius:   var(--radius-8);
+
+  --card-bg:     white;
+  --card-border: 1px solid var(--custom-100);
+  --card-radius: var(--radius-12);
+
+  --color-success: var(--custom-600);
+
+  --input-focus-border: var(--custom-600);
+  --input-focus-ring:   var(--custom-100);
+}</code></pre>
           </div>
         </section>
       </article>
