@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.14.0] — Modern CSS: @starting-style + interpolate-size
+
+Modernisiert die Overlay-Animationen via `@starting-style` und
+`transition-behavior: allow-discrete` (Baseline 2024+). Ersetzt
+`@keyframes`-Pattern, das nur Entry hatte — jetzt smooth in UND out.
+
+### Geändert
+
+- **popover.css**: `@starting-style` für Enter, `.popover:not(:popover-open)`
+  für Exit. `transition-behavior: allow-discrete` aktiviert die Transition
+  für `display` und `overlay` Properties (sonst springt das Popover instant).
+- **modal.css**: ersetzt `@keyframes modal-enter` durch `@starting-style`.
+  Backdrop bekommt eigene Exit-Animation. Modal-Close hat jetzt smooth
+  fade-out + scale-down (vorher: instant disappear).
+- **drawer.css**: ersetzt `@keyframes drawer-slide-start/end` durch
+  `@starting-style`. Slide-Out funktioniert jetzt bei beiden Modifier-
+  Varianten (`.drawer--start` und Default `.drawer`).
+- **accordion.css**: `interpolate-size: allow-keywords` ermöglicht
+  Animation zwischen `height: 0` und natürlicher Content-Höhe. Chrome
+  129+ — andere Browser ignorieren still (instant toggle wie zuvor).
+
+### Reduced-Motion
+
+Alle Animationen respektieren `prefers-reduced-motion: reduce` —
+`transition: none` und sofortiges Zeigen/Verstecken des Endzustands.
+
+### Bundle
+
+  Bundle:    114.6 KB raw / 17.7 KB gzip (+0.2 KB durch zusätzliche
+             @starting-style + reduced-motion Blöcke)
+
+### Pipeline
+
+Lint, contrast (1008/1008), visual (12/12 pixel-identical), journeys
+(6/6), a11y (passed) — alle grün. VRT bleibt identisch weil die End-
+Zustände (open/closed) unverändert sind; nur die Bewegung dazwischen
+ist jetzt smooth in beide Richtungen.
+
+---
+
 ## [0.13.0] — Interactive Header + Modifier-Coverage + Favicon
 
 User-Report-getrieben (fünf Wünsche in einer Session):

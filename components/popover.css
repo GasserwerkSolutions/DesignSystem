@@ -86,20 +86,34 @@
   font-size: var(--font-sm);
   line-height: var(--lh-normal);
 
-  /* Entry-Animation: :popover-open aktiviert sich beim Öffnen.
+  /* Entry/Exit-Animation via @starting-style + transition-behavior.
+     Baseline 2024+ (Chrome 117, Safari 17.5, Firefox 129). Funktioniert
+     auch für EXIT (alte :popover-open-Override gab nur Entry).
      Reduced-Motion respektiert (siehe @media unten). */
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity var(--motion-feedback), transform var(--motion-feedback);
-}
-
-.popover:popover-open {
   opacity: 1;
   transform: none;
+  transition:
+    opacity var(--motion-feedback),
+    transform var(--motion-feedback),
+    display var(--motion-feedback) allow-discrete,
+    overlay var(--motion-feedback) allow-discrete;
+}
+
+@starting-style {
+  .popover:popover-open {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.popover:not(:popover-open) {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .popover { transition: none; transform: none; }
+  .popover:not(:popover-open) { opacity: 1; transform: none; }
 }
 
 /* Menu-Pattern: vertikale Liste klickbarer Items. */

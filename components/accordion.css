@@ -25,6 +25,11 @@
   border: 1px solid var(--accordion-border, var(--color-border));
   border-radius: var(--accordion-radius, var(--radius-md));
   overflow: hidden;
+  /* interpolate-size: allow-keywords ermöglicht Animation zwischen
+     Größen-Keywords (auto, fit-content). Damit kann <details> smooth
+     auf seine natürliche Höhe expandieren. Chrome 129+ (2024), Firefox/
+     Safari progressive. Fallback: instant toggle wie zuvor. */
+  interpolate-size: allow-keywords;
 }
 
 .accordion + .accordion {

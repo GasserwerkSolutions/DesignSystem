@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T00:09:49.816Z",
-  "version": "0.13.0",
+  "timestamp": "2026-05-28T00:18:15.336Z",
+  "version": "0.14.0",
   "bundle": {
-    "raw": 117317,
-    "gzip": 17937,
-    "brotli": 15206
+    "raw": 118695,
+    "gzip": 18112,
+    "brotli": 15409
   },
   "minified": {
-    "raw": 93604,
-    "gzip": 16718,
-    "brotli": 14548
+    "raw": 94665,
+    "gzip": 16856,
+    "brotli": 14659
   },
   "layers": [
     {
@@ -39,7 +39,7 @@
     },
     {
       "label": "components",
-      "raw": 139267,
+      "raw": 141276,
       "files": 48
     }
   ],
@@ -49,12 +49,12 @@
       "raw": 9112
     },
     {
-      "name": "file-upload",
-      "raw": 5495
+      "name": "popover",
+      "raw": 5864
     },
     {
-      "name": "popover",
-      "raw": 5443
+      "name": "file-upload",
+      "raw": 5495
     },
     {
       "name": "list-row",
@@ -97,6 +97,10 @@
       "raw": 3607
     },
     {
+      "name": "modal",
+      "raw": 3497
+    },
+    {
       "name": "switch",
       "raw": 3423
     },
@@ -109,6 +113,10 @@
       "raw": 3249
     },
     {
+      "name": "drawer",
+      "raw": 3114
+    },
+    {
       "name": "date-input",
       "raw": 3029
     },
@@ -117,8 +125,8 @@
       "raw": 2863
     },
     {
-      "name": "modal",
-      "raw": 2804
+      "name": "accordion",
+      "raw": 2852
     },
     {
       "name": "callout",
@@ -143,14 +151,6 @@
     {
       "name": "avatar-stack",
       "raw": 2540
-    },
-    {
-      "name": "accordion",
-      "raw": 2536
-    },
-    {
-      "name": "drawer",
-      "raw": 2535
     },
     {
       "name": "badge",
