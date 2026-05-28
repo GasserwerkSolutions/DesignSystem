@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Callout Component — Design System</title>
+  <title>Segmented Control — Design System</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../../main.css">
   <link rel="stylesheet" href="../assets/site.css">
@@ -167,7 +167,7 @@
             <li><a class="site-sidebar__link" href="../components/file-upload.html">File-Upload Component</a></li>
             <li><a class="site-sidebar__link" href="../components/range.html">Range-Slider Component</a></li>
             <li><a class="site-sidebar__link" href="../components/search.html">Search-Input Component</a></li>
-            <li><a class="site-sidebar__link" href="../components/segmented.html">Segmented Control</a></li>
+            <li><a class="site-sidebar__link is-active" href="../components/segmented.html">Segmented Control</a></li>
             <li><a class="site-sidebar__link" href="../components/select.html">Select Component</a></li>
             <li><a class="site-sidebar__link" href="../components/slider.html">Slider Component</a></li>
             <li><a class="site-sidebar__link" href="../components/switch.html">Switch Component</a></li>
@@ -179,7 +179,7 @@
           <ul class="site-sidebar__list">
             <li><a class="site-sidebar__link" href="../components/alert.html">Alert Component</a></li>
             <li><a class="site-sidebar__link" href="../components/banner.html">Banner Component</a></li>
-            <li><a class="site-sidebar__link is-active" href="../components/callout.html">Callout Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/callout.html">Callout Component</a></li>
             <li><a class="site-sidebar__link" href="../components/empty-state.html">Empty-State Component</a></li>
             <li><a class="site-sidebar__link" href="../components/progress.html">Progress Component</a></li>
             <li><a class="site-sidebar__link" href="../components/skeleton.html">Skeleton Loader</a></li>
@@ -242,9 +242,10 @@
       
       <article class="site-doc">
         <header class="site-doc__header">
-          <span class="site-doc__category">Feedback</span>
-          <h1 class="site-doc__title">Callout Component</h1>
-          <p>Info-/Warning-/Error-Box mit akzentuiertem Rand. Für &quot;Automatisch einrichten&quot;-Hinweise, Fehler-Messages, etc.</p>
+          <span class="site-doc__category">Form</span>
+          <h1 class="site-doc__title">Segmented Control</h1>
+          <p>Hybrid zwischen Button-Group, Radio-Buttons und Tabs. Mehrere mutuell- exklusive Optionen in einer kompakten Reihe, eine ist aktiv.</p>
+<p>Nutzt native &lt;input type=&quot;radio&quot;&gt; + &lt;label&gt; für volle A11Y + Form- Integration (FormData, keyboard navigation, screen-reader-support). Visueller Rebuild via appearance:none auf den Radios.</p>
         </header>
 
         <section class="site-doc__section">
@@ -252,29 +253,56 @@
           
     <section class="site-example" data-example>
       
-      <div class="site-example__preview" data-preview><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+      <div class="site-example__preview" data-preview><fieldset class="segmented">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
       <div class="site-example__toolbar">
         <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
         <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
         <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
       </div>
       <div class="site-example__source" hidden>
-        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;aside class=&quot;callout callout--info&quot;&gt;
-  &lt;div&gt;
-    &lt;div class=&quot;callout__title&quot;&gt;Auto-Setup Scan&lt;/div&gt;
-    &lt;div class=&quot;callout__body&quot;&gt;Gib deine Website-URL ein …&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/aside&gt;">&lt;aside class=&quot;callout callout--info&quot;&gt;
-  &lt;div&gt;
-    &lt;div class=&quot;callout__title&quot;&gt;Auto-Setup Scan&lt;/div&gt;
-    &lt;div class=&quot;callout__body&quot;&gt;Gib deine Website-URL ein …&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/aside&gt;</textarea>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;fieldset class=&quot;segmented&quot;&gt;
+  &lt;legend class=&quot;visually-hidden&quot;&gt;Ansicht&lt;/legend&gt;
+  &lt;label class=&quot;segmented__item&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;view&quot; value=&quot;list&quot; checked&gt;
+    &lt;span&gt;Liste&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;label class=&quot;segmented__item&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;view&quot; value=&quot;grid&quot;&gt;
+    &lt;span&gt;Grid&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;label class=&quot;segmented__item&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;view&quot; value=&quot;map&quot;&gt;
+    &lt;span&gt;Karte&lt;/span&gt;
+  &lt;/label&gt;
+&lt;/fieldset&gt;">&lt;fieldset class=&quot;segmented&quot;&gt;
+  &lt;legend class=&quot;visually-hidden&quot;&gt;Ansicht&lt;/legend&gt;
+  &lt;label class=&quot;segmented__item&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;view&quot; value=&quot;list&quot; checked&gt;
+    &lt;span&gt;Liste&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;label class=&quot;segmented__item&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;view&quot; value=&quot;grid&quot;&gt;
+    &lt;span&gt;Grid&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;label class=&quot;segmented__item&quot;&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;view&quot; value=&quot;map&quot;&gt;
+    &lt;span&gt;Karte&lt;/span&gt;
+  &lt;/label&gt;
+&lt;/fieldset&gt;</textarea>
       </div>
     </section>
         </section>
@@ -287,57 +315,111 @@
             
             <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
               <header class="site-tone-tile__label">trust</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><fieldset class="segmented">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
             </article>
             <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
               <header class="site-tone-tile__label">playful</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><fieldset class="segmented">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
             </article>
             <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
               <header class="site-tone-tile__label">premium</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><fieldset class="segmented">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
             </article>
             <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
               <header class="site-tone-tile__label">industrial</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><fieldset class="segmented">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
             </article>
             <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
               <header class="site-tone-tile__label">modern</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><fieldset class="segmented">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
             </article>
             <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
               <header class="site-tone-tile__label">minimal</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><fieldset class="segmented">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
             </article>
           </div>
         </section>
@@ -351,44 +433,39 @@
     <tbody>
       
       <tr>
-        <td><code>--callout-bg</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>Background-Pastell</td>
-      </tr>
-      <tr>
-        <td><code>--callout-fg</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>Body-Text-Farbe</td>
-      </tr>
-      <tr>
-        <td><code>--callout-stripe</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>Border-Inline-Start-Farbe (pure status color)</td>
-      </tr>
-      <tr>
-        <td><code>--callout-accent</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>Title-Text-Farbe (kontrastreicher gegen bg)</td>
-      </tr>
-      <tr>
-        <td><code>--callout-border-width</code></td>
+        <td><code>--segmented-bg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--callout-padding</code></td>
+        <td><code>--segmented-active-bg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--callout-radius</code></td>
+        <td><code>--segmented-active-fg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--status-</code></td>
+        <td><code>--segmented-radius</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
-        <td>*-Token-Set</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--segmented-py</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--segmented-px</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--segmented-gap</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>(default 2px Track-Inset)</td>
       </tr>
     </tbody>
   </table>
@@ -398,7 +475,9 @@
         <section class="site-doc__section">
           <h2>Modifier</h2>
           <ul class="site-modifier-list">
-            <li><code>.callout--info</code> — / --success / --warning / --danger / --neutral</li>
+            <li><code>.segmented--sm</code> — kompakter (für Toolbars)</li>
+            <li><code>.segmented--lg</code> — größer (für Hero-Toggles)</li>
+            <li><code>.segmented--block</code> — full-width</li>
           </ul>
         </section>
 
@@ -410,69 +489,72 @@
             
       <article class="site-modifier-tile">
         <header class="site-modifier-tile__label">
-          <code>.callout--info</code>
-          <span class="site-muted"></span>
+          <code>.segmented--sm</code>
+          <span class="site-muted">kompakter (für Toolbars)</span>
         </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+        <div class="site-modifier-tile__preview"><fieldset class="segmented segmented--sm">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
       </article>
       <article class="site-modifier-tile">
         <header class="site-modifier-tile__label">
-          <code>.callout--success</code>
-          <span class="site-muted"></span>
+          <code>.segmented--lg</code>
+          <span class="site-muted">größer (für Hero-Toggles)</span>
         </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--success">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+        <div class="site-modifier-tile__preview"><fieldset class="segmented segmented--lg">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
       </article>
       <article class="site-modifier-tile">
         <header class="site-modifier-tile__label">
-          <code>.callout--warning</code>
-          <span class="site-muted"></span>
+          <code>.segmented--block</code>
+          <span class="site-muted">full-width</span>
         </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--warning">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
-      </article>
-      <article class="site-modifier-tile">
-        <header class="site-modifier-tile__label">
-          <code>.callout--danger</code>
-          <span class="site-muted"></span>
-        </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--danger">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
-      </article>
-      <article class="site-modifier-tile">
-        <header class="site-modifier-tile__label">
-          <code>.callout--neutral</code>
-          <span class="site-muted"></span>
-        </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--neutral">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+        <div class="site-modifier-tile__preview"><fieldset class="segmented segmented--block">
+  <legend class="visually-hidden">Ansicht</legend>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="list" checked>
+    <span>Liste</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="grid">
+    <span>Grid</span>
+  </label>
+  <label class="segmented__item">
+    <input type="radio" name="view" value="map">
+    <span>Karte</span>
+  </label>
+</fieldset></div>
       </article>
           </div>
         </section>
 
         <footer class="site-doc__footer">
-          <a class="btn btn--ghost btn--sm" href="../../../components/callout.css">Source-CSS ansehen</a>
+          <a class="btn btn--ghost btn--sm" href="../../../components/segmented.css">Source-CSS ansehen</a>
         </footer>
       </article>
     </main>

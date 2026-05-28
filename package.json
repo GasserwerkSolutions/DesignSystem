@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
@@ -73,12 +73,12 @@
   "bundleBudget": {
     "_comment": "Größenbudgets in Bytes, gemessen via scripts/measure-size.js. Reserve ~10% über aktuellem Stand. Überschreitung failt npm run measure:check.",
     "bundle": {
-      "raw": 130000,
-      "gzip": 20000
+      "raw": 140000,
+      "gzip": 22000
     },
     "minified": {
-      "raw": 105000,
-      "gzip": 18500
+      "raw": 115000,
+      "gzip": 20500
     }
   },
   "devDependencies": {

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T00:18:15.336Z",
-  "version": "0.14.0",
+  "timestamp": "2026-05-28T00:30:41.770Z",
+  "version": "0.17.0",
   "bundle": {
-    "raw": 118695,
-    "gzip": 18112,
-    "brotli": 15409
+    "raw": 124635,
+    "gzip": 18975,
+    "brotli": 16141
   },
   "minified": {
-    "raw": 94665,
-    "gzip": 16856,
-    "brotli": 14659
+    "raw": 99477,
+    "gzip": 17659,
+    "brotli": 15355
   },
   "layers": [
     {
@@ -19,7 +19,7 @@
     },
     {
       "label": "semantic",
-      "raw": 17599,
+      "raw": 18985,
       "files": 3
     },
     {
@@ -29,7 +29,7 @@
     },
     {
       "label": "base",
-      "raw": 12720,
+      "raw": 13424,
       "files": 4
     },
     {
@@ -39,8 +39,8 @@
     },
     {
       "label": "components",
-      "raw": 141276,
-      "files": 48
+      "raw": 149641,
+      "files": 51
     }
   ],
   "components": [
@@ -111,6 +111,14 @@
     {
       "name": "checkbox",
       "raw": 3249
+    },
+    {
+      "name": "copy-button",
+      "raw": 3220
+    },
+    {
+      "name": "segmented",
+      "raw": 3197
     },
     {
       "name": "drawer",
@@ -191,6 +199,10 @@
     {
       "name": "chevron",
       "raw": 1974
+    },
+    {
+      "name": "kbd",
+      "raw": 1948
     },
     {
       "name": "pagination",

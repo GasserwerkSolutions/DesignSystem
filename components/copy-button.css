@@ -1,0 +1,116 @@
+/**
+ * Copy Button — Copy-to-Clipboard
+ * ================================
+ *
+ * Inline-Button mit Icon-Feedback nach erfolgreichem Copy. Bekommt den Text
+ * zum Kopieren via data-copy-target (id-Reference) ODER data-copy-text
+ * (Inline-String). JS-Behavior siehe Konsument.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --copy-btn-bg, --copy-btn-fg, --copy-btn-radius, --copy-btn-size
+ *
+ * Struktur — neben einem Code-Block:
+ *   <div style="position: relative;">
+ *     <pre><code id="snippet">npm install @gws/design-system</code></pre>
+ *     <button class="copy-btn" data-copy-target="snippet" aria-label="Kopieren">
+ *       <span class="copy-btn__icon" aria-hidden="true">⎘</span>
+ *     </button>
+ *   </div>
+ *
+ *   Inline mit Text:
+ *   <button class="copy-btn copy-btn--inline" data-copy-text="hello">
+ *     <span class="copy-btn__icon" aria-hidden="true">⎘</span>
+ *     <span>Kopieren</span>
+ *   </button>
+ *
+ * State-Feedback:
+ *   .copy-btn[data-state="copied"]   ✓ visualisiert + ARIA-Hint via JS
+ *
+ * Konsument-JS:
+ *   document.querySelectorAll(".copy-btn").forEach((btn) => {
+ *     btn.addEventListener("click", async () => {
+ *       const text = btn.dataset.copyText
+ *         ?? document.getElementById(btn.dataset.copyTarget)?.textContent
+ *         ?? "";
+ *       try {
+ *         await navigator.clipboard.writeText(text);
+ *         btn.dataset.state = "copied";
+ *         setTimeout(() => delete btn.dataset.state, 1500);
+ *       } catch {
+ *         btn.dataset.state = "error";
+ *       }
+ *     });
+ *   });
+ *
+ * Modifier:
+ *   .copy-btn--inline   nicht-floating, mit sichtbarem Label
+ */
+
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  width: var(--copy-btn-size, 2rem);
+  height: var(--copy-btn-size, 2rem);
+  padding: 0;
+  background: var(--copy-btn-bg, var(--color-surface));
+  color: var(--copy-btn-fg, var(--color-text-secondary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--copy-btn-radius, var(--radius-sm));
+  cursor: pointer;
+  transition:
+    background var(--motion-feedback),
+    color var(--motion-feedback),
+    transform var(--motion-feedback);
+}
+
+.copy-btn:hover {
+  background: var(--color-surface-hover, var(--color-bg-tertiary));
+  color: var(--color-text-primary);
+}
+
+.copy-btn:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.copy-btn__icon {
+  font-size: var(--font-sm);
+  line-height: 1;
+}
+
+.copy-btn[data-state="copied"] {
+  background: var(--status-success-bg);
+  color: var(--status-success-border);
+}
+
+.copy-btn[data-state="copied"] .copy-btn__icon::before {
+  content: "✓";
+}
+.copy-btn[data-state="copied"] .copy-btn__icon {
+  visibility: hidden;
+  position: relative;
+}
+.copy-btn[data-state="copied"] .copy-btn__icon::before {
+  content: "✓";
+  visibility: visible;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-btn[data-state="error"] {
+  background: var(--status-danger-bg);
+  color: var(--status-danger-border);
+}
+
+/* Inline-Variante mit sichtbarem Label */
+.copy-btn--inline {
+  width: auto;
+  padding: var(--space-6) var(--space-12);
+  font-size: var(--font-sm);
+}

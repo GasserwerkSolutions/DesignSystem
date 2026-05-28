@@ -470,6 +470,7 @@ const CATEGORIES = {
     "range",
     "slider",
     "button",
+    "segmented",
   ],
   Feedback: [
     "alert",
@@ -504,7 +505,7 @@ const CATEGORIES = {
     "timeline",
     "funnel",
   ],
-  Primitive: ["chevron"],
+  Primitive: ["chevron", "kbd", "copy-button"],
 };
 
 function categoryOf(name) {

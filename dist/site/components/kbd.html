@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Callout Component — Design System</title>
+  <title>KBD — Keyboard Shortcut Display — Design System</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../../main.css">
   <link rel="stylesheet" href="../assets/site.css">
@@ -179,7 +179,7 @@
           <ul class="site-sidebar__list">
             <li><a class="site-sidebar__link" href="../components/alert.html">Alert Component</a></li>
             <li><a class="site-sidebar__link" href="../components/banner.html">Banner Component</a></li>
-            <li><a class="site-sidebar__link is-active" href="../components/callout.html">Callout Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/callout.html">Callout Component</a></li>
             <li><a class="site-sidebar__link" href="../components/empty-state.html">Empty-State Component</a></li>
             <li><a class="site-sidebar__link" href="../components/progress.html">Progress Component</a></li>
             <li><a class="site-sidebar__link" href="../components/skeleton.html">Skeleton Loader</a></li>
@@ -233,7 +233,7 @@
           <ul class="site-sidebar__list">
             <li><a class="site-sidebar__link" href="../components/chevron.html">Chevron Component</a></li>
             <li><a class="site-sidebar__link" href="../components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
-            <li><a class="site-sidebar__link" href="../components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+            <li><a class="site-sidebar__link is-active" href="../components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
           </ul>
         </div>
       </nav>
@@ -242,39 +242,46 @@
       
       <article class="site-doc">
         <header class="site-doc__header">
-          <span class="site-doc__category">Feedback</span>
-          <h1 class="site-doc__title">Callout Component</h1>
-          <p>Info-/Warning-/Error-Box mit akzentuiertem Rand. Für &quot;Automatisch einrichten&quot;-Hinweise, Fehler-Messages, etc.</p>
+          <span class="site-doc__category">Primitive</span>
+          <h1 class="site-doc__title">KBD — Keyboard Shortcut Display</h1>
+          <p>Visuelle Darstellung von Tastatur-Shortcuts in Help-Texten, Tooltips, Command-Hints. Semantisch das native &lt;kbd&gt;-Element.</p>
         </header>
 
         <section class="site-doc__section">
           <h2>Beispiele</h2>
           
     <section class="site-example" data-example>
-      
-      <div class="site-example__preview" data-preview><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+      <h3 class="site-example__caption">Single key</h3>
+      <div class="site-example__preview" data-preview><kbd class="kbd">⌘</kbd></div>
       <div class="site-example__toolbar">
         <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
         <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
         <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
       </div>
       <div class="site-example__source" hidden>
-        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;aside class=&quot;callout callout--info&quot;&gt;
-  &lt;div&gt;
-    &lt;div class=&quot;callout__title&quot;&gt;Auto-Setup Scan&lt;/div&gt;
-    &lt;div class=&quot;callout__body&quot;&gt;Gib deine Website-URL ein …&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/aside&gt;">&lt;aside class=&quot;callout callout--info&quot;&gt;
-  &lt;div&gt;
-    &lt;div class=&quot;callout__title&quot;&gt;Auto-Setup Scan&lt;/div&gt;
-    &lt;div class=&quot;callout__body&quot;&gt;Gib deine Website-URL ein …&lt;/div&gt;
-  &lt;/div&gt;
-&lt;/aside&gt;</textarea>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;kbd class=&quot;kbd&quot;&gt;⌘&lt;/kbd&gt;">&lt;kbd class=&quot;kbd&quot;&gt;⌘&lt;/kbd&gt;</textarea>
+      </div>
+    </section>
+
+    <section class="site-example" data-example>
+      <h3 class="site-example__caption">Combo</h3>
+      <div class="site-example__preview" data-preview><kbd class="kbd-combo">
+  <kbd class="kbd">⌘</kbd>
+  <kbd class="kbd">K</kbd>
+</kbd></div>
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;kbd class=&quot;kbd-combo&quot;&gt;
+  &lt;kbd class=&quot;kbd&quot;&gt;⌘&lt;/kbd&gt;
+  &lt;kbd class=&quot;kbd&quot;&gt;K&lt;/kbd&gt;
+&lt;/kbd&gt;">&lt;kbd class=&quot;kbd-combo&quot;&gt;
+  &lt;kbd class=&quot;kbd&quot;&gt;⌘&lt;/kbd&gt;
+  &lt;kbd class=&quot;kbd&quot;&gt;K&lt;/kbd&gt;
+&lt;/kbd&gt;</textarea>
       </div>
     </section>
         </section>
@@ -287,57 +294,27 @@
             
             <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
               <header class="site-tone-tile__label">trust</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><kbd class="kbd">⌘</kbd></div>
             </article>
             <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
               <header class="site-tone-tile__label">playful</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><kbd class="kbd">⌘</kbd></div>
             </article>
             <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
               <header class="site-tone-tile__label">premium</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><kbd class="kbd">⌘</kbd></div>
             </article>
             <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
               <header class="site-tone-tile__label">industrial</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><kbd class="kbd">⌘</kbd></div>
             </article>
             <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
               <header class="site-tone-tile__label">modern</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><kbd class="kbd">⌘</kbd></div>
             </article>
             <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
               <header class="site-tone-tile__label">minimal</header>
-              <div class="site-tone-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+              <div class="site-tone-tile__preview"><kbd class="kbd">⌘</kbd></div>
             </article>
           </div>
         </section>
@@ -351,44 +328,39 @@
     <tbody>
       
       <tr>
-        <td><code>--callout-bg</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>Background-Pastell</td>
-      </tr>
-      <tr>
-        <td><code>--callout-fg</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>Body-Text-Farbe</td>
-      </tr>
-      <tr>
-        <td><code>--callout-stripe</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>Border-Inline-Start-Farbe (pure status color)</td>
-      </tr>
-      <tr>
-        <td><code>--callout-accent</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>Title-Text-Farbe (kontrastreicher gegen bg)</td>
-      </tr>
-      <tr>
-        <td><code>--callout-border-width</code></td>
+        <td><code>--kbd-bg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--callout-padding</code></td>
+        <td><code>--kbd-fg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--callout-radius</code></td>
+        <td><code>--kbd-border</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--status-</code></td>
+        <td><code>--kbd-radius</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
-        <td>*-Token-Set</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--kbd-shadow</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--kbd-px</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--kbd-py</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
       </tr>
     </tbody>
   </table>
@@ -398,7 +370,8 @@
         <section class="site-doc__section">
           <h2>Modifier</h2>
           <ul class="site-modifier-list">
-            <li><code>.callout--info</code> — / --success / --warning / --danger / --neutral</li>
+            <li><code>.kbd--sm</code> — kompakter (für inline-Text)</li>
+            <li><code>.kbd--lg</code> — größer (für Help-Sections)</li>
           </ul>
         </section>
 
@@ -410,69 +383,23 @@
             
       <article class="site-modifier-tile">
         <header class="site-modifier-tile__label">
-          <code>.callout--info</code>
-          <span class="site-muted"></span>
+          <code>.kbd--sm</code>
+          <span class="site-muted">kompakter (für inline-Text)</span>
         </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--info">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+        <div class="site-modifier-tile__preview"><kbd class="kbd kbd--sm">⌘</kbd></div>
       </article>
       <article class="site-modifier-tile">
         <header class="site-modifier-tile__label">
-          <code>.callout--success</code>
-          <span class="site-muted"></span>
+          <code>.kbd--lg</code>
+          <span class="site-muted">größer (für Help-Sections)</span>
         </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--success">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
-      </article>
-      <article class="site-modifier-tile">
-        <header class="site-modifier-tile__label">
-          <code>.callout--warning</code>
-          <span class="site-muted"></span>
-        </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--warning">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
-      </article>
-      <article class="site-modifier-tile">
-        <header class="site-modifier-tile__label">
-          <code>.callout--danger</code>
-          <span class="site-muted"></span>
-        </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--danger">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
-      </article>
-      <article class="site-modifier-tile">
-        <header class="site-modifier-tile__label">
-          <code>.callout--neutral</code>
-          <span class="site-muted"></span>
-        </header>
-        <div class="site-modifier-tile__preview"><aside class="callout callout--neutral">
-  <div>
-    <div class="callout__title">Auto-Setup Scan</div>
-    <div class="callout__body">Gib deine Website-URL ein …</div>
-  </div>
-</aside></div>
+        <div class="site-modifier-tile__preview"><kbd class="kbd kbd--lg">⌘</kbd></div>
       </article>
           </div>
         </section>
 
         <footer class="site-doc__footer">
-          <a class="btn btn--ghost btn--sm" href="../../../components/callout.css">Source-CSS ansehen</a>
+          <a class="btn btn--ghost btn--sm" href="../../../components/kbd.css">Source-CSS ansehen</a>
         </footer>
       </article>
     </main>

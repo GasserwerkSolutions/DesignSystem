@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.17.0] — Drei neue Components: kbd + segmented + copy-button
+
+Schließt drei häufig nachgefragte Lücken im Component-Inventar.
+
+### Hinzugefügt
+
+- **`components/kbd.css`** — Keyboard-Shortcut-Display via natives `<kbd>`.
+  Single-Key oder Combo (`<kbd class="kbd-combo">⌘ + K</kbd>`). Modifier
+  `.kbd--sm` / `.kbd--lg`.
+- **`components/segmented.css`** — Segmented-Control (Hybrid zwischen
+  Button-Group, Radios und Tabs). Native `<input type="radio">` + `<label>`
+  → volle A11Y und Form-Integration. Aktiver Segment via `:has(:checked)`.
+  Modifier `--sm`, `--lg`, `--block` (full-width).
+- **`components/copy-button.css`** — Inline-Button mit Copy-to-Clipboard.
+  `data-copy-target` (ID-Ref) oder `data-copy-text` (Inline-String).
+  State-Feedback via `data-state="copied|error"` mit ✓-Icon-Replacement.
+  JS-Snippet im Header dokumentiert.
+
+### Categorization
+
+- segmented → Form-Kategorie
+- kbd + copy-button → Primitive-Kategorie
+
+### Bundle
+
+- Bundle: 121.7 KB raw (+7 KB) / 18.5 KB gzip (+1 KB)
+- Budget angehoben: bundle.raw 130 → 140 KB, gzip 20 → 22 KB (+10% Reserve
+  für weitere Component-Additions)
+
+### Pipeline
+
+51 Component-Pages generiert (war 48). Lint, contrast, visual, journeys,
+site (50 asserts), package (66 imports), measure — alle grün.
+
+---
+
 ## [0.16.0] — RTL-Support: typography-bullet fix + dir="rtl" Coverage-Test
 
 Audit der 14 physischen Positions-Properties (left/right/top/bottom als
