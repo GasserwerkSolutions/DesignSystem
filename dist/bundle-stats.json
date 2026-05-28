@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T00:30:41.770Z",
+  "timestamp": "2026-05-28T00:32:54.378Z",
   "version": "0.17.0",
   "bundle": {
-    "raw": 124635,
-    "gzip": 18975,
-    "brotli": 16141
+    "raw": 131302,
+    "gzip": 19775,
+    "brotli": 16708
   },
   "minified": {
-    "raw": 99477,
-    "gzip": 17659,
-    "brotli": 15355
+    "raw": 104742,
+    "gzip": 18355,
+    "brotli": 15941
   },
   "layers": [
     {
@@ -39,8 +39,8 @@
     },
     {
       "label": "components",
-      "raw": 149641,
-      "files": 51
+      "raw": 162468,
+      "files": 54
     }
   ],
   "components": [
@@ -55,6 +55,10 @@
     {
       "name": "file-upload",
       "raw": 5495
+    },
+    {
+      "name": "command-palette",
+      "raw": 5484
     },
     {
       "name": "list-row",
@@ -89,12 +93,20 @@
       "raw": 3769
     },
     {
+      "name": "theme-toggle",
+      "raw": 3761
+    },
+    {
       "name": "tag",
       "raw": 3758
     },
     {
       "name": "button",
       "raw": 3607
+    },
+    {
+      "name": "otp-input",
+      "raw": 3582
     },
     {
       "name": "modal",

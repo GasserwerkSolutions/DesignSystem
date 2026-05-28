@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.18.0] — Drei komplexere Components: command-palette + otp-input + theme-toggle
+
+Schließt die letzten 3 Standard-Lücken aus der Research-Phase.
+
+### Hinzugefügt
+
+- **`components/command-palette.css`** (Cmd+K Pattern) — Floating-Dialog
+  mit Search + Filtered-List. Native `<dialog>` für A11Y + modal-blocking.
+  Liste mit Groups (Aktionen, Suche, …), Items mit Icon + Label + Shortcut.
+  Footer mit Hint-Hotkeys. @starting-style Entry/Exit-Animation.
+- **`components/otp-input.css`** — Multi-Field-Code für 2FA, SMS-
+  Verifizierung, Pin-Eingabe. Native `<input maxlength="1"
+  autocomplete="one-time-code">` × N. JS-Pattern für Auto-advance, Paste-
+  Verteilung, Backspace-Zurück, Arrow-Navigation im Header dokumentiert
+  (~25 LOC).
+- **`components/theme-toggle.css`** — Light/Dark-Toggle-Button.
+  Sonne ↔ Mond Cross-Fade-Animation. Auto-Mode (prefers-color-scheme:
+  dark)-Awareness via :root:not([data-mode]) Selektoren. Optional
+  View-Transitions für smooth Cross-Page-Switch.
+
+### Categorization
+
+- command-palette → Overlay
+- otp-input → Form
+- theme-toggle → Primitive
+
+### Bundle
+
+  Bundle: 128.2 KB raw (+6.5 KB) / 19.3 KB gzip (+0.8 KB)
+  Budget noch bei 90-94% — Headroom vorhanden.
+
+### Pipeline
+
+54 Component-Pages (war 51). Lint, contrast (1008), visual (12),
+journeys (6), site (50 asserts), package (69 imports), measure (4
+budgets) — alle grün.
+
+---
+
 ## [0.17.0] — Drei neue Components: kbd + segmented + copy-button
 
 Schließt drei häufig nachgefragte Lücken im Component-Inventar.

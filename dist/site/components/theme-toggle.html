@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Checkbox + Radio Components — Design System</title>
+  <title>Theme Toggle — Light/Dark Mode Switch — Design System</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../../main.css">
   <link rel="stylesheet" href="../assets/site.css">
@@ -163,7 +163,7 @@
           <div class="site-sidebar__group-label">Form</div>
           <ul class="site-sidebar__list">
             <li><a class="site-sidebar__link" href="../components/button.html">Button Component</a></li>
-            <li><a class="site-sidebar__link is-active" href="../components/checkbox.html">Checkbox + Radio Components</a></li>
+            <li><a class="site-sidebar__link" href="../components/checkbox.html">Checkbox + Radio Components</a></li>
             <li><a class="site-sidebar__link" href="../components/combobox.html">Combobox Component</a></li>
             <li><a class="site-sidebar__link" href="../components/date-input.html">Date-Input Component</a></li>
             <li><a class="site-sidebar__link" href="../components/field.html">Field Component</a></li>
@@ -239,7 +239,7 @@
             <li><a class="site-sidebar__link" href="../components/chevron.html">Chevron Component</a></li>
             <li><a class="site-sidebar__link" href="../components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
             <li><a class="site-sidebar__link" href="../components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
-            <li><a class="site-sidebar__link" href="../components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
+            <li><a class="site-sidebar__link is-active" href="../components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
           </ul>
         </div>
       </nav>
@@ -248,9 +248,9 @@
       
       <article class="site-doc">
         <header class="site-doc__header">
-          <span class="site-doc__category">Form</span>
-          <h1 class="site-doc__title">Checkbox + Radio Components</h1>
-          <p>Custom-styled native inputs. Behalten alle A11Y-Eigenschaften (Keyboard, Screen-Reader, Form-Submission).</p>
+          <span class="site-doc__category">Primitive</span>
+          <h1 class="site-doc__title">Theme Toggle — Light/Dark Mode Switch</h1>
+          <p>Icon-Button mit Sonne ↔ Mond, toggelt `data-mode` auf html-Element. Zeigt das ZIEL des Toggles (aktuell-light → Mond-Icon, aktuell-dark → Sonnen-Icon) — nicht den Current-State.</p>
         </header>
 
         <section class="site-doc__section">
@@ -258,69 +258,26 @@
           
     <section class="site-example" data-example>
       
-      <div class="site-example__preview" data-preview><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+      <div class="site-example__preview" data-preview><button class="theme-toggle" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
       <div class="site-example__toolbar">
         <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
         <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
         <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
       </div>
       <div class="site-example__source" hidden>
-        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;label class=&quot;choice&quot;&gt;
-  &lt;input type=&quot;checkbox&quot; class=&quot;checkbox&quot;&gt;
-  &lt;span&gt;Newsletter abonnieren&lt;/span&gt;
-&lt;/label&gt;
-
-&lt;label class=&quot;choice&quot;&gt;
-  &lt;input type=&quot;radio&quot; name=&quot;plan&quot; class=&quot;radio&quot;&gt;
-  &lt;span&gt;
-    Basic
-    &lt;span class=&quot;choice__hint&quot;&gt;CHF 0 / Monat&lt;/span&gt;
-  &lt;/span&gt;
-&lt;/label&gt;">&lt;label class=&quot;choice&quot;&gt;
-  &lt;input type=&quot;checkbox&quot; class=&quot;checkbox&quot;&gt;
-  &lt;span&gt;Newsletter abonnieren&lt;/span&gt;
-&lt;/label&gt;
-
-&lt;label class=&quot;choice&quot;&gt;
-  &lt;input type=&quot;radio&quot; name=&quot;plan&quot; class=&quot;radio&quot;&gt;
-  &lt;span&gt;
-    Basic
-    &lt;span class=&quot;choice__hint&quot;&gt;CHF 0 / Monat&lt;/span&gt;
-  &lt;/span&gt;
-&lt;/label&gt;</textarea>
-      </div>
-    </section>
-
-    <section class="site-example" data-example>
-      <h3 class="site-example__caption">Checkbox-Liste als Stack</h3>
-      <div class="site-example__preview" data-preview><div class="stack">
-  <label class="choice">…</label>
-  <label class="choice">…</label>
-</div></div>
-      <div class="site-example__toolbar">
-        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
-        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
-        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
-      </div>
-      <div class="site-example__source" hidden>
-        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;div class=&quot;stack&quot;&gt;
-  &lt;label class=&quot;choice&quot;&gt;…&lt;/label&gt;
-  &lt;label class=&quot;choice&quot;&gt;…&lt;/label&gt;
-&lt;/div&gt;">&lt;div class=&quot;stack&quot;&gt;
-  &lt;label class=&quot;choice&quot;&gt;…&lt;/label&gt;
-  &lt;label class=&quot;choice&quot;&gt;…&lt;/label&gt;
-&lt;/div&gt;</textarea>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;button class=&quot;theme-toggle&quot; aria-label=&quot;Auf Dark Mode wechseln&quot;
+        data-theme-toggle&gt;
+  &lt;span class=&quot;theme-toggle__icon theme-toggle__icon--sun&quot; aria-hidden=&quot;true&quot;&gt;☀&lt;/span&gt;
+  &lt;span class=&quot;theme-toggle__icon theme-toggle__icon--moon&quot; aria-hidden=&quot;true&quot;&gt;☾&lt;/span&gt;
+&lt;/button&gt;">&lt;button class=&quot;theme-toggle&quot; aria-label=&quot;Auf Dark Mode wechseln&quot;
+        data-theme-toggle&gt;
+  &lt;span class=&quot;theme-toggle__icon theme-toggle__icon--sun&quot; aria-hidden=&quot;true&quot;&gt;☀&lt;/span&gt;
+  &lt;span class=&quot;theme-toggle__icon theme-toggle__icon--moon&quot; aria-hidden=&quot;true&quot;&gt;☾&lt;/span&gt;
+&lt;/button&gt;</textarea>
       </div>
     </section>
         </section>
@@ -333,93 +290,51 @@
             
             <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
               <header class="site-tone-tile__label">trust</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><button class="theme-toggle" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
             </article>
             <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
               <header class="site-tone-tile__label">playful</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><button class="theme-toggle" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
             </article>
             <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
               <header class="site-tone-tile__label">premium</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><button class="theme-toggle" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
             </article>
             <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
               <header class="site-tone-tile__label">industrial</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><button class="theme-toggle" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
             </article>
             <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
               <header class="site-tone-tile__label">modern</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><button class="theme-toggle" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
             </article>
             <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
               <header class="site-tone-tile__label">minimal</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><button class="theme-toggle" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
             </article>
           </div>
         </section>
@@ -433,32 +348,27 @@
     <tbody>
       
       <tr>
-        <td><code>--checkbox-radius</code></td>
+        <td><code>--theme-toggle-size</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>Quadrat-Dimension (default 2.5rem)</td>
+      </tr>
+      <tr>
+        <td><code>--theme-toggle-bg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--checkbox-size</code></td>
+        <td><code>--theme-toggle-fg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--checkbox-bg</code></td>
+        <td><code>--theme-toggle-border</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--checkbox-border</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>—</td>
-      </tr>
-      <tr>
-        <td><code>--checkbox-checked-bg</code></td>
-        <td><span class="badge badge--neutral">Optional</span></td>
-        <td>—</td>
-      </tr>
-      <tr>
-        <td><code>--checkbox-checked-border</code></td>
+        <td><code>--theme-toggle-radius</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
@@ -467,11 +377,47 @@
         </section>
 
         
+        <section class="site-doc__section">
+          <h2>Modifier</h2>
+          <ul class="site-modifier-list">
+            <li><code>.theme-toggle--sm</code> — kompakter</li>
+            <li><code>.theme-toggle--lg</code> — größer</li>
+          </ul>
+        </section>
 
         
+        <section class="site-doc__section">
+          <h2>Modifier-Vorschau</h2>
+          <p class="site-muted">Jeder Modifier auf das Basis-Markup angewandt — visueller Beweis, dass die Klasse funktioniert.</p>
+          <div class="site-modifier-grid">
+            
+      <article class="site-modifier-tile">
+        <header class="site-modifier-tile__label">
+          <code>.theme-toggle--sm</code>
+          <span class="site-muted">kompakter</span>
+        </header>
+        <div class="site-modifier-tile__preview"><button class="theme-toggle theme-toggle--sm" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
+      </article>
+      <article class="site-modifier-tile">
+        <header class="site-modifier-tile__label">
+          <code>.theme-toggle--lg</code>
+          <span class="site-muted">größer</span>
+        </header>
+        <div class="site-modifier-tile__preview"><button class="theme-toggle theme-toggle--lg" aria-label="Auf Dark Mode wechseln"
+        data-theme-toggle>
+  <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+  <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+</button></div>
+      </article>
+          </div>
+        </section>
 
         <footer class="site-doc__footer">
-          <a class="btn btn--ghost btn--sm" href="../../../components/checkbox.css">Source-CSS ansehen</a>
+          <a class="btn btn--ghost btn--sm" href="../../../components/theme-toggle.css">Source-CSS ansehen</a>
         </footer>
       </article>
     </main>

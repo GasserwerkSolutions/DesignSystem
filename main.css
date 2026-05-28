@@ -68,6 +68,9 @@
 @import "./components/range.css"       layer(components);
 @import "./components/slider.css"      layer(components);
 @import "./components/app-shell.css"   layer(components);
-@import "./components/kbd.css"         layer(components);
-@import "./components/segmented.css"   layer(components);
-@import "./components/copy-button.css" layer(components);
+@import "./components/kbd.css"             layer(components);
+@import "./components/segmented.css"       layer(components);
+@import "./components/copy-button.css"     layer(components);
+@import "./components/command-palette.css" layer(components);
+@import "./components/otp-input.css"       layer(components);
+@import "./components/theme-toggle.css"    layer(components);

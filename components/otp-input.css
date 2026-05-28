@@ -1,0 +1,110 @@
+/**
+ * OTP Input — One-Time Password / Multi-Field-Code
+ * =================================================
+ *
+ * Mehrere Single-Character-Inputs für 2FA-Codes, SMS-Verifizierung, Pin-
+ * Eingabe. Auto-advance auf nächstes Feld bei Input, Paste verteilt
+ * Zeichen automatisch.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --otp-size           Feld-Größe (default 3rem)
+ *     --otp-gap            Abstand zwischen Feldern (default --space-8)
+ *     --otp-radius
+ *     --otp-bg / --otp-fg / --otp-border
+ *     --otp-focus-border / --otp-focus-ring
+ *     --otp-font-size      (default --font-xl)
+ *
+ * Struktur:
+ *   <div class="otp-input" role="group" aria-label="Bestätigungscode">
+ *     <input class="otp-input__field" inputmode="numeric" pattern="[0-9]"
+ *            maxlength="1" autocomplete="one-time-code"
+ *            aria-label="Ziffer 1 von 6">
+ *     <input class="otp-input__field" inputmode="numeric" pattern="[0-9]"
+ *            maxlength="1" autocomplete="one-time-code"
+ *            aria-label="Ziffer 2 von 6">
+ *     ...
+ *   </div>
+ *
+ * Konsument-JS (~25 LOC):
+ *   document.querySelectorAll(".otp-input").forEach((group) => {
+ *     const fields = group.querySelectorAll(".otp-input__field");
+ *     fields.forEach((field, i) => {
+ *       field.addEventListener("input", (e) => {
+ *         field.value = field.value.replace(/[^0-9]/g, "").slice(0, 1);
+ *         if (field.value && i < fields.length - 1) fields[i + 1].focus();
+ *       });
+ *       field.addEventListener("keydown", (e) => {
+ *         if (e.key === "Backspace" && !field.value && i > 0)
+ *           fields[i - 1].focus();
+ *         if (e.key === "ArrowLeft" && i > 0) fields[i - 1].focus();
+ *         if (e.key === "ArrowRight" && i < fields.length - 1)
+ *           fields[i + 1].focus();
+ *       });
+ *       field.addEventListener("paste", (e) => {
+ *         e.preventDefault();
+ *         const data = (e.clipboardData.getData("text") || "")
+ *           .replace(/[^0-9]/g, "");
+ *         for (let j = 0; j < data.length && i + j < fields.length; j++)
+ *           fields[i + j].value = data[j];
+ *         fields[Math.min(i + data.length, fields.length - 1)].focus();
+ *       });
+ *     });
+ *   });
+ *
+ * Modifier:
+ *   .otp-input--sm   kompakter
+ *   .otp-input--lg   größer
+ */
+
+.otp-input {
+  display: inline-flex;
+  gap: var(--otp-gap, var(--space-8));
+  align-items: center;
+}
+
+.otp-input__field {
+  width: var(--otp-size, 3rem);
+  height: var(--otp-size, 3rem);
+  padding: 0;
+  text-align: center;
+  font-size: var(--otp-font-size, var(--font-xl));
+  font-weight: var(--fw-600);
+  font-family: var(--font-mono);
+  background: var(--otp-bg, var(--input-bg));
+  color: var(--otp-fg, var(--color-text-primary));
+  border: 1px solid var(--otp-border, var(--color-border));
+  border-radius: var(--otp-radius, var(--radius-md));
+  /* Override des inputs-100% in reset.css */
+  flex: 0 0 auto;
+}
+
+.otp-input__field:focus {
+  outline: none;
+  border-color: var(--otp-focus-border, var(--color-interactive));
+  box-shadow: 0 0 0 3px var(--otp-focus-ring, var(--color-focus-ring));
+}
+
+.otp-input__field:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Separator zwischen 3-3 Gruppen (z.B. 6-stellig) */
+.otp-input__separator {
+  font-size: var(--font-xl);
+  color: var(--color-text-tertiary, var(--color-text-secondary));
+  user-select: none;
+}
+
+.otp-input--sm {
+  --otp-size: 2.25rem;
+  --otp-font-size: var(--font-base);
+  --otp-gap: var(--space-4);
+}
+
+.otp-input--lg {
+  --otp-size: 3.5rem;
+  --otp-font-size: var(--font-2xl);
+  --otp-gap: var(--space-12);
+}

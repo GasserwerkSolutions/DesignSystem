@@ -17,7 +17,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="./index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.17.0</span>
+          <span class="badge badge--neutral">v0.18.0</span>
         </a>
         <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
@@ -49,6 +49,7 @@
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/date-input.html">Date-Input Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/field.html">Field Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/file-upload.html">File-Upload Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/otp-input.html">OTP Input — One-Time Password / Multi-Field-Code</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/range.html">Range-Slider Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/search.html">Search-Input Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/segmented.html">Segmented Control</a></li>
@@ -88,6 +89,7 @@
                 <h3 class="site-topbar__mega-cat">Overlay</h3>
                 <ul class="site-topbar__mega-list" role="presentation">
                   
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/command-palette.html">Command Palette</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/drawer.html">Drawer Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/modal.html">Modal Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/popover.html">Popover Component</a></li>
@@ -118,6 +120,7 @@
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/chevron.html">Chevron Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
                 </ul>
               </section>
             </div>
@@ -165,6 +168,7 @@
             <li><a class="site-sidebar__link" href="./components/date-input.html">Date-Input Component</a></li>
             <li><a class="site-sidebar__link" href="./components/field.html">Field Component</a></li>
             <li><a class="site-sidebar__link" href="./components/file-upload.html">File-Upload Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/otp-input.html">OTP Input — One-Time Password / Multi-Field-Code</a></li>
             <li><a class="site-sidebar__link" href="./components/range.html">Range-Slider Component</a></li>
             <li><a class="site-sidebar__link" href="./components/search.html">Search-Input Component</a></li>
             <li><a class="site-sidebar__link" href="./components/segmented.html">Segmented Control</a></li>
@@ -204,6 +208,7 @@
         <div class="site-sidebar__group">
           <div class="site-sidebar__group-label">Overlay</div>
           <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/command-palette.html">Command Palette</a></li>
             <li><a class="site-sidebar__link" href="./components/drawer.html">Drawer Component</a></li>
             <li><a class="site-sidebar__link" href="./components/modal.html">Modal Component</a></li>
             <li><a class="site-sidebar__link" href="./components/popover.html">Popover Component</a></li>
@@ -234,6 +239,7 @@
             <li><a class="site-sidebar__link" href="./components/chevron.html">Chevron Component</a></li>
             <li><a class="site-sidebar__link" href="./components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
             <li><a class="site-sidebar__link" href="./components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+            <li><a class="site-sidebar__link" href="./components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
           </ul>
         </div>
       </nav>
@@ -245,7 +251,7 @@
           <h1 class="site-doc__title">Design System</h1>
           <p class="site-doc__lede">
             Contract-basiertes Multi-Tone CSS-System.
-            6 Tones × 2 Modes × 3 Densities, 51 Components,
+            6 Tones × 2 Modes × 3 Densities, 54 Components,
             WCAG-AA validiert.
           </p>
           <div class="site-doc__cta">
@@ -302,7 +308,7 @@
           </div>
 
           <div class="site-category">
-            <h3 class="site-category__title">Form <span class="site-muted">(12)</span></h3>
+            <h3 class="site-category__title">Form <span class="site-muted">(13)</span></h3>
             <ul class="site-component-grid">
               
               <li>
@@ -339,6 +345,12 @@
                 <a class="card site-component-card" href="./components/file-upload.html">
                   <strong>File-Upload Component</strong>
                   <span class="site-muted">Styled &lt;label&gt; als Click- und Dropzone, mit verstecktem nativen</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/otp-input.html">
+                  <strong>OTP Input — One-Time Password / Multi-Field-Code</strong>
+                  <span class="site-muted">Mehrere Single-Character-Inputs für 2FA-Codes, SMS-Verifizierung, Pin-</span>
                 </a>
               </li>
               <li>
@@ -485,9 +497,15 @@
           </div>
 
           <div class="site-category">
-            <h3 class="site-category__title">Overlay <span class="site-muted">(4)</span></h3>
+            <h3 class="site-category__title">Overlay <span class="site-muted">(5)</span></h3>
             <ul class="site-component-grid">
               
+              <li>
+                <a class="card site-component-card" href="./components/command-palette.html">
+                  <strong>Command Palette</strong>
+                  <span class="site-muted">Floating-Dialog mit Search + Filtered-List für Power-User-Navigation.</span>
+                </a>
+              </li>
               <li>
                 <a class="card site-component-card" href="./components/drawer.html">
                   <strong>Drawer Component</strong>
@@ -589,7 +607,7 @@
           </div>
 
           <div class="site-category">
-            <h3 class="site-category__title">Primitive <span class="site-muted">(3)</span></h3>
+            <h3 class="site-category__title">Primitive <span class="site-muted">(4)</span></h3>
             <ul class="site-component-grid">
               
               <li>
@@ -608,6 +626,12 @@
                 <a class="card site-component-card" href="./components/kbd.html">
                   <strong>KBD — Keyboard Shortcut Display</strong>
                   <span class="site-muted">Visuelle Darstellung von Tastatur-Shortcuts in Help-Texten, Tooltips,</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/theme-toggle.html">
+                  <strong>Theme Toggle — Light/Dark Mode Switch</strong>
+                  <span class="site-muted">Icon-Button mit Sonne ↔ Mond, toggelt `data-mode` auf html-Element.</span>
                 </a>
               </li>
             </ul>

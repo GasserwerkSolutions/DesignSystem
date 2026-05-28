@@ -471,6 +471,7 @@ const CATEGORIES = {
     "slider",
     "button",
     "segmented",
+    "otp-input",
   ],
   Feedback: [
     "alert",
@@ -491,7 +492,7 @@ const CATEGORIES = {
     "steps",
     "accordion",
   ],
-  Overlay: ["modal", "drawer", "tooltip", "popover"],
+  Overlay: ["modal", "drawer", "tooltip", "popover", "command-palette"],
   "Data Display": [
     "table",
     "chart",
@@ -505,7 +506,7 @@ const CATEGORIES = {
     "timeline",
     "funnel",
   ],
-  Primitive: ["chevron", "kbd", "copy-button"],
+  Primitive: ["chevron", "kbd", "copy-button", "theme-toggle"],
 };
 
 function categoryOf(name) {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Checkbox + Radio Components — Design System</title>
+  <title>Command Palette — Design System</title>
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../../../main.css">
   <link rel="stylesheet" href="../assets/site.css">
@@ -163,7 +163,7 @@
           <div class="site-sidebar__group-label">Form</div>
           <ul class="site-sidebar__list">
             <li><a class="site-sidebar__link" href="../components/button.html">Button Component</a></li>
-            <li><a class="site-sidebar__link is-active" href="../components/checkbox.html">Checkbox + Radio Components</a></li>
+            <li><a class="site-sidebar__link" href="../components/checkbox.html">Checkbox + Radio Components</a></li>
             <li><a class="site-sidebar__link" href="../components/combobox.html">Combobox Component</a></li>
             <li><a class="site-sidebar__link" href="../components/date-input.html">Date-Input Component</a></li>
             <li><a class="site-sidebar__link" href="../components/field.html">Field Component</a></li>
@@ -208,7 +208,7 @@
         <div class="site-sidebar__group">
           <div class="site-sidebar__group-label">Overlay</div>
           <ul class="site-sidebar__list">
-            <li><a class="site-sidebar__link" href="../components/command-palette.html">Command Palette</a></li>
+            <li><a class="site-sidebar__link is-active" href="../components/command-palette.html">Command Palette</a></li>
             <li><a class="site-sidebar__link" href="../components/drawer.html">Drawer Component</a></li>
             <li><a class="site-sidebar__link" href="../components/modal.html">Modal Component</a></li>
             <li><a class="site-sidebar__link" href="../components/popover.html">Popover Component</a></li>
@@ -248,9 +248,10 @@
       
       <article class="site-doc">
         <header class="site-doc__header">
-          <span class="site-doc__category">Form</span>
-          <h1 class="site-doc__title">Checkbox + Radio Components</h1>
-          <p>Custom-styled native inputs. Behalten alle A11Y-Eigenschaften (Keyboard, Screen-Reader, Form-Submission).</p>
+          <span class="site-doc__category">Overlay</span>
+          <h1 class="site-doc__title">Command Palette</h1>
+          <p>Floating-Dialog mit Search + Filtered-List für Power-User-Navigation. Standard-Pattern in modernen Apps (GitHub, VSCode, Linear, etc.).</p>
+<p>Nutzt native &lt;dialog&gt; (A11Y, modal-blocking, Escape-close, ::backdrop) — gleiche Architektur wie Modal. Listbox via WAI-ARIA-Combobox-Pattern.</p>
         </header>
 
         <section class="site-doc__section">
@@ -258,69 +259,95 @@
           
     <section class="site-example" data-example>
       
-      <div class="site-example__preview" data-preview><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+      <div class="site-example__preview" data-preview><dialog class="cmd-palette" id="palette">
+  <div class="cmd-palette__inner">
+    <div class="cmd-palette__search">
+      <input type="search" class="cmd-palette__input"
+             placeholder="Suchen oder Befehl wählen …"
+             aria-label="Befehl suchen"
+             aria-controls="palette-list"
+             aria-autocomplete="list">
+      <kbd class="kbd kbd--sm">Esc</kbd>
+    </div>
+    <ul class="cmd-palette__list" id="palette-list" role="listbox">
+      <li class="cmd-palette__group">Aktionen</li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">+</span>
+        <span class="cmd-palette__item-label">Neue Buchung</span>
+        <kbd class="kbd kbd--sm">⌘N</kbd>
+      </li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">⌕</span>
+        <span class="cmd-palette__item-label">Kunde suchen</span>
+      </li>
+    </ul>
+    <div class="cmd-palette__footer">
+      <kbd class="kbd kbd--sm">↑↓</kbd> navigieren
+      <kbd class="kbd kbd--sm">↵</kbd> auswählen
+    </div>
+  </div>
+</dialog></div>
       <div class="site-example__toolbar">
         <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
         <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
         <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
       </div>
       <div class="site-example__source" hidden>
-        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;label class=&quot;choice&quot;&gt;
-  &lt;input type=&quot;checkbox&quot; class=&quot;checkbox&quot;&gt;
-  &lt;span&gt;Newsletter abonnieren&lt;/span&gt;
-&lt;/label&gt;
-
-&lt;label class=&quot;choice&quot;&gt;
-  &lt;input type=&quot;radio&quot; name=&quot;plan&quot; class=&quot;radio&quot;&gt;
-  &lt;span&gt;
-    Basic
-    &lt;span class=&quot;choice__hint&quot;&gt;CHF 0 / Monat&lt;/span&gt;
-  &lt;/span&gt;
-&lt;/label&gt;">&lt;label class=&quot;choice&quot;&gt;
-  &lt;input type=&quot;checkbox&quot; class=&quot;checkbox&quot;&gt;
-  &lt;span&gt;Newsletter abonnieren&lt;/span&gt;
-&lt;/label&gt;
-
-&lt;label class=&quot;choice&quot;&gt;
-  &lt;input type=&quot;radio&quot; name=&quot;plan&quot; class=&quot;radio&quot;&gt;
-  &lt;span&gt;
-    Basic
-    &lt;span class=&quot;choice__hint&quot;&gt;CHF 0 / Monat&lt;/span&gt;
-  &lt;/span&gt;
-&lt;/label&gt;</textarea>
-      </div>
-    </section>
-
-    <section class="site-example" data-example>
-      <h3 class="site-example__caption">Checkbox-Liste als Stack</h3>
-      <div class="site-example__preview" data-preview><div class="stack">
-  <label class="choice">…</label>
-  <label class="choice">…</label>
-</div></div>
-      <div class="site-example__toolbar">
-        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
-        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
-        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
-      </div>
-      <div class="site-example__source" hidden>
-        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;div class=&quot;stack&quot;&gt;
-  &lt;label class=&quot;choice&quot;&gt;…&lt;/label&gt;
-  &lt;label class=&quot;choice&quot;&gt;…&lt;/label&gt;
-&lt;/div&gt;">&lt;div class=&quot;stack&quot;&gt;
-  &lt;label class=&quot;choice&quot;&gt;…&lt;/label&gt;
-  &lt;label class=&quot;choice&quot;&gt;…&lt;/label&gt;
-&lt;/div&gt;</textarea>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;dialog class=&quot;cmd-palette&quot; id=&quot;palette&quot;&gt;
+  &lt;div class=&quot;cmd-palette__inner&quot;&gt;
+    &lt;div class=&quot;cmd-palette__search&quot;&gt;
+      &lt;input type=&quot;search&quot; class=&quot;cmd-palette__input&quot;
+             placeholder=&quot;Suchen oder Befehl wählen …&quot;
+             aria-label=&quot;Befehl suchen&quot;
+             aria-controls=&quot;palette-list&quot;
+             aria-autocomplete=&quot;list&quot;&gt;
+      &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;Esc&lt;/kbd&gt;
+    &lt;/div&gt;
+    &lt;ul class=&quot;cmd-palette__list&quot; id=&quot;palette-list&quot; role=&quot;listbox&quot;&gt;
+      &lt;li class=&quot;cmd-palette__group&quot;&gt;Aktionen&lt;/li&gt;
+      &lt;li class=&quot;cmd-palette__item&quot; role=&quot;option&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;span class=&quot;cmd-palette__item-icon&quot;&gt;+&lt;/span&gt;
+        &lt;span class=&quot;cmd-palette__item-label&quot;&gt;Neue Buchung&lt;/span&gt;
+        &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;⌘N&lt;/kbd&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;cmd-palette__item&quot; role=&quot;option&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;span class=&quot;cmd-palette__item-icon&quot;&gt;⌕&lt;/span&gt;
+        &lt;span class=&quot;cmd-palette__item-label&quot;&gt;Kunde suchen&lt;/span&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class=&quot;cmd-palette__footer&quot;&gt;
+      &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;↑↓&lt;/kbd&gt; navigieren
+      &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;↵&lt;/kbd&gt; auswählen
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;">&lt;dialog class=&quot;cmd-palette&quot; id=&quot;palette&quot;&gt;
+  &lt;div class=&quot;cmd-palette__inner&quot;&gt;
+    &lt;div class=&quot;cmd-palette__search&quot;&gt;
+      &lt;input type=&quot;search&quot; class=&quot;cmd-palette__input&quot;
+             placeholder=&quot;Suchen oder Befehl wählen …&quot;
+             aria-label=&quot;Befehl suchen&quot;
+             aria-controls=&quot;palette-list&quot;
+             aria-autocomplete=&quot;list&quot;&gt;
+      &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;Esc&lt;/kbd&gt;
+    &lt;/div&gt;
+    &lt;ul class=&quot;cmd-palette__list&quot; id=&quot;palette-list&quot; role=&quot;listbox&quot;&gt;
+      &lt;li class=&quot;cmd-palette__group&quot;&gt;Aktionen&lt;/li&gt;
+      &lt;li class=&quot;cmd-palette__item&quot; role=&quot;option&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;span class=&quot;cmd-palette__item-icon&quot;&gt;+&lt;/span&gt;
+        &lt;span class=&quot;cmd-palette__item-label&quot;&gt;Neue Buchung&lt;/span&gt;
+        &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;⌘N&lt;/kbd&gt;
+      &lt;/li&gt;
+      &lt;li class=&quot;cmd-palette__item&quot; role=&quot;option&quot; tabindex=&quot;-1&quot;&gt;
+        &lt;span class=&quot;cmd-palette__item-icon&quot;&gt;⌕&lt;/span&gt;
+        &lt;span class=&quot;cmd-palette__item-label&quot;&gt;Kunde suchen&lt;/span&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class=&quot;cmd-palette__footer&quot;&gt;
+      &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;↑↓&lt;/kbd&gt; navigieren
+      &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;↵&lt;/kbd&gt; auswählen
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</textarea>
       </div>
     </section>
         </section>
@@ -333,93 +360,189 @@
             
             <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
               <header class="site-tone-tile__label">trust</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><dialog class="cmd-palette" id="t-trust-palette">
+  <div class="cmd-palette__inner">
+    <div class="cmd-palette__search">
+      <input type="search" class="cmd-palette__input"
+             placeholder="Suchen oder Befehl wählen …"
+             aria-label="Befehl suchen"
+             aria-controls="t-trust-palette-list"
+             aria-autocomplete="list">
+      <kbd class="kbd kbd--sm">Esc</kbd>
+    </div>
+    <ul class="cmd-palette__list" id="t-trust-palette-list" role="listbox">
+      <li class="cmd-palette__group">Aktionen</li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">+</span>
+        <span class="cmd-palette__item-label">Neue Buchung</span>
+        <kbd class="kbd kbd--sm">⌘N</kbd>
+      </li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">⌕</span>
+        <span class="cmd-palette__item-label">Kunde suchen</span>
+      </li>
+    </ul>
+    <div class="cmd-palette__footer">
+      <kbd class="kbd kbd--sm">↑↓</kbd> navigieren
+      <kbd class="kbd kbd--sm">↵</kbd> auswählen
+    </div>
+  </div>
+</dialog></div>
             </article>
             <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
               <header class="site-tone-tile__label">playful</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><dialog class="cmd-palette" id="t-playful-palette">
+  <div class="cmd-palette__inner">
+    <div class="cmd-palette__search">
+      <input type="search" class="cmd-palette__input"
+             placeholder="Suchen oder Befehl wählen …"
+             aria-label="Befehl suchen"
+             aria-controls="t-playful-palette-list"
+             aria-autocomplete="list">
+      <kbd class="kbd kbd--sm">Esc</kbd>
+    </div>
+    <ul class="cmd-palette__list" id="t-playful-palette-list" role="listbox">
+      <li class="cmd-palette__group">Aktionen</li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">+</span>
+        <span class="cmd-palette__item-label">Neue Buchung</span>
+        <kbd class="kbd kbd--sm">⌘N</kbd>
+      </li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">⌕</span>
+        <span class="cmd-palette__item-label">Kunde suchen</span>
+      </li>
+    </ul>
+    <div class="cmd-palette__footer">
+      <kbd class="kbd kbd--sm">↑↓</kbd> navigieren
+      <kbd class="kbd kbd--sm">↵</kbd> auswählen
+    </div>
+  </div>
+</dialog></div>
             </article>
             <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
               <header class="site-tone-tile__label">premium</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><dialog class="cmd-palette" id="t-premium-palette">
+  <div class="cmd-palette__inner">
+    <div class="cmd-palette__search">
+      <input type="search" class="cmd-palette__input"
+             placeholder="Suchen oder Befehl wählen …"
+             aria-label="Befehl suchen"
+             aria-controls="t-premium-palette-list"
+             aria-autocomplete="list">
+      <kbd class="kbd kbd--sm">Esc</kbd>
+    </div>
+    <ul class="cmd-palette__list" id="t-premium-palette-list" role="listbox">
+      <li class="cmd-palette__group">Aktionen</li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">+</span>
+        <span class="cmd-palette__item-label">Neue Buchung</span>
+        <kbd class="kbd kbd--sm">⌘N</kbd>
+      </li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">⌕</span>
+        <span class="cmd-palette__item-label">Kunde suchen</span>
+      </li>
+    </ul>
+    <div class="cmd-palette__footer">
+      <kbd class="kbd kbd--sm">↑↓</kbd> navigieren
+      <kbd class="kbd kbd--sm">↵</kbd> auswählen
+    </div>
+  </div>
+</dialog></div>
             </article>
             <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
               <header class="site-tone-tile__label">industrial</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><dialog class="cmd-palette" id="t-industrial-palette">
+  <div class="cmd-palette__inner">
+    <div class="cmd-palette__search">
+      <input type="search" class="cmd-palette__input"
+             placeholder="Suchen oder Befehl wählen …"
+             aria-label="Befehl suchen"
+             aria-controls="t-industrial-palette-list"
+             aria-autocomplete="list">
+      <kbd class="kbd kbd--sm">Esc</kbd>
+    </div>
+    <ul class="cmd-palette__list" id="t-industrial-palette-list" role="listbox">
+      <li class="cmd-palette__group">Aktionen</li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">+</span>
+        <span class="cmd-palette__item-label">Neue Buchung</span>
+        <kbd class="kbd kbd--sm">⌘N</kbd>
+      </li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">⌕</span>
+        <span class="cmd-palette__item-label">Kunde suchen</span>
+      </li>
+    </ul>
+    <div class="cmd-palette__footer">
+      <kbd class="kbd kbd--sm">↑↓</kbd> navigieren
+      <kbd class="kbd kbd--sm">↵</kbd> auswählen
+    </div>
+  </div>
+</dialog></div>
             </article>
             <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
               <header class="site-tone-tile__label">modern</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><dialog class="cmd-palette" id="t-modern-palette">
+  <div class="cmd-palette__inner">
+    <div class="cmd-palette__search">
+      <input type="search" class="cmd-palette__input"
+             placeholder="Suchen oder Befehl wählen …"
+             aria-label="Befehl suchen"
+             aria-controls="t-modern-palette-list"
+             aria-autocomplete="list">
+      <kbd class="kbd kbd--sm">Esc</kbd>
+    </div>
+    <ul class="cmd-palette__list" id="t-modern-palette-list" role="listbox">
+      <li class="cmd-palette__group">Aktionen</li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">+</span>
+        <span class="cmd-palette__item-label">Neue Buchung</span>
+        <kbd class="kbd kbd--sm">⌘N</kbd>
+      </li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">⌕</span>
+        <span class="cmd-palette__item-label">Kunde suchen</span>
+      </li>
+    </ul>
+    <div class="cmd-palette__footer">
+      <kbd class="kbd kbd--sm">↑↓</kbd> navigieren
+      <kbd class="kbd kbd--sm">↵</kbd> auswählen
+    </div>
+  </div>
+</dialog></div>
             </article>
             <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
               <header class="site-tone-tile__label">minimal</header>
-              <div class="site-tone-tile__preview"><label class="choice">
-  <input type="checkbox" class="checkbox">
-  <span>Newsletter abonnieren</span>
-</label>
-
-<label class="choice">
-  <input type="radio" name="plan" class="radio">
-  <span>
-    Basic
-    <span class="choice__hint">CHF 0 / Monat</span>
-  </span>
-</label></div>
+              <div class="site-tone-tile__preview"><dialog class="cmd-palette" id="t-minimal-palette">
+  <div class="cmd-palette__inner">
+    <div class="cmd-palette__search">
+      <input type="search" class="cmd-palette__input"
+             placeholder="Suchen oder Befehl wählen …"
+             aria-label="Befehl suchen"
+             aria-controls="t-minimal-palette-list"
+             aria-autocomplete="list">
+      <kbd class="kbd kbd--sm">Esc</kbd>
+    </div>
+    <ul class="cmd-palette__list" id="t-minimal-palette-list" role="listbox">
+      <li class="cmd-palette__group">Aktionen</li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">+</span>
+        <span class="cmd-palette__item-label">Neue Buchung</span>
+        <kbd class="kbd kbd--sm">⌘N</kbd>
+      </li>
+      <li class="cmd-palette__item" role="option" tabindex="-1">
+        <span class="cmd-palette__item-icon">⌕</span>
+        <span class="cmd-palette__item-label">Kunde suchen</span>
+      </li>
+    </ul>
+    <div class="cmd-palette__footer">
+      <kbd class="kbd kbd--sm">↑↓</kbd> navigieren
+      <kbd class="kbd kbd--sm">↵</kbd> auswählen
+    </div>
+  </div>
+</dialog></div>
             </article>
           </div>
         </section>
@@ -433,32 +556,52 @@
     <tbody>
       
       <tr>
-        <td><code>--checkbox-radius</code></td>
+        <td><code>--cmd-bg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--checkbox-size</code></td>
+        <td><code>--cmd-fg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--checkbox-bg</code></td>
+        <td><code>--cmd-radius</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--checkbox-border</code></td>
+        <td><code>--cmd-shadow</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--checkbox-checked-bg</code></td>
+        <td><code>--cmd-search-bg</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
       <tr>
-        <td><code>--checkbox-checked-border</code></td>
+        <td><code>--cmd-list-bg</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--cmd-item-hover-bg</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--cmd-item-active-bg</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--cmd-max-w</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><code>--cmd-max-h</code></td>
         <td><span class="badge badge--neutral">Optional</span></td>
         <td>—</td>
       </tr>
@@ -471,7 +614,7 @@
         
 
         <footer class="site-doc__footer">
-          <a class="btn btn--ghost btn--sm" href="../../../components/checkbox.css">Source-CSS ansehen</a>
+          <a class="btn btn--ghost btn--sm" href="../../../components/command-palette.css">Source-CSS ansehen</a>
         </footer>
       </article>
     </main>
