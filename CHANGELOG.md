@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.23.0] — Recipes-Page (composed Patterns)
+
+Ersetzt den Playground-Stub durch eine handkuratierte Recipes-Page mit
+5 echten Product-Patterns. Zeigt das System in real-world-Komposition.
+
+### Hinzugefügt — Recipes
+
+1. **Booking-Form** — Service + Datetime + Segmented (Stylist) + Textarea + CTA
+2. **Stat-Dashboard** — 4 Stat-Cards mit Trend, gefolgt von List-Row-Tagesliste
+3. **Settings-Section** — 4 Switch-Toggles mit Hints, Cancel/Save-Cluster
+4. **OTP-Verifizierung** — 6-stelliger Code mit Separator zwischen 3-3 Gruppen
+5. **Empty-State mit Search + CTA** — Card mit Icon, Buttons, kbd-Hint-Strip
+
+Jede Recipe nutzt das gleiche Live-Editor-Toolbar (Edit/Copy/Reset)
+wie die Component-Beispiele. URL-Anchor-Navigation für direkte Links.
+
+### Geändert
+
+- Nav-Item "Playground" → "Recipes" (Playground bleibt als Stub mit
+  Redirect-Hint für alte URLs).
+- SMOKE_PAGES erweitert um recipes.html.
+
+### Pipeline
+
+Lint, contrast, visual, journeys, site (50 + 1 smoke for recipes),
+package — alle grün.
+
+---
+
 ## [0.22.0] — Drei neue Components + View-Transition-Race-Fix
 
 ### Hinzugefügt

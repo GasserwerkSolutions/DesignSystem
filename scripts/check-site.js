@@ -31,6 +31,7 @@ const SMOKE_PAGES = [
   "components/table.html",
   "foundations.html",
   "themes.html",
+  "recipes.html",
   "playground.html",
 ];
 

@@ -527,7 +527,7 @@ const NAV_ITEMS = [
   { label: "Foundations", href: "./foundations.html" },
   { label: "Components", href: "./components/button.html" },
   { label: "Themes", href: "./themes.html" },
-  { label: "Playground", href: "./playground.html" },
+  { label: "Recipes", href: "./recipes.html" },
 ];
 
 function escapeHtml(s) {
@@ -1309,6 +1309,241 @@ function renderThemesPage(components) {
     sidebar,
     relRoot: "./",
     extraScripts: ["assets/theme-generator.js"],
+    components,
+  });
+}
+
+/* Recipes-Page: hand-kuratierte Compositions echter Product-Patterns.
+   Jede Recipe ist ein vollständig funktionierender Snippet mit Edit/Copy/
+   Reset (nutzt das gleiche site-example-Toolbar-Pattern). */
+const RECIPES = [
+  {
+    id: "booking-form",
+    title: "Buchungs-Form",
+    intro: "Service auswählen, Datum/Uhrzeit, Stylist, Notizen — kompletter Booking-Flow in einem Compact-Form.",
+    html: `<form class="stack stack--md" style="max-width: 28rem;">
+  <div class="field">
+    <label class="field__label" for="rcp-service">Service</label>
+    <div class="select-wrap">
+      <select id="rcp-service" class="select">
+        <option>Damen-Haarschnitt (45 Min)</option>
+        <option>Herren-Haarschnitt (30 Min)</option>
+        <option>Bart-Trim (20 Min)</option>
+      </select>
+    </div>
+  </div>
+  <div class="field">
+    <label class="field__label" for="rcp-date">Datum & Uhrzeit</label>
+    <input id="rcp-date" type="datetime-local">
+  </div>
+  <div class="field">
+    <label class="field__label">Stylist</label>
+    <fieldset class="segmented">
+      <legend class="visually-hidden">Stylist auswählen</legend>
+      <label class="segmented__item">
+        <input type="radio" name="rcp-stylist" value="anna" checked>
+        <span>Anna</span>
+      </label>
+      <label class="segmented__item">
+        <input type="radio" name="rcp-stylist" value="luca">
+        <span>Luca</span>
+      </label>
+      <label class="segmented__item">
+        <input type="radio" name="rcp-stylist" value="any">
+        <span>Egal</span>
+      </label>
+    </fieldset>
+  </div>
+  <div class="field">
+    <label class="field__label" for="rcp-notes">Notizen (optional)</label>
+    <textarea id="rcp-notes" placeholder="Spezielle Wünsche …"></textarea>
+  </div>
+  <button class="btn" type="button">Buchen</button>
+</form>`,
+  },
+  {
+    id: "stat-dashboard",
+    title: "Stat-Dashboard",
+    intro: "4 Key-Metrics mit Trend, gefolgt von einer Tagesbuchungs-Liste. Klassisches App-Home-Screen-Pattern.",
+    html: `<div class="grid-4" style="margin-bottom: var(--space-24);">
+  <div class="stat">
+    <div class="stat__label">Buchungen heute</div>
+    <div class="stat__value">14</div>
+    <div class="trend trend--up">+22% vs gestern</div>
+  </div>
+  <div class="stat">
+    <div class="stat__label">Umsatz heute</div>
+    <div class="stat__value">CHF 1'247</div>
+    <div class="trend trend--up">+8%</div>
+  </div>
+  <div class="stat">
+    <div class="stat__label">No-Shows</div>
+    <div class="stat__value">1</div>
+    <div class="trend trend--down">-50%</div>
+  </div>
+  <div class="stat">
+    <div class="stat__label">Auslastung</div>
+    <div class="stat__value">82%</div>
+    <div class="trend trend--flat">unverändert</div>
+  </div>
+</div>
+<div class="list">
+  <div class="list-row">
+    <div class="list-row__lead"><span class="avatar avatar--c3">AM</span></div>
+    <div class="list-row__body">
+      <div class="list-row__title">Anna Meier</div>
+      <div class="list-row__subtitle">09:00 – Damen-Haarschnitt</div>
+    </div>
+    <div class="list-row__meta">CHF 85</div>
+    <div class="list-row__trail"><span class="badge badge--success">Bestätigt</span></div>
+  </div>
+  <div class="list-row">
+    <div class="list-row__lead"><span class="avatar avatar--c1">LK</span></div>
+    <div class="list-row__body">
+      <div class="list-row__title">Luca Keller</div>
+      <div class="list-row__subtitle">10:00 – Bart-Trim</div>
+    </div>
+    <div class="list-row__meta">CHF 35</div>
+    <div class="list-row__trail"><span class="badge badge--warning">Wartet</span></div>
+  </div>
+  <div class="list-row">
+    <div class="list-row__lead"><span class="avatar avatar--c4">SV</span></div>
+    <div class="list-row__body">
+      <div class="list-row__title">Sara Vogel</div>
+      <div class="list-row__subtitle">11:30 – Färbung + Schnitt</div>
+    </div>
+    <div class="list-row__meta">CHF 165</div>
+    <div class="list-row__trail"><span class="badge badge--success">Bestätigt</span></div>
+  </div>
+</div>`,
+  },
+  {
+    id: "settings-section",
+    title: "Settings-Section",
+    intro: "Account-Settings-Form mit Switches für Toggles und einem Save-Button am Ende.",
+    html: `<section class="stack stack--lg" style="max-width: 32rem;">
+  <header>
+    <h2 style="margin-bottom: var(--space-4);">Benachrichtigungen</h2>
+    <p class="site-muted">Wähle wann und wie du Updates erhalten möchtest.</p>
+  </header>
+  <div class="stack stack--md">
+    <label class="choice">
+      <input type="checkbox" class="switch" role="switch" checked>
+      <span>
+        E-Mail-Benachrichtigungen
+        <span class="choice__hint">Neue Buchungen, Stornierungen</span>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="checkbox" class="switch" role="switch" checked>
+      <span>
+        Push-Notifications
+        <span class="choice__hint">Mobile App + Browser</span>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="checkbox" class="switch" role="switch">
+      <span>
+        SMS-Reminder
+        <span class="choice__hint">24h vor Buchung</span>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="checkbox" class="switch" role="switch">
+      <span>
+        Weekly Digest
+        <span class="choice__hint">Sonntag-Zusammenfassung der Woche</span>
+      </span>
+    </label>
+  </div>
+  <div class="cluster cluster--end">
+    <button type="button" class="btn btn--ghost">Abbrechen</button>
+    <button type="button" class="btn">Speichern</button>
+  </div>
+</section>`,
+  },
+  {
+    id: "auth-otp",
+    title: "OTP-Verifizierung",
+    intro: "2-Faktor-Auth-Step nach Login. Code aus SMS oder Authenticator-App eingeben.",
+    html: `<section class="stack stack--md" style="max-width: 24rem; text-align: center;">
+  <h2 style="margin-bottom: var(--space-4);">Bestätigungscode eingeben</h2>
+  <p class="site-muted">Wir haben einen 6-stelligen Code an deine Nummer gesendet.</p>
+  <div class="otp-input" role="group" aria-label="Bestätigungscode" style="margin: 0 auto;">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 1 von 6">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 2 von 6">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 3 von 6">
+    <span class="otp-input__separator">–</span>
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 4 von 6">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 5 von 6">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 6 von 6">
+  </div>
+  <button class="btn" type="button">Bestätigen</button>
+  <button class="btn btn--ghost btn--sm" type="button">Code erneut senden</button>
+</section>`,
+  },
+  {
+    id: "empty-search",
+    title: "Empty-State mit Search + CTA",
+    intro: "Kombinierter Empty-State für eine Suchresultat-Seite ohne Treffer.",
+    html: `<div class="card" style="text-align: center; max-width: 32rem;">
+  <div style="font-size: 3rem; margin-bottom: var(--space-16); color: var(--color-text-tertiary);">⌕</div>
+  <h3 style="margin-bottom: var(--space-8);">Keine Kunden gefunden</h3>
+  <p style="color: var(--color-text-secondary); margin-bottom: var(--space-24);">
+    Versuche eine andere Suchanfrage oder lege einen neuen Kunden an.
+  </p>
+  <div class="cluster cluster--center">
+    <button type="button" class="btn btn--ghost">Filter zurücksetzen</button>
+    <button type="button" class="btn">Neuer Kunde</button>
+  </div>
+  <div style="margin-top: var(--space-24); padding-top: var(--space-16); border-top: 1px solid var(--color-border); display: flex; justify-content: center; gap: var(--space-12); font-size: var(--font-sm); color: var(--color-text-tertiary);">
+    <span><kbd class="kbd kbd--sm">⌘</kbd> + <kbd class="kbd kbd--sm">K</kbd> Suche</span>
+    <span><kbd class="kbd kbd--sm">N</kbd> Neuer Kunde</span>
+  </div>
+</div>`,
+  },
+];
+
+function renderRecipesPage(components) {
+  const sidebar = componentSidebar(components, null, "./");
+  const tilesHtml = RECIPES.map((r) => `
+        <section class="site-doc__section" id="recipe-${r.id}">
+          <h2>${escapeHtml(r.title)}</h2>
+          <p class="site-muted">${escapeHtml(r.intro)}</p>
+          <section class="site-example" data-example>
+            <div class="site-example__preview" data-preview>${r.html}</div>
+            <div class="site-example__toolbar">
+              <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+            </div>
+            <div class="site-example__source" hidden>
+              <textarea class="site-example__editor" spellcheck="false" data-source data-original="${escapeHtml(r.html)}">${escapeHtml(r.html)}</textarea>
+            </div>
+          </section>
+        </section>`).join("");
+  const toc = RECIPES.map((r) => `<li><a href="#recipe-${r.id}">${escapeHtml(r.title)}</a></li>`).join("");
+  const body = `
+      <article class="site-doc">
+        <header class="site-doc__header">
+          <h1 class="site-doc__title">Recipes</h1>
+          <p class="site-doc__lede">
+            Composed Patterns aus den 57 Components. Kein neues CSS — nur
+            Komposition. Bearbeite das Markup live und teste mit allen
+            Tones/Modes/Densities.
+          </p>
+          <nav class="foundation-toc" aria-label="Recipes">
+            <ul>${toc}</ul>
+          </nav>
+        </header>
+        ${tilesHtml}
+      </article>`;
+  return pageShell({
+    title: "Recipes",
+    navHref: "recipes.html",
+    body,
+    sidebar,
+    relRoot: "./",
     components,
   });
 }
@@ -2803,13 +3038,19 @@ function main() {
     renderThemesPage(components)
   );
 
+  fs.writeFileSync(
+    path.join(OUT_DIR, "recipes.html"),
+    renderRecipesPage(components)
+  );
+
+  /* Playground bleibt als Stub erhalten — alte URLs nicht zerbrechen */
   const stubs = [
     {
       file: "playground.html",
-      title: "Playground",
+      title: "Playground (deprecated)",
       navHref: "playground.html",
       intro:
-        "Interaktive Sandbox mit URL-State-Persistierung. In Vorbereitung.",
+        "→ siehe Recipes-Page für die Compositions. Playground wurde ersetzt durch konkrete Pattern-Beispiele.",
     },
   ];
   for (const s of stubs) {
