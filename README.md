@@ -272,7 +272,8 @@ open dist/site/index.html
 ## Architektur-Entscheidungen
 
 - [ADR-001 — Container-Width-Inheritance](./ADR-001-container-max-inheritance.md)
-- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.20
+- [ADR-002 — Modern-CSS-Architektur (light-dark, @starting-style, @property)](./ADR-002-modern-css-architecture.md)
+- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.25
 
 ---
 

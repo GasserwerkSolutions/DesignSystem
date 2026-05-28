@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.25.0] — ADR-002 (Modern-CSS) + prefers-reduced-transparency
+
+### Hinzugefügt — ADR-002
+
+**`ADR-002-modern-css-architecture.md`** dokumentiert die Modern-CSS-
+Adoption über v0.12 — v0.20:
+
+- Tabelle aller adoptierten Features mit Version-Tracker
+- light-dark()-Vergleich vorher/nachher (125 → 67 Zeilen in dark.css)
+- @property typed Custom Properties Rationale
+- @starting-style + transition-behavior Pattern
+- Trade-Offs (Browser-Support, Lint-Updates, Multi-Shadow-Edge-Case)
+- Alternatives Considered ("Klassisch", "Modern-Only", "Hybrid" gewählt)
+
+### Hinzugefügt — prefers-reduced-transparency
+
+`@media (prefers-reduced-transparency: reduce)` in state.css für User mit
+visuellen Einschränkungen die Transparenz reduziert haben möchten:
+- Modal/Drawer/Cmd-Palette-Backdrops solid statt blur
+- Topbar backdrop-filter removed
+- Surfaces (popover/tooltip/hover-card/modal/drawer/cmd-palette) solid bg
+
+### README + Distribution
+
+- ADR-002 in README verlinkt
+- ADR-002 zu package.json:files hinzugefügt (wird im Tarball ausgeliefert)
+
+### Pipeline
+
+Alle 9 Stufen grün.
+
+---
+
 ## [0.24.0] — Performance: content-visibility + contain für Heavy-Components
 
 Klein-aber-feiner Render-Boost für Pages mit vielen Component-Instanzen.

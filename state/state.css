@@ -159,3 +159,26 @@ textarea:invalid:focus {
     box-shadow: none;
   }
 }
+
+/* prefers-reduced-transparency \u2014 Browser-Hinweis dass User Transparenz
+   reduziert haben m\u00f6chte (z.B. \u00e4ltere Augen, kognitive Last). Backdrops,
+   blur-Filters, semi-transparente Surfaces solid machen. */
+@media (prefers-reduced-transparency: reduce) {
+  .modal::backdrop,
+  .drawer::backdrop,
+  .cmd-palette::backdrop {
+    background: var(--color-bg-inverse);
+    backdrop-filter: none;
+  }
+  .app-shell__topbar {
+    backdrop-filter: none;
+  }
+  .popover,
+  .tooltip,
+  .hover-card,
+  .modal,
+  .drawer,
+  .cmd-palette {
+    background: var(--color-surface);
+  }
+}
