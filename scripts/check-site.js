@@ -187,18 +187,20 @@ async function runInteractions(browser) {
       density: document.documentElement.getAttribute("data-density"),
     }));
 
+  /* 200ms statt 50ms — view-transitions defer den DOM-Update durch
+     einen Frame, sonst probe vor dem Attribute-Set. */
   await page.select('[data-axis="tone"]', "premium");
-  await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 200));
   const t = await probe();
 
   await page.evaluate(() =>
     document.querySelector('[data-axis="mode"]').click()
   );
-  await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 200));
   const m = await probe();
 
   await page.select('[data-axis="density"]', "compact");
-  await new Promise((r) => setTimeout(r, 50));
+  await new Promise((r) => setTimeout(r, 200));
   const d = await probe();
 
   await page.evaluate(() => {
@@ -577,7 +579,9 @@ async function runUrlState(browser) {
   );
   await new Promise((r) => setTimeout(r, 300));
   await page.select('[data-axis="tone"]', "playful");
-  await new Promise((r) => setTimeout(r, 100));
+  /* 500ms — view-transition deferre + persist()-rAF kombiniert kann 2-3
+     Frames brauchen bis location.search aktualisiert ist. */
+  await new Promise((r) => setTimeout(r, 500));
   const urlAfterToneChange = await page.evaluate(() => location.search);
 
   await page.evaluate(() => {

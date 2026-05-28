@@ -77,9 +77,11 @@
                 <ul class="site-topbar__mega-list" role="presentation">
                   
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/accordion.html">Accordion Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/back-to-top.html">Back-to-Top Button</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/breadcrumbs.html">Breadcrumbs Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/nav.html">Nav Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/pagination.html">Pagination Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/scroll-spy.html">Scroll-Spy Navigation</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/steps.html">Steps Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tabs.html">Tabs Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tree.html">Tree Component</a></li>
@@ -91,6 +93,7 @@
                   
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/command-palette.html">Command Palette</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/drawer.html">Drawer Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/hover-card.html">Hover-Card — Rich Preview on Hover</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/modal.html">Modal Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/popover.html">Popover Component</a></li>
                   <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tooltip.html">Tooltip Component</a></li>
@@ -196,9 +199,11 @@
           <div class="site-sidebar__group-label">Navigation</div>
           <ul class="site-sidebar__list">
             <li><a class="site-sidebar__link" href="./components/accordion.html">Accordion Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/back-to-top.html">Back-to-Top Button</a></li>
             <li><a class="site-sidebar__link" href="./components/breadcrumbs.html">Breadcrumbs Component</a></li>
             <li><a class="site-sidebar__link" href="./components/nav.html">Nav Component</a></li>
             <li><a class="site-sidebar__link" href="./components/pagination.html">Pagination Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/scroll-spy.html">Scroll-Spy Navigation</a></li>
             <li><a class="site-sidebar__link" href="./components/steps.html">Steps Component</a></li>
             <li><a class="site-sidebar__link" href="./components/tabs.html">Tabs Component</a></li>
             <li><a class="site-sidebar__link" href="./components/tree.html">Tree Component</a></li>
@@ -210,6 +215,7 @@
           <ul class="site-sidebar__list">
             <li><a class="site-sidebar__link" href="./components/command-palette.html">Command Palette</a></li>
             <li><a class="site-sidebar__link" href="./components/drawer.html">Drawer Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/hover-card.html">Hover-Card — Rich Preview on Hover</a></li>
             <li><a class="site-sidebar__link" href="./components/modal.html">Modal Component</a></li>
             <li><a class="site-sidebar__link" href="./components/popover.html">Popover Component</a></li>
             <li><a class="site-sidebar__link" href="./components/tooltip.html">Tooltip Component</a></li>
@@ -251,7 +257,7 @@
           <h1 class="site-doc__title">Design System</h1>
           <p class="site-doc__lede">
             Contract-basiertes Multi-Tone CSS-System.
-            6 Tones × 2 Modes × 3 Densities, 54 Components,
+            6 Tones × 2 Modes × 3 Densities, 57 Components,
             WCAG-AA validiert.
           </p>
           <div class="site-doc__cta">
@@ -448,13 +454,19 @@
           </div>
 
           <div class="site-category">
-            <h3 class="site-category__title">Navigation <span class="site-muted">(7)</span></h3>
+            <h3 class="site-category__title">Navigation <span class="site-muted">(9)</span></h3>
             <ul class="site-component-grid">
               
               <li>
                 <a class="card site-component-card" href="./components/accordion.html">
                   <strong>Accordion Component</strong>
                   <span class="site-muted">Auf native &lt;details&gt;/&lt;summary&gt; aufgebaut — A11Y, Keyboard-Toggle,</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/back-to-top.html">
+                  <strong>Back-to-Top Button</strong>
+                  <span class="site-muted">Floating Button am Viewport-Rand der bei Scroll &gt; Threshold sichtbar wird</span>
                 </a>
               </li>
               <li>
@@ -473,6 +485,12 @@
                 <a class="card site-component-card" href="./components/pagination.html">
                   <strong>Pagination Component</strong>
                   <span class="site-muted">Seiten-Navigation für Tables / Listen.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/scroll-spy.html">
+                  <strong>Scroll-Spy Navigation</strong>
+                  <span class="site-muted">Inline-Navigation die das aktive Section-Headline markiert je nach Scroll-</span>
                 </a>
               </li>
               <li>
@@ -497,7 +515,7 @@
           </div>
 
           <div class="site-category">
-            <h3 class="site-category__title">Overlay <span class="site-muted">(5)</span></h3>
+            <h3 class="site-category__title">Overlay <span class="site-muted">(6)</span></h3>
             <ul class="site-component-grid">
               
               <li>
@@ -510,6 +528,12 @@
                 <a class="card site-component-card" href="./components/drawer.html">
                   <strong>Drawer Component</strong>
                   <span class="site-muted">Slide-over von der Seite — für Mobile-Menüs, Side-Sheets, Detail-Panels.</span>
+                </a>
+              </li>
+              <li>
+                <a class="card site-component-card" href="./components/hover-card.html">
+                  <strong>Hover-Card — Rich Preview on Hover</strong>
+                  <span class="site-muted">Detail-Preview-Bubble bei Hover/Focus über einem Link oder Avatar.</span>
                 </a>
               </li>
               <li>

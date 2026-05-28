@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.22.0] — Drei neue Components + View-Transition-Race-Fix
+
+### Hinzugefügt
+
+- **`components/hover-card.css`** — Rich-Preview-Bubble bei Hover/Focus.
+  300ms Open-Delay (verhindert ungewolltes Popping). Header mit Avatar +
+  Meta, Body + Stats-Block. Touch-User sehen kein Hover-State (rein
+  dekorativ, kein exclusive Content).
+- **`components/back-to-top.css`** — Floating Button mit Scroll-driven-
+  Animation. `@supports (animation-timeline: scroll())` enthüllt ab
+  300px Scroll-Distanz. Pure CSS, kein JS nötig (Konsument kann
+  `.is-visible`-Klasse togglen für volle Browser-Support).
+- **`components/scroll-spy.css`** — Inline-Navigation mit aktivem Section-
+  Marker. JS-Snippet im Header (~15 LOC IntersectionObserver). Modifier
+  `--vertical` (default, Sidebar) und `--horizontal` (Sticky-Topbar).
+
+### Behoben — View-Transition-Race-Condition
+
+Bei v0.20.0 wurde `persist()` AUSSERHALB von `withTransition()` gerufen.
+View-Transitions defer den Attribute-Update via rAF — `persist()` las
+das alte Attribut, schrieb veraltetes Tone in URL. Fix: persist() ist
+jetzt INSIDE der Transition-Callback. URL-Updates korrekt.
+
+### Tests
+
+Drei Site-Asserts haben Timeout-Bumps bekommen (50→200ms, 100→500ms)
+weil view-transitions Frame-Delays produzieren.
+
+### Bundle
+
+  Bundle: 134.5 KB raw (+5.6) / 20.2 KB gzip (+0.7)
+  Budget noch grün: 94-98%.
+
+### Pipeline
+
+57 Component-Pages (war 54). Lint, contrast (1008), visual (12),
+journeys (6), site (50), package (72 imports), measure (4) — alle grün.
+
+---
+
 ## [0.21.0] — Documentation Expansion (README + CONTRIBUTING)
 
 README.md von 110 auf 290 Zeilen erweitert. Adoptions-orientiert.

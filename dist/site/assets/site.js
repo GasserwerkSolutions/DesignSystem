@@ -71,17 +71,23 @@
     }
   }
 
+  /* withTransition wrapt das Update + persist gemeinsam. persist() liest
+     dann das frisch gesetzte Attribut. */
   document.addEventListener("change", (e) => {
     const t = e.target.closest('[data-axis="tone"]');
     if (t) {
-      withTransition(() => root.setAttribute("data-tone", t.value));
-      persist();
+      withTransition(() => {
+        root.setAttribute("data-tone", t.value);
+        persist();
+      });
       return;
     }
     const d = e.target.closest('[data-axis="density"]');
     if (d) {
-      withTransition(() => root.setAttribute("data-density", d.value));
-      persist();
+      withTransition(() => {
+        root.setAttribute("data-density", d.value);
+        persist();
+      });
       return;
     }
   });
@@ -90,8 +96,10 @@
     const m = e.target.closest('[data-axis="mode"]');
     if (m) {
       const next = root.getAttribute("data-mode") === "dark" ? "light" : "dark";
-      withTransition(() => root.setAttribute("data-mode", next));
-      persist();
+      withTransition(() => {
+        root.setAttribute("data-mode", next);
+        persist();
+      });
     }
   });
 

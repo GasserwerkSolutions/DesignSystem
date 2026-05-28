@@ -74,3 +74,6 @@
 @import "./components/command-palette.css" layer(components);
 @import "./components/otp-input.css"       layer(components);
 @import "./components/theme-toggle.css"    layer(components);
+@import "./components/hover-card.css"      layer(components);
+@import "./components/back-to-top.css"     layer(components);
+@import "./components/scroll-spy.css"      layer(components);

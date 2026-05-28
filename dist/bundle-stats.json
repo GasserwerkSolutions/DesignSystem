@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T00:38:43.959Z",
-  "version": "0.19.0",
+  "timestamp": "2026-05-28T00:43:12.583Z",
+  "version": "0.21.0",
   "bundle": {
-    "raw": 132011,
-    "gzip": 19967,
-    "brotli": 16846
+    "raw": 137773,
+    "gzip": 20690,
+    "brotli": 17430
   },
   "minified": {
-    "raw": 105236,
-    "gzip": 18540,
-    "brotli": 16064
+    "raw": 109803,
+    "gzip": 19184,
+    "brotli": 16645
   },
   "layers": [
     {
@@ -39,8 +39,8 @@
     },
     {
       "label": "components",
-      "raw": 162468,
-      "files": 54
+      "raw": 172366,
+      "files": 57
     }
   ],
   "components": [
@@ -101,6 +101,10 @@
       "raw": 3758
     },
     {
+      "name": "hover-card",
+      "raw": 3739
+    },
+    {
       "name": "button",
       "raw": 3607
     },
@@ -133,12 +137,20 @@
       "raw": 3197
     },
     {
+      "name": "scroll-spy",
+      "raw": 3156
+    },
+    {
       "name": "drawer",
       "raw": 3114
     },
     {
       "name": "date-input",
       "raw": 3029
+    },
+    {
+      "name": "back-to-top",
+      "raw": 3003
     },
     {
       "name": "slider",
