@@ -9,11 +9,58 @@
  * Themes überschreiben scoped via [data-tone~="..."].
  */
 
+/* @property: Typed Custom Properties. Mit Type-Info werden Tokens
+   animatable (z.B. theme-switch mit View-Transitions), bekommen Color-
+   Picker in DevTools und werden korrekt interpoliert.
+
+   Wir registrieren die Tokens, die am häufigsten animiert werden oder
+   davon profitieren: Interactive-Colors (theme-switch), Btn-Radius
+   (modifier transitions), Range-Fill (slider). Andere Tokens bleiben
+   un-registered (universal CSS-string).
+
+   Baseline 2024+ (Chrome 85, Safari 16.4, Firefox 128). Fallback:
+   un-registered, kein animation-support — sichtbares Verhalten
+   identisch. */
+@property --color-interactive {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #16a34a;
+}
+@property --color-interactive-light {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #dcfce7;
+}
+@property --color-interactive-dark {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #15803d;
+}
+@property --color-focus-ring {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #dcfce7;
+}
+@property --btn-radius {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 0.375rem;
+}
+@property --range-fill-pct {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 :root {
   /* color-scheme treibt die Auflösung von light-dark(L, D) und steuert die
      UA-Defaults (Scrollbars, Form-Controls). Default = auto (Browser-Pref);
      [data-mode] in dark.css forciert. */
   color-scheme: light dark;
+
+  /* scrollbar-gutter: stable verhindert Layout-Shift wenn der Inhalt zu
+     scrollbar wechselt (z.B. nach lazy-loaded Content). Modern, baseline. */
+  scrollbar-gutter: stable;
 
   /* ========================================
      SEMANTIC COLORS

@@ -65,6 +65,24 @@ textarea {
   color: var(--input-text);
 }
 
+/* field-sizing: content — Textarea wächst automatisch mit dem Content,
+   keine JS-Krücke mehr. Chrome 123+, Firefox 137+, Safari noch nicht.
+   Fallback: normales User-resize. */
+textarea {
+  field-sizing: content;
+  min-height: calc(var(--density-control-py) * 2 + 1.5em);
+  resize: vertical;
+}
+
+/* accent-color: setzt die native Akzentfarbe für checkbox/radio/range/
+   progress. Kein appearance:none nötig für simple Branding. */
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"],
+progress {
+  accent-color: var(--color-interactive);
+}
+
 input::placeholder,
 textarea::placeholder {
   color: var(--input-placeholder);

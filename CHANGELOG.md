@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.15.0] — Modern CSS: @property + field-sizing + accent-color + scrollbar-gutter
+
+Path A der Modern-CSS-Adoption — die "smaller wins" Etappe. Vier neue CSS-
+Features, jedes ein Quality-Upgrade ohne Architektur-Änderung.
+
+### Hinzugefügt
+
+- **`@property`** für 6 Tokens: `--color-interactive`, `--color-interactive-
+  light`, `--color-interactive-dark`, `--color-focus-ring`, `--btn-radius`,
+  `--range-fill-pct`. Typed Custom Properties — DevTools zeigt Color-Picker,
+  Animation interpoliert korrekt, View-Transitions können Tokens smooth
+  zwischen Themes überblenden.
+- **`field-sizing: content`** auf `textarea` (base/reset.css). Textarea
+  wächst automatisch mit Content, keine JS-Krücke mehr. Chrome 123+,
+  Firefox 137+. Fallback: User-resize (vertical) wie zuvor.
+- **`accent-color: var(--color-interactive)`** auf native checkbox/radio/
+  range/progress. Branding für Form-Controls ohne appearance:none-Tax.
+- **`scrollbar-gutter: stable`** auf `:root`. Reserviert 15px Gutter
+  konsistent — verhindert Layout-Shift wenn lazy-loaded Content den
+  Scrollbar triggert.
+
+### VRT-Update
+
+- Alle 12 Baselines neu generiert: Width 1280 → 1265 (15px gutter
+  reserved). Page-Höhen unverändert.
+
+### Pipeline
+
+Lint, contrast (1008), visual (12 new baselines), journeys (6), tools
+self-test (3), site (48) — alle grün.
+
+Bundle: 114.6 KB raw / 17.7 KB gzip (+0.2 KB durch @property-Definitionen
+und field-sizing/accent-color Regeln).
+
+---
+
 ## [0.14.0] — Modern CSS: @starting-style + interpolate-size
 
 Modernisiert die Overlay-Animationen via `@starting-style` und
