@@ -357,6 +357,62 @@ async function runContainerQueries(browser) {
   return errors;
 }
 
+async function runRtlSupport(browser) {
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1280, height: 900 });
+  await page.goto(
+    "file://" + path.join(SITE_DIR, "components/alert.html"),
+    { waitUntil: "load" }
+  );
+  await new Promise((r) => setTimeout(r, 300));
+
+  /* Setze dir="rtl" auf html, vergleich Layout vs LTR. RTL-Sicherheit:
+     - List-Bullets müssen auf der RECHTEN Seite sein (logical: inline-start
+       = rechts in RTL)
+     - Avatar-Stack: erstes Avatar rechts, letztes links (margin-inline-start
+       umkehrt sich)
+     - Alert-Icon links (LTR) wird zu rechts (RTL) */
+  const ltrLayout = await page.evaluate(() => {
+    const alert = document.querySelector(".alert");
+    if (!alert) return null;
+    const icon = alert.querySelector(".alert__icon");
+    const body = alert.querySelector(".alert__body");
+    if (!icon || !body) return null;
+    const iconRect = icon.getBoundingClientRect();
+    const bodyRect = body.getBoundingClientRect();
+    return { iconLeft: iconRect.left, bodyLeft: bodyRect.left };
+  });
+
+  await page.evaluate(() => {
+    document.documentElement.setAttribute("dir", "rtl");
+  });
+  await new Promise((r) => setTimeout(r, 200));
+
+  const rtlLayout = await page.evaluate(() => {
+    const alert = document.querySelector(".alert");
+    const icon = alert.querySelector(".alert__icon");
+    const body = alert.querySelector(".alert__body");
+    const iconRect = icon.getBoundingClientRect();
+    const bodyRect = body.getBoundingClientRect();
+    return { iconLeft: iconRect.left, bodyLeft: bodyRect.left };
+  });
+
+  await page.close();
+
+  const checks = [
+    /* In RTL muss der Icon RECHTS vom Body stehen (iconLeft > bodyLeft).
+       In LTR muss der Icon LINKS vom Body stehen (iconLeft < bodyLeft). */
+    ["rtl-support: LTR alert__icon ist links von alert__body", ltrLayout?.iconLeft < ltrLayout?.bodyLeft],
+    ["rtl-support: RTL alert__icon ist rechts von alert__body (Logical-Properties wirken)", rtlLayout.iconLeft > rtlLayout.bodyLeft],
+  ];
+  let errors = 0;
+  for (const [label, ok] of checks) {
+    console.log(`  [${ok ? "ok" : "FAIL"}] ${label}`);
+    if (!ok) errors++;
+  }
+  return errors;
+}
+
 async function runHeaderNav(browser) {
   const page = await browser.newPage();
   await page.setViewport({ width: 1280, height: 900 });
@@ -734,8 +790,10 @@ async function runFoundationsEdit(browser) {
   const headerErrs = await runHeaderNav(browser);
   console.log("[check-site] Modifier-Previews:");
   const modErrs = await runModifierPreviews(browser);
+  console.log("[check-site] RTL-Support:");
+  const rtlErrs = await runRtlSupport(browser);
   await browser.close();
-  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs + headerErrs + modErrs;
+  const total = parserErrs + smokeErrs + interactionErrs + foundationErrs + themeGenErrs + editorErrs + cqErrs + urlStateErrs + headerErrs + modErrs + rtlErrs;
   console.log(
     total === 0
       ? "[check-site] passed."

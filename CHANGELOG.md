@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.16.0] — RTL-Support: typography-bullet fix + dir="rtl" Coverage-Test
+
+Audit der 14 physischen Positions-Properties (left/right/top/bottom als
+Properties) im Stack ergab:
+- 13 davon sind RTL-safe (Centering mit 50% + translate, oder vertical
+  top/bottom)
+- 1 echter RTL-Bug: `ul li::before { left: calc(-1 * var(--space-12)) }`
+  in base/typography.css — Bullet wurde IMMER auf der linken Seite
+  gerendert, auch wenn `dir="rtl"`
+
+### Behoben
+
+- **`base/typography.css`**: `left:` → `inset-inline-start:` für Bullet-
+  Position. Bullet rückt jetzt korrekt auf die rechte Seite bei `dir="rtl"`.
+
+### Hinzugefügt
+
+- **check-site RTL-Test**: lädt eine Component, vergleicht Layout in LTR
+  vs `dir="rtl"`. Verifiziert dass logische Properties greifen (Icon
+  wandert von links nach rechts beim Direction-Switch).
+
+### Pipeline
+
+Lint, contrast (1008), visual (12), journeys (6), site (50 — +2 RTL),
+package — alle grün.
+
+---
+
 ## [0.15.0] — Modern CSS: @property + field-sizing + accent-color + scrollbar-gutter
 
 Path A der Modern-CSS-Adoption — die "smaller wins" Etappe. Vier neue CSS-
