@@ -98,6 +98,9 @@
   border-block-end: 1px solid var(--list-row-divider, var(--color-border));
   transition: background var(--duration-fast) var(--easing-fast);
   min-width: 0;
+  /* Performance: layout-Containment. Bei langen Listen (Activity-Feed,
+     Customer-Liste) berechnet Browser jede Row isoliert. */
+  contain: layout;
 }
 
 .list-row:last-child {

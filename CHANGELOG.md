@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.24.0] — Performance: content-visibility + contain für Heavy-Components
+
+Klein-aber-feiner Render-Boost für Pages mit vielen Component-Instanzen.
+
+### Hinzugefügt
+
+- **`.card`**: `contain: layout paint` — Card-Layout/Paint isoliert vom
+  Page-Layout. Spürbar bei Grid mit 20+ Cards.
+- **`.list-row`**: `contain: layout` — bei Activity-Feeds und Customer-
+  Listen berechnet Browser jede Row isoliert, kein Reflow durch nachbar-
+  Änderungen.
+- **`.accordion`**: `content-visibility: auto` + `contain-intrinsic-size:
+  auto 4rem` — geschlossene Accordions überspringen den Body-Render bis
+  Detail-Toggle. Wichtig für FAQ-Pages mit 20+ Items.
+
+### VRT-Update
+
+- 12 Baselines neu generiert (0.004 - 0.017% Pixel-Shifts in Premium/
+  Industrial durch contain-intrinsic-size-Placeholder).
+
+### Pipeline
+
+Lint, contrast (1008), visual (12 neu), journeys (6), site (50),
+package, measure — alle grün.
+
+---
+
 ## [0.23.0] — Recipes-Page (composed Patterns)
 
 Ersetzt den Playground-Stub durch eine handkuratierte Recipes-Page mit

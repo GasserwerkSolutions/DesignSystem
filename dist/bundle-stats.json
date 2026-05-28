@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T00:43:12.583Z",
-  "version": "0.21.0",
+  "timestamp": "2026-05-28T00:56:08.524Z",
+  "version": "0.23.0",
   "bundle": {
-    "raw": 137773,
-    "gzip": 20690,
-    "brotli": 17430
+    "raw": 137890,
+    "gzip": 20749,
+    "brotli": 17507
   },
   "minified": {
-    "raw": 109803,
-    "gzip": 19184,
-    "brotli": 16645
+    "raw": 109896,
+    "gzip": 19231,
+    "brotli": 16637
   },
   "layers": [
     {
@@ -39,7 +39,7 @@
     },
     {
       "label": "components",
-      "raw": 172366,
+      "raw": 172965,
       "files": 57
     }
   ],
@@ -62,7 +62,7 @@
     },
     {
       "name": "list-row",
-      "raw": 4814
+      "raw": 4966
     },
     {
       "name": "select",
@@ -77,12 +77,12 @@
       "raw": 3994
     },
     {
-      "name": "tree",
-      "raw": 3787
+      "name": "card",
+      "raw": 3989
     },
     {
-      "name": "card",
-      "raw": 3781
+      "name": "tree",
+      "raw": 3787
     },
     {
       "name": "app-shell",
@@ -145,6 +145,10 @@
       "raw": 3114
     },
     {
+      "name": "accordion",
+      "raw": 3091
+    },
+    {
       "name": "date-input",
       "raw": 3029
     },
@@ -155,10 +159,6 @@
     {
       "name": "slider",
       "raw": 2863
-    },
-    {
-      "name": "accordion",
-      "raw": 2852
     },
     {
       "name": "callout",

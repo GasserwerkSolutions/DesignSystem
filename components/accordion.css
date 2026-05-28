@@ -30,6 +30,11 @@
      auf seine natürliche Höhe expandieren. Chrome 129+ (2024), Firefox/
      Safari progressive. Fallback: instant toggle wie zuvor. */
   interpolate-size: allow-keywords;
+  /* Performance: bei vielen geschlossenen Accordions (FAQ-Pages) ist
+     der Body invisible — content-visibility: auto überspringt den
+     Render bis Detail-Toggle. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 4rem;
 }
 
 .accordion + .accordion {

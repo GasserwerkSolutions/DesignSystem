@@ -69,6 +69,11 @@
   box-shadow:    var(--card-shadow, var(--elevation-3));
   padding:       var(--card-padding, var(--space-24));
 
+  /* Performance: layout/paint isolation. Browser kann das Card-Layout
+     unabhängig vom Page-Layout berechnen. Bei vielen Cards (Grid mit
+     20+) spürbarer Render-Speedup. */
+  contain: layout paint;
+
   transition: transform var(--duration-medium) var(--easing-medium),
               box-shadow var(--duration-medium) var(--easing-medium);
 }
