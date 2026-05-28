@@ -1,5 +1,94 @@
 # Changelog
 
+## [0.29.0] — Bounce nur als explizites Opt-In (CLEAR 4 Prinzip 1)
+
+Dritte konkrete Umsetzung der Nervensystem-Verfassung. ADR-003/004 haben
+den Color-Pfad gefiltert, v0.29 nimmt sich den Motion-Pfad vor.
+
+### Vorher
+
+`--ease-bounce` war an zwei Stellen im Default-Pfad:
+- `semantic.css`: `--easing-slow: var(--ease-bounce)` — System-Default
+  für "slow"-Easing war federnd
+- `themes/playful.css`: `--easing-medium: cubic-bezier(0.34, 1.56, 0.64, 1)`
+  und `--btn-transition: all ... cubic-bezier(0.34, 1.56, 0.64, 1)` —
+  jeder Button-Hover in playful federte
+
+Per CLEAR 4 Prinzip 1: "Bewegung ist linear und gedämpft, nicht federnd.
+Die Default-Bewegung des Systems ist ease-smooth, nicht ease-bounce."
+
+### Nachher
+
+Bounce bleibt im System, aber **nur als opt-in via `--motion-emphasis`**.
+Die Verfassung selbst preserved diesen Token explizit als Ausnahme.
+
+- `semantic.css`: `--easing-slow: var(--ease-smooth)` — "slow" wird
+  langsamer, nicht federnder
+- `themes/playful.css`: `--easing-medium`-Override gestrichen,
+  `--btn-transition`-Override gestrichen (fall-back System-Default)
+- `--motion-emphasis: 350ms var(--ease-bounce)` bleibt unverändert als
+  expressiver Register für Anlass-Aktivierung
+
+### Lint Check 6 — Layer-1 Prevention
+
+Neue Lint-Regel: Themes dürfen die Default-Motion-Slots (`--easing-*`,
+`--motion-*`, `--*-transition`) nicht mit Bounce füllen. Detection via:
+- Direct-Reference auf `--ease-bounce`
+- `cubic-bezier(...)` mit Y > 1.0 (Overshoot)
+
+Erlaubte Ausnahme: `--motion-emphasis` — die explizit opt-in Bounce-
+Trägerstelle.
+
+Mutation-Test: Wiedereinfügen der bounce-default in playful → Lint
+failed deterministisch mit präzisem Pfad, Line-Number, Verfassungs-
+Referenz. Restored sauber.
+
+### Test-Coverage
+
+`scripts/test-lint.js` +4 Fixtures:
+- bounce in `--easing-medium` → exit 1 ✓
+- bounce via `--ease-bounce` in `--btn-transition` → exit 1 ✓
+- bounce in `--motion-emphasis` (opt-in slot) → exit 0 ✓
+- non-overshoot `cubic-bezier(0.25, 0.46, 0.45, 0.94)` → exit 0 ✓
+
+25/25 lint-tests grün (war 21).
+
+### Warum `--ease-bounce` NICHT entfernt wird
+
+Drei Gründe:
+1. **Verfassungstreue** — die Verfassung lässt `--motion-emphasis`
+   explizit zu. Entfernung wäre strenger als die Verfassung selbst.
+2. **Anlass-Aktivierung** — eine Confirmation-Animation darf einen
+   kleinen "ta-da"-Moment haben. Mit `prefers-reduced-motion` greift
+   die User-Kontrolle weiter.
+3. **Playful-Identität** — bounce-via-opt-in gibt playful eine
+   Distinktion abseits von Color. Ohne Ersatz würde playful zu nah an
+   trust/modern kommen.
+
+### Verifikation
+
+- **Lint**: 6 themes alle grün, Mutation-Test deterministisch
+- **VRT**: 12 Baselines pixel-identisch (bounce wirkt nur in
+  dynamischen Hover-States, nicht im statischen Screenshot)
+- **check:contrast**: 1008 Paare grün (motion-Änderung ändert keine
+  Kontraste)
+- **check:journeys**: 6 grün (functional flows unverändert)
+
+### Dokumentation
+
+- **ADR-005**: Decision + Trade-Offs + Alternatives Considered
+  (komplett entfernen vs opt-in vs per-Component-Allowlist)
+- **Verfassungs-Mapping** pro CLEAR-4-Prinzip
+- README + package.json:files erweitert
+
+### Stats
+
+- Pipeline: 9/9 Stufen grün (incl. 25 lint-tests, 1008 contrast-Paare)
+- Bundle: 136.2 KB raw / 20.4 KB gzip (unverändert — Motion-Tokens
+  sind klein)
+
+---
+
 ## [0.28.0] — Tone-Paletten Chroma-Filter (CLEAR 4 Prinzip 3)
 
 Zweite konkrete Umsetzung der Nervensystem-Verfassung. ADR-003 hat die

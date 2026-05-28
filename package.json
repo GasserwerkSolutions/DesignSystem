@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
@@ -38,6 +38,7 @@
     "ADR-002-modern-css-architecture.md",
     "ADR-003-status-color-sand-filter.md",
     "ADR-004-palette-chroma-filter.md",
+    "ADR-005-bounce-only-as-explicit-opt-in.md",
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md"

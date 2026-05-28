@@ -314,6 +314,32 @@ test("non-axis token (--btn-radius): exit 0", () => {
   assertEq(r.code, 0, "non-axis tokens should pass");
 });
 
+// Check 6: bounce-default-Verbot (CLEAR 4 Prinzip 1)
+test("bounce in --easing-medium (overshoot Y > 1): exit 1", () => {
+  const r = runLint(`[data-tone~="test"] {\n  --easing-medium: cubic-bezier(0.34, 1.56, 0.64, 1);\n}`);
+  assertEq(r.code, 1, "exit 1 for bounce-default in easing slot");
+  if (!r.stderr.includes("CLEAR 4 Prinzip 1") && !r.stderr.includes("Bounce")) {
+    throw new Error(`expected CLEAR 4 reference, got:\n${r.stderr}`);
+  }
+});
+
+test("bounce via --ease-bounce in --btn-transition: exit 1", () => {
+  const r = runLint(`[data-tone~="test"] {\n  --btn-transition: all 200ms var(--ease-bounce);\n}`);
+  assertEq(r.code, 1, "exit 1 for bounce-reference in transition slot");
+});
+
+test("bounce in --motion-emphasis (opt-in slot): exit 0", () => {
+  // --motion-emphasis ist die explizit erlaubte Bounce-Ausnahme.
+  const r = runLint(`[data-tone~="test"] {\n  --motion-emphasis: 400ms var(--ease-bounce);\n}`);
+  assertEq(r.code, 0, "motion-emphasis should allow bounce");
+});
+
+test("cubic-bezier ohne Overshoot (Y <= 1): exit 0", () => {
+  // Standard-Easing ohne Overshoot ist erlaubt.
+  const r = runLint(`[data-tone~="test"] {\n  --easing-medium: cubic-bezier(0.25, 0.46, 0.45, 0.94);\n}`);
+  assertEq(r.code, 0, "non-overshoot easing should pass");
+});
+
 // ============================================================
 // Summary
 // ============================================================

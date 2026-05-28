@@ -25,10 +25,13 @@
   --space-block:   var(--space-24);
   --space-section: var(--space-56);
 
-  /* Motion */
+  /* Motion — Playful behält Tempo (kurze Durations) für lebendigen
+     Charakter, aber kein Overshoot in den Default-Easings. CLEAR 4
+     Prinzip 1: federnde Bewegung nur via explizites --motion-emphasis.
+     Wer eine bouncy Animation für ein opt-in-Moment will (Erfolgs-
+     Bestätigung, "ta-da"), nutzt `transition: ... var(--motion-emphasis)`. */
   --duration-fast:   var(--motion-fastest);
   --duration-medium: var(--motion-fast);
-  --easing-medium:   cubic-bezier(0.34, 1.56, 0.64, 1);
 
   /* Button */
   --btn-bg:           var(--playful-600);
@@ -37,7 +40,8 @@
   --btn-radius:       var(--radius-20);
   --btn-weight:       700;
   --btn-hover-motion: scale(1.08);
-  --btn-transition:   all var(--motion-fastest) cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* btn-transition fällt weg — fall-back auf System-Default
+     (var(--motion-fast) var(--easing-fast)). */
 
   /* Card */
   --card-radius: var(--radius-20);

@@ -271,13 +271,20 @@
   --duration-slow:   var(--motion-slow);
   --easing-fast:     var(--ease-in-out);
   --easing-medium:   var(--ease-smooth);
-  --easing-slow:     var(--ease-bounce);
+  /* CLEAR 4 Prinzip 1: Default-Bewegung ist linear und gedämpft, nicht
+     federnd. --easing-slow nutzt bewusst ease-smooth (langsamer aber
+     ohne Overshoot). Bounce bleibt erreichbar nur via explizites
+     --motion-emphasis. Lint Check 6 (lint-themes.js) verhindert dass
+     Themes Default-Easings mit Overshoot setzen. */
+  --easing-slow:     var(--ease-smooth);
 
   /* Motion-Tokens nach Zweck (shorthand: duration + easing in einem Wert) */
   --motion-feedback:   75ms var(--ease-in-out);       /* Button-Press, Input-Focus */
   --motion-transition: 250ms var(--ease-smooth);      /* Property-Übergänge, Hover */
   --motion-entrance:   350ms var(--ease-smooth);      /* Modal-Open, Drawer-Slide */
-  --motion-emphasis:   350ms var(--ease-bounce);      /* Playful Accent-Animations */
+  /* --motion-emphasis ist die EINZIGE bounce-erlaubte Bewegung — explizit
+     opt-in pro Component, niemals als Default einer Component. */
+  --motion-emphasis:   350ms var(--ease-bounce);      /* Confirmation, "ta-da" — opt-in */
 
   /* ========================================
      SEMANTIC BORDERS

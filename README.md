@@ -275,7 +275,8 @@ open dist/site/index.html
 - [ADR-002 — Modern-CSS-Architektur (light-dark, @starting-style, @property)](./ADR-002-modern-css-architecture.md)
 - [ADR-003 — Status-Farben Sand-Filter (CLEAR 4 Prinzip 4)](./ADR-003-status-color-sand-filter.md)
 - [ADR-004 — Tone-Paletten Chroma-Filter (CLEAR 4 Prinzip 3)](./ADR-004-palette-chroma-filter.md)
-- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.28
+- [ADR-005 — Bounce nur als explizites Opt-In (CLEAR 4 Prinzip 1)](./ADR-005-bounce-only-as-explicit-opt-in.md)
+- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.29
 
 ---
 

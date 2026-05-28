@@ -152,6 +152,46 @@ function readAxisSensitiveTokens() {
   return sensitive;
 }
 
+/**
+ * Check 6 (v0.29.0+): CLEAR 4 Prinzip 1 — keine Bounce-Defaults.
+ *
+ * Easing-Token-Slots (--easing-*, --duration-*, --*-transition) dürfen
+ * keinen Overshoot enthalten. "Overshoot" = cubic-bezier(...) mit Y-Wert
+ * > 1.0 ODER direkte Referenz auf --ease-bounce.
+ *
+ * Erlaubte Ausnahme: --motion-emphasis darf Bounce nutzen (das ist
+ * exact die opt-in-Form die die Verfassung explizit zulässt).
+ *
+ * Slot-Patterns: easing-, motion- (außer emphasis), und alle *-transition.
+ * --motion-emphasis bleibt ungeprüft als legitimer Bounce-Träger.
+ */
+const EMPHASIS_TOKEN = "--motion-emphasis";
+
+function isBounceValue(value, resolveVar) {
+  /* Direkter Token-Reference */
+  if (/--ease-bounce\b/.test(value)) return true;
+  /* cubic-bezier(x, Y, ...) mit Y > 1 (Overshoot). Auch Y4 > 1
+     ist Overshoot beim End-State. */
+  const cb = /cubic-bezier\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)/g;
+  let m;
+  while ((m = cb.exec(value))) {
+    const y1 = parseFloat(m[2]);
+    const y2 = parseFloat(m[4]);
+    if (y1 > 1.0 || y2 > 1.0) return true;
+  }
+  return false;
+}
+
+function isMotionDefaultSlot(prop) {
+  /* Slots die als Default für Komponenten-Bewegung dienen.
+     --motion-emphasis ist die einzige erlaubte Bounce-Träger-Stelle. */
+  if (prop === EMPHASIS_TOKEN) return false;
+  if (/^--easing-/.test(prop)) return true;
+  if (/^--motion-/.test(prop)) return true;
+  if (/-transition$/.test(prop)) return true;
+  return false;
+}
+
 function lintTheme(file, modeSensitive, axisSensitive) {
   const filePath = path.join(THEMES_DIR, file);
   const root = parseFile(filePath);
@@ -160,6 +200,7 @@ function lintTheme(file, modeSensitive, axisSensitive) {
   const destructiveTokens = new Map();   // token → first source line
   const layoutViolations = new Map();    // token → first source line
   const axisBlocks = new Map();          // token → { line, axis }
+  const bounceDefaults = new Map();      // token → { line, value }
 
   walkAllRules(root, (rule) => {
     // Check 1: Selector-Contract — jeder Teil der Komma-Liste muss
@@ -173,7 +214,7 @@ function lintTheme(file, modeSensitive, axisSensitive) {
       }
     }
 
-    // Check 2 + 4 + 5: Token-Setzungen prüfen.
+    // Check 2 + 4 + 5 + 6: Token-Setzungen prüfen.
     rule.walkDecls(/^--/, (decl) => {
       const line = decl.source?.start?.line ?? 0;
       /* Mode-sensitive Token gilt als destruktiv NUR wenn der Value NICHT
@@ -192,6 +233,14 @@ function lintTheme(file, modeSensitive, axisSensitive) {
       if (axisSensitive.has(decl.prop) && !axisBlocks.has(decl.prop)) {
         axisBlocks.set(decl.prop, { line, axis: axisSensitive.get(decl.prop) });
       }
+      /* Check 6: Bounce-Default-Verbot (CLEAR 4 Prinzip 1) */
+      if (
+        isMotionDefaultSlot(decl.prop) &&
+        isBounceValue(decl.value) &&
+        !bounceDefaults.has(decl.prop)
+      ) {
+        bounceDefaults.set(decl.prop, { line, value: decl.value.trim() });
+      }
     });
   });
 
@@ -200,6 +249,7 @@ function lintTheme(file, modeSensitive, axisSensitive) {
     destructiveTokens: [...destructiveTokens.entries()].sort((a, b) => a[0].localeCompare(b[0])),
     layoutViolations: [...layoutViolations.entries()].sort((a, b) => a[0].localeCompare(b[0])),
     axisBlocks: [...axisBlocks.entries()].sort((a, b) => a[0].localeCompare(b[0])),
+    bounceDefaults: [...bounceDefaults.entries()].sort((a, b) => a[0].localeCompare(b[0])),
   };
 }
 
@@ -260,18 +310,30 @@ function main() {
   let nestedIssues = 0;
   let layoutViolations = 0;
   let axisBlocks = 0;
+  let bounceDefaults = 0;
 
-  // ===== Check 1+2+4+5: Themes =====
+  // ===== Check 1+2+4+5+6: Themes =====
   const files = fs
     .readdirSync(THEMES_DIR)
     .filter((f) => f.endsWith(".css"))
     .sort();
 
   for (const file of files) {
-    const { selectorViolations: sv, destructiveTokens: dt, layoutViolations: lv, axisBlocks: ab } =
-      lintTheme(file, modeSensitive, axisSensitive);
+    const {
+      selectorViolations: sv,
+      destructiveTokens: dt,
+      layoutViolations: lv,
+      axisBlocks: ab,
+      bounceDefaults: bd,
+    } = lintTheme(file, modeSensitive, axisSensitive);
 
-    if (sv.length === 0 && dt.length === 0 && lv.length === 0 && ab.length === 0) {
+    if (
+      sv.length === 0 &&
+      dt.length === 0 &&
+      lv.length === 0 &&
+      ab.length === 0 &&
+      bd.length === 0
+    ) {
       console.log(`[ok]    ${file}`);
       continue;
     }
@@ -309,6 +371,17 @@ function main() {
       log(`        Funktionieren nur, weil mode-Layer in main.css nach themes kommt.`);
       destructiveWarnings += dt.length;
     }
+
+    if (bd.length > 0) {
+      console.error(`[fail]  ${file}  bounce in Default-Motion-Slots (CLEAR 4 Prinzip 1):`);
+      for (const [token, info] of bd) {
+        console.error(`        -> ${token}  (line ${info.line})`);
+        console.error(`           value: ${info.value}`);
+      }
+      console.error(`        Default-Bewegung muss linear und gedämpft sein, nicht federnd.`);
+      console.error(`        Erlaubte Bounce-Stelle: --motion-emphasis (opt-in pro Component).`);
+      bounceDefaults += bd.length;
+    }
   }
 
   // ===== Check 3: dark.css nested-mode-coverage =====
@@ -340,6 +413,10 @@ function main() {
   }
   if (axisBlocks > 0) {
     console.error(`${axisBlocks} cross-axis-Token-Block(s) — Mode/Density wird in einigen Themes ignoriert.`);
+    process.exit(1);
+  }
+  if (bounceDefaults > 0) {
+    console.error(`${bounceDefaults} Bounce-Default-Verletzung(en) (CLEAR 4 Prinzip 1).`);
     process.exit(1);
   }
   if (destructiveWarnings > 0) {
