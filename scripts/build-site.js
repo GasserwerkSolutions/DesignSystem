@@ -534,6 +534,10 @@ function escapeHtml(s) {
     .replaceAll('"', "&quot;");
 }
 
+function escapeRegex(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 /**
  * Page-Shell — App-Shell-Layout aus dem DS, Sidebar = Component-Index,
  * Topbar = Tone/Mode/Density-Switcher.
@@ -886,14 +890,14 @@ function renderModifiers(mods) {
 function renderModifierPreviews(meta) {
   if (!meta.modifiers.length || !meta.markup.length) return "";
   const baseHtml = meta.markup[0].html;
-  const baseName = meta.name;
-
-  /* root-Class aus dem ersten Element extrahieren (z.B. "alert alert--success"
-     → ["alert", "alert--success"]). Modifier wird hier ersetzt oder appended. */
-  const rootClassMatch = baseHtml.match(/class="([^"]+)"/);
-  if (!rootClassMatch) return "";
-  const rootClasses = rootClassMatch[1].split(/\s+/);
-  const baseClass = rootClasses[0]; // e.g. "alert"
+  /* Wir extrahieren ALLE class-Attribute aus dem Markup und finden für jeden
+     Modifier-Selector eine passende Klasse. Modifier ".tooltip--top" matcht
+     auf das Element mit class="tooltip" (auch wenn Root .tooltip-host ist).
+     ".funnel__fill--success" matcht auf .funnel__fill (BEM-Element). */
+  const allClassesInMarkup = new Set();
+  for (const m of baseHtml.matchAll(/\bclass="([^"]+)"/g)) {
+    for (const c of m[1].split(/\s+/)) allClassesInMarkup.add(c);
+  }
 
   /* Expandiere Convenience-Syntax ".foo--sm / --lg" zu einzelnen Modifier-
      Einträgen. Parser-Ausgabe: selector=".foo--sm", description="/ --lg ...".
@@ -928,53 +932,62 @@ function renderModifierPreviews(meta) {
     }
   }
 
-  /* Filter: nur Modifier-Klassen die das Root-Element ansprechen
-     (Selector startet mit . + baseClass-Prefix oder ist eine .baseClass--*).
-     Skip child-modifiers (.foo__bar--qux), die brauchen anderes Markup. */
-  const renderable = expanded.filter(({ cls }) =>
-    cls === baseName ||
-    cls.startsWith(baseName + "--") ||
-    cls.startsWith(baseName + "-")
-  );
+  /* Für jeden Modifier .X--Y suchen wir das passende Target-Element im Markup:
+     - Wenn ".X" existiert: apply auf das erste Element mit dieser Klasse
+     - Wenn keine ".X" Klasse existiert: skip (Modifier passt nicht zum Markup)
+     ".funnel__fill--success" target = ".funnel__fill" (BEM-Element).
+     ".tooltip--top" target = ".tooltip" (auch wenn Root .tooltip-host ist). */
+  const tiles = [];
+  for (const { cls: newCls, description, selector } of expanded) {
+    /* baseClass = newCls ohne "--<suffix>". Wenn newCls keinen "--" hat,
+       ist es ein Standalone-Modifier (selten, z.B. ".btn"). */
+    const dashIdx = newCls.indexOf("--");
+    if (dashIdx < 0) continue; // pure base class, nicht-Modifier
+    const targetClass = newCls.slice(0, dashIdx);
+    if (!allClassesInMarkup.has(targetClass)) continue;
 
-  if (!renderable.length) return "";
-
-  const tiles = renderable.map(({ cls: newCls, description, selector }) => {
-    if (!newCls.startsWith(baseName)) return "";
-    /* Wenn der Modifier bereits im Markup ist (z.B. .alert--success in der
-       Demo-Variante), ersetze ihn durch den neuen Modifier statt zu duplizieren. */
-    const hasOtherModifier = rootClasses.some(
-      (c) => c.startsWith(baseName + "--") && c !== newCls
+    /* Modifier auf das target-Class-Element anwenden. Wenn das Target schon
+       eine andere ".X--*" Klasse hat, ersetze sie. Sonst append. */
+    let modifiedHtml = baseHtml;
+    const elementRe = new RegExp(
+      `(<[^>]*\\bclass=")([^"]*\\b${escapeRegex(targetClass)}\\b[^"]*)("[^>]*>)`
     );
-    let modifiedHtml;
-    if (hasOtherModifier) {
-      const replaced = rootClasses
-        .map((c) =>
-          c.startsWith(baseName + "--") ? newCls : c
-        )
-        .join(" ");
-      modifiedHtml = baseHtml.replace(
-        /class="[^"]+"/,
-        `class="${replaced}"`
-      );
+    const match = elementRe.exec(modifiedHtml);
+    if (!match) continue;
+    const oldClassList = match[2];
+    const tokens = oldClassList.split(/\s+/);
+    const replaced = tokens.map((t) =>
+      t.startsWith(targetClass + "--") ? newCls : t
+    );
+    const hadModifier = tokens.some((t) =>
+      t.startsWith(targetClass + "--") && t !== newCls
+    );
+    let newClassList;
+    if (hadModifier) {
+      newClassList = replaced.join(" ");
+    } else if (tokens.includes(newCls)) {
+      newClassList = oldClassList;
     } else {
-      modifiedHtml = baseHtml.replace(
-        /class="([^"]+)"/,
-        (_, classes) => `class="${classes} ${newCls}"`
-      );
+      newClassList = oldClassList + " " + newCls;
     }
+    modifiedHtml =
+      modifiedHtml.slice(0, match.index) +
+      match[1] + newClassList + match[3] +
+      modifiedHtml.slice(match.index + match[0].length);
+
     /* IDs prefixen damit Modifier-Tiles nicht mit dem Original-Beispiel
-       oder dem Tone-Strip kollidieren (siehe rewriteIdsInHtml). */
+       oder dem Tone-Strip kollidieren. */
     modifiedHtml = rewriteIdsInHtml(modifiedHtml, `m-${newCls}-`);
-    return `
+    tiles.push(`
       <article class="site-modifier-tile">
         <header class="site-modifier-tile__label">
           <code>${escapeHtml(selector)}</code>
           <span class="site-muted">${escapeHtml(description)}</span>
         </header>
         <div class="site-modifier-tile__preview">${modifiedHtml}</div>
-      </article>`;
-  });
+      </article>`);
+  }
+  if (!tiles.length) return "";
 
   return `
         <section class="site-doc__section">
@@ -2673,6 +2686,26 @@ function main() {
       console.error(`  ${c.name}.css → tokens in source CONTRACT-block not in parsed contract:`);
       for (const t of c.contractCoverageMissing) console.error(`    - ${t}`);
     }
+    process.exit(1);
+  }
+
+  /* Modifier-Coverage-Check: jede Component mit Modifier-Liste muss
+     mindestens eine Modifier-Preview-Tile rendern können. Sonst ist die
+     Modifier-Section eine Lüge (siehe v0.13.0 Kontrollrunde: button hatte
+     .btn--secondary in der Liste aber baseName-Mismatch verhinderte Demos). */
+  const modifierGaps = [];
+  for (const c of components) {
+    if (!c.modifiers || c.modifiers.length === 0) continue;
+    if (!c.markup || c.markup.length === 0) continue;
+    const preview = renderModifierPreviews(c);
+    if (!preview) modifierGaps.push(c.name);
+  }
+  if (modifierGaps.length) {
+    console.error(
+      `[build-site] Modifier-Preview-Gaps: ${modifierGaps.length} component(s) mit Modifier-Liste aber ohne renderbare Demo:`
+    );
+    for (const n of modifierGaps) console.error(`  - ${n}.css`);
+    console.error(`  Fix: prüfe ob die Modifier-Selectors zu Klassen im Markup matchen.`);
     process.exit(1);
   }
 
