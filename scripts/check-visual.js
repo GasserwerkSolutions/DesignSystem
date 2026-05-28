@@ -170,10 +170,20 @@ async function captureCombination(page, tone, mode) {
   // Auf Font-Loading warten — `document.fonts.ready` resolved wenn alle
   // @font-face geladen sind (oder mit Fallbacks gefüllt). Determinismus.
   await page.evaluate(() => document.fonts.ready);
-  // Animation-Frame abwarten, damit alle Effekte ihren End-State haben.
-  await page.evaluate(
-    () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
-  );
+  // Härter Settle: 4 rAFs + 100ms setTimeout. Bei light-dark() Mode-Switches
+  // braucht der Renderer manchmal mehrere Frames bis alle nested-Scopes
+  // resolved sind. Beobachtet bei v0.27: sand-gefilterte Status-Colors
+  // erzeugten in 1-2 zufälligen Dark-Themes nondeterministische 5-9% Diffs
+  // ohne diesen längeren Settle.
+  await page.evaluate(() => new Promise((r) =>
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => setTimeout(r, 100))
+        )
+      )
+    )
+  ));
 
   const buf = await page.screenshot({ fullPage: true, type: "png" });
   return pngFromBuffer(buf);

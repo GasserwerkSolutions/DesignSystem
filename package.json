@@ -1,6 +1,6 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
@@ -36,6 +36,7 @@
     "dist/tokens.d.ts",
     "ADR-001-container-max-inheritance.md",
     "ADR-002-modern-css-architecture.md",
+    "ADR-003-status-color-sand-filter.md",
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md"

@@ -1,5 +1,93 @@
 # Changelog
 
+## [0.27.0] — Status-Farben Sand-Filter (CLEAR 4 Prinzip 4)
+
+Erste konkrete Umsetzung der Nervensystem-Verfassung CLEAR 4 nach
+Prinzip 4: "Statusfarben warnen, ohne zu alarmieren". Direkte Anwendung
+der Constitution auf die Token-Schicht.
+
+### Verfassungs-Verletzung vor v0.27
+
+Status-Basisfarben waren pure Signal-Farben:
+
+```css
+--color-error:   #dc2626;          /* Signal-Rot */
+--color-warning: var(--playful-600);   /* Signal-Amber */
+--color-info:    #0284c7;          /* Signal-Cyan */
+--color-success: var(--trust-600);     /* Signal-Grün */
+```
+
+Die `--status-*-bg/fg` waren via `color-mix()` gefiltert, aber `--status-
+*-border` und jede direkte Verwendung von `var(--color-error)` etc.
+trugen die volle Aktivierungs-Energie der Signal-Farbe — Alert-Border,
+Toast-Akzent, Trend-Down-Icon usw.
+
+### Gefixt
+
+Basisfarben sind ab v0.27 sand-gefiltert via OKLCH-Mix mit `--color-text-
+primary`:
+
+```css
+/* Escape-Hatch: pure Signal bleibt erhalten für Charts / Print / Brand-Akzent */
+--color-error-signal:   #dc2626;
+--color-warning-signal: var(--playful-600);
+--color-success-signal: var(--trust-600);
+--color-info-signal:    #0284c7;
+
+/* Default: 78%/22% Mix in oklch — Identität erhalten, Chroma -30% */
+--color-error:   color-mix(in oklch, var(--color-error-signal)   78%, var(--color-text-primary));
+--color-warning: color-mix(in oklch, var(--color-warning-signal) 78%, var(--color-text-primary));
+--color-success: color-mix(in oklch, var(--color-success-signal) 78%, var(--color-text-primary));
+--color-info:    color-mix(in oklch, var(--color-info-signal)    78%, var(--color-text-primary));
+```
+
+Mode-aware automatisch: `--color-text-primary` ist `light-dark()`, daher
+wandert der Filter mit. Light-Mode mixt mit gray-900 (dunkler Filter),
+Dark-Mode mit gray-50 (heller Filter) — perceptually-uniform Chroma-
+Reduktion in beiden Modi.
+
+### Cascade-Effekt
+
+Ein einziger Token-Override propagiert durch das ganze System ohne
+Component-Touches: Alert-Border, Badge-Border, Banner-Border, Toast-Akzent,
+Callout-Border, Trend-Up/Down-Color, Chart-Positive/Negative,
+status-*-Border in allen 4 Modi und allen 6 Tones — alle automatisch
+sand-gefiltert.
+
+### Verifikation
+
+- **`check:contrast`**: 1008/1008 WCAG-AA-Paare grün. Der Filter
+  reduziert Chroma ohne Lightness-Distanz zu zerstören.
+- **Visuell** (A/B-Probe): Alerts in Light + Dark beide-modi noch
+  als info/success/warning/danger eindeutig erkennbar, aber spürbar
+  ruhiger. Border-Akzent nicht mehr "Stop-Schild", sondern
+  "Hinweis-Streifen".
+- **VRT**: 12 Baselines neu generiert (cascade-weite Color-Shifts).
+- **Self-Test**: 3 kalibrierte Mutationen weiterhin gecatcht.
+
+### Render-Stability-Fix
+
+Während der Baseline-Updates wurde Non-Determinismus zwischen Runs
+beobachtet (1-2 zufällige Dark-Mode-Themes hatten 5-9% Pixel-Diff).
+Ursache: light-dark() Mode-Switches brauchen mehr als 2 rAFs für vollständige
+Cascade-Resolution durch nested Tone-Scopes. `captureCombination()` jetzt
+mit 4 rAFs + 100ms setTimeout Settle-Phase. Reproduzierbar deterministisch.
+
+### Dokumentation
+
+- **ADR-003** dokumentiert Kalibrierungs-Rationale, Trade-Offs,
+  Alternatives-Considered (warm-Sand vs text-primary, per-color vs uniform).
+- README + package.json:files erweitert.
+
+### Stats
+
+- 275 Tokens (+4 `*-signal` Escape-Hatches)
+- Bundle: 135.4 KB raw / 20.4 KB gzip (+0.4 KB für die nested
+  color-mix-Expressions)
+- Pipeline: 9/9 Stufen grün
+
+---
+
 ## [0.26.0] — Performance: Layout-Stability + Measurement-Infrastructure
 
 Erster gemessener Perf-Pass. Reproduzierbare Baseline + 2 konkrete Wins

@@ -17,7 +17,7 @@
       <div class="site-topbar">
         <a class="site-topbar__brand" href="./index.html">
           <strong>Design System</strong>
-          <span class="badge badge--neutral">v0.26.0</span>
+          <span class="badge badge--neutral">v0.27.0</span>
         </a>
         <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
         <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
@@ -256,7 +256,7 @@
         <header class="site-doc__header">
           <h1 class="site-doc__title">Foundations</h1>
           <p class="site-doc__lede">
-            271 Design-Tokens — die Atome des Systems. Klicke
+            275 Design-Tokens — die Atome des Systems. Klicke
             <strong>Edit</strong> bei einem Token, um seinen Wert live zu
             ändern. Aktive Edits + Tone/Mode/Density wandern in die URL —
             teilbar via Copy.
@@ -264,8 +264,8 @@
           
         <div class="foundation-bundle-stats">
           <strong>Bundle</strong>
-          <span><code>135.0 KB</code> raw · <code>20.3 KB</code> gzip · <code>107.6 KB</code> min · <code>18.8 KB</code> min+gzip</span>
-          <span class="site-muted">v0.25.0 · 57 Components</span>
+          <span><code>135.4 KB</code> raw · <code>20.4 KB</code> gzip · <code>108.0 KB</code> min · <code>18.9 KB</code> min+gzip</span>
+          <span class="site-muted">v0.26.0 · 57 Components</span>
         </div>
           <div class="site-doc__cta">
             <button type="button" class="btn btn--sm" data-share-url>URL kopieren</button>
@@ -650,7 +650,7 @@
     </section>
 
     <section class="foundation-group" id="group-semantic-color">
-      <h2 class="foundation-group__title">Farben — Semantic <span class="site-muted">(42)</span></h2>
+      <h2 class="foundation-group__title">Farben — Semantic <span class="site-muted">(46)</span></h2>
       <ul class="foundation-group__list">
         <li class="foundation-token" data-token-name="--color-bg">
           <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-bg);" data-token="--color-bg" aria-hidden="true"></span></div>
@@ -796,35 +796,67 @@
           </div>
           <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-interactive-dark" aria-label="Token bearbeiten">Edit</button>
         </li>
-        <li class="foundation-token" data-token-name="--color-success">
-          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-success);" data-token="--color-success" aria-hidden="true"></span></div>
+        <li class="foundation-token" data-token-name="--color-error-signal">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-error-signal);" data-token="--color-error-signal" aria-hidden="true"></span></div>
           <div class="foundation-token__meta">
-            <code class="foundation-token__name">--color-success</code>
-            <span class="foundation-token__value" data-original-value="var(--trust-600)" title="var(--trust-600)">var(--trust-600)</span>
+            <code class="foundation-token__name">--color-error-signal</code>
+            <span class="foundation-token__value" data-original-value="#dc2626" title="#dc2626">#dc2626</span>
           </div>
-          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-success" aria-label="Token bearbeiten">Edit</button>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-error-signal" aria-label="Token bearbeiten">Edit</button>
         </li>
-        <li class="foundation-token" data-token-name="--color-warning">
-          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-warning);" data-token="--color-warning" aria-hidden="true"></span></div>
+        <li class="foundation-token" data-token-name="--color-warning-signal">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-warning-signal);" data-token="--color-warning-signal" aria-hidden="true"></span></div>
           <div class="foundation-token__meta">
-            <code class="foundation-token__name">--color-warning</code>
+            <code class="foundation-token__name">--color-warning-signal</code>
             <span class="foundation-token__value" data-original-value="var(--playful-600)" title="var(--playful-600)">var(--playful-600)</span>
           </div>
-          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-warning" aria-label="Token bearbeiten">Edit</button>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-warning-signal" aria-label="Token bearbeiten">Edit</button>
+        </li>
+        <li class="foundation-token" data-token-name="--color-success-signal">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-success-signal);" data-token="--color-success-signal" aria-hidden="true"></span></div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">--color-success-signal</code>
+            <span class="foundation-token__value" data-original-value="var(--trust-600)" title="var(--trust-600)">var(--trust-600)</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-success-signal" aria-label="Token bearbeiten">Edit</button>
+        </li>
+        <li class="foundation-token" data-token-name="--color-info-signal">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-info-signal);" data-token="--color-info-signal" aria-hidden="true"></span></div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">--color-info-signal</code>
+            <span class="foundation-token__value" data-original-value="#0284c7" title="#0284c7">#0284c7</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-info-signal" aria-label="Token bearbeiten">Edit</button>
         </li>
         <li class="foundation-token" data-token-name="--color-error">
           <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-error);" data-token="--color-error" aria-hidden="true"></span></div>
           <div class="foundation-token__meta">
             <code class="foundation-token__name">--color-error</code>
-            <span class="foundation-token__value" data-original-value="#dc2626" title="#dc2626">#dc2626</span>
+            <span class="foundation-token__value" data-original-value="color-mix(in oklch, var(--color-error-signal)   78%, var(--color-text-primary))" title="color-mix(in oklch, var(--color-error-signal)   78%, var(--color-text-primary))">color-mix(in oklch, var(--color-error-signal)   78%, var(--color-text-primary))</span>
           </div>
           <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-error" aria-label="Token bearbeiten">Edit</button>
+        </li>
+        <li class="foundation-token" data-token-name="--color-warning">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-warning);" data-token="--color-warning" aria-hidden="true"></span></div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">--color-warning</code>
+            <span class="foundation-token__value" data-original-value="color-mix(in oklch, var(--color-warning-signal) 78%, var(--color-text-primary))" title="color-mix(in oklch, var(--color-warning-signal) 78%, var(--color-text-primary))">color-mix(in oklch, var(--color-warning-signal) 78%, var(--color-text-primary))</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-warning" aria-label="Token bearbeiten">Edit</button>
+        </li>
+        <li class="foundation-token" data-token-name="--color-success">
+          <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-success);" data-token="--color-success" aria-hidden="true"></span></div>
+          <div class="foundation-token__meta">
+            <code class="foundation-token__name">--color-success</code>
+            <span class="foundation-token__value" data-original-value="color-mix(in oklch, var(--color-success-signal) 78%, var(--color-text-primary))" title="color-mix(in oklch, var(--color-success-signal) 78%, var(--color-text-primary))">color-mix(in oklch, var(--color-success-signal) 78%, var(--color-text-primary))</span>
+          </div>
+          <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-success" aria-label="Token bearbeiten">Edit</button>
         </li>
         <li class="foundation-token" data-token-name="--color-info">
           <div class="foundation-token__visual"><span class="foundation-swatch foundation-swatch--color" style="background:var(--color-info);" data-token="--color-info" aria-hidden="true"></span></div>
           <div class="foundation-token__meta">
             <code class="foundation-token__name">--color-info</code>
-            <span class="foundation-token__value" data-original-value="#0284c7" title="#0284c7">#0284c7</span>
+            <span class="foundation-token__value" data-original-value="color-mix(in oklch, var(--color-info-signal)    78%, var(--color-text-primary))" title="color-mix(in oklch, var(--color-info-signal)    78%, var(--color-text-primary))">color-mix(in oklch, var(--color-info-signal)    78%, var(--color-text-primary))</span>
           </div>
           <button type="button" class="foundation-token__edit btn btn--ghost btn--sm" data-edit-token="--color-info" aria-label="Token bearbeiten">Edit</button>
         </li>

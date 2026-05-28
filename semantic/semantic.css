@@ -98,11 +98,30 @@
   --color-interactive-light: var(--trust-100);
   --color-interactive-dark:  var(--trust-800);
 
-  /* UI States */
-  --color-success: var(--trust-600);
-  --color-warning: var(--playful-600);
-  --color-error:   #dc2626;
-  --color-info:    #0284c7;  /* cyan-600 — eigenständig, unabhängig von Themes */
+  /* UI States — Sand-gefiltert (CLEAR 4 Prinzip 4: "Statusfarben warnen,
+     ohne zu alarmieren"). Die Basis ist nicht das pure Signalrot/Grün,
+     sondern via color-mix(in oklch, signal, text-primary) durch den
+     Grundton des Systems gebrochen. Mode-aware automatisch weil
+     --color-text-primary light-dark() nutzt — Filter "wandert" mit.
+
+     --color-*-signal bleibt als Escape-Hatch erhalten für die wenigen
+     Fälle in denen das pure Signal nötig ist (z.B. Chart-Datenpunkte
+     die maximale Differenzierbarkeit brauchen). Im normalen UI-Pfad
+     niemals direkt nutzen — der Lint (zukünftig) wird das durchsetzen.
+
+     Mix-Ratio kalibriert: 78% Signal / 22% text-primary
+       - Identität bleibt erkennbar (Rot ist klar Rot, Grün ist Grün)
+       - Chroma reduziert um ~30% (perceptually-uniform in oklch)
+       - WCAG-AA-Kontrast über alle 4 Modi × 6 Tones × Nested erhalten */
+  --color-error-signal:   #dc2626;
+  --color-warning-signal: var(--playful-600);
+  --color-success-signal: var(--trust-600);
+  --color-info-signal:    #0284c7;
+
+  --color-error:   color-mix(in oklch, var(--color-error-signal)   78%, var(--color-text-primary));
+  --color-warning: color-mix(in oklch, var(--color-warning-signal) 78%, var(--color-text-primary));
+  --color-success: color-mix(in oklch, var(--color-success-signal) 78%, var(--color-text-primary));
+  --color-info:    color-mix(in oklch, var(--color-info-signal)    78%, var(--color-text-primary));
 
   /* Status-Token-Tripel — gemeinsame Basis für Callout / Badge / Banner / Toast.
      Mode-aware durch Vererbung: --color-bg und --color-text-primary wechseln
