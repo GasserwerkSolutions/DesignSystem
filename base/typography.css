@@ -105,7 +105,9 @@ ul li {
 ul li::before {
   content: "•";
   position: absolute;
-  left: calc(-1 * var(--space-12));
+  /* inset-inline-start statt left → RTL-aware (Bullet rückt bei dir="rtl"
+     auf die rechte Seite, was richtig ist). */
+  inset-inline-start: calc(-1 * var(--space-12));
   color: var(--color-interactive);
   font-weight: bold;
   font-size: 1.2em;

@@ -1,0 +1,108 @@
+/**
+ * Spinner Component
+ * ==================
+ *
+ * Indeterminate Loading-Indicator. Pures CSS, kein SVG, kein JS.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --spinner-size           Quadrat-Dimension (default 1.25rem ≈ 20px)
+ *     --spinner-stroke         Ring-Stroke-Width (default 2px)
+ *     --spinner-color          Sweeping-Arc-Farbe (default currentColor)
+ *     --spinner-track-color    Restkreis (default: 20% mix der Arc-Farbe)
+ *     --spinner-duration       Rotation pro Umdrehung (default 700ms)
+ *
+ * currentColor als Default: Spinner inline in einem Button erbt automatisch
+ * die Button-Textfarbe. Standalone erbt von der umgebenden Textfarbe.
+ *
+ * CLEAR 4 Prinzip 2: "Jeder Ladezustand hat ein erkennbares Ende."
+ * Bei einem Indeterminate-Spinner ist die Rotation selbst die Aussage
+ * "etwas geschieht" — aber für das Nervensystem ist unbegrenzte
+ * Bewegung ohne Horizont ein eigener Stressor. Der HORIZONT wird durch
+ * Sprache hergestellt:
+ *
+ *   - aria-label nennt was gerade lädt ("Lädt Buchungen …", nicht nur
+ *     "Lädt …") — Screen-Reader-Nutzer bekommen den Horizont via Sprache.
+ *   - VISIBLE-TEXT-Companion in spinner-block-Pattern (siehe Struktur)
+ *     gibt sehenden Nutzern denselben Horizont.
+ *   - Für längere Operationen (>3s) sollte ein .progress mit
+ *     determinable Anteil verwendet werden, nicht ein Spinner.
+ *
+ * ARIA: Spinner ist visuell — Konsument setzt role="status" + aria-label.
+ * Aria-label ist NICHT optional; ohne ihn ist der Spinner ein
+ * Verfassungs-Verstoß (Loading ohne erkennbares Ende für SR-Nutzer).
+ *
+ * CLEAR 4 Prinzip 5 — Nutzer behält Kontrolle:
+ * Unter `prefers-reduced-motion: reduce` stoppt die Rotation vollständig
+ * (durch den globalen Override in reset.css). Der Loading-Zustand MUSS
+ * dann durch umgebenden visible-text kommuniziert werden, bevorzugt via
+ * `spinner-block`-Pattern. Ein standalone Indeterminate-Spinner ohne
+ * visible-text ist NICHT ausreichend — falls verwendet, MUSS er
+ * dokumentieren wie Progress/Horizont ohne Bewegung kommuniziert wird.
+ *
+ * Bewegung darf nicht die einzige Quelle des Zustandsverständnisses sein.
+ *
+ * Struktur:
+ *   <span class="spinner" role="status" aria-label="Lädt Buchungen …"></span>
+ *
+ *   Inline in Button (Loading-State):
+ *   <button class="btn" disabled>
+ *     <span class="spinner spinner--sm" aria-hidden="true"></span>
+ *     Speichere …
+ *   </button>
+ *
+ *   Block-centered mit visible-text-Horizont (empfohlene Variante):
+ *   <div class="spinner-block">
+ *     <span class="spinner spinner--lg" aria-hidden="true"></span>
+ *     <p>Lädt Buchungen …</p>
+ *   </div>
+ *
+ * Modifier:
+ *   .spinner--sm   kleiner (z.B. inline in btn--sm)
+ *   .spinner--lg   größer (für Page-Level-Loading)
+ */
+
+.spinner {
+  --_size:     var(--spinner-size, 1.25rem);
+  --_stroke:   var(--spinner-stroke, 2px);
+  --_color:    var(--spinner-color, currentColor);
+  --_track:    var(--spinner-track-color, color-mix(in oklch, var(--_color) 20%, transparent));
+  --_duration: var(--spinner-duration, 700ms);
+
+  display: inline-block;
+  width:  var(--_size);
+  height: var(--_size);
+  border: var(--_stroke) solid var(--_track);
+  border-top-color: var(--_color);
+  border-radius: var(--radius-full);
+  /* reduced-motion: handled by reset.css — global !important stoppt die
+     Rotation; Horizont kommt aus spinner-block visible-text. */
+  animation: spinner-rotate var(--_duration) linear infinite;
+  flex-shrink: 0;
+  vertical-align: -0.2em;
+}
+
+@keyframes spinner-rotate {
+  to { transform: rotate(360deg); }
+}
+
+.spinner--sm {
+  --spinner-size:   0.875rem;
+  --spinner-stroke: 1.5px;
+}
+
+.spinner--lg {
+  --spinner-size:   2rem;
+  --spinner-stroke: 3px;
+}
+
+/* Block-Wrapper für centered Loading-State (z.B. in Card oder Section) */
+.spinner-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-32);
+  min-height: 8rem;
+  color: var(--color-text-secondary);
+}
+

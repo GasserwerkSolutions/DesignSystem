@@ -1,0 +1,276 @@
+{
+  "timestamp": "2026-05-28T18:39:00.122Z",
+  "version": "0.30.0",
+  "bundle": {
+    "raw": 140611,
+    "gzip": 21150,
+    "brotli": 17743
+  },
+  "minified": {
+    "raw": 112226,
+    "gzip": 19637,
+    "brotli": 16959
+  },
+  "layers": [
+    {
+      "label": "tokens",
+      "raw": 9578,
+      "files": 1
+    },
+    {
+      "label": "semantic",
+      "raw": 20738,
+      "files": 3
+    },
+    {
+      "label": "themes",
+      "raw": 12355,
+      "files": 6
+    },
+    {
+      "label": "base",
+      "raw": 13424,
+      "files": 4
+    },
+    {
+      "label": "state",
+      "raw": 4389,
+      "files": 1
+    },
+    {
+      "label": "components",
+      "raw": 176359,
+      "files": 57
+    }
+  ],
+  "components": [
+    {
+      "name": "combobox",
+      "raw": 9112
+    },
+    {
+      "name": "popover",
+      "raw": 5864
+    },
+    {
+      "name": "file-upload",
+      "raw": 5495
+    },
+    {
+      "name": "command-palette",
+      "raw": 5484
+    },
+    {
+      "name": "list-row",
+      "raw": 4966
+    },
+    {
+      "name": "alert",
+      "raw": 4919
+    },
+    {
+      "name": "select",
+      "raw": 4337
+    },
+    {
+      "name": "timeline",
+      "raw": 4052
+    },
+    {
+      "name": "card",
+      "raw": 3989
+    },
+    {
+      "name": "spinner",
+      "raw": 3970
+    },
+    {
+      "name": "tree",
+      "raw": 3787
+    },
+    {
+      "name": "app-shell",
+      "raw": 3777
+    },
+    {
+      "name": "chart",
+      "raw": 3769
+    },
+    {
+      "name": "theme-toggle",
+      "raw": 3761
+    },
+    {
+      "name": "tag",
+      "raw": 3758
+    },
+    {
+      "name": "hover-card",
+      "raw": 3739
+    },
+    {
+      "name": "button",
+      "raw": 3607
+    },
+    {
+      "name": "otp-input",
+      "raw": 3582
+    },
+    {
+      "name": "modal",
+      "raw": 3497
+    },
+    {
+      "name": "switch",
+      "raw": 3423
+    },
+    {
+      "name": "nav",
+      "raw": 3268
+    },
+    {
+      "name": "checkbox",
+      "raw": 3249
+    },
+    {
+      "name": "copy-button",
+      "raw": 3220
+    },
+    {
+      "name": "segmented",
+      "raw": 3197
+    },
+    {
+      "name": "scroll-spy",
+      "raw": 3156
+    },
+    {
+      "name": "drawer",
+      "raw": 3114
+    },
+    {
+      "name": "accordion",
+      "raw": 3091
+    },
+    {
+      "name": "date-input",
+      "raw": 3029
+    },
+    {
+      "name": "back-to-top",
+      "raw": 3003
+    },
+    {
+      "name": "slider",
+      "raw": 2863
+    },
+    {
+      "name": "toast",
+      "raw": 2715
+    },
+    {
+      "name": "callout",
+      "raw": 2710
+    },
+    {
+      "name": "funnel",
+      "raw": 2626
+    },
+    {
+      "name": "code-block",
+      "raw": 2610
+    },
+    {
+      "name": "avatar-stack",
+      "raw": 2540
+    },
+    {
+      "name": "badge",
+      "raw": 2531
+    },
+    {
+      "name": "field",
+      "raw": 2439
+    },
+    {
+      "name": "empty-state",
+      "raw": 2426
+    },
+    {
+      "name": "range",
+      "raw": 2396
+    },
+    {
+      "name": "steps",
+      "raw": 2304
+    },
+    {
+      "name": "tabs",
+      "raw": 2303
+    },
+    {
+      "name": "stat",
+      "raw": 2243
+    },
+    {
+      "name": "avatar",
+      "raw": 2238
+    },
+    {
+      "name": "banner",
+      "raw": 2098
+    },
+    {
+      "name": "progress",
+      "raw": 2006
+    },
+    {
+      "name": "chevron",
+      "raw": 1974
+    },
+    {
+      "name": "kbd",
+      "raw": 1948
+    },
+    {
+      "name": "pagination",
+      "raw": 1877
+    },
+    {
+      "name": "tooltip",
+      "raw": 1774
+    },
+    {
+      "name": "panel-list",
+      "raw": 1759
+    },
+    {
+      "name": "skeleton",
+      "raw": 1753
+    },
+    {
+      "name": "table",
+      "raw": 1749
+    },
+    {
+      "name": "divider",
+      "raw": 1653
+    },
+    {
+      "name": "section",
+      "raw": 1627
+    },
+    {
+      "name": "breadcrumbs",
+      "raw": 1518
+    },
+    {
+      "name": "search",
+      "raw": 1447
+    },
+    {
+      "name": "trend",
+      "raw": 1017
+    }
+  ]
+}

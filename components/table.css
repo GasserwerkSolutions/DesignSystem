@@ -39,7 +39,7 @@
 
 .table th,
 .table td {
-  padding: var(--space-12) var(--space-16);
+  padding: var(--table-cell-py, var(--density-row-py)) var(--table-cell-px, var(--density-row-px));
   text-align: start;
   vertical-align: middle;
 }

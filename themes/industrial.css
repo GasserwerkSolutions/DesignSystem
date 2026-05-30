@@ -10,9 +10,11 @@
   --color-interactive:       var(--industrial-600);
   --color-interactive-light: var(--industrial-100);
   --color-interactive-dark:  var(--industrial-900);
-  --color-text-primary:      var(--industrial-900);
-  --color-text-secondary:    var(--industrial-600);
-  --color-border:            var(--industrial-400);
+  /* Mode-aware via light-dark — industrial behält Steel-Identity in light,
+     dark folgt globalen defaults */
+  --color-text-primary:      light-dark(var(--industrial-900), var(--gray-50));
+  --color-text-secondary:    light-dark(var(--industrial-600), var(--gray-300));
+  --color-border:            light-dark(var(--industrial-400), var(--gray-700));
   --color-focus:             var(--industrial-600);
   --color-focus-ring:        var(--industrial-400);
 
@@ -29,7 +31,6 @@
   --space-inline:    var(--space-16);
   --space-block:     var(--space-20);
   --space-section:   var(--space-48);
-  --section-py:      var(--space-48);
   --section-divider: 2px solid var(--color-border);
 
   /* Motion */
@@ -43,8 +44,6 @@
   --btn-fg:           white;
   --btn-border:       var(--industrial-600);
   --btn-radius:       0;
-  --btn-px:           var(--space-16);
-  --btn-py:           var(--space-12);
   --btn-weight:       700;
   --btn-letter:       var(--ls-wide);
   --btn-transform:    uppercase;

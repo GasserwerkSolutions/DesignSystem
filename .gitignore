@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+*.log
+
+# Visual-Regression-Diffs (Baselines werden committed, Diffs nur lokal)
+tests/visual/_diff/
+
+# Companion-JS Source-Maps (compiled .js + .d.ts werden für direkten
+# file://-Demo-Open committed; .d.ts.map nur lokal-debug)
+dist/js/*.d.ts.map

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="de" data-tone="trust" data-mode="light" data-density="comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spinner Component — Design System</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../../main.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script defer src="../../../dist/js/design-system.iife.js"></script>
+  <script defer src="../assets/site.js"></script>
+  
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-shell__topbar">
+      <div class="site-topbar">
+        <a class="site-topbar__brand" href="../index.html">
+          <strong>Design System</strong>
+          <span class="badge badge--neutral">v0.31.0</span>
+        </a>
+        <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
+        <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
+          <a class="site-topbar__link" href="../index.html">Overview</a>
+          <a class="site-topbar__link" href="../foundations.html">Foundations</a>
+          <div class="site-topbar__mega" data-mega>
+            <button type="button" class="site-topbar__link site-topbar__link--mega is-active" aria-haspopup="true" aria-expanded="false" data-mega-trigger>Components<span class="site-topbar__chevron" aria-hidden="true">▾</span></button>
+            <div class="site-topbar__mega-panel" data-mega-panel hidden role="menu" aria-label="Components nach Kategorie">
+              
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Layout</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/app-shell.html">App-Shell Layout-Primitive</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/card.html">Card Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/divider.html">Divider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/list-row.html">List-Row Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/panel-list.html">Panel-List Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/section.html">Section Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Form</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/button.html">Button Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/checkbox.html">Checkbox + Radio Components</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/combobox.html">Combobox Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/date-input.html">Date-Input Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/field.html">Field Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/file-upload.html">File-Upload Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/otp-input.html">OTP Input — One-Time Password / Multi-Field-Code</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/range.html">Range-Slider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/search.html">Search-Input Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/segmented.html">Segmented Control</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/select.html">Select Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/slider.html">Slider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/switch.html">Switch Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Feedback</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/alert.html">Alert Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/banner.html">Banner Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/callout.html">Callout Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/empty-state.html">Empty-State Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/progress.html">Progress Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/skeleton.html">Skeleton Loader</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/spinner.html">Spinner Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/toast.html">Toast / Notification Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Navigation</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/accordion.html">Accordion Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/back-to-top.html">Back-to-Top Button</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/breadcrumbs.html">Breadcrumbs Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/nav.html">Nav Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/pagination.html">Pagination Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/scroll-spy.html">Scroll-Spy Navigation</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/steps.html">Steps Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/tabs.html">Tabs Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/tree.html">Tree Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Overlay</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/command-palette.html">Command Palette</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/drawer.html">Drawer Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/hover-card.html">Hover-Card — Rich Preview on Hover</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/modal.html">Modal Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/popover.html">Popover Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/tooltip.html">Tooltip Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Data Display</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/avatar.html">Avatar Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/avatar-stack.html">Avatar-Stack Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/badge.html">Badge Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/chart.html">Chart Container</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/code-block.html">CodeBlock Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/funnel.html">Funnel Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/stat.html">Stat Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/table.html">Table Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/tag.html">Tag Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/timeline.html">Timeline Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/trend.html">Trend Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Primitive</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/chevron.html">Chevron Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="../components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
+                </ul>
+              </section>
+            </div>
+          </div>
+          <a class="site-topbar__link" href="../themes.html">Themes</a>
+          <a class="site-topbar__link" href="../recipes.html">Recipes</a>
+          <div class="site-topbar__switches">
+            <label class="visually-hidden" for="site-tone">Tone</label>
+        <select id="site-tone" class="site-select" data-axis="tone">
+          <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option>
+        </select>
+            <button type="button" class="btn btn--ghost btn--sm" data-axis="mode">Light/Dark</button>
+            <label class="visually-hidden" for="site-density">Density</label>
+        <select id="site-density" class="site-select" data-axis="density">
+          <option value="comfortable">Comfortable</option>
+          <option value="compact">Compact</option>
+          <option value="spacious">Spacious</option>
+        </select>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <aside class="app-shell__sidebar">
+      <nav class="site-sidebar" aria-label="Components">
+        <input type="search" class="site-sidebar__search" placeholder="Suchen …" data-sidebar-search>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Layout</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="../components/app-shell.html">App-Shell Layout-Primitive</a></li>
+            <li><a class="site-sidebar__link" href="../components/card.html">Card Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/divider.html">Divider Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/list-row.html">List-Row Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/panel-list.html">Panel-List Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/section.html">Section Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Form</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="../components/button.html">Button Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/checkbox.html">Checkbox + Radio Components</a></li>
+            <li><a class="site-sidebar__link" href="../components/combobox.html">Combobox Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/date-input.html">Date-Input Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/field.html">Field Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/file-upload.html">File-Upload Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/otp-input.html">OTP Input — One-Time Password / Multi-Field-Code</a></li>
+            <li><a class="site-sidebar__link" href="../components/range.html">Range-Slider Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/search.html">Search-Input Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/segmented.html">Segmented Control</a></li>
+            <li><a class="site-sidebar__link" href="../components/select.html">Select Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/slider.html">Slider Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/switch.html">Switch Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Feedback</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="../components/alert.html">Alert Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/banner.html">Banner Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/callout.html">Callout Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/empty-state.html">Empty-State Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/progress.html">Progress Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/skeleton.html">Skeleton Loader</a></li>
+            <li><a class="site-sidebar__link is-active" href="../components/spinner.html">Spinner Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/toast.html">Toast / Notification Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Navigation</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="../components/accordion.html">Accordion Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/back-to-top.html">Back-to-Top Button</a></li>
+            <li><a class="site-sidebar__link" href="../components/breadcrumbs.html">Breadcrumbs Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/nav.html">Nav Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/pagination.html">Pagination Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/scroll-spy.html">Scroll-Spy Navigation</a></li>
+            <li><a class="site-sidebar__link" href="../components/steps.html">Steps Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/tabs.html">Tabs Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/tree.html">Tree Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Overlay</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="../components/command-palette.html">Command Palette</a></li>
+            <li><a class="site-sidebar__link" href="../components/drawer.html">Drawer Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/hover-card.html">Hover-Card — Rich Preview on Hover</a></li>
+            <li><a class="site-sidebar__link" href="../components/modal.html">Modal Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/popover.html">Popover Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/tooltip.html">Tooltip Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Data Display</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="../components/avatar.html">Avatar Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/avatar-stack.html">Avatar-Stack Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/badge.html">Badge Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/chart.html">Chart Container</a></li>
+            <li><a class="site-sidebar__link" href="../components/code-block.html">CodeBlock Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/funnel.html">Funnel Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/stat.html">Stat Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/table.html">Table Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/tag.html">Tag Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/timeline.html">Timeline Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/trend.html">Trend Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Primitive</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="../components/chevron.html">Chevron Component</a></li>
+            <li><a class="site-sidebar__link" href="../components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
+            <li><a class="site-sidebar__link" href="../components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+            <li><a class="site-sidebar__link" href="../components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+    <main class="app-shell__main">
+      
+      <article class="site-doc">
+        <header class="site-doc__header">
+          <span class="site-doc__category">Feedback</span>
+          <h1 class="site-doc__title">Spinner Component</h1>
+          <p>Indeterminate Loading-Indicator. Pures CSS, kein SVG, kein JS.</p>
+        </header>
+
+        <section class="site-doc__section">
+          <h2>Beispiele</h2>
+          
+    <section class="site-example" data-example>
+      
+      <div class="site-example__preview" data-preview><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;span class=&quot;spinner&quot; role=&quot;status&quot; aria-label=&quot;Lädt Buchungen …&quot;&gt;&lt;/span&gt;">&lt;span class=&quot;spinner&quot; role=&quot;status&quot; aria-label=&quot;Lädt Buchungen …&quot;&gt;&lt;/span&gt;</textarea>
+      </div>
+    </section>
+
+    <section class="site-example" data-example>
+      <h3 class="site-example__caption">Inline in Button (Loading-State)</h3>
+      <div class="site-example__preview" data-preview><button class="btn" disabled>
+  <span class="spinner spinner--sm" aria-hidden="true"></span>
+  Speichere …
+</button></div>
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;button class=&quot;btn&quot; disabled&gt;
+  &lt;span class=&quot;spinner spinner--sm&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  Speichere …
+&lt;/button&gt;">&lt;button class=&quot;btn&quot; disabled&gt;
+  &lt;span class=&quot;spinner spinner--sm&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  Speichere …
+&lt;/button&gt;</textarea>
+      </div>
+    </section>
+
+    <section class="site-example" data-example>
+      <h3 class="site-example__caption">Block-centered mit visible-text-Horizont (empfohlene Variante)</h3>
+      <div class="site-example__preview" data-preview><div class="spinner-block">
+  <span class="spinner spinner--lg" aria-hidden="true"></span>
+  <p>Lädt Buchungen …</p>
+</div></div>
+      <div class="site-example__toolbar">
+        <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+        <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+      </div>
+      <div class="site-example__source" hidden>
+        <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;div class=&quot;spinner-block&quot;&gt;
+  &lt;span class=&quot;spinner spinner--lg&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  &lt;p&gt;Lädt Buchungen …&lt;/p&gt;
+&lt;/div&gt;">&lt;div class=&quot;spinner-block&quot;&gt;
+  &lt;span class=&quot;spinner spinner--lg&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  &lt;p&gt;Lädt Buchungen …&lt;/p&gt;
+&lt;/div&gt;</textarea>
+      </div>
+    </section>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Tone-Übersicht</h2>
+          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <div class="site-tone-strip">
+            
+            <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
+              <header class="site-tone-tile__label">trust</header>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="playful" data-tone-jump="playful">
+              <header class="site-tone-tile__label">playful</header>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="premium" data-tone-jump="premium">
+              <header class="site-tone-tile__label">premium</header>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="industrial" data-tone-jump="industrial">
+              <header class="site-tone-tile__label">industrial</header>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="modern" data-tone-jump="modern">
+              <header class="site-tone-tile__label">modern</header>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
+            </article>
+            <article class="site-tone-tile" data-tone="minimal" data-tone-jump="minimal">
+              <header class="site-tone-tile__label">minimal</header>
+              <div class="site-tone-tile__preview"><span class="spinner" role="status" aria-label="Lädt Buchungen …"></span></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>Token-Contract</h2>
+          <table class="table site-token-table">
+    <thead>
+      <tr><th>Token</th><th>Status</th><th>Notiz</th></tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td><code>--spinner-size</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>Quadrat-Dimension (default 1.25rem ≈ 20px)</td>
+      </tr>
+      <tr>
+        <td><code>--spinner-stroke</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>Ring-Stroke-Width (default 2px)</td>
+      </tr>
+      <tr>
+        <td><code>--spinner-color</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>Sweeping-Arc-Farbe (default currentColor)</td>
+      </tr>
+      <tr>
+        <td><code>--spinner-track-color</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>Restkreis (default: 20% mix der Arc-Farbe)</td>
+      </tr>
+      <tr>
+        <td><code>--spinner-duration</code></td>
+        <td><span class="badge badge--neutral">Optional</span></td>
+        <td>Rotation pro Umdrehung (default 700ms)</td>
+      </tr>
+    </tbody>
+  </table>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Modifier</h2>
+          <ul class="site-modifier-list">
+            <li><code>.spinner--sm</code> — kleiner (z.B. inline in btn--sm)</li>
+            <li><code>.spinner--lg</code> — größer (für Page-Level-Loading)</li>
+          </ul>
+        </section>
+
+        
+        <section class="site-doc__section">
+          <h2>Modifier-Vorschau</h2>
+          <p class="site-muted">Jeder Modifier auf das Basis-Markup angewandt — visueller Beweis, dass die Klasse funktioniert.</p>
+          <div class="site-modifier-grid">
+            
+      <article class="site-modifier-tile">
+        <header class="site-modifier-tile__label">
+          <code>.spinner--sm</code>
+          <span class="site-muted">kleiner (z.B. inline in btn--sm)</span>
+        </header>
+        <div class="site-modifier-tile__preview"><span class="spinner spinner--sm" role="status" aria-label="Lädt Buchungen …"></span></div>
+      </article>
+      <article class="site-modifier-tile">
+        <header class="site-modifier-tile__label">
+          <code>.spinner--lg</code>
+          <span class="site-muted">größer (für Page-Level-Loading)</span>
+        </header>
+        <div class="site-modifier-tile__preview"><span class="spinner spinner--lg" role="status" aria-label="Lädt Buchungen …"></span></div>
+      </article>
+          </div>
+        </section>
+
+        <footer class="site-doc__footer">
+          <a class="btn btn--ghost btn--sm" href="../../../components/spinner.css">Source-CSS ansehen</a>
+        </footer>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

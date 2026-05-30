@@ -33,7 +33,7 @@
 }
 
 .tab {
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--tab-py, var(--density-control-py)) var(--tab-px, var(--density-control-px));
   background: none;
   border: none;
   border-block-end: 2px solid transparent;
@@ -90,5 +90,5 @@
 .tabs--pill .tab[aria-selected="true"] {
   background: var(--card-bg);
   color: var(--color-text-primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--elevation-1);
 }

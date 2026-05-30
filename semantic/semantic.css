@@ -9,22 +9,86 @@
  * Themes überschreiben scoped via [data-tone~="..."].
  */
 
+/* @property: Typed Custom Properties. Mit Type-Info werden Tokens
+   animatable (z.B. theme-switch mit View-Transitions), bekommen Color-
+   Picker in DevTools und werden korrekt interpoliert.
+
+   Wir registrieren die Tokens, die am häufigsten animiert werden oder
+   davon profitieren: Interactive-Colors (theme-switch), Btn-Radius
+   (modifier transitions), Range-Fill (slider). Andere Tokens bleiben
+   un-registered (universal CSS-string).
+
+   Baseline 2024+ (Chrome 85, Safari 16.4, Firefox 128). Fallback:
+   un-registered, kein animation-support — sichtbares Verhalten
+   identisch. */
+@property --color-interactive {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #16a34a;
+}
+@property --color-interactive-light {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #dcfce7;
+}
+@property --color-interactive-dark {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #15803d;
+}
+@property --color-focus-ring {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #dcfce7;
+}
+@property --btn-radius {
+  syntax: "<length-percentage>";
+  inherits: true;
+  initial-value: 0.375rem;
+}
+@property --range-fill-pct {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
 :root {
+  /* color-scheme treibt die Auflösung von light-dark(L, D) und steuert die
+     UA-Defaults (Scrollbars, Form-Controls). Default = auto (Browser-Pref);
+     [data-mode] in dark.css forciert. */
+  color-scheme: light dark;
+
+  /* scrollbar-gutter: stable verhindert Layout-Shift wenn der Inhalt zu
+     scrollbar wechselt (z.B. nach lazy-loaded Content). Modern, baseline. */
+  scrollbar-gutter: stable;
+
   /* ========================================
      SEMANTIC COLORS
-     ======================================== */
+     ========================================
+     Mode-sensitive Tokens via light-dark(L, D). Resolution erfolgt automatisch
+     anhand der color-scheme-Property des Elements. data-mode-Wrapper setzen
+     color-scheme, kein Token-Re-Override mehr nötig (siehe dark.css). */
 
-  /* Backgrounds */
-  --color-bg:           var(--gray-100);
-  --color-bg-secondary: var(--gray-50);
-  --color-bg-tertiary:  var(--gray-200);
-  --color-bg-inverse:   var(--gray-900);
+  /* Backgrounds — Page-Level */
+  --color-bg:           light-dark(var(--gray-100), var(--gray-950));
+  --color-bg-secondary: light-dark(var(--gray-50),  var(--gray-900));
+  --color-bg-tertiary:  light-dark(var(--gray-200), var(--gray-800));
+  --color-bg-inverse:   light-dark(var(--gray-900), var(--gray-100));
+
+  /* Surfaces — Elevated-Block-Level (Topbar, Sidebar, Card-Container,
+     Tile-Backgrounds). Subtil unterscheidet sich von --color-bg, damit
+     stacked Surfaces sichtbar getrennt sind. Hover-Variant für interactive
+     Surfaces. */
+  --color-surface:        light-dark(white,            var(--gray-900));
+  --color-surface-subtle: light-dark(var(--gray-50),   var(--gray-900));
+  --color-surface-hover:  light-dark(var(--gray-100),  var(--gray-800));
+  --color-on-interactive: white;
 
   /* Text */
-  --color-text-primary:   var(--gray-900);
-  --color-text-secondary: var(--gray-600);
-  --color-text-tertiary:  var(--gray-500);
-  --color-text-muted:     var(--gray-500);
+  --color-text-primary:   light-dark(var(--gray-900), var(--gray-50));
+  --color-text-secondary: light-dark(var(--gray-600), var(--gray-300));
+  --color-text-tertiary:  light-dark(var(--gray-500), var(--gray-500));
+  --color-text-muted:     light-dark(var(--gray-500), var(--gray-600));
   --color-text-light:     var(--gray-200);
   --color-text-lightest:  var(--gray-100);
   --color-text-on-dark:   var(--gray-50);
@@ -34,16 +98,94 @@
   --color-interactive-light: var(--trust-100);
   --color-interactive-dark:  var(--trust-800);
 
-  /* UI States */
-  --color-success: var(--trust-600);
-  --color-warning: var(--playful-600);
-  --color-error:   #dc2626;
-  --color-info:    #0284c7;  /* cyan-600 — eigenständig, unabhängig von Themes */
+  /* UI States — Sand-gefiltert (CLEAR 4 Prinzip 4: "Statusfarben warnen,
+     ohne zu alarmieren"). Die Basis ist nicht das pure Signalrot/Grün,
+     sondern via color-mix(in oklch, signal, text-primary) durch den
+     Grundton des Systems gebrochen. Mode-aware automatisch weil
+     --color-text-primary light-dark() nutzt — Filter "wandert" mit.
+
+     --color-*-signal bleibt als Escape-Hatch erhalten für die wenigen
+     Fälle in denen das pure Signal nötig ist (z.B. Chart-Datenpunkte
+     die maximale Differenzierbarkeit brauchen). Im normalen UI-Pfad
+     niemals direkt nutzen — der Lint (zukünftig) wird das durchsetzen.
+
+     Mix-Ratio kalibriert: 78% Signal / 22% text-primary
+       - Identität bleibt erkennbar (Rot ist klar Rot, Grün ist Grün)
+       - Chroma reduziert um ~30% (perceptually-uniform in oklch)
+       - WCAG-AA-Kontrast über alle 4 Modi × 6 Tones × Nested erhalten */
+  --color-error-signal:   #dc2626;
+  --color-warning-signal: var(--playful-600);
+  --color-success-signal: var(--trust-600);
+  --color-info-signal:    #0284c7;
+
+  --color-error:   color-mix(in oklch, var(--color-error-signal)   78%, var(--color-text-primary));
+  --color-warning: color-mix(in oklch, var(--color-warning-signal) 78%, var(--color-text-primary));
+  --color-success: color-mix(in oklch, var(--color-success-signal) 78%, var(--color-text-primary));
+  --color-info:    color-mix(in oklch, var(--color-info-signal)    78%, var(--color-text-primary));
+
+  /* Status-Token-Tripel — gemeinsame Basis für Callout / Badge / Banner / Toast.
+     Mode-aware durch Vererbung: --color-bg und --color-text-primary wechseln
+     in dark.css, die color-mix-Resultate folgen automatisch.
+     - bg: hell-pastell im Light, dunkel-pastell im Dark
+     - fg: tiefes Statusfarbe im Light, helles Statusfarbe im Dark
+     - border: pure Statusfarbe (constant), trägt den Akzent
+
+     Mix-Ratios sind kontrastvalidiert (WCAG AA, 4.5:1) für alle 6 Tones × 4 Modi
+     plus Nested-Scopes. fg-Mix: 60%/40%, bg-Mix: 12-15%/85-88%. Warning-bg
+     etwas tinker, weil Amber-Pastel sonst zu nah am Body-bg liegt.
+  */
+  --status-info-bg:        color-mix(in oklch, var(--color-info)    12%, var(--color-bg));
+  --status-info-fg:        color-mix(in oklch, var(--color-info)    60%, var(--color-text-primary));
+  --status-info-border:    var(--color-info);
+
+  --status-success-bg:     color-mix(in oklch, var(--color-success) 12%, var(--color-bg));
+  --status-success-fg:     color-mix(in oklch, var(--color-success) 60%, var(--color-text-primary));
+  --status-success-border: var(--color-success);
+
+  --status-warning-bg:     color-mix(in oklch, var(--color-warning) 14%, var(--color-bg));
+  --status-warning-fg:     color-mix(in oklch, var(--color-warning) 60%, var(--color-text-primary));
+  --status-warning-border: var(--color-warning);
+
+  --status-danger-bg:      color-mix(in oklch, var(--color-error)   12%, var(--color-bg));
+  --status-danger-fg:      color-mix(in oklch, var(--color-error)   60%, var(--color-text-primary));
+  --status-danger-border:  var(--color-error);
+
+  --status-neutral-bg:     var(--color-bg-tertiary);
+  --status-neutral-fg:     var(--color-text-secondary);
+  --status-neutral-border: var(--color-border-dark);
+
+  /* ========================================
+     CHART — kategorische Palette für Datenvisualisierung
+     ========================================
+     Okabe-Ito-Palette (Cell Press / academic gold standard für
+     Color-Blind-Safety). 8 unterscheidbare Farben — funktioniert für
+     Deuteranopie, Protanopie und Tritanopie. Tone-agnostisch (Daten
+     brauchen konsistente Farben unabhängig vom Theme). Mode-aware
+     durch Overrides in dark.css.
+
+     Semantic-Aliases (--chart-positive/-negative/-neutral) ziehen aus
+     den Status-Bordern, damit Trend-Färbung mit Callout/Badge konsistent
+     bleibt. */
+  /* Light: Okabe-Ito original — heller, satter.
+     Dark: angepasst — leichter ent-sättigt + heller für Lesbarkeit auf
+     dunklem BG. Identitäts-Reihenfolge erhalten. */
+  --chart-1: light-dark(#E69F00, #FFB938);   /* orange */
+  --chart-2: light-dark(#56B4E9, #88CCEE);   /* sky-blue */
+  --chart-3: light-dark(#009E73, #44BBA4);   /* bluish-green */
+  --chart-4: light-dark(#F0E442, #FFEB75);   /* yellow */
+  --chart-5: light-dark(#0072B2, #4A9EE0);   /* blue */
+  --chart-6: light-dark(#D55E00, #E88556);   /* vermillion */
+  --chart-7: light-dark(#CC79A7, #DC9ABF);   /* reddish-purple */
+  --chart-8: light-dark(#999999, #BFBFBF);   /* gray */
+
+  --chart-positive: var(--status-success-border);
+  --chart-negative: var(--status-danger-border);
+  --chart-neutral:  var(--chart-8);
 
   /* Borders */
-  --color-border:       var(--gray-200);
-  --color-border-light: var(--gray-100);
-  --color-border-dark:  var(--gray-400);
+  --color-border:       light-dark(var(--gray-200), var(--gray-700));
+  --color-border-light: light-dark(var(--gray-100), var(--gray-800));
+  --color-border-dark:  light-dark(var(--gray-400), var(--gray-600));
 
   /* Focus */
   --color-focus:      var(--trust-600);
@@ -95,6 +237,32 @@
   --space-3xl: var(--space-64);
 
   /* ========================================
+     DENSITY — drei Tiers für interaktive Components
+     ========================================
+
+     Default = comfortable. Overrides für compact/spacious leben in
+     semantic/density.css (mode-Layer). Components nutzen diese Tokens
+     als Fallback (var(--btn-py, var(--density-control-py))), damit
+     Theme-Overrides weiterhin direkt gewinnen — Theme-Identität bleibt
+     erhalten, density-aware sind Components, deren Tokens das Theme
+     nicht explizit setzt.
+
+     Tiers:
+       --density-control-*   Buttons, Inputs, Selects, Tabs (Haupt-Controls)
+       --density-row-*       Table-Cells, List-Rows (Listen-Items)
+       --density-item-*      Nav-Items, Pagination-Buttons (Sekundäre Controls)
+
+     WCAG 2.5.8: Mindest-Touch-Target 24×24 CSS-px. Compact mit ~32px ist
+     sicher; tiefer gehen wir bewusst nicht. */
+
+  --density-control-py: var(--space-12);
+  --density-control-px: var(--space-20);
+  --density-row-py:     var(--space-12);
+  --density-row-px:     var(--space-16);
+  --density-item-py:    var(--space-8);
+  --density-item-px:    var(--space-12);
+
+  /* ========================================
      SEMANTIC MOTION
      ======================================== */
 
@@ -103,13 +271,20 @@
   --duration-slow:   var(--motion-slow);
   --easing-fast:     var(--ease-in-out);
   --easing-medium:   var(--ease-smooth);
-  --easing-slow:     var(--ease-bounce);
+  /* CLEAR 4 Prinzip 1: Default-Bewegung ist linear und gedämpft, nicht
+     federnd. --easing-slow nutzt bewusst ease-smooth (langsamer aber
+     ohne Overshoot). Bounce bleibt erreichbar nur via explizites
+     --motion-emphasis. Lint Check 6 (lint-themes.js) verhindert dass
+     Themes Default-Easings mit Overshoot setzen. */
+  --easing-slow:     var(--ease-smooth);
 
   /* Motion-Tokens nach Zweck (shorthand: duration + easing in einem Wert) */
   --motion-feedback:   75ms var(--ease-in-out);       /* Button-Press, Input-Focus */
   --motion-transition: 250ms var(--ease-smooth);      /* Property-Übergänge, Hover */
   --motion-entrance:   350ms var(--ease-smooth);      /* Modal-Open, Drawer-Slide */
-  --motion-emphasis:   350ms var(--ease-bounce);      /* Playful Accent-Animations */
+  /* --motion-emphasis ist die EINZIGE bounce-erlaubte Bewegung — explizit
+     opt-in pro Component, niemals als Default einer Component. */
+  --motion-emphasis:   350ms var(--ease-bounce);      /* Confirmation, "ta-da" — opt-in */
 
   /* ========================================
      SEMANTIC BORDERS
@@ -122,27 +297,52 @@
   --radius-2xl: var(--radius-20);
 
   /* ========================================
-     SEMANTIC SHADOWS
-     ======================================== */
+     ELEVATION — kanonische Skala (6 Stufen)
+     ========================================
 
-  --shadow-card:     var(--shadow-md);
-  --shadow-elevated: var(--shadow-lg);
-  --shadow-modal:    var(--shadow-xl);
+     Components nutzen --elevation-X direkt statt --shadow-X. Mode-aware
+     durch dark.css-Overrides (höhere Opacity auf dunklem BG, sonst
+     verschwindet der Schatten).
+
+     Stufen-Semantik:
+       0  flat — kein Schatten
+       1  hairline — Active-States (Tabs-active, Range-Thumb)
+       2  resting — Cards in Listen, dezent erhoben
+       3  raised — Cards default, Hover-Cards
+       4  floating — Toast, Popover, Tooltip-Bubble
+       5  overlay — Modal, Drawer, Command-Palette
+
+     Werte 1:1 zu den bisherigen --shadow-X (sm/base/md/lg/xl) — kein
+     visueller Bruch. --shadow-X bleiben als raw primitives nutzbar. */
+
+  --elevation-0: var(--shadow-none);
+  --elevation-1: var(--shadow-sm);
+  --elevation-2: var(--shadow-base);
+  --elevation-3: var(--shadow-md);
+  --elevation-4: var(--shadow-lg);
+  --elevation-5: var(--shadow-xl);
+
+  /* Legacy semantic-aliases — mappen auf Elevation. Bestehender Code, der
+     --shadow-card/elevated/modal nutzt, läuft unverändert weiter. */
+  --shadow-card:     var(--elevation-3);
+  --shadow-elevated: var(--elevation-4);
+  --shadow-modal:    var(--elevation-5);
 
   /* ========================================
      COMPONENT CONTRACT DEFAULTS
      ======================================== */
 
-  /* Button */
+  /* Button — Padding folgt der Density-Achse. Themes können --btn-px/--btn-py
+     direkt überschreiben (gewinnt durch Layer-Reihenfolge). */
   --btn-bg:     var(--color-interactive);
   --btn-fg:     white;
   --btn-radius: var(--radius-md);
-  --btn-px:     var(--space-20);
-  --btn-py:     var(--space-12);
+  --btn-px:     var(--density-control-px);
+  --btn-py:     var(--density-control-py);
   --btn-weight: 600;
 
   /* Card */
-  --card-bg:      white;
+  --card-bg:      light-dark(white, var(--gray-900));
   --card-radius:  var(--radius-lg);
   --card-shadow:  var(--shadow-card);
   --card-padding: var(--space-24);
@@ -150,11 +350,16 @@
   /* Section */
   --section-py: var(--space-section);
 
-  /* Container */
+  /* Container — invariant Layout-Breite, theme-agnostisch */
   --container-max: 1280px;
 
-  /* Input */
-  --input-bg:           white;
+  /* Prose — opt-in via .container--prose. Themes mit Editorial-Charakter
+     (premium) verengen hier statt --container-max, damit UI-Container
+     ihre volle Breite behalten. Siehe ADR-001. */
+  --prose-max:     70ch;
+
+  /* Input — bg mode-aware via light-dark; text/border erbt von --color-* */
+  --input-bg:           light-dark(white, var(--gray-900));
   --input-border:       var(--color-border);
   --input-text:         var(--color-text-primary);
   --input-placeholder:  var(--color-text-tertiary);

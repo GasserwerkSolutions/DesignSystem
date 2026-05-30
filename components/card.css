@@ -11,9 +11,53 @@
  *   --card-border, --card-radius, --card-shadow, --card-padding
  *   --card-hover-transform, --card-hover-shadow
  *
+ * Struktur:
+ *   <div class="card">
+ *     <h3>Buchung bestätigen</h3>
+ *     <p>Anna, Donnerstag 14:00 — Damen-Haarschnitt.</p>
+ *     <button class="btn">Bestätigen</button>
+ *   </div>
+ *
+ *   Flach (ohne Schatten):
+ *   <div class="card card--flat">
+ *     <p>Subtler Background-Block ohne Elevation.</p>
+ *   </div>
+ *
+ *   Mit Border-Akzent:
+ *   <div class="card card--bordered">
+ *     <h4>Status</h4>
+ *     <p>14 offene Buchungen, 3 wartend.</p>
+ *   </div>
+ *
+ *   Split-Card (vertikal default, horizontal ≥600px Container):
+ *   <div class="cq">
+ *     <article class="card card--split">
+ *       <div class="card__lead">
+ *         <div style="background: var(--color-interactive-light); border-radius: var(--radius-md); aspect-ratio: 4/3;"></div>
+ *       </div>
+ *       <div class="card__body">
+ *         <h3>Brand-neuer Salon-Stuhl</h3>
+ *         <p>Höhenverstellbar, ergonomisch.</p>
+ *       </div>
+ *     </article>
+ *   </div>
+ *
+ * Container-Aware (opt-in via .cq Wrapper):
+ *   In einem .cq-Wrapper >= 600px Breite klappt eine .card--split-Variante
+ *   ihre Children in eine 2-Spalten-Aufteilung (Lead + Body). Unter 600px
+ *   bleibt sie vertikal gestapelt. Beispiel:
+ *
+ *   <div class="cq">
+ *     <article class="card card--split">
+ *       <div class="card__lead"><img src="..." alt=""></div>
+ *       <div class="card__body">…</div>
+ *     </article>
+ *   </div>
+ *
  * Modifier:
  *   .card--flat       ohne Schatten
  *   .card--bordered   starker Border, kein Schatten
+ *   .card--split      Container-aware Split-Layout (siehe oben)
  *
  * Regel: Kein Theme darf .card selektieren.
  */
@@ -22,8 +66,13 @@
   background:    var(--card-bg);
   border:        var(--card-border, 1px solid var(--color-border));
   border-radius: var(--card-radius, var(--radius-lg));
-  box-shadow:    var(--card-shadow, var(--shadow-md));
+  box-shadow:    var(--card-shadow, var(--elevation-3));
   padding:       var(--card-padding, var(--space-24));
+
+  /* Performance: layout/paint isolation. Browser kann das Card-Layout
+     unabhängig vom Page-Layout berechnen. Bei vielen Cards (Grid mit
+     20+) spürbarer Render-Speedup. */
+  contain: layout paint;
 
   transition: transform var(--duration-medium) var(--easing-medium),
               box-shadow var(--duration-medium) var(--easing-medium);
@@ -31,14 +80,38 @@
 
 .card:hover {
   transform:  var(--card-hover-transform, none);
-  box-shadow: var(--card-hover-shadow, var(--card-shadow, var(--shadow-md)));
+  box-shadow: var(--card-hover-shadow, var(--card-shadow, var(--elevation-3)));
 }
 
 .card--flat {
-  --card-shadow: none;
+  --card-shadow: var(--elevation-0);
 }
 
 .card--bordered {
   --card-border: 2px solid var(--color-border-dark);
-  --card-shadow: none;
+  --card-shadow: var(--elevation-0);
+}
+
+/* Split-Card: vertikal default, horizontal sobald der Container ≥ 600px ist.
+   Breakpoint-Token: --cq-bp-md (640px). Wir nehmen 600 als bewusste Wahl —
+   gibt Lead-Bilder einen sinnvollen Mindestplatz, bevor sich der Wechsel
+   lohnt. */
+.card--split {
+  display: grid;
+  gap: var(--space-16);
+  padding: 0;
+}
+
+.card--split > .card__lead { padding: var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) 0; }
+.card--split > .card__body { padding: 0 var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)); }
+.card--split > .card__lead img,
+.card--split > .card__lead picture { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
+
+@container (min-width: 600px) {
+  .card--split {
+    grid-template-columns: var(--card-split-ratio, 1fr 1.618fr);
+    align-items: stretch;
+  }
+  .card--split > .card__lead { padding: var(--card-padding, var(--space-24)) 0 var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)); }
+  .card--split > .card__body { padding: var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) 0; }
 }

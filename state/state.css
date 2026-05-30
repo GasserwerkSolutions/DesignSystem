@@ -73,26 +73,87 @@ textarea:invalid:focus {
   }
 }
 
-/* Windows High-Contrast-Mode / Forced-Colors-Support */
+/* Windows High-Contrast-Mode / Forced-Colors-Support
+   Browser remappt Farben zu System-Palette (CanvasText, Canvas, ButtonText,
+   Highlight, etc.). Identities die auf bg-color basieren (Status-Bgs via
+   color-mix) verschwinden — wir geben jedem Surface einen sichtbaren Border. */
 @media (forced-colors: active) {
   :focus-visible {
     outline-color: Highlight;
   }
+
+  /* Surfaces — sichtbare Trennung zu Canvas */
   .btn,
   .card,
   .stat,
   .callout,
   .banner,
-  .table-wrap {
+  .alert,
+  .toast,
+  .modal,
+  .drawer,
+  .popover,
+  .tooltip,
+  .table-wrap,
+  .badge,
+  .tag,
+  .kbd,
+  .segmented,
+  .copy-btn,
+  .cmd-palette,
+  .otp-input__field,
+  .theme-toggle {
     border: 1px solid CanvasText;
   }
+
+  /* Buttons: System-Button-Colors damit hover/active erkennbar */
   .btn {
     forced-color-adjust: none;
     background: ButtonFace;
     color: ButtonText;
   }
-  .badge {
-    border: 1px solid CanvasText;
+  .btn:hover,
+  .btn:focus-visible {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  /* Inputs: sichtbarer Focus-Ring per HighlightText */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+  }
+
+  /* Segmented-Control: aktives Segment via Highlight */
+  .segmented__item:has(input:checked) {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  /* Status-Indicator (Spinner, Skeleton) sichtbar machen */
+  .spinner,
+  .skeleton {
+    forced-color-adjust: none;
+    border-color: CanvasText;
+  }
+
+  /* Disabled-State: User braucht visuelles Signal */
+  :disabled,
+  [aria-disabled="true"] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+
+  /* CLEAR 4 P2 Exit-Path-Hints bleiben in forced-colors lesbar via
+     System-Palette. */
+  .empty-state:not(:has(button, a))::after,
+  .alert--danger:not(:has(button, a))::after {
+    background: Canvas;
+    color: CanvasText;
+    border-inline-start-color: CanvasText;
+    forced-color-adjust: none;
   }
 }
 
@@ -106,5 +167,28 @@ textarea:invalid:focus {
   .stat,
   .callout {
     box-shadow: none;
+  }
+}
+
+/* prefers-reduced-transparency \u2014 Browser-Hinweis dass User Transparenz
+   reduziert haben m\u00f6chte (z.B. \u00e4ltere Augen, kognitive Last). Backdrops,
+   blur-Filters, semi-transparente Surfaces solid machen. */
+@media (prefers-reduced-transparency: reduce) {
+  .modal::backdrop,
+  .drawer::backdrop,
+  .cmd-palette::backdrop {
+    background: var(--color-bg-inverse);
+    backdrop-filter: none;
+  }
+  .app-shell__topbar {
+    backdrop-filter: none;
+  }
+  .popover,
+  .tooltip,
+  .hover-card,
+  .modal,
+  .drawer,
+  .cmd-palette {
+    background: var(--color-surface);
   }
 }

@@ -27,26 +27,23 @@
   --space-inline:  var(--space-20);
   --space-block:   var(--space-32);
   --space-section: var(--space-64);
-  --section-py:    var(--space-64);
 
   /* Motion */
   --duration-fast:   var(--motion-base);
   --duration-medium: var(--motion-slow);
   --easing-medium:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-  /* Button */
+  /* Button — Padding folgt der Density-Achse (kein Hard-Override). */
   --btn-bg:           var(--trust-600);
   --btn-bg-hover:     var(--trust-700);
   --btn-fg:           white;
   --btn-radius:       var(--radius-8);
-  --btn-px:           var(--space-20);
-  --btn-py:           var(--space-12);
   --btn-weight:       600;
   --btn-hover-motion: translateY(-1px);
 
-  /* Card */
-  --card-bg:     white;
-  --card-border: 1px solid var(--trust-100);
+  /* Card — light-dark damit dark-mode trust nicht weiße Karten zeigt */
+  --card-bg:     light-dark(white, var(--gray-900));
+  --card-border: light-dark(1px solid var(--trust-100), 1px solid var(--gray-800));
   --card-radius: var(--radius-12);
   --card-shadow: 0 1px 3px 0 rgba(22, 163, 74, 0.1);
 

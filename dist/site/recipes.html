@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="de" data-tone="trust" data-mode="light" data-density="comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recipes — Design System</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./../../main.css">
+  <link rel="stylesheet" href="./assets/site.css">
+  <script defer src="./../../dist/js/design-system.iife.js"></script>
+  <script defer src="./assets/site.js"></script>
+  
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-shell__topbar">
+      <div class="site-topbar">
+        <a class="site-topbar__brand" href="./index.html">
+          <strong>Design System</strong>
+          <span class="badge badge--neutral">v0.31.0</span>
+        </a>
+        <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
+        <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
+          <a class="site-topbar__link" href="./index.html">Overview</a>
+          <a class="site-topbar__link" href="./foundations.html">Foundations</a>
+          <div class="site-topbar__mega" data-mega>
+            <button type="button" class="site-topbar__link site-topbar__link--mega" aria-haspopup="true" aria-expanded="false" data-mega-trigger>Components<span class="site-topbar__chevron" aria-hidden="true">▾</span></button>
+            <div class="site-topbar__mega-panel" data-mega-panel hidden role="menu" aria-label="Components nach Kategorie">
+              
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Layout</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/app-shell.html">App-Shell Layout-Primitive</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/card.html">Card Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/divider.html">Divider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/list-row.html">List-Row Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/panel-list.html">Panel-List Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/section.html">Section Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Form</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/button.html">Button Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/checkbox.html">Checkbox + Radio Components</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/combobox.html">Combobox Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/date-input.html">Date-Input Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/field.html">Field Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/file-upload.html">File-Upload Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/otp-input.html">OTP Input — One-Time Password / Multi-Field-Code</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/range.html">Range-Slider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/search.html">Search-Input Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/segmented.html">Segmented Control</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/select.html">Select Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/slider.html">Slider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/switch.html">Switch Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Feedback</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/alert.html">Alert Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/banner.html">Banner Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/callout.html">Callout Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/empty-state.html">Empty-State Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/progress.html">Progress Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/skeleton.html">Skeleton Loader</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/spinner.html">Spinner Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/toast.html">Toast / Notification Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Navigation</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/accordion.html">Accordion Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/back-to-top.html">Back-to-Top Button</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/breadcrumbs.html">Breadcrumbs Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/nav.html">Nav Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/pagination.html">Pagination Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/scroll-spy.html">Scroll-Spy Navigation</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/steps.html">Steps Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tabs.html">Tabs Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tree.html">Tree Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Overlay</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/command-palette.html">Command Palette</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/drawer.html">Drawer Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/hover-card.html">Hover-Card — Rich Preview on Hover</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/modal.html">Modal Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/popover.html">Popover Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tooltip.html">Tooltip Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Data Display</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/avatar.html">Avatar Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/avatar-stack.html">Avatar-Stack Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/badge.html">Badge Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/chart.html">Chart Container</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/code-block.html">CodeBlock Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/funnel.html">Funnel Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/stat.html">Stat Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/table.html">Table Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tag.html">Tag Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/timeline.html">Timeline Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/trend.html">Trend Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Primitive</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/chevron.html">Chevron Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
+                </ul>
+              </section>
+            </div>
+          </div>
+          <a class="site-topbar__link" href="./themes.html">Themes</a>
+          <a class="site-topbar__link is-active" href="./recipes.html">Recipes</a>
+          <div class="site-topbar__switches">
+            <label class="visually-hidden" for="site-tone">Tone</label>
+        <select id="site-tone" class="site-select" data-axis="tone">
+          <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option>
+        </select>
+            <button type="button" class="btn btn--ghost btn--sm" data-axis="mode">Light/Dark</button>
+            <label class="visually-hidden" for="site-density">Density</label>
+        <select id="site-density" class="site-select" data-axis="density">
+          <option value="comfortable">Comfortable</option>
+          <option value="compact">Compact</option>
+          <option value="spacious">Spacious</option>
+        </select>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <aside class="app-shell__sidebar">
+      <nav class="site-sidebar" aria-label="Components">
+        <input type="search" class="site-sidebar__search" placeholder="Suchen …" data-sidebar-search>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Layout</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/app-shell.html">App-Shell Layout-Primitive</a></li>
+            <li><a class="site-sidebar__link" href="./components/card.html">Card Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/divider.html">Divider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/list-row.html">List-Row Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/panel-list.html">Panel-List Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/section.html">Section Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Form</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/button.html">Button Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/checkbox.html">Checkbox + Radio Components</a></li>
+            <li><a class="site-sidebar__link" href="./components/combobox.html">Combobox Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/date-input.html">Date-Input Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/field.html">Field Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/file-upload.html">File-Upload Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/otp-input.html">OTP Input — One-Time Password / Multi-Field-Code</a></li>
+            <li><a class="site-sidebar__link" href="./components/range.html">Range-Slider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/search.html">Search-Input Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/segmented.html">Segmented Control</a></li>
+            <li><a class="site-sidebar__link" href="./components/select.html">Select Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/slider.html">Slider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/switch.html">Switch Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Feedback</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/alert.html">Alert Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/banner.html">Banner Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/callout.html">Callout Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/empty-state.html">Empty-State Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/progress.html">Progress Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/skeleton.html">Skeleton Loader</a></li>
+            <li><a class="site-sidebar__link" href="./components/spinner.html">Spinner Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/toast.html">Toast / Notification Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Navigation</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/accordion.html">Accordion Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/back-to-top.html">Back-to-Top Button</a></li>
+            <li><a class="site-sidebar__link" href="./components/breadcrumbs.html">Breadcrumbs Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/nav.html">Nav Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/pagination.html">Pagination Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/scroll-spy.html">Scroll-Spy Navigation</a></li>
+            <li><a class="site-sidebar__link" href="./components/steps.html">Steps Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tabs.html">Tabs Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tree.html">Tree Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Overlay</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/command-palette.html">Command Palette</a></li>
+            <li><a class="site-sidebar__link" href="./components/drawer.html">Drawer Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/hover-card.html">Hover-Card — Rich Preview on Hover</a></li>
+            <li><a class="site-sidebar__link" href="./components/modal.html">Modal Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/popover.html">Popover Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tooltip.html">Tooltip Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Data Display</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/avatar.html">Avatar Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/avatar-stack.html">Avatar-Stack Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/badge.html">Badge Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/chart.html">Chart Container</a></li>
+            <li><a class="site-sidebar__link" href="./components/code-block.html">CodeBlock Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/funnel.html">Funnel Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/stat.html">Stat Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/table.html">Table Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tag.html">Tag Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/timeline.html">Timeline Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/trend.html">Trend Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Primitive</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/chevron.html">Chevron Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
+            <li><a class="site-sidebar__link" href="./components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+            <li><a class="site-sidebar__link" href="./components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+    <main class="app-shell__main">
+      
+      <article class="site-doc">
+        <header class="site-doc__header">
+          <h1 class="site-doc__title">Recipes</h1>
+          <p class="site-doc__lede">
+            Composed Patterns aus den 57 Components. Kein neues CSS — nur
+            Komposition. Bearbeite das Markup live und teste mit allen
+            Tones/Modes/Densities.
+          </p>
+          <nav class="foundation-toc" aria-label="Recipes">
+            <ul><li><a href="#recipe-booking-form">Buchungs-Form</a></li><li><a href="#recipe-stat-dashboard">Stat-Dashboard</a></li><li><a href="#recipe-settings-section">Settings-Section</a></li><li><a href="#recipe-auth-otp">OTP-Verifizierung</a></li><li><a href="#recipe-empty-search">Empty-State mit Search + CTA</a></li></ul>
+          </nav>
+        </header>
+        
+        <section class="site-doc__section" id="recipe-booking-form">
+          <h2>Buchungs-Form</h2>
+          <p class="site-muted">Service auswählen, Datum/Uhrzeit, Stylist, Notizen — kompletter Booking-Flow in einem Compact-Form.</p>
+          <section class="site-example" data-example>
+            <div class="site-example__preview" data-preview><form class="stack stack--md" style="max-width: 28rem;">
+  <div class="field">
+    <label class="field__label" for="rcp-service">Service</label>
+    <div class="select-wrap">
+      <select id="rcp-service" class="select">
+        <option>Damen-Haarschnitt (45 Min)</option>
+        <option>Herren-Haarschnitt (30 Min)</option>
+        <option>Bart-Trim (20 Min)</option>
+      </select>
+    </div>
+  </div>
+  <div class="field">
+    <label class="field__label" for="rcp-date">Datum & Uhrzeit</label>
+    <input id="rcp-date" type="datetime-local">
+  </div>
+  <div class="field">
+    <label class="field__label">Stylist</label>
+    <fieldset class="segmented">
+      <legend class="visually-hidden">Stylist auswählen</legend>
+      <label class="segmented__item">
+        <input type="radio" name="rcp-stylist" value="anna" checked>
+        <span>Anna</span>
+      </label>
+      <label class="segmented__item">
+        <input type="radio" name="rcp-stylist" value="luca">
+        <span>Luca</span>
+      </label>
+      <label class="segmented__item">
+        <input type="radio" name="rcp-stylist" value="any">
+        <span>Egal</span>
+      </label>
+    </fieldset>
+  </div>
+  <div class="field">
+    <label class="field__label" for="rcp-notes">Notizen (optional)</label>
+    <textarea id="rcp-notes" placeholder="Spezielle Wünsche …"></textarea>
+  </div>
+  <button class="btn" type="button">Buchen</button>
+</form></div>
+            <div class="site-example__toolbar">
+              <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+            </div>
+            <div class="site-example__source" hidden>
+              <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;form class=&quot;stack stack--md&quot; style=&quot;max-width: 28rem;&quot;&gt;
+  &lt;div class=&quot;field&quot;&gt;
+    &lt;label class=&quot;field__label&quot; for=&quot;rcp-service&quot;&gt;Service&lt;/label&gt;
+    &lt;div class=&quot;select-wrap&quot;&gt;
+      &lt;select id=&quot;rcp-service&quot; class=&quot;select&quot;&gt;
+        &lt;option&gt;Damen-Haarschnitt (45 Min)&lt;/option&gt;
+        &lt;option&gt;Herren-Haarschnitt (30 Min)&lt;/option&gt;
+        &lt;option&gt;Bart-Trim (20 Min)&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;field&quot;&gt;
+    &lt;label class=&quot;field__label&quot; for=&quot;rcp-date&quot;&gt;Datum &amp; Uhrzeit&lt;/label&gt;
+    &lt;input id=&quot;rcp-date&quot; type=&quot;datetime-local&quot;&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;field&quot;&gt;
+    &lt;label class=&quot;field__label&quot;&gt;Stylist&lt;/label&gt;
+    &lt;fieldset class=&quot;segmented&quot;&gt;
+      &lt;legend class=&quot;visually-hidden&quot;&gt;Stylist auswählen&lt;/legend&gt;
+      &lt;label class=&quot;segmented__item&quot;&gt;
+        &lt;input type=&quot;radio&quot; name=&quot;rcp-stylist&quot; value=&quot;anna&quot; checked&gt;
+        &lt;span&gt;Anna&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label class=&quot;segmented__item&quot;&gt;
+        &lt;input type=&quot;radio&quot; name=&quot;rcp-stylist&quot; value=&quot;luca&quot;&gt;
+        &lt;span&gt;Luca&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label class=&quot;segmented__item&quot;&gt;
+        &lt;input type=&quot;radio&quot; name=&quot;rcp-stylist&quot; value=&quot;any&quot;&gt;
+        &lt;span&gt;Egal&lt;/span&gt;
+      &lt;/label&gt;
+    &lt;/fieldset&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;field&quot;&gt;
+    &lt;label class=&quot;field__label&quot; for=&quot;rcp-notes&quot;&gt;Notizen (optional)&lt;/label&gt;
+    &lt;textarea id=&quot;rcp-notes&quot; placeholder=&quot;Spezielle Wünsche …&quot;&gt;&lt;/textarea&gt;
+  &lt;/div&gt;
+  &lt;button class=&quot;btn&quot; type=&quot;button&quot;&gt;Buchen&lt;/button&gt;
+&lt;/form&gt;">&lt;form class=&quot;stack stack--md&quot; style=&quot;max-width: 28rem;&quot;&gt;
+  &lt;div class=&quot;field&quot;&gt;
+    &lt;label class=&quot;field__label&quot; for=&quot;rcp-service&quot;&gt;Service&lt;/label&gt;
+    &lt;div class=&quot;select-wrap&quot;&gt;
+      &lt;select id=&quot;rcp-service&quot; class=&quot;select&quot;&gt;
+        &lt;option&gt;Damen-Haarschnitt (45 Min)&lt;/option&gt;
+        &lt;option&gt;Herren-Haarschnitt (30 Min)&lt;/option&gt;
+        &lt;option&gt;Bart-Trim (20 Min)&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;field&quot;&gt;
+    &lt;label class=&quot;field__label&quot; for=&quot;rcp-date&quot;&gt;Datum &amp; Uhrzeit&lt;/label&gt;
+    &lt;input id=&quot;rcp-date&quot; type=&quot;datetime-local&quot;&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;field&quot;&gt;
+    &lt;label class=&quot;field__label&quot;&gt;Stylist&lt;/label&gt;
+    &lt;fieldset class=&quot;segmented&quot;&gt;
+      &lt;legend class=&quot;visually-hidden&quot;&gt;Stylist auswählen&lt;/legend&gt;
+      &lt;label class=&quot;segmented__item&quot;&gt;
+        &lt;input type=&quot;radio&quot; name=&quot;rcp-stylist&quot; value=&quot;anna&quot; checked&gt;
+        &lt;span&gt;Anna&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label class=&quot;segmented__item&quot;&gt;
+        &lt;input type=&quot;radio&quot; name=&quot;rcp-stylist&quot; value=&quot;luca&quot;&gt;
+        &lt;span&gt;Luca&lt;/span&gt;
+      &lt;/label&gt;
+      &lt;label class=&quot;segmented__item&quot;&gt;
+        &lt;input type=&quot;radio&quot; name=&quot;rcp-stylist&quot; value=&quot;any&quot;&gt;
+        &lt;span&gt;Egal&lt;/span&gt;
+      &lt;/label&gt;
+    &lt;/fieldset&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;field&quot;&gt;
+    &lt;label class=&quot;field__label&quot; for=&quot;rcp-notes&quot;&gt;Notizen (optional)&lt;/label&gt;
+    &lt;textarea id=&quot;rcp-notes&quot; placeholder=&quot;Spezielle Wünsche …&quot;&gt;&lt;/textarea&gt;
+  &lt;/div&gt;
+  &lt;button class=&quot;btn&quot; type=&quot;button&quot;&gt;Buchen&lt;/button&gt;
+&lt;/form&gt;</textarea>
+            </div>
+          </section>
+        </section>
+        <section class="site-doc__section" id="recipe-stat-dashboard">
+          <h2>Stat-Dashboard</h2>
+          <p class="site-muted">4 Key-Metrics mit Trend, gefolgt von einer Tagesbuchungs-Liste. Klassisches App-Home-Screen-Pattern.</p>
+          <section class="site-example" data-example>
+            <div class="site-example__preview" data-preview><div class="grid-4" style="margin-bottom: var(--space-24);">
+  <div class="stat">
+    <div class="stat__label">Buchungen heute</div>
+    <div class="stat__value">14</div>
+    <div class="trend trend--up">+22% vs gestern</div>
+  </div>
+  <div class="stat">
+    <div class="stat__label">Umsatz heute</div>
+    <div class="stat__value">CHF 1'247</div>
+    <div class="trend trend--up">+8%</div>
+  </div>
+  <div class="stat">
+    <div class="stat__label">No-Shows</div>
+    <div class="stat__value">1</div>
+    <div class="trend trend--down">-50%</div>
+  </div>
+  <div class="stat">
+    <div class="stat__label">Auslastung</div>
+    <div class="stat__value">82%</div>
+    <div class="trend trend--flat">unverändert</div>
+  </div>
+</div>
+<div class="list">
+  <div class="list-row">
+    <div class="list-row__lead"><span class="avatar avatar--c3">AM</span></div>
+    <div class="list-row__body">
+      <div class="list-row__title">Anna Meier</div>
+      <div class="list-row__subtitle">09:00 – Damen-Haarschnitt</div>
+    </div>
+    <div class="list-row__meta">CHF 85</div>
+    <div class="list-row__trail"><span class="badge badge--success">Bestätigt</span></div>
+  </div>
+  <div class="list-row">
+    <div class="list-row__lead"><span class="avatar avatar--c1">LK</span></div>
+    <div class="list-row__body">
+      <div class="list-row__title">Luca Keller</div>
+      <div class="list-row__subtitle">10:00 – Bart-Trim</div>
+    </div>
+    <div class="list-row__meta">CHF 35</div>
+    <div class="list-row__trail"><span class="badge badge--warning">Wartet</span></div>
+  </div>
+  <div class="list-row">
+    <div class="list-row__lead"><span class="avatar avatar--c4">SV</span></div>
+    <div class="list-row__body">
+      <div class="list-row__title">Sara Vogel</div>
+      <div class="list-row__subtitle">11:30 – Färbung + Schnitt</div>
+    </div>
+    <div class="list-row__meta">CHF 165</div>
+    <div class="list-row__trail"><span class="badge badge--success">Bestätigt</span></div>
+  </div>
+</div></div>
+            <div class="site-example__toolbar">
+              <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+            </div>
+            <div class="site-example__source" hidden>
+              <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;div class=&quot;grid-4&quot; style=&quot;margin-bottom: var(--space-24);&quot;&gt;
+  &lt;div class=&quot;stat&quot;&gt;
+    &lt;div class=&quot;stat__label&quot;&gt;Buchungen heute&lt;/div&gt;
+    &lt;div class=&quot;stat__value&quot;&gt;14&lt;/div&gt;
+    &lt;div class=&quot;trend trend--up&quot;&gt;+22% vs gestern&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stat&quot;&gt;
+    &lt;div class=&quot;stat__label&quot;&gt;Umsatz heute&lt;/div&gt;
+    &lt;div class=&quot;stat__value&quot;&gt;CHF 1'247&lt;/div&gt;
+    &lt;div class=&quot;trend trend--up&quot;&gt;+8%&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stat&quot;&gt;
+    &lt;div class=&quot;stat__label&quot;&gt;No-Shows&lt;/div&gt;
+    &lt;div class=&quot;stat__value&quot;&gt;1&lt;/div&gt;
+    &lt;div class=&quot;trend trend--down&quot;&gt;-50%&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stat&quot;&gt;
+    &lt;div class=&quot;stat__label&quot;&gt;Auslastung&lt;/div&gt;
+    &lt;div class=&quot;stat__value&quot;&gt;82%&lt;/div&gt;
+    &lt;div class=&quot;trend trend--flat&quot;&gt;unverändert&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;list&quot;&gt;
+  &lt;div class=&quot;list-row&quot;&gt;
+    &lt;div class=&quot;list-row__lead&quot;&gt;&lt;span class=&quot;avatar avatar--c3&quot;&gt;AM&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;list-row__body&quot;&gt;
+      &lt;div class=&quot;list-row__title&quot;&gt;Anna Meier&lt;/div&gt;
+      &lt;div class=&quot;list-row__subtitle&quot;&gt;09:00 – Damen-Haarschnitt&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;list-row__meta&quot;&gt;CHF 85&lt;/div&gt;
+    &lt;div class=&quot;list-row__trail&quot;&gt;&lt;span class=&quot;badge badge--success&quot;&gt;Bestätigt&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;list-row&quot;&gt;
+    &lt;div class=&quot;list-row__lead&quot;&gt;&lt;span class=&quot;avatar avatar--c1&quot;&gt;LK&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;list-row__body&quot;&gt;
+      &lt;div class=&quot;list-row__title&quot;&gt;Luca Keller&lt;/div&gt;
+      &lt;div class=&quot;list-row__subtitle&quot;&gt;10:00 – Bart-Trim&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;list-row__meta&quot;&gt;CHF 35&lt;/div&gt;
+    &lt;div class=&quot;list-row__trail&quot;&gt;&lt;span class=&quot;badge badge--warning&quot;&gt;Wartet&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;list-row&quot;&gt;
+    &lt;div class=&quot;list-row__lead&quot;&gt;&lt;span class=&quot;avatar avatar--c4&quot;&gt;SV&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;list-row__body&quot;&gt;
+      &lt;div class=&quot;list-row__title&quot;&gt;Sara Vogel&lt;/div&gt;
+      &lt;div class=&quot;list-row__subtitle&quot;&gt;11:30 – Färbung + Schnitt&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;list-row__meta&quot;&gt;CHF 165&lt;/div&gt;
+    &lt;div class=&quot;list-row__trail&quot;&gt;&lt;span class=&quot;badge badge--success&quot;&gt;Bestätigt&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;">&lt;div class=&quot;grid-4&quot; style=&quot;margin-bottom: var(--space-24);&quot;&gt;
+  &lt;div class=&quot;stat&quot;&gt;
+    &lt;div class=&quot;stat__label&quot;&gt;Buchungen heute&lt;/div&gt;
+    &lt;div class=&quot;stat__value&quot;&gt;14&lt;/div&gt;
+    &lt;div class=&quot;trend trend--up&quot;&gt;+22% vs gestern&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stat&quot;&gt;
+    &lt;div class=&quot;stat__label&quot;&gt;Umsatz heute&lt;/div&gt;
+    &lt;div class=&quot;stat__value&quot;&gt;CHF 1'247&lt;/div&gt;
+    &lt;div class=&quot;trend trend--up&quot;&gt;+8%&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stat&quot;&gt;
+    &lt;div class=&quot;stat__label&quot;&gt;No-Shows&lt;/div&gt;
+    &lt;div class=&quot;stat__value&quot;&gt;1&lt;/div&gt;
+    &lt;div class=&quot;trend trend--down&quot;&gt;-50%&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;stat&quot;&gt;
+    &lt;div class=&quot;stat__label&quot;&gt;Auslastung&lt;/div&gt;
+    &lt;div class=&quot;stat__value&quot;&gt;82%&lt;/div&gt;
+    &lt;div class=&quot;trend trend--flat&quot;&gt;unverändert&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;list&quot;&gt;
+  &lt;div class=&quot;list-row&quot;&gt;
+    &lt;div class=&quot;list-row__lead&quot;&gt;&lt;span class=&quot;avatar avatar--c3&quot;&gt;AM&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;list-row__body&quot;&gt;
+      &lt;div class=&quot;list-row__title&quot;&gt;Anna Meier&lt;/div&gt;
+      &lt;div class=&quot;list-row__subtitle&quot;&gt;09:00 – Damen-Haarschnitt&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;list-row__meta&quot;&gt;CHF 85&lt;/div&gt;
+    &lt;div class=&quot;list-row__trail&quot;&gt;&lt;span class=&quot;badge badge--success&quot;&gt;Bestätigt&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;list-row&quot;&gt;
+    &lt;div class=&quot;list-row__lead&quot;&gt;&lt;span class=&quot;avatar avatar--c1&quot;&gt;LK&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;list-row__body&quot;&gt;
+      &lt;div class=&quot;list-row__title&quot;&gt;Luca Keller&lt;/div&gt;
+      &lt;div class=&quot;list-row__subtitle&quot;&gt;10:00 – Bart-Trim&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;list-row__meta&quot;&gt;CHF 35&lt;/div&gt;
+    &lt;div class=&quot;list-row__trail&quot;&gt;&lt;span class=&quot;badge badge--warning&quot;&gt;Wartet&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;list-row&quot;&gt;
+    &lt;div class=&quot;list-row__lead&quot;&gt;&lt;span class=&quot;avatar avatar--c4&quot;&gt;SV&lt;/span&gt;&lt;/div&gt;
+    &lt;div class=&quot;list-row__body&quot;&gt;
+      &lt;div class=&quot;list-row__title&quot;&gt;Sara Vogel&lt;/div&gt;
+      &lt;div class=&quot;list-row__subtitle&quot;&gt;11:30 – Färbung + Schnitt&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;list-row__meta&quot;&gt;CHF 165&lt;/div&gt;
+    &lt;div class=&quot;list-row__trail&quot;&gt;&lt;span class=&quot;badge badge--success&quot;&gt;Bestätigt&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
+            </div>
+          </section>
+        </section>
+        <section class="site-doc__section" id="recipe-settings-section">
+          <h2>Settings-Section</h2>
+          <p class="site-muted">Account-Settings-Form mit Switches für Toggles und einem Save-Button am Ende.</p>
+          <section class="site-example" data-example>
+            <div class="site-example__preview" data-preview><section class="stack stack--lg" style="max-width: 32rem;">
+  <header>
+    <h2 style="margin-bottom: var(--space-4);">Benachrichtigungen</h2>
+    <p class="site-muted">Wähle wann und wie du Updates erhalten möchtest.</p>
+  </header>
+  <div class="stack stack--md">
+    <label class="choice">
+      <input type="checkbox" class="switch" role="switch" checked>
+      <span>
+        E-Mail-Benachrichtigungen
+        <span class="choice__hint">Neue Buchungen, Stornierungen</span>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="checkbox" class="switch" role="switch" checked>
+      <span>
+        Push-Notifications
+        <span class="choice__hint">Mobile App + Browser</span>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="checkbox" class="switch" role="switch">
+      <span>
+        SMS-Reminder
+        <span class="choice__hint">24h vor Buchung</span>
+      </span>
+    </label>
+    <label class="choice">
+      <input type="checkbox" class="switch" role="switch">
+      <span>
+        Weekly Digest
+        <span class="choice__hint">Sonntag-Zusammenfassung der Woche</span>
+      </span>
+    </label>
+  </div>
+  <div class="cluster cluster--end">
+    <button type="button" class="btn btn--ghost">Abbrechen</button>
+    <button type="button" class="btn">Speichern</button>
+  </div>
+</section></div>
+            <div class="site-example__toolbar">
+              <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+            </div>
+            <div class="site-example__source" hidden>
+              <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;section class=&quot;stack stack--lg&quot; style=&quot;max-width: 32rem;&quot;&gt;
+  &lt;header&gt;
+    &lt;h2 style=&quot;margin-bottom: var(--space-4);&quot;&gt;Benachrichtigungen&lt;/h2&gt;
+    &lt;p class=&quot;site-muted&quot;&gt;Wähle wann und wie du Updates erhalten möchtest.&lt;/p&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;stack stack--md&quot;&gt;
+    &lt;label class=&quot;choice&quot;&gt;
+      &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot; checked&gt;
+      &lt;span&gt;
+        E-Mail-Benachrichtigungen
+        &lt;span class=&quot;choice__hint&quot;&gt;Neue Buchungen, Stornierungen&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;choice&quot;&gt;
+      &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot; checked&gt;
+      &lt;span&gt;
+        Push-Notifications
+        &lt;span class=&quot;choice__hint&quot;&gt;Mobile App + Browser&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;choice&quot;&gt;
+      &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot;&gt;
+      &lt;span&gt;
+        SMS-Reminder
+        &lt;span class=&quot;choice__hint&quot;&gt;24h vor Buchung&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;choice&quot;&gt;
+      &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot;&gt;
+      &lt;span&gt;
+        Weekly Digest
+        &lt;span class=&quot;choice__hint&quot;&gt;Sonntag-Zusammenfassung der Woche&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;cluster cluster--end&quot;&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn btn--ghost&quot;&gt;Abbrechen&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn&quot;&gt;Speichern&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/section&gt;">&lt;section class=&quot;stack stack--lg&quot; style=&quot;max-width: 32rem;&quot;&gt;
+  &lt;header&gt;
+    &lt;h2 style=&quot;margin-bottom: var(--space-4);&quot;&gt;Benachrichtigungen&lt;/h2&gt;
+    &lt;p class=&quot;site-muted&quot;&gt;Wähle wann und wie du Updates erhalten möchtest.&lt;/p&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;stack stack--md&quot;&gt;
+    &lt;label class=&quot;choice&quot;&gt;
+      &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot; checked&gt;
+      &lt;span&gt;
+        E-Mail-Benachrichtigungen
+        &lt;span class=&quot;choice__hint&quot;&gt;Neue Buchungen, Stornierungen&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;choice&quot;&gt;
+      &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot; checked&gt;
+      &lt;span&gt;
+        Push-Notifications
+        &lt;span class=&quot;choice__hint&quot;&gt;Mobile App + Browser&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;choice&quot;&gt;
+      &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot;&gt;
+      &lt;span&gt;
+        SMS-Reminder
+        &lt;span class=&quot;choice__hint&quot;&gt;24h vor Buchung&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;choice&quot;&gt;
+      &lt;input type=&quot;checkbox&quot; class=&quot;switch&quot; role=&quot;switch&quot;&gt;
+      &lt;span&gt;
+        Weekly Digest
+        &lt;span class=&quot;choice__hint&quot;&gt;Sonntag-Zusammenfassung der Woche&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;cluster cluster--end&quot;&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn btn--ghost&quot;&gt;Abbrechen&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn&quot;&gt;Speichern&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</textarea>
+            </div>
+          </section>
+        </section>
+        <section class="site-doc__section" id="recipe-auth-otp">
+          <h2>OTP-Verifizierung</h2>
+          <p class="site-muted">2-Faktor-Auth-Step nach Login. Code aus SMS oder Authenticator-App eingeben.</p>
+          <section class="site-example" data-example>
+            <div class="site-example__preview" data-preview><section class="stack stack--md" style="max-width: 24rem; text-align: center;">
+  <h2 style="margin-bottom: var(--space-4);">Bestätigungscode eingeben</h2>
+  <p class="site-muted">Wir haben einen 6-stelligen Code an deine Nummer gesendet.</p>
+  <div class="otp-input" role="group" aria-label="Bestätigungscode" style="margin: 0 auto;">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 1 von 6">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 2 von 6">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 3 von 6">
+    <span class="otp-input__separator">–</span>
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 4 von 6">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 5 von 6">
+    <input class="otp-input__field" inputmode="numeric" pattern="[0-9]" maxlength="1" autocomplete="one-time-code" aria-label="Ziffer 6 von 6">
+  </div>
+  <button class="btn" type="button">Bestätigen</button>
+  <button class="btn btn--ghost btn--sm" type="button">Code erneut senden</button>
+</section></div>
+            <div class="site-example__toolbar">
+              <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+            </div>
+            <div class="site-example__source" hidden>
+              <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;section class=&quot;stack stack--md&quot; style=&quot;max-width: 24rem; text-align: center;&quot;&gt;
+  &lt;h2 style=&quot;margin-bottom: var(--space-4);&quot;&gt;Bestätigungscode eingeben&lt;/h2&gt;
+  &lt;p class=&quot;site-muted&quot;&gt;Wir haben einen 6-stelligen Code an deine Nummer gesendet.&lt;/p&gt;
+  &lt;div class=&quot;otp-input&quot; role=&quot;group&quot; aria-label=&quot;Bestätigungscode&quot; style=&quot;margin: 0 auto;&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 1 von 6&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 2 von 6&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 3 von 6&quot;&gt;
+    &lt;span class=&quot;otp-input__separator&quot;&gt;–&lt;/span&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 4 von 6&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 5 von 6&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 6 von 6&quot;&gt;
+  &lt;/div&gt;
+  &lt;button class=&quot;btn&quot; type=&quot;button&quot;&gt;Bestätigen&lt;/button&gt;
+  &lt;button class=&quot;btn btn--ghost btn--sm&quot; type=&quot;button&quot;&gt;Code erneut senden&lt;/button&gt;
+&lt;/section&gt;">&lt;section class=&quot;stack stack--md&quot; style=&quot;max-width: 24rem; text-align: center;&quot;&gt;
+  &lt;h2 style=&quot;margin-bottom: var(--space-4);&quot;&gt;Bestätigungscode eingeben&lt;/h2&gt;
+  &lt;p class=&quot;site-muted&quot;&gt;Wir haben einen 6-stelligen Code an deine Nummer gesendet.&lt;/p&gt;
+  &lt;div class=&quot;otp-input&quot; role=&quot;group&quot; aria-label=&quot;Bestätigungscode&quot; style=&quot;margin: 0 auto;&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 1 von 6&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 2 von 6&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 3 von 6&quot;&gt;
+    &lt;span class=&quot;otp-input__separator&quot;&gt;–&lt;/span&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 4 von 6&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 5 von 6&quot;&gt;
+    &lt;input class=&quot;otp-input__field&quot; inputmode=&quot;numeric&quot; pattern=&quot;[0-9]&quot; maxlength=&quot;1&quot; autocomplete=&quot;one-time-code&quot; aria-label=&quot;Ziffer 6 von 6&quot;&gt;
+  &lt;/div&gt;
+  &lt;button class=&quot;btn&quot; type=&quot;button&quot;&gt;Bestätigen&lt;/button&gt;
+  &lt;button class=&quot;btn btn--ghost btn--sm&quot; type=&quot;button&quot;&gt;Code erneut senden&lt;/button&gt;
+&lt;/section&gt;</textarea>
+            </div>
+          </section>
+        </section>
+        <section class="site-doc__section" id="recipe-empty-search">
+          <h2>Empty-State mit Search + CTA</h2>
+          <p class="site-muted">Kombinierter Empty-State für eine Suchresultat-Seite ohne Treffer.</p>
+          <section class="site-example" data-example>
+            <div class="site-example__preview" data-preview><div class="card" style="text-align: center; max-width: 32rem;">
+  <div style="font-size: 3rem; margin-bottom: var(--space-16); color: var(--color-text-tertiary);">⌕</div>
+  <h3 style="margin-bottom: var(--space-8);">Keine Kunden gefunden</h3>
+  <p style="color: var(--color-text-secondary); margin-bottom: var(--space-24);">
+    Versuche eine andere Suchanfrage oder lege einen neuen Kunden an.
+  </p>
+  <div class="cluster cluster--center">
+    <button type="button" class="btn btn--ghost">Filter zurücksetzen</button>
+    <button type="button" class="btn">Neuer Kunde</button>
+  </div>
+  <div style="margin-top: var(--space-24); padding-top: var(--space-16); border-top: 1px solid var(--color-border); display: flex; justify-content: center; gap: var(--space-12); font-size: var(--font-sm); color: var(--color-text-tertiary);">
+    <span><kbd class="kbd kbd--sm">⌘</kbd> + <kbd class="kbd kbd--sm">K</kbd> Suche</span>
+    <span><kbd class="kbd kbd--sm">N</kbd> Neuer Kunde</span>
+  </div>
+</div></div>
+            <div class="site-example__toolbar">
+              <button type="button" class="btn btn--ghost btn--sm" data-edit-toggle aria-pressed="false">Edit</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-copy>Copy</button>
+              <button type="button" class="btn btn--ghost btn--sm" data-reset hidden>Reset</button>
+            </div>
+            <div class="site-example__source" hidden>
+              <textarea class="site-example__editor" spellcheck="false" data-source data-original="&lt;div class=&quot;card&quot; style=&quot;text-align: center; max-width: 32rem;&quot;&gt;
+  &lt;div style=&quot;font-size: 3rem; margin-bottom: var(--space-16); color: var(--color-text-tertiary);&quot;&gt;⌕&lt;/div&gt;
+  &lt;h3 style=&quot;margin-bottom: var(--space-8);&quot;&gt;Keine Kunden gefunden&lt;/h3&gt;
+  &lt;p style=&quot;color: var(--color-text-secondary); margin-bottom: var(--space-24);&quot;&gt;
+    Versuche eine andere Suchanfrage oder lege einen neuen Kunden an.
+  &lt;/p&gt;
+  &lt;div class=&quot;cluster cluster--center&quot;&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn btn--ghost&quot;&gt;Filter zurücksetzen&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn&quot;&gt;Neuer Kunde&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div style=&quot;margin-top: var(--space-24); padding-top: var(--space-16); border-top: 1px solid var(--color-border); display: flex; justify-content: center; gap: var(--space-12); font-size: var(--font-sm); color: var(--color-text-tertiary);&quot;&gt;
+    &lt;span&gt;&lt;kbd class=&quot;kbd kbd--sm&quot;&gt;⌘&lt;/kbd&gt; + &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;K&lt;/kbd&gt; Suche&lt;/span&gt;
+    &lt;span&gt;&lt;kbd class=&quot;kbd kbd--sm&quot;&gt;N&lt;/kbd&gt; Neuer Kunde&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;">&lt;div class=&quot;card&quot; style=&quot;text-align: center; max-width: 32rem;&quot;&gt;
+  &lt;div style=&quot;font-size: 3rem; margin-bottom: var(--space-16); color: var(--color-text-tertiary);&quot;&gt;⌕&lt;/div&gt;
+  &lt;h3 style=&quot;margin-bottom: var(--space-8);&quot;&gt;Keine Kunden gefunden&lt;/h3&gt;
+  &lt;p style=&quot;color: var(--color-text-secondary); margin-bottom: var(--space-24);&quot;&gt;
+    Versuche eine andere Suchanfrage oder lege einen neuen Kunden an.
+  &lt;/p&gt;
+  &lt;div class=&quot;cluster cluster--center&quot;&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn btn--ghost&quot;&gt;Filter zurücksetzen&lt;/button&gt;
+    &lt;button type=&quot;button&quot; class=&quot;btn&quot;&gt;Neuer Kunde&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div style=&quot;margin-top: var(--space-24); padding-top: var(--space-16); border-top: 1px solid var(--color-border); display: flex; justify-content: center; gap: var(--space-12); font-size: var(--font-sm); color: var(--color-text-tertiary);&quot;&gt;
+    &lt;span&gt;&lt;kbd class=&quot;kbd kbd--sm&quot;&gt;⌘&lt;/kbd&gt; + &lt;kbd class=&quot;kbd kbd--sm&quot;&gt;K&lt;/kbd&gt; Suche&lt;/span&gt;
+    &lt;span&gt;&lt;kbd class=&quot;kbd kbd--sm&quot;&gt;N&lt;/kbd&gt; Neuer Kunde&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</textarea>
+            </div>
+          </section>
+        </section>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

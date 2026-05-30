@@ -1,0 +1,157 @@
+/**
+ * File-Upload Component
+ * ======================
+ *
+ * Styled <label> als Click- und Dropzone, mit verstecktem nativen
+ * <input type="file"> für die echte Form-Integration. Click & Keyboard
+ * funktionieren ohne JS (Native Label-for-Input-Mechanik); Drag/Drop und
+ * Selected-File-Anzeige brauchen ein JS-Snippet (im Header dokumentiert).
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --file-upload-bg / --file-upload-border / --file-upload-radius
+ *     --file-upload-padding
+ *     --file-upload-hover-bg / --file-upload-active-border
+ *
+ * Markup:
+ *   <label class="file-upload">
+ *     <input type="file" class="file-upload__input" accept="image/*">
+ *     <span class="file-upload__icon" aria-hidden="true">📁</span>
+ *     <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+ *     <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+ *   </label>
+ *
+ * Compact-Variante (inline in Form):
+ *   <label class="file-upload file-upload--compact">
+ *     <input type="file" class="file-upload__input">
+ *     <span class="file-upload__icon" aria-hidden="true">📎</span>
+ *     <span class="file-upload__text">Anhang …</span>
+ *   </label>
+ *
+ * JS-Snippet (Konsument kopiert ins eigene Setup) — Drag-State,
+ * File-Drop-Übernahme und Selected-File-Anzeige. dragleave feuert auch
+ * beim Übertritt auf Kind-Elemente (Icon, Text-Spans); ein Counter hält
+ * dragging=true bis der Pointer wirklich die Dropzone verlässt.
+ *
+ *   document.querySelectorAll(".file-upload").forEach((label) => {
+ *     const input = label.querySelector('input[type="file"]');
+ *     const text  = label.querySelector(".file-upload__text");
+ *     const defaultText = text?.textContent;
+ *     let depth = 0;
+ *
+ *     label.addEventListener("dragenter", (ev) => {
+ *       ev.preventDefault();
+ *       depth++;
+ *       label.dataset.dragging = "true";
+ *     });
+ *     label.addEventListener("dragover", (ev) => ev.preventDefault());
+ *     label.addEventListener("dragleave", () => {
+ *       depth = Math.max(0, depth - 1);
+ *       if (depth === 0) delete label.dataset.dragging;
+ *     });
+ *     label.addEventListener("drop", (ev) => {
+ *       ev.preventDefault();
+ *       depth = 0;
+ *       delete label.dataset.dragging;
+ *       if (!input || !ev.dataTransfer?.files?.length) return;
+ *       input.files = ev.dataTransfer.files;
+ *       input.dispatchEvent(new Event("change", { bubbles: true }));
+ *     });
+ *     input?.addEventListener("change", () => {
+ *       if (!text) return;
+ *       const n = input.files?.length || 0;
+ *       text.textContent = n === 0 ? defaultText
+ *         : n === 1 ? `✓ ${input.files[0].name}`
+ *         : `✓ ${input.files[0].name}  (+${n - 1} weitere)`;
+ *     });
+ *   });
+ */
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  padding: var(--file-upload-padding, var(--space-32) var(--space-24));
+  background: var(--file-upload-bg, var(--color-bg-secondary));
+  border: 2px dashed var(--file-upload-border, var(--color-border-dark));
+  border-radius: var(--file-upload-radius, var(--radius-lg));
+  color: var(--color-text-secondary);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--motion-feedback),
+              background-color var(--motion-feedback);
+}
+
+.file-upload:hover {
+  border-color: var(--file-upload-active-border, var(--color-interactive));
+  background: var(--file-upload-hover-bg,
+              color-mix(in oklch, var(--color-interactive) 5%, var(--color-bg-secondary)));
+}
+
+/* :focus-within fängt focus-visible des nested <input>, sodass der
+   Outline-Ring auf dem visuellen Label erscheint, nicht auf dem versteckten Input. */
+.file-upload:focus-within {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+  border-color: var(--file-upload-active-border, var(--color-interactive));
+}
+
+/* Drag-Over-Visual: JS setzt data-dragging="true" auf die Label-Wrapper. */
+.file-upload[data-dragging="true"] {
+  border-color: var(--file-upload-active-border, var(--color-interactive));
+  background: color-mix(in oklch, var(--color-interactive) 10%, var(--color-bg-secondary));
+}
+
+/* Native input visuell verstecken, aber für Screen-Reader und Keyboard
+   weiterhin fokussierbar. Spiegelt das .sr-only-Pattern aus base/reset.css —
+   Konsumenten können alternativ class="sr-only" direkt am Input setzen. */
+.file-upload__input {
+  position: absolute;
+  width:  1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.file-upload__icon {
+  font-size: var(--font-2xl);
+  color: var(--color-interactive);
+  line-height: 1;
+}
+
+.file-upload__text {
+  font-size: var(--font-base);
+  font-weight: var(--fw-600);
+  color: var(--color-text-primary);
+}
+
+.file-upload__hint {
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* Compact-Variante: horizontal, weniger Padding, kleineres Icon.
+   Nutzbar inline in Forms. Padding folgt der Density-Achse (row-tier),
+   damit der Compact-Drop sich in compact/spacious-Modes konsistent
+   zu Table-Rows und List-Rows verhält. */
+.file-upload--compact {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--density-row-py) var(--density-row-px);
+  text-align: start;
+}
+
+.file-upload--compact .file-upload__icon {
+  font-size: var(--font-lg);
+}
+
+.file-upload--compact .file-upload__text {
+  font-size: var(--font-sm);
+}

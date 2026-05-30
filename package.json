@@ -1,21 +1,100 @@
 {
   "name": "@gasserwerksolutions/design-system",
-  "version": "0.2.0",
+  "version": "0.31.0",
   "description": "Contract-based Multi-Tone CSS Design-System.",
   "license": "MIT",
   "main": "main.css",
   "style": "main.css",
+  "module": "./dist/js/index.js",
+  "types": "./dist/js/index.d.ts",
+  "exports": {
+    ".": "./main.css",
+    "./min": "./dist/main.min.css",
+    "./js": {
+      "types": "./dist/js/index.d.ts",
+      "import": "./dist/js/index.js"
+    },
+    "./js/bundle": "./dist/js/design-system.bundle.js",
+    "./js/iife": "./dist/js/design-system.iife.js",
+    "./components/*": "./components/*",
+    "./themes/*": "./themes/*",
+    "./tokens.json": "./dist/tokens.json",
+    "./bundle-stats.json": "./dist/bundle-stats.json"
+  },
+  "files": [
+    "main.css",
+    "base/",
+    "components/",
+    "semantic/",
+    "state/",
+    "themes/",
+    "tokens/",
+    "dist/js/",
+    "dist/main.min.css",
+    "dist/bundle-stats.json",
+    "dist/tokens.json",
+    "dist/tokens.d.ts",
+    "ADR-001-container-max-inheritance.md",
+    "ADR-002-modern-css-architecture.md",
+    "ADR-003-status-color-sand-filter.md",
+    "ADR-004-palette-chroma-filter.md",
+    "ADR-005-bounce-only-as-explicit-opt-in.md",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md"
+  ],
   "scripts": {
     "lint": "node scripts/lint-themes.js",
     "lint:strict": "node scripts/lint-themes.js --strict",
+    "test:lint": "node scripts/test-lint.js",
     "check:contrast": "node scripts/check-contrast.js",
     "check:contrast:browser": "node scripts/check-contrast-browser.js",
     "check:contrast:compare": "node scripts/check-contrast-browser.js --compare",
-    "check": "npm run lint && npm run check:contrast",
-    "check:full": "npm run lint && npm run check:contrast && npm run check:contrast:browser"
+    "check:a11y": "node scripts/check-a11y.js",
+    "check:a11y:strict": "node scripts/check-a11y.js --strict",
+    "check:visual": "node scripts/check-visual.js",
+    "check:visual:update": "node scripts/check-visual.js --update",
+    "check:journeys": "node scripts/check-journeys.js",
+    "check:rendered": "node scripts/check-rendered.js",
+    "check:site": "node scripts/check-site.js",
+    "check:package": "node scripts/check-package.js",
+    "measure": "node scripts/measure-size.js",
+    "measure:check": "node scripts/measure-size.js --check",
+    "check:tools": "node scripts/check-a11y.js --self-test && node scripts/check-visual.js --self-test",
+    "audit": "node scripts/audit-system.js",
+    "build:js": "node scripts/build-js.js",
+    "build:tokens": "node scripts/export-tokens.js && node scripts/generate-types.js",
+    "build:site": "node scripts/build-site.js",
+    "build": "npm run build:js && npm run build:tokens",
+    "check": "npm run lint && npm run test:lint && npm run check:contrast",
+    "check:full": "npm run build:js && npm run lint && npm run test:lint && npm run check:contrast && npm run check:contrast:browser && npm run check:a11y && npm run check:visual && npm run check:journeys && npm run measure:check && npm run build:site && npm run check:site && npm run check:package",
+    "release": "node scripts/release.js",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run check:full && npm run check:tools"
   },
-  "engines": { "node": ">=18" },
-  "optionalDependencies": {
-    "puppeteer": "^22.0.0"
+  "engines": {
+    "node": ">=18"
+  },
+  "bundleBudget": {
+    "_comment": "Größenbudgets in Bytes, gemessen via scripts/measure-size.js. Reserve ~10% über aktuellem Stand. Überschreitung failt npm run measure:check.",
+    "bundle": {
+      "raw": 145000,
+      "gzip": 22000
+    },
+    "minified": {
+      "raw": 115000,
+      "gzip": 20500
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "axe-core": "^4.11.4",
+    "esbuild": "^0.28.0",
+    "pixelmatch": "^7.2.0",
+    "playwright": "^1.60.0",
+    "pngjs": "^7.0.0",
+    "postcss": "^8.5.15",
+    "puppeteer": "^25.1.0",
+    "typescript": "^6.0.3"
   }
 }

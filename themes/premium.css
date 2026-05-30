@@ -10,8 +10,10 @@
   --color-interactive:       var(--gray-900);
   --color-interactive-light: var(--gray-200);
   --color-interactive-dark:  var(--gray-950);
-  --color-text-primary:      var(--gray-950);
-  --color-text-secondary:    var(--gray-700);
+  /* Mode-aware via light-dark — premium-light bleibt extra-kontrastreich,
+     dark erbt globale defaults */
+  --color-text-primary:      light-dark(var(--gray-950), var(--gray-50));
+  --color-text-secondary:    light-dark(var(--gray-700), var(--gray-300));
   --color-focus:             var(--gray-900);
   --color-focus-ring:        var(--gray-300);
 
@@ -31,22 +33,24 @@
   --space-inline:  var(--space-24);
   --space-block:   var(--space-40);
   --space-section: var(--space-96);
-  --section-py:    var(--space-96);
-  --container-max: 80ch;
+
+  /* Editorial-Spalte: nur .container--prose verengt sich, .container bleibt
+     auf 1280px. Verhindert, dass UI-Chrome (Topbar, Grids) via
+     Custom-Property-Cascade auf Editorial-Breite verengt. Siehe ADR-001. */
+  --prose-max:     80ch;
 
   /* Motion */
   --duration-fast:   var(--motion-slow);
   --duration-medium: var(--motion-slower);
   --easing-medium:   cubic-bezier(0.25, 0.1, 0.25, 1);
 
-  /* Button */
+  /* Button — Padding folgt der Density-Achse. Identität via radius+weight+
+     letter+transform statt hardcoded Padding (siehe ADR-002, v0.7.2). */
   --btn-bg:           var(--gray-900);
   --btn-bg-hover:     var(--gray-800);
   --btn-fg:           white;
   --btn-border:       var(--gray-900);
   --btn-radius:       var(--radius-2);
-  --btn-px:           var(--space-32);
-  --btn-py:           var(--space-16);
   --btn-weight:       500;
   --btn-letter:       1px;
   --btn-transform:    uppercase;

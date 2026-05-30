@@ -1,0 +1,137 @@
+/**
+ * App-Shell Layout-Primitive
+ * ===========================
+ *
+ * Vollständiges Page-Grid für Dashboard- und App-Layouts: Header oben,
+ * Sidebar links, Main-Content rechts, optional Footer unten.
+ *
+ * Pures CSS Grid, kein JS. Responsive: bei schmaler Viewport collapsed
+ * die Sidebar über den Main-Bereich (Default Breakpoint 768px). Wer
+ * eine echte mobile-Drawer-Variante braucht, kombiniert mit der Drawer-
+ * Component und togglet via JS.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --app-shell-sidebar-w    Sidebar-Breite (default 16rem)
+ *     --app-shell-header-h     Header-Höhe (default 3.5rem)
+ *     --app-shell-min-h        Mindesthöhe (default 100vh; für embedded
+ *                              Demo-Frames z.B. auf eine fixe rem setzen)
+ *
+ * Struktur:
+ *   <div class="app-shell">
+ *     <header class="app-shell__header">…</header>
+ *     <aside  class="app-shell__sidebar">…</aside>
+ *     <main   class="app-shell__main">…</main>
+ *     <footer class="app-shell__footer">…</footer>     (optional)
+ *   </div>
+ *
+ * Modifier:
+ *   .app-shell--right-sidebar    Sidebar rechts statt links
+ *   .app-shell--no-header        ohne Header (z.B. embedded-Shell)
+ */
+
+.app-shell {
+  display: grid;
+  grid-template-columns: var(--app-shell-sidebar-w, 16rem) 1fr;
+  grid-template-rows: var(--app-shell-header-h, 3.5rem) 1fr auto;
+  grid-template-areas:
+    "header  header"
+    "sidebar main"
+    "sidebar footer";
+  min-height: var(--app-shell-min-h, 100vh);
+}
+
+.app-shell__header {
+  grid-area: header;
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-dropdown);
+  background: color-mix(in oklch, var(--color-bg) 85%, transparent);
+  backdrop-filter: blur(8px);
+  border-block-end: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding-inline: var(--space-16);
+}
+
+.app-shell__sidebar {
+  grid-area: sidebar;
+  background: var(--color-bg-secondary);
+  border-inline-end: 1px solid var(--color-border);
+  overflow-y: auto;
+  padding: var(--space-16);
+}
+
+.app-shell__main {
+  grid-area: main;
+  padding: var(--space-24);
+  overflow-y: auto;
+}
+
+.app-shell__footer {
+  grid-area: footer;
+  padding: var(--space-12) var(--space-16);
+  border-block-start: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+}
+
+/* Sidebar rechts: spiegelt Grid-Spalten + Area-Map. */
+.app-shell--right-sidebar {
+  grid-template-columns: 1fr var(--app-shell-sidebar-w, 16rem);
+  grid-template-areas:
+    "header  header"
+    "main    sidebar"
+    "footer  sidebar";
+}
+
+.app-shell--right-sidebar > .app-shell__sidebar {
+  border-inline-end: none;
+  border-inline-start: 1px solid var(--color-border);
+}
+
+/* Ohne Header: Sidebar + Main füllen voll. */
+.app-shell--no-header {
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "sidebar main"
+    "sidebar footer";
+}
+
+.app-shell--no-header.app-shell--right-sidebar {
+  grid-template-areas:
+    "main    sidebar"
+    "footer  sidebar";
+}
+
+/* Responsive Collapse: Sidebar stapelt sich über Main bei schmaler Viewport.
+   Header bleibt sticky oben. */
+@media (max-width: 768px) {
+  .app-shell,
+  .app-shell--right-sidebar {
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--app-shell-header-h, 3.5rem) auto 1fr auto;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "main"
+      "footer";
+  }
+
+  .app-shell--no-header,
+  .app-shell--no-header.app-shell--right-sidebar {
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "sidebar"
+      "main"
+      "footer";
+  }
+
+  .app-shell__sidebar,
+  .app-shell--right-sidebar > .app-shell__sidebar {
+    border-inline-end: none;
+    border-inline-start: none;
+    border-block-end: 1px solid var(--color-border);
+  }
+}

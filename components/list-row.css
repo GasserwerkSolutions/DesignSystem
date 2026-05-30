@@ -25,6 +25,31 @@
  *     </div>
  *   </div>
  *
+ *   In schmalem Container (.cq) versteckt sich __meta automatisch:
+ *   <div class="cq" style="max-width: 320px;">
+ *     <div class="list">
+ *       <div class="list-row">
+ *         <div class="list-row__lead"><span class="avatar">AN</span></div>
+ *         <div class="list-row__body">
+ *           <div class="list-row__title">Anna Meier</div>
+ *           <div class="list-row__subtitle">09:00 – Haarschnitt</div>
+ *         </div>
+ *         <div class="list-row__meta">12 Buchungen</div>
+ *         <div class="list-row__trail">
+ *           <span class="badge badge--success">OK</span>
+ *         </div>
+ *       </div>
+ *     </div>
+ *   </div>
+ *
+ * Container-Aware (opt-in via .cq Wrapper):
+ *   In einem .cq-Wrapper passt sich die Row an ihren Container an:
+ *     < 480px (Sidebar-Spalte) → .list-row__meta wird versteckt; Body
+ *                                wickelt sich automatisch im verfügbaren
+ *                                Platz. Trail bleibt sichtbar (kompakter).
+ *     ≥ 480px                  → volle Row mit Lead + Body + Meta + Trail.
+ *   Ohne .cq-Wrapper ist die Row immer "voll" — backward-compatible.
+ *
  * Modifier:
  *   .list-row--compact       reduziertes Padding
  *   .list-row--interactive   mit cursor: pointer + stärkerer Hover
@@ -68,11 +93,14 @@
   display: flex;
   align-items: center;
   gap: var(--space-12);
-  padding: var(--list-row-py, var(--space-12)) var(--list-row-px, var(--space-16));
+  padding: var(--list-row-py, var(--density-row-py)) var(--list-row-px, var(--density-row-px));
   background: var(--list-row-bg, transparent);
   border-block-end: 1px solid var(--list-row-divider, var(--color-border));
   transition: background var(--duration-fast) var(--easing-fast);
   min-width: 0;
+  /* Performance: layout-Containment. Bei langen Listen (Activity-Feed,
+     Customer-Liste) berechnet Browser jede Row isoliert. */
+  contain: layout;
 }
 
 .list-row:last-child {
@@ -144,4 +172,14 @@
 
 .list-row--interactive:hover {
   --list-row-hover-bg: var(--color-bg-tertiary);
+}
+
+/* Container-aware: in einem .cq-Wrapper < 480px Breite (z.B. Sidebar-Slot)
+   wird __meta versteckt, weil sie sonst die Title-Truncation eskaliert.
+   Trail bleibt — Badges/Actions sind in einer Sidebar oft wichtiger als
+   Metadaten. Breakpoint-Token: --cq-bp-sm. */
+@container (max-width: 479px) {
+  .list-row__meta {
+    display: none;
+  }
 }

@@ -11,6 +11,7 @@
 @import "./themes/minimal.css"    layer(themes);
 
 @import "./semantic/dark.css"     layer(mode);
+@import "./semantic/density.css"  layer(mode);
 
 @import "./base/reset.css"      layer(reset);
 @import "./base/typography.css" layer(base);
@@ -19,18 +20,24 @@
 
 @import "./state/state.css" layer(state);
 
+@import "./components/chevron.css" layer(components);
 @import "./components/button.css"  layer(components);
 @import "./components/card.css"    layer(components);
 @import "./components/section.css" layer(components);
 @import "./components/badge.css"   layer(components);
+@import "./components/tag.css"     layer(components);
 @import "./components/stat.css"    layer(components);
 @import "./components/nav.css"     layer(components);
 @import "./components/callout.css" layer(components);
+@import "./components/alert.css"   layer(components);
 @import "./components/steps.css"   layer(components);
+@import "./components/timeline.css" layer(components);
+@import "./components/chart.css"   layer(components);
 @import "./components/table.css"      layer(components);
 @import "./components/code-block.css" layer(components);
 @import "./components/progress.css"   layer(components);
 @import "./components/avatar.css"     layer(components);
+@import "./components/avatar-stack.css" layer(components);
 @import "./components/trend.css"      layer(components);
 @import "./components/panel-list.css" layer(components);
 @import "./components/banner.css"     layer(components);
@@ -38,16 +45,35 @@
 @import "./components/list-row.css"   layer(components);
 @import "./components/funnel.css"     layer(components);
 @import "./components/checkbox.css"    layer(components);
+@import "./components/switch.css"      layer(components);
 @import "./components/field.css"       layer(components);
 @import "./components/search.css"      layer(components);
+@import "./components/select.css"      layer(components);
+@import "./components/date-input.css"  layer(components);
+@import "./components/combobox.css"    layer(components);
+@import "./components/file-upload.css" layer(components);
 @import "./components/modal.css"       layer(components);
 @import "./components/drawer.css"      layer(components);
 @import "./components/tooltip.css"     layer(components);
+@import "./components/popover.css"     layer(components);
 @import "./components/tabs.css"        layer(components);
 @import "./components/accordion.css"   layer(components);
+@import "./components/tree.css"        layer(components);
 @import "./components/skeleton.css"    layer(components);
+@import "./components/spinner.css"     layer(components);
 @import "./components/empty-state.css" layer(components);
 @import "./components/toast.css"       layer(components);
 @import "./components/breadcrumbs.css" layer(components);
 @import "./components/pagination.css"  layer(components);
 @import "./components/range.css"       layer(components);
+@import "./components/slider.css"      layer(components);
+@import "./components/app-shell.css"   layer(components);
+@import "./components/kbd.css"             layer(components);
+@import "./components/segmented.css"       layer(components);
+@import "./components/copy-button.css"     layer(components);
+@import "./components/command-palette.css" layer(components);
+@import "./components/otp-input.css"       layer(components);
+@import "./components/theme-toggle.css"    layer(components);
+@import "./components/hover-card.css"      layer(components);
+@import "./components/back-to-top.css"     layer(components);
+@import "./components/scroll-spy.css"      layer(components);

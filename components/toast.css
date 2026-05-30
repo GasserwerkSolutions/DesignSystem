@@ -52,8 +52,10 @@
   border: 1px solid var(--color-border);
   border-inline-start: 4px solid var(--toast-accent, var(--color-interactive));
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--elevation-4);
   pointer-events: auto;
+  /* reduced-motion: handled by reset.css — one-shot 350ms entrance,
+     globaler !important-Override reduziert auf 0.01ms. */
   animation: toast-in var(--motion-entrance);
 }
 
@@ -62,10 +64,10 @@
   to   { opacity: 1; transform: none; }
 }
 
-.toast--success { --toast-accent: var(--color-success); }
-.toast--warning { --toast-accent: var(--color-warning); }
-.toast--danger  { --toast-accent: var(--color-error); }
-.toast--info    { --toast-accent: var(--color-info); }
+.toast--success { --toast-accent: var(--status-success-border); }
+.toast--warning { --toast-accent: var(--status-warning-border); }
+.toast--danger  { --toast-accent: var(--status-danger-border); }
+.toast--info    { --toast-accent: var(--status-info-border); }
 
 .toast__body {
   flex: 1 1 auto;

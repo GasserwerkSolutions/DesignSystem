@@ -25,6 +25,16 @@
   border: 1px solid var(--accordion-border, var(--color-border));
   border-radius: var(--accordion-radius, var(--radius-md));
   overflow: hidden;
+  /* interpolate-size: allow-keywords ermöglicht Animation zwischen
+     Größen-Keywords (auto, fit-content). Damit kann <details> smooth
+     auf seine natürliche Höhe expandieren. Chrome 129+ (2024), Firefox/
+     Safari progressive. Fallback: instant toggle wie zuvor. */
+  interpolate-size: allow-keywords;
+  /* Performance: bei vielen geschlossenen Accordions (FAQ-Pages) ist
+     der Body invisible — content-visibility: auto überspringt den
+     Render bis Detail-Toggle. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 4rem;
 }
 
 .accordion + .accordion {
@@ -32,7 +42,7 @@
 }
 
 .accordion__summary {
-  padding: var(--space-md) var(--space-lg);
+  padding: var(--accordion-summary-py, var(--density-row-py)) var(--accordion-summary-px, var(--density-row-px));
   cursor: pointer;
   font-weight: var(--fw-600);
   color: var(--color-text-primary);

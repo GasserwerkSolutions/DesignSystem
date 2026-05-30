@@ -18,10 +18,10 @@
       padding-block: var(--space-12);
       backdrop-filter: blur(8px);
       background: color-mix(in oklch, var(--color-bg) 85%, transparent);
-      --container-max: 1280px;
     }
-    .topbar__inner { display: flex; gap: var(--space-12); align-items: center; flex-wrap: wrap; }
+    .topbar__inner { display: flex; gap: var(--space-8); align-items: center; flex-wrap: wrap; }
     .topbar__label { font-size: var(--font-sm); font-weight: var(--fw-600); color: var(--color-text-secondary); margin-right: auto; }
+    .topbar__separator { color: var(--color-border-dark); padding-inline: var(--space-4); }
     .topbar__label strong { font-family: var(--font-mono); font-weight: var(--fw-700); color: var(--color-interactive); }
 
     .demo-grid { display: grid; gap: var(--space-16); grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
@@ -72,13 +72,17 @@
 
   <header class="topbar">
     <div class="container topbar__inner">
-      <span class="topbar__label">Aktiver Tone: <strong id="tone-readout">trust</strong></span>
+      <span class="topbar__label">Tone: <strong id="tone-readout">trust</strong> · Density: <strong id="density-readout">comfortable</strong></span>
       <button class="btn btn--sm btn--ghost" data-set-tone="trust">Trust</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="playful">Playful</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="premium">Premium</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="industrial">Industrial</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="modern">Modern</button>
       <button class="btn btn--sm btn--ghost" data-set-tone="minimal">Minimal</button>
+      <span class="topbar__separator" aria-hidden="true">·</span>
+      <button class="btn btn--sm btn--ghost" data-set-density="compact">Compact</button>
+      <button class="btn btn--sm btn--ghost" data-set-density="comfortable">Comfortable</button>
+      <button class="btn btn--sm btn--ghost" data-set-density="spacious">Spacious</button>
       <button class="btn btn--sm btn--secondary" data-toggle-mode aria-pressed="false">Dark</button>
     </div>
   </header>
@@ -88,7 +92,7 @@
     <section class="section section--hero">
       <span class="tone-pill">data-tone × data-mode</span>
       <h1>Design System</h1>
-      <p class="lead">Contract-basiertes Multi-Tone-System. 6 Tones × 2 Modes, 29 Components, WCAG-AA validiert.</p>
+      <p class="lead">Contract-basiertes Multi-Tone-System. 6 Tones × 2 Modes × 3 Densities, 50 Components, WCAG-AA validiert.</p>
       <div class="demo-row">
         <button class="btn">Primary Action</button>
         <button class="btn btn--secondary">Secondary</button>
@@ -143,6 +147,993 @@
           <h3>Bordered Card</h3>
           <p>Starker Border.</p>
         </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Density-Achse</h2>
+      <p>
+        Compact / Comfortable / Spacious (oben in der Topbar) wirken auf alle
+        Components, deren Padding-Tokens das Theme nicht explizit überschreibt.
+        Trust und Modern sind density-responsive; Premium / Playful / Industrial / Minimal
+        behalten ihre identitätsstiftenden Sizes. Buttons, Inputs, Tables, Tabs und
+        List-Rows reagieren in jedem Theme.
+      </p>
+      <div class="grid-2">
+        <div class="field" style="max-width: 22rem">
+          <label class="field__label" for="density-email">Email</label>
+          <input id="density-email" type="email" placeholder="name@example.com">
+          <p class="field__hint">Höhe folgt der Density-Achse.</p>
+        </div>
+        <div style="display:flex; gap: var(--space-8); align-items: flex-end;">
+          <button class="btn">Senden</button>
+          <button class="btn btn--secondary">Verwerfen</button>
+        </div>
+      </div>
+      <div class="table-wrap" style="margin-block-start: var(--space-16)">
+        <table class="table">
+          <thead><tr><th>Service</th><th>Dauer</th><th>Preis</th></tr></thead>
+          <tbody>
+            <tr><td>Damen-Haarschnitt</td><td>45 min</td><td>CHF 65</td></tr>
+            <tr><td>Färben &amp; Strähnen</td><td>120 min</td><td>CHF 180</td></tr>
+            <tr><td>Bart-Trim</td><td>20 min</td><td>CHF 25</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Tree</h2>
+      <p>
+        Hierarchische Liste mit Expand/Collapse via native
+        <code>&lt;details&gt;</code>/<code>&lt;summary&gt;</code>. Disclosure-Semantik,
+        Keyboard (Enter/Space) und A11Y kommen vom Browser — kein JS nötig.
+        Chevron rotiert über das <code>[open]</code>-Attribut.
+      </p>
+      <div class="grid-2">
+        <div class="demo-block">
+          <span class="demo-label">Folder-Struktur</span>
+          <ul class="tree">
+            <li>
+              <details class="tree__node" open>
+                <summary class="tree__summary">
+                  <span class="chevron chevron--right" aria-hidden="true"></span>
+                  <span class="tree__label">📂 Dokumente</span>
+                  <span class="badge badge--neutral">14</span>
+                </summary>
+                <ul>
+                  <li>
+                    <details class="tree__node" open>
+                      <summary class="tree__summary">
+                        <span class="chevron chevron--right" aria-hidden="true"></span>
+                        <span class="tree__label">📂 Rechnungen 2026</span>
+                      </summary>
+                      <ul>
+                        <li><a class="tree__leaf" href="#">📄 Mai.pdf</a></li>
+                        <li><a class="tree__leaf" href="#" aria-current="true">📄 April.pdf</a></li>
+                        <li><a class="tree__leaf" href="#">📄 März.pdf</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                  <li>
+                    <details class="tree__node">
+                      <summary class="tree__summary">
+                        <span class="chevron chevron--right" aria-hidden="true"></span>
+                        <span class="tree__label">📂 Verträge</span>
+                      </summary>
+                      <ul>
+                        <li><a class="tree__leaf" href="#">📄 Mietvertrag.pdf</a></li>
+                      </ul>
+                    </details>
+                  </li>
+                  <li><a class="tree__leaf" href="#">📄 Steuererklärung.xlsx</a></li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details class="tree__node">
+                <summary class="tree__summary">
+                  <span class="chevron chevron--right" aria-hidden="true"></span>
+                  <span class="tree__label">📂 Bilder</span>
+                  <span class="badge badge--neutral">238</span>
+                </summary>
+                <ul>
+                  <li><a class="tree__leaf" href="#">🖼 logo.png</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Settings-Navigation</span>
+          <ul class="tree">
+            <li>
+              <details class="tree__node" open>
+                <summary class="tree__summary">
+                  <span class="chevron chevron--right" aria-hidden="true"></span>
+                  <span class="tree__label">Konto</span>
+                </summary>
+                <ul>
+                  <li><a class="tree__leaf" href="#">Profil</a></li>
+                  <li><a class="tree__leaf" href="#">Sicherheit</a></li>
+                  <li><a class="tree__leaf" href="#">Benachrichtigungen</a></li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details class="tree__node" open>
+                <summary class="tree__summary">
+                  <span class="chevron chevron--right" aria-hidden="true"></span>
+                  <span class="tree__label">Salon</span>
+                </summary>
+                <ul>
+                  <li><a class="tree__leaf" href="#">Öffnungszeiten</a></li>
+                  <li><a class="tree__leaf" href="#">Services</a></li>
+                  <li><a class="tree__leaf" href="#">Stundensatz</a></li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details class="tree__node">
+                <summary class="tree__summary">
+                  <span class="chevron chevron--right" aria-hidden="true"></span>
+                  <span class="tree__label">Abrechnung</span>
+                </summary>
+                <ul>
+                  <li><a class="tree__leaf" href="#">Plan &amp; Tarif</a></li>
+                  <li><a class="tree__leaf" href="#">Zahlungsmethode</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Chart-Container</h2>
+      <p>
+        Library-agnostischer Frame — Konsument bringt das Rendering mit
+        (SVG inline, Canvas, Chart.js, D3, …). Das DS liefert Container,
+        Color-Palette (Okabe-Ito, Color-Blind-Safe) und Trend-Variants.
+        Die Palette wechselt im Dark-Mode automatisch (heller, ent-sättigt)
+        — alle 8 Kategorien bleiben unterscheidbar.
+      </p>
+      <div class="grid-2">
+        <figure class="chart">
+          <figcaption class="chart__header">
+            <div>
+              <h3 class="chart__title">Umsatz Q1</h3>
+              <p class="chart__subtitle">CHF, monatlich</p>
+            </div>
+            <span class="chart__trend chart__trend--positive">+12.4%</span>
+          </figcaption>
+          <div class="chart__body">
+            <svg viewBox="0 0 400 180" role="img" aria-label="Balkendiagramm Umsatz Januar bis April">
+              <g>
+                <rect x="20"  y="90"  width="60" height="80"  rx="4" fill="var(--chart-1)"></rect>
+                <rect x="100" y="60"  width="60" height="110" rx="4" fill="var(--chart-1)"></rect>
+                <rect x="180" y="40"  width="60" height="130" rx="4" fill="var(--chart-1)"></rect>
+                <rect x="260" y="20"  width="60" height="150" rx="4" fill="var(--chart-1)"></rect>
+              </g>
+              <line x1="0" y1="170" x2="400" y2="170" stroke="var(--color-border)" stroke-width="1"/>
+              <g font-size="11" font-family="var(--font-mono)" fill="var(--color-text-tertiary)">
+                <text x="50"  y="178" text-anchor="middle" dy="0.8em">Jan</text>
+                <text x="130" y="178" text-anchor="middle" dy="0.8em">Feb</text>
+                <text x="210" y="178" text-anchor="middle" dy="0.8em">Mär</text>
+                <text x="290" y="178" text-anchor="middle" dy="0.8em">Apr</text>
+              </g>
+            </svg>
+          </div>
+          <p class="chart__source">Buchungssystem · 14:32</p>
+        </figure>
+
+        <figure class="chart">
+          <figcaption class="chart__header">
+            <div>
+              <h3 class="chart__title">Buchungen vs. No-Shows</h3>
+              <p class="chart__subtitle">letzte 7 Tage</p>
+            </div>
+            <span class="chart__trend chart__trend--negative">−3 No-Shows</span>
+          </figcaption>
+          <div class="chart__body">
+            <svg viewBox="0 0 400 180" role="img" aria-label="Liniendiagramm Buchungen und No-Shows">
+              <polyline points="20,40 80,55 140,30 200,45 260,25 320,50 380,35"
+                        fill="none" stroke="var(--chart-3)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="20,140 80,135 140,150 200,130 260,145 320,140 380,155"
+                        fill="none" stroke="var(--chart-6)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4"/>
+              <line x1="0" y1="170" x2="400" y2="170" stroke="var(--color-border)" stroke-width="1"/>
+            </svg>
+          </div>
+          <ul class="chart__legend">
+            <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+            <li><span class="chart__swatch" style="--swatch: var(--chart-6)"></span> No-Shows</li>
+          </ul>
+        </figure>
+      </div>
+
+      <figure class="chart" style="margin-block-start: var(--space-24)">
+        <figcaption class="chart__header">
+          <div>
+            <h3 class="chart__title">Palette — Okabe-Ito (8 Kategorien)</h3>
+            <p class="chart__subtitle">Color-Blind-Safe für Deuteranopie, Protanopie, Tritanopie</p>
+          </div>
+        </figcaption>
+        <div class="chart__body">
+          <svg viewBox="0 0 400 60" role="img" aria-label="Acht Kategoriefarben der Palette">
+            <rect x="0"   y="0" width="50" height="60" fill="var(--chart-1)"/>
+            <rect x="50"  y="0" width="50" height="60" fill="var(--chart-2)"/>
+            <rect x="100" y="0" width="50" height="60" fill="var(--chart-3)"/>
+            <rect x="150" y="0" width="50" height="60" fill="var(--chart-4)"/>
+            <rect x="200" y="0" width="50" height="60" fill="var(--chart-5)"/>
+            <rect x="250" y="0" width="50" height="60" fill="var(--chart-6)"/>
+            <rect x="300" y="0" width="50" height="60" fill="var(--chart-7)"/>
+            <rect x="350" y="0" width="50" height="60" fill="var(--chart-8)"/>
+          </svg>
+        </div>
+        <ul class="chart__legend">
+          <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> 1 · orange</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-2)"></span> 2 · sky-blue</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> 3 · bluish-green</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-4)"></span> 4 · yellow</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-5)"></span> 5 · blue</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-6)"></span> 6 · vermillion</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-7)"></span> 7 · reddish-purple</li>
+          <li><span class="chart__swatch" style="--swatch: var(--chart-8)"></span> 8 · gray</li>
+        </ul>
+      </figure>
+    </section>
+
+    <section class="section">
+      <h2>Timeline</h2>
+      <p>
+        Vertikale Aktivitäts-Liste mit Marker-Linie. Marker-Variants ziehen
+        aus dem <code>--status-*</code>-Token-Set (v0.3.1) — automatisch
+        mode-aware. Pures CSS, kein JS.
+      </p>
+      <div class="grid-2">
+        <div class="demo-block">
+          <span class="demo-label">Booking-Verlauf</span>
+          <ol class="timeline">
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--success" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">Mo, 08:32</time>
+                <strong class="timeline__title">Termin gebucht</strong>
+                <p>Anna Meier — Haarschnitt &amp; Föhnen</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--success" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">Mo, 09:15</time>
+                <strong class="timeline__title">Bestätigung versendet</strong>
+                <p>SMS an +41 79 …</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--current" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">Heute, 14:00</time>
+                <strong class="timeline__title">Termin läuft</strong>
+                <p>Voraussichtliches Ende 14:45</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">Geplant</time>
+                <strong class="timeline__title">Rechnung versenden</strong>
+                <p>Auto-Trigger nach Abschluss</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">System-Events</span>
+          <ol class="timeline">
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--success" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">vor 2 h</time>
+                <strong class="timeline__title">Backup erfolgreich</strong>
+                <p>2.4 GB · 1'820 Records</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--warning" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">vor 6 h</time>
+                <strong class="timeline__title">Zertifikat läuft bald aus</strong>
+                <p>SSL-Cert: noch 7 Tage gültig</p>
+              </div>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__marker timeline__marker--danger" aria-hidden="true"></span>
+              <div class="timeline__body">
+                <time class="timeline__time">gestern</time>
+                <strong class="timeline__title">Zahlung fehlgeschlagen</strong>
+                <p>Card declined · Versuch automatisch in 24h</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>File-Upload</h2>
+      <p>
+        Styled <code>&lt;label&gt;</code> als Click- und Dropzone, native
+        <code>&lt;input type="file"&gt;</code> verborgen aber Focus-zugänglich.
+        Click + Keyboard funktionieren ohne JS; Drag &amp; Drop + Selected-File-
+        Anzeige kommen aus dem JS-Snippet im Component-Header.
+      </p>
+      <div class="grid-2">
+        <label class="file-upload" id="upload-hero">
+          <input type="file" class="file-upload__input" accept="image/png,image/jpeg">
+          <span class="file-upload__icon" aria-hidden="true">📁</span>
+          <span class="file-upload__text">Datei wählen oder hierher ziehen</span>
+          <span class="file-upload__hint">PNG, JPG · max 10 MB</span>
+        </label>
+        <label class="file-upload file-upload--compact" id="upload-compact">
+          <input type="file" class="file-upload__input" multiple>
+          <span class="file-upload__icon" aria-hidden="true">📎</span>
+          <span class="file-upload__text">Anhang hinzufügen …</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Slider</h2>
+      <p>
+        Composition über <code>.range</code> — Label, Value-Display via native
+        <code>&lt;output&gt;</code>, optionale Skala. Track-Fill kommt aus dem
+        erweiterten <code>.range</code> mit
+        <code>--range-fill-pct</code>-Custom-Property, JS-Snippet syncronisiert
+        Fill + Output auf <code>input</code> event.
+      </p>
+      <div class="grid-2">
+        <div class="slider">
+          <div class="slider__header">
+            <label class="slider__label" for="slider-volume">Lautstärke</label>
+            <output class="slider__value" for="slider-volume">50</output>
+          </div>
+          <input type="range" id="slider-volume" class="range" min="0" max="100" value="50">
+          <div class="slider__scale">
+            <span>0</span><span>50</span><span>100</span>
+          </div>
+        </div>
+        <div class="slider">
+          <div class="slider__header">
+            <label class="slider__label" for="slider-price">Max-Preis</label>
+            <output class="slider__value" for="slider-price">CHF 120</output>
+          </div>
+          <input type="range" id="slider-price" class="range" min="20" max="500" step="10" value="120" data-format-prefix="CHF ">
+          <div class="slider__scale">
+            <span>CHF 20</span><span>CHF 260</span><span>CHF 500</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>App-Shell</h2>
+      <p>
+        Layout-Primitive für Dashboard-/App-Pages. CSS Grid mit Header / Sidebar /
+        Main / Footer als named areas. Reines CSS — kein JS. Embedded-Demo unten
+        nutzt <code>--app-shell-min-h</code> für eine feste Frame-Höhe statt
+        <code>100vh</code>. Bei Viewport &lt;768px collapsed die Sidebar über den Main.
+      </p>
+      <div class="app-shell" style="--app-shell-min-h: 24rem; border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden;">
+        <header class="app-shell__header">
+          <strong style="margin-inline-end: auto">DemoApp</strong>
+          <span class="badge badge--success">Live</span>
+        </header>
+        <aside class="app-shell__sidebar">
+          <nav class="nav">
+            <ul class="nav__list">
+              <li><a href="#" class="nav__item" aria-current="page">📅 Termine</a></li>
+              <li><a href="#" class="nav__item">👥 Kunden</a></li>
+              <li><a href="#" class="nav__item">💼 Mitarbeitende</a></li>
+              <li><a href="#" class="nav__item">📊 Reports</a></li>
+              <li><a href="#" class="nav__item">⚙️ Einstellungen</a></li>
+            </ul>
+          </nav>
+        </aside>
+        <main class="app-shell__main">
+          <div class="cluster cluster--between" style="margin-block-end: var(--space-16)">
+            <h3 style="margin: 0">Heute</h3>
+            <button class="btn btn--sm">+ Termin</button>
+          </div>
+          <div class="grid-3">
+            <div class="stat">
+              <span class="stat__label">Termine</span>
+              <span class="stat__value">12</span>
+            </div>
+            <div class="stat">
+              <span class="stat__label">Umsatz</span>
+              <span class="stat__value">CHF 2'840</span>
+            </div>
+            <div class="stat">
+              <span class="stat__label">No-Shows</span>
+              <span class="stat__value">0</span>
+            </div>
+          </div>
+        </main>
+        <footer class="app-shell__footer">v0.5 · Geöffnet 09:00–18:00</footer>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Combobox</h2>
+      <p>
+        Custom-Listbox mit Search-Filter und Custom-Content-Options. Nutzt die
+        Native Popover API (Top-Layer, Light-Dismiss) und das WAI-ARIA-
+        Combobox-Pattern 1.2. JS-Snippet im Component-Header liefert
+        Keyboard-Navigation (Arrow/Enter/Esc), Selection und Filter.
+      </p>
+      <div class="grid-2">
+        <div class="field">
+          <label class="field__label" id="cb-service-label" for="cb-service-trigger">Service</label>
+          <div class="combobox" id="cb-service">
+            <button class="combobox__trigger" type="button"
+                    id="cb-service-trigger"
+                    role="combobox"
+                    aria-labelledby="cb-service-label cb-service-value"
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    aria-controls="cb-service-list"
+                    popovertarget="cb-service-panel">
+              <span class="combobox__value" id="cb-service-value">Service wählen …</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </button>
+            <div class="combobox__panel" id="cb-service-panel" popover>
+              <div class="combobox__search">
+                <input type="text" class="combobox__search-input"
+                       placeholder="Suchen …"
+                       aria-label="Services durchsuchen"
+                       aria-autocomplete="list"
+                       aria-controls="cb-service-list">
+              </div>
+              <ul class="combobox__listbox" id="cb-service-list" role="listbox" aria-labelledby="cb-service-label">
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="haarschnitt damen">
+                  <span class="combobox__option-label">Damen-Haarschnitt</span>
+                  <span class="combobox__option-hint">45 min · CHF 65</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="haarschnitt herren">
+                  <span class="combobox__option-label">Herren-Haarschnitt</span>
+                  <span class="combobox__option-hint">30 min · CHF 45</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="true" tabindex="-1" data-search="färben strähnen">
+                  <span class="combobox__option-label">Färben &amp; Strähnen</span>
+                  <span class="combobox__option-hint">120 min · CHF 180</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="bart trim">
+                  <span class="combobox__option-label">Bart-Trim</span>
+                  <span class="combobox__option-hint">20 min · CHF 25</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="wash blow föhnen">
+                  <span class="combobox__option-label">Wash &amp; Blow</span>
+                  <span class="combobox__option-hint">25 min · CHF 40</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="maniküre nägel">
+                  <span class="combobox__option-label">Maniküre</span>
+                  <span class="combobox__option-hint">40 min · CHF 55</span>
+                </li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1" data-search="pediküre fuß">
+                  <span class="combobox__option-label">Pediküre</span>
+                  <span class="combobox__option-hint">50 min · CHF 70</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p class="field__hint">Search-Filter via <code>data-search</code>-Stichwortliste.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" id="cb-staff-label" for="cb-staff-trigger">Stylist:in</label>
+          <div class="combobox" id="cb-staff">
+            <button class="combobox__trigger" type="button"
+                    id="cb-staff-trigger"
+                    role="combobox"
+                    aria-labelledby="cb-staff-label cb-staff-value"
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    aria-controls="cb-staff-list"
+                    popovertarget="cb-staff-panel">
+              <span class="combobox__value" id="cb-staff-value">Beliebige</span>
+              <span class="chevron" aria-hidden="true"></span>
+            </button>
+            <div class="combobox__panel" id="cb-staff-panel" popover>
+              <ul class="combobox__listbox" id="cb-staff-list" role="listbox" aria-labelledby="cb-staff-label">
+                <li class="combobox__option" role="option" aria-selected="true" tabindex="-1">Beliebige</li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">Anna Meier</li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">Marc Stein</li>
+                <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">Lisa Vogel</li>
+              </ul>
+            </div>
+          </div>
+          <p class="field__hint">Ohne Search bei kurzer Liste.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Date / Time</h2>
+      <p>
+        Styled native <code>&lt;input type="date|time|datetime-local|month|week"&gt;</code> —
+        behält Mobile-Picker, Calendar-Popup, Form-Integration, Pfeil-Tasten-Keyboard und
+        Screen-Reader-Support out of the box. Density-aware durch das generische
+        Input-Styling aus <code>base/reset.css</code>. Picker-Indicator wechselt
+        automatisch im Dark-Mode (filter: invert).
+      </p>
+      <div class="grid-2">
+        <div class="field">
+          <label class="field__label" for="dt-day">Termin-Datum</label>
+          <input type="date" id="dt-day" value="2026-05-27">
+          <p class="field__hint">Native Browser-Picker, Pfeil-Tasten steppen.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="dt-time">Uhrzeit</label>
+          <input type="time" id="dt-time" value="14:30">
+          <p class="field__hint">Minuten-Step via <code>step</code>-Attribut anpassbar.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="dt-month">Abrechnungs-Monat</label>
+          <input type="month" id="dt-month" value="2026-05">
+        </div>
+        <div class="field">
+          <label class="field__label">Zeitraum (Range)</label>
+          <div class="date-range">
+            <input type="date" value="2026-05-01" aria-label="Von">
+            <span class="date-range__separator" aria-hidden="true">—</span>
+            <input type="date" value="2026-05-31" aria-label="Bis">
+          </div>
+          <p class="field__hint">Wrapper-Pattern, zwei native inputs + Separator.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Select</h2>
+      <p>
+        Styled native <code>&lt;select&gt;</code> — behält Form-Integration,
+        Mobile-Picker, Type-ahead-Keyboard und Screen-Reader-Support gratis.
+        Density-aware. Wrapper-Pattern für mode-aware Custom-Arrow via
+        <code>mask-image</code>. Für Search/Custom-Content-Options kommt
+        v0.5 die Combobox-Component.
+      </p>
+      <div class="grid-2">
+        <div class="field">
+          <label class="field__label" for="select-role">Rolle</label>
+          <div class="select-wrap">
+            <select id="select-role" class="select">
+              <option>Stylistin</option>
+              <option>Coloristin</option>
+              <option>Empfangskraft</option>
+              <option>Inhaberin</option>
+            </select>
+          </div>
+          <p class="field__hint">Wrapper macht den Pfeil mode-aware.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="select-status">Status</label>
+          <div class="select-wrap select-wrap--inline">
+            <select id="select-status" class="select">
+              <option>Aktiv</option>
+              <option>Pausiert</option>
+              <option>Im Urlaub</option>
+            </select>
+          </div>
+          <p class="field__hint">Inline = auto-width statt 100%.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="select-services">Services (Multi)</label>
+          <div class="select-wrap">
+            <select id="select-services" class="select select--multiple" multiple size="5">
+              <option>Haarschnitt</option>
+              <option selected>Färben</option>
+              <option>Strähnen</option>
+              <option>Bart-Trim</option>
+              <option selected>Wash &amp; Blow</option>
+              <option>Maniküre</option>
+            </select>
+          </div>
+          <p class="field__hint">Listbox-Darstellung — kein Picker, kein Arrow.</p>
+        </div>
+        <div class="field">
+          <label class="field__label" for="select-disabled">Disabled</label>
+          <div class="select-wrap">
+            <select id="select-disabled" class="select" disabled>
+              <option>Nicht editierbar</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Popover</h2>
+      <p>
+        Native Popover API für Behavior (Light-Dismiss / Esc / Top-Layer / ARIA gratis),
+        5-Zeilen-JS-Snippet für Trigger-Positioning. Wo CSS Anchor Positioning
+        verfügbar ist (Chrome 125+), wird das JS automatisch übersprungen.
+      </p>
+      <div class="demo-grid">
+        <div class="demo-block">
+          <span class="demo-label">Action-Menu</span>
+          <div class="cluster">
+            <button class="btn btn--secondary popover-anchor" type="button" popovertarget="demo-menu">
+              Buchung verwalten ▾
+            </button>
+          </div>
+          <div class="popover" id="demo-menu" popover>
+            <ul class="popover__menu" role="menu">
+              <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+              <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+              <li><button class="popover__item" role="menuitem" type="button">Verschieben …</button></li>
+              <li role="separator"><hr class="popover__divider"></li>
+              <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Stornieren</button></li>
+            </ul>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Info-Popover</span>
+          <div class="cluster">
+            <span>Provisionsmodell aktiv</span>
+            <button class="btn btn--sm btn--ghost popover-anchor" type="button" popovertarget="demo-info" aria-label="Mehr Info">
+              ?
+            </button>
+          </div>
+          <div class="popover" id="demo-info" popover>
+            <div class="popover__header">Provisionsmodell</div>
+            <p style="margin: 0">
+              5% der Bookings gehen an die Plattform. Auszahlung am 1. jedes Monats.
+              <a href="#">Details</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Layout-Primitives: Stack &amp; Cluster</h2>
+      <p>
+        <code>.stack</code> ist vertikal mit konsistentem Gap, <code>.cluster</code>
+        ist horizontal mit Wrap. Beide haben <code>xs/sm/md/lg/xl</code>-Größen und
+        Custom-Properties für Alignment (<code>--stack-align</code>,
+        <code>--cluster-align</code>, <code>--cluster-justify</code>).
+      </p>
+      <div class="grid-2">
+        <div class="demo-block">
+          <span class="demo-label">.stack — vertikal</span>
+          <div class="stack stack--sm">
+            <button class="btn btn--secondary">Aktion 1</button>
+            <button class="btn btn--secondary">Aktion 2</button>
+            <button class="btn btn--secondary">Aktion 3</button>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">.cluster — horizontal mit Wrap</span>
+          <div class="cluster cluster--sm">
+            <span class="tag">React</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">CSS</span>
+            <span class="tag">Vite</span>
+            <span class="tag">Vitest</span>
+            <span class="tag">Storybook</span>
+            <span class="tag">Playwright</span>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">.cluster--between (Toolbar)</span>
+          <div class="cluster cluster--between">
+            <strong>Drei Termine ausgewählt</strong>
+            <div class="cluster cluster--sm">
+              <button class="btn btn--sm btn--ghost">Verwerfen</button>
+              <button class="btn btn--sm">Bestätigen</button>
+            </div>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">.cluster--end (rechtsbündig)</span>
+          <div class="cluster cluster--end">
+            <button class="btn btn--ghost">Abbrechen</button>
+            <button class="btn">Speichern</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Avatar-Stack</h2>
+      <p>
+        Layout-Pattern auf der bestehenden Avatar-Component. Stack steuert die
+        Größe aller Kinder, jeder Avatar bekommt einen Ring in
+        <code>--color-bg</code> für saubere Überlappung.
+        <code>+N</code>-Counter ist eine <code>.avatar--more</code>-Variante,
+        keine separate Component.
+      </p>
+      <div class="demo-grid">
+        <div class="demo-block">
+          <span class="demo-label">Default + Größen-Modifier</span>
+          <div class="stack stack--md">
+            <div class="avatar-stack avatar-stack--sm" role="group" aria-label="Kleines Team">
+              <span class="avatar avatar--c3" title="Anna Meier">AM</span>
+              <span class="avatar avatar--c1" title="Marc Stein">MS</span>
+              <span class="avatar avatar--c4" title="Lisa Vogel">LV</span>
+            </div>
+            <div class="avatar-stack" role="group" aria-label="Mittleres Team">
+              <span class="avatar avatar--c3">AM</span>
+              <span class="avatar avatar--c1">MS</span>
+              <span class="avatar avatar--c4">LV</span>
+              <span class="avatar avatar--c6">JK</span>
+              <span class="avatar avatar--more" title="+5 weitere">+5</span>
+            </div>
+            <div class="avatar-stack avatar-stack--lg" role="group" aria-label="Großes Team">
+              <span class="avatar avatar--c3">AM</span>
+              <span class="avatar avatar--c1">MS</span>
+              <span class="avatar avatar--more">+12</span>
+            </div>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Hover-Variante (fan-out)</span>
+          <div class="avatar-stack avatar-stack--hoverable" role="group" aria-label="Hover-Team">
+            <span class="avatar avatar--c3">AM</span>
+            <span class="avatar avatar--c1">MS</span>
+            <span class="avatar avatar--c4">LV</span>
+            <span class="avatar avatar--c6">JK</span>
+            <span class="avatar avatar--more">+2</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Tags</h2>
+      <p>
+        Interactive Chips — Filter, Skill-Listen, Multi-Select-Display. Semantisch
+        unterschiedlich zu Badge (read-only Status-Label). Größer, medium-radius,
+        optional removable/clickable.
+      </p>
+      <div class="demo-grid">
+        <div class="demo-block">
+          <span class="demo-label">Varianten</span>
+          <div class="demo-row">
+            <span class="tag">React</span>
+            <span class="tag tag--solid">TypeScript</span>
+            <span class="tag tag--outline">Vue</span>
+            <span class="tag tag--sm">Small</span>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Clickable (Filter-Toggle)</span>
+          <div class="demo-row">
+            <button class="tag tag--clickable" type="button">Bestätigt</button>
+            <button class="tag tag--clickable" type="button">Diese Woche</button>
+            <button class="tag tag--clickable tag--solid" type="button">Aktiv</button>
+          </div>
+        </div>
+        <div class="demo-block" id="tag-demo">
+          <span class="demo-label">Removable (Multi-Select)</span>
+          <div class="demo-row">
+            <span class="tag">
+              Anna Meier
+              <button class="tag__remove" type="button" aria-label="Anna entfernen" data-dismiss=".tag">×</button>
+            </span>
+            <span class="tag">
+              Marc Stein
+              <button class="tag__remove" type="button" aria-label="Marc entfernen" data-dismiss=".tag">×</button>
+            </span>
+            <span class="tag tag--solid">
+              Lisa Vogel
+              <button class="tag__remove" type="button" aria-label="Lisa entfernen" data-dismiss=".tag">×</button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Inline-Alerts</h2>
+      <p>
+        Dismissible Status-Feedback im Content-Flow. Vs. Callout (statisch,
+        editorial) und Banner (Page-Top). Zieht Farben aus dem
+        <code>--status-*</code>-Token-Set.
+      </p>
+      <div class="stack stack--md" id="alert-demo">
+        <div class="alert alert--success" role="status">
+          <span class="alert__icon" aria-hidden="true">✓</span>
+          <div class="alert__body">
+            <strong class="alert__title">Buchung gespeichert</strong>
+            <p>Anna ist für Donnerstag 14:00 eingetragen.</p>
+          </div>
+          <button class="alert__close" type="button" aria-label="Schließen" data-dismiss=".alert">×</button>
+        </div>
+        <div class="alert alert--info" role="status">
+          <span class="alert__icon" aria-hidden="true">ℹ</span>
+          <div class="alert__body">
+            <strong class="alert__title">Neues Update verfügbar</strong>
+            <p>Version 2.3 ist bereit zum Installieren.</p>
+          </div>
+          <button class="alert__close" type="button" aria-label="Schließen" data-dismiss=".alert">×</button>
+        </div>
+        <div class="alert alert--warning" role="alert">
+          <span class="alert__icon" aria-hidden="true">⚠</span>
+          <div class="alert__body">
+            <strong class="alert__title">Abo läuft bald aus</strong>
+            <p>Verlängere in den nächsten 3 Tagen, um Unterbrechungen zu vermeiden.</p>
+          </div>
+          <button class="alert__close" type="button" aria-label="Schließen" data-dismiss=".alert">×</button>
+        </div>
+        <div class="alert alert--danger" role="alert">
+          <span class="alert__icon" aria-hidden="true">✕</span>
+          <div class="alert__body">
+            <strong class="alert__title">Zahlung fehlgeschlagen</strong>
+            <p>Bitte aktualisiere deine Zahlungsmethode in den Einstellungen.</p>
+          </div>
+          <button class="alert__close" type="button" aria-label="Schließen" data-dismiss=".alert">×</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Spinner / Loading-States</h2>
+      <p>
+        currentColor als Default — der Spinner erbt die Textfarbe seines
+        Containers. Reduced-Motion verlangsamt auf 2.5 s, damit die Loading-
+        Affordance erhalten bleibt ohne flackernde Rotation.
+      </p>
+      <div class="demo-grid">
+        <div class="demo-block">
+          <span class="demo-label">Größen</span>
+          <div class="demo-row">
+            <span class="spinner spinner--sm" role="status" aria-label="Laden"></span>
+            <span class="spinner" role="status" aria-label="Laden"></span>
+            <span class="spinner spinner--lg" role="status" aria-label="Laden"></span>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-label">Inline in Buttons</span>
+          <div class="demo-row">
+            <button class="btn" disabled>
+              <span class="spinner spinner--sm" aria-hidden="true"></span>
+              Speichern …
+            </button>
+            <button class="btn btn--secondary" disabled>
+              <span class="spinner spinner--sm" aria-hidden="true"></span>
+              Verarbeite
+            </button>
+            <button class="btn btn--ghost" disabled>
+              <span class="spinner spinner--sm" aria-hidden="true"></span>
+              Lädt
+            </button>
+          </div>
+        </div>
+        <div class="demo-block" style="padding: 0">
+          <span class="demo-label" style="padding: var(--space-24) var(--space-24) 0">Block-centered</span>
+          <div class="spinner-block">
+            <span class="spinner spinner--lg" role="status" aria-label="Daten werden geladen"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Toggle-Controls</h2>
+      <p>
+        Switch (binary on/off, sofort wirksam) vs. Checkbox (Auswahl-Entscheidung)
+        vs. Radio (exklusive Auswahl). Alle drei nutzen native Inputs + Choice-Wrapper.
+      </p>
+      <div class="grid-3">
+        <div class="stack">
+          <span class="demo-label">Switch</span>
+          <label class="choice">
+            <input type="checkbox" class="switch" role="switch" checked>
+            <span>Push-Benachrichtigungen</span>
+          </label>
+          <label class="choice">
+            <input type="checkbox" class="switch" role="switch">
+            <span>
+              Auto-Backup
+              <span class="choice__hint">Täglich um 03:00</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="checkbox" class="switch" role="switch" disabled>
+            <span>Disabled</span>
+          </label>
+        </div>
+        <div class="stack">
+          <span class="demo-label">Checkbox</span>
+          <label class="choice">
+            <input type="checkbox" class="checkbox" checked>
+            <span>Newsletter abonnieren</span>
+          </label>
+          <label class="choice">
+            <input type="checkbox" class="checkbox">
+            <span>AGB akzeptieren</span>
+          </label>
+        </div>
+        <div class="stack">
+          <span class="demo-label">Radio</span>
+          <label class="choice">
+            <input type="radio" name="plan-demo" class="radio" checked>
+            <span>Basic</span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="plan-demo" class="radio">
+            <span>Pro</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Goldener Schnitt</h2>
+      <p>
+        <code>--phi: 1.618</code> als Foundation-Konstante (Token).
+        <code>.split--golden</code> teilt zwei Spalten in 1 : φ;
+        <code>.aspect-golden</code> setzt das Verhältnis auf Boxen.
+        Ergänzt den 4px-Grid für Editorial-Inhalte, ersetzt ihn nicht —
+        UI-Controls bleiben auf der Spacing-Skala.
+      </p>
+      <div class="split split--golden" style="margin-block-end: var(--space-24)">
+        <aside>
+          <span class="badge badge--neutral">Editorial-Note</span>
+          <h3 style="margin-block-start: var(--space-8)">1 : φ</h3>
+          <p style="color: var(--color-text-secondary); font-size: var(--font-sm); margin: 0">
+            Kurzer Teil links, langer Teil rechts. Klassisches Verhältnis
+            für Side-Notes neben Hauptinhalt.
+          </p>
+        </aside>
+        <article>
+          <p>
+            Wenn der gesamte Bereich in zwei Teile geteilt wird, sodass das
+            Verhältnis des Ganzen zum längeren Teil gleich dem Verhältnis des
+            längeren Teils zum kürzeren ist, entsteht der goldene Schnitt:
+            <code>a : b = (a+b) : a</code>. Beide Verhältnisse ergeben dieselbe
+            Konstante φ ≈ 1.618.
+          </p>
+          <p>
+            In diesem Design-System ist φ ein Foundation-Token, aber kein
+            Default für UI-Controls. Buttons und Inputs bleiben auf der
+            4px-Spacing-Skala; nur Layout-Splits, Aspect-Ratios und
+            redaktionelle Aufteilungen ziehen daraus.
+          </p>
+        </article>
+      </div>
+      <div class="grid-3">
+        <div class="card aspect-golden" style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--space-4)">
+          <strong>aspect-golden</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-tertiary)">φ : 1 (landscape)</span>
+        </div>
+        <div class="card aspect-golden--portrait" style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--space-4)">
+          <strong>portrait</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-tertiary)">1 : φ</span>
+        </div>
+        <div class="card aspect-square" style="display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--space-4)">
+          <strong>square</strong>
+          <span style="font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-tertiary)">1 : 1 (zum Vergleich)</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Editorial-Container</h2>
+      <p>
+        <code>.container--prose</code> verengt sich auf <code>--prose-max</code>
+        (default <strong>70ch</strong>, premium <strong>80ch</strong>). Layout-Container wie die Topbar bleiben
+        davon unberührt.
+      </p>
+      <div class="container container--prose" style="background: var(--color-bg-secondary); padding: var(--space-24); border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
+        <h3>Lesbare Spalte</h3>
+        <p>
+          Dieser Block nutzt <code>.container --prose</code>. Die Breite folgt
+          dem <code>--prose-max</code>-Token, nicht der Layout-Breite. Wechsle den Tone auf
+          <em>premium</em> — die Topbar oben bleibt voll breit, dieser Block wächst auf 80ch.
+        </p>
       </div>
     </section>
 
@@ -283,8 +1274,40 @@
         const isDark = html.getAttribute("data-mode") === "dark";
         applyMode(isDark ? "light" : "dark");
       });
+
+      const densityReadout = document.getElementById("density-readout");
+      const DENSITIES = new Set(["compact", "comfortable", "spacious"]);
+
+      function setDensity(density) {
+        if (!DENSITIES.has(density)) return;
+        if (density === "comfortable") {
+          html.removeAttribute("data-density");
+        } else {
+          html.setAttribute("data-density", density);
+        }
+        if (densityReadout) densityReadout.textContent = density;
+        try { localStorage.setItem("demo-density", density); } catch {}
+      }
+
+      try {
+        const saved = localStorage.getItem("demo-density");
+        if (saved && DENSITIES.has(saved)) setDensity(saved);
+      } catch {}
+
+      document.querySelectorAll("[data-set-density]").forEach((btn) => {
+        btn.addEventListener("click", () => setDensity(btn.dataset.setDensity));
+      });
     })();
   </script>
+
+  <!--
+    Companion-JS: IIFE-Bundle für file://-Kompatibilität. ES-Module via
+    <script type="module"> wird von file:// vom Browser CORS-blockiert.
+    Für npm-Konsumenten (eigener Bundler): import { setupAll } from
+    "@gws/design-system-js" — siehe dist/js/index.js + setup-*.js.
+  -->
+  <script src="./dist/js/design-system.iife.js"></script>
+  <script>DS.setupAll();</script>
 
 </body>
 </html>

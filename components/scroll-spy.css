@@ -1,0 +1,94 @@
+/**
+ * Scroll-Spy Navigation
+ * ======================
+ *
+ * Inline-Navigation die das aktive Section-Headline markiert je nach Scroll-
+ * Position. Modern via CSS Scroll-Driven Animations + animation-timeline:
+ * view() — keine IntersectionObserver-JS-Krücke mehr.
+ *
+ * Pure-CSS-Variante: animation-timeline: view() blendet die aktive Markierung
+ * ein wenn die jeweilige Section ins Viewport scrollt. Konsument kann mit
+ * IntersectionObserver Fallback für ältere Browser.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --spy-bg, --spy-fg, --spy-active-bg, --spy-active-fg
+ *     --spy-padding, --spy-radius
+ *
+ * Struktur:
+ *   <nav class="scroll-spy" aria-label="Sections in dieser Seite">
+ *     <a href="#intro" class="scroll-spy__link" data-section="intro">Intro</a>
+ *     <a href="#install" class="scroll-spy__link" data-section="install">Installation</a>
+ *     <a href="#usage" class="scroll-spy__link" data-section="usage">Usage</a>
+ *   </nav>
+ *
+ *   Plus Sections im Content:
+ *   <section id="intro">…</section>
+ *   <section id="install">…</section>
+ *   <section id="usage">…</section>
+ *
+ * Konsument JS (~15 LOC, für volle Browser-Support):
+ *   const links = document.querySelectorAll(".scroll-spy__link");
+ *   const observer = new IntersectionObserver((entries) => {
+ *     entries.forEach((e) => {
+ *       if (e.isIntersecting) {
+ *         const id = e.target.id;
+ *         links.forEach((l) =>
+ *           l.classList.toggle("is-active", l.dataset.section === id)
+ *         );
+ *       }
+ *     });
+ *   }, { rootMargin: "-40% 0px -40% 0px" });
+ *   document.querySelectorAll("[id]").forEach((s) => observer.observe(s));
+ *
+ * Modifier:
+ *   .scroll-spy--vertical    (default) vertikale Liste (Sidebar-Pattern)
+ *   .scroll-spy--horizontal  horizontale Tabs (Sticky-Topbar-Pattern)
+ */
+
+.scroll-spy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--font-sm);
+}
+
+.scroll-spy__link {
+  display: block;
+  padding: var(--spy-padding, var(--space-6) var(--space-12));
+  border-radius: var(--spy-radius, var(--radius-md));
+  color: var(--spy-fg, var(--color-text-secondary));
+  text-decoration: none;
+  border-inline-start: 2px solid transparent;
+  transition: background var(--motion-feedback), color var(--motion-feedback), border-color var(--motion-feedback);
+}
+
+.scroll-spy__link:hover {
+  background: var(--spy-bg, var(--color-surface-hover, var(--color-bg-tertiary)));
+  color: var(--color-text-primary);
+}
+
+.scroll-spy__link.is-active {
+  background: var(--spy-active-bg, var(--color-interactive-light));
+  color: var(--spy-active-fg, var(--color-interactive-dark));
+  border-inline-start-color: var(--color-interactive);
+  font-weight: var(--fw-600);
+}
+
+.scroll-spy__link:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.scroll-spy--horizontal {
+  flex-direction: row;
+  gap: var(--space-8);
+}
+.scroll-spy--horizontal .scroll-spy__link {
+  border-inline-start: 0;
+  border-block-end: 2px solid transparent;
+}
+.scroll-spy--horizontal .scroll-spy__link.is-active {
+  border-block-end-color: var(--color-interactive);
+  border-inline-start-color: transparent;
+}

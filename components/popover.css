@@ -1,0 +1,179 @@
+/**
+ * Popover Component
+ * ==================
+ *
+ * Interaktive Floating-Bubble auf Click. Differenzierung im DS:
+ *   - Tooltip: read-only, hover/focus, kein Action
+ *   - Popover: interactive, click-triggered, kann Buttons/Links enthalten
+ *   - Modal:   full-blocking overlay, requires explicit dismiss
+ *
+ * Nutzt die Native Popover API (Baseline 2024+ — Chrome 114+, Safari 17+,
+ * Firefox 125+). Light-Dismiss (Click-outside / Esc), Top-Layer-Render und
+ * automatische ARIA-Verlinkung kommen vom Browser, kein DS-JS nötig.
+ *
+ * Positioning: Das Markup lebt im normalen DOM-Flow, der Browser hebt es
+ * beim Open in den Top-Layer. Das bricht "position relative to trigger" —
+ * deshalb ein Mini-JS-Snippet für Trigger-Anchoring. Wo CSS Anchor
+ * Positioning verfügbar ist (Chrome 125+), greift der @supports-Block
+ * automatisch und das JS bleibt no-op.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --popover-bg / --popover-fg / --popover-border / --popover-radius
+ *     --popover-padding / --popover-shadow
+ *     --popover-min-width / --popover-max-width
+ *     --popover-offset            Abstand zwischen Trigger und Popover (default 0.25rem)
+ *
+ * Struktur:
+ *   <button class="btn" popovertarget="menu-1">Optionen</button>
+ *   <div class="popover" id="menu-1" popover>
+ *     <ul class="popover__menu" role="menu">
+ *       <li><button class="popover__item" role="menuitem" type="button">Bearbeiten</button></li>
+ *       <li><button class="popover__item" role="menuitem" type="button">Duplizieren</button></li>
+ *       <li><button class="popover__item popover__item--danger" role="menuitem" type="button">Löschen</button></li>
+ *     </ul>
+ *   </div>
+ *
+ *   Generic Info-Popover:
+ *   <button class="btn btn--ghost" popovertarget="info-1">?</button>
+ *   <div class="popover" id="info-1" popover>
+ *     <p>Erklärungstext mit <a href="#">Link</a>.</p>
+ *   </div>
+ *
+ * Anchoring-JS (Konsument kopiert ins eigene Setup).
+ * Wichtig: `beforetoggle` bubbelt NICHT — per-Element-Listener nötig.
+ *
+ *   document.querySelectorAll(".popover").forEach((pop) => {
+ *     pop.addEventListener("beforetoggle", (e) => {
+ *       if (e.newState !== "open") return;
+ *       const trigger = document.querySelector(`[popovertarget="${pop.id}"]`);
+ *       if (!trigger) return;
+ *       const r = trigger.getBoundingClientRect();
+ *       Object.assign(pop.style, {
+ *         top:  `${r.bottom + 4}px`,
+ *         left: `${r.left}px`,
+ *       });
+ *     });
+ *   });
+ */
+
+/* CSS Anchor Positioning ist Opt-in pro Popover-Instanz, weil ein gemeinsamer
+   anchor-name bei mehreren Triggers im DOM kollidiert. Konsument vergibt
+   unique Names:
+     <button style="anchor-name: --tr-1" popovertarget="p-1">…</button>
+     <div   style="position-anchor: --tr-1; top: anchor(bottom); left: anchor(left);"
+            class="popover" id="p-1" popover>…</div>
+   Der JS-Anker-Snippet im Component-Header funktioniert ohne diese Komplexität
+   und ist die empfohlene Default-Strategie. */
+.popover {
+  --_offset: var(--popover-offset, 0.25rem);
+
+  /* Reset native popover defaults (margin:auto centriert sonst auf Viewport) */
+  position: fixed;
+  inset: auto;
+  margin: 0;
+
+  background: var(--popover-bg, var(--card-bg));
+  color: var(--popover-fg, var(--color-text-primary));
+  border: 1px solid var(--popover-border, var(--color-border));
+  border-radius: var(--popover-radius, var(--radius-md));
+  padding: var(--popover-padding, var(--space-8));
+  box-shadow: var(--popover-shadow, var(--elevation-4));
+
+  min-width: var(--popover-min-width, 12rem);
+  max-width: var(--popover-max-width, min(20rem, calc(100vw - 2rem)));
+
+  font-size: var(--font-sm);
+  line-height: var(--lh-normal);
+
+  /* Entry/Exit-Animation via @starting-style + transition-behavior.
+     Baseline 2024+ (Chrome 117, Safari 17.5, Firefox 129). Funktioniert
+     auch für EXIT (alte :popover-open-Override gab nur Entry).
+     Reduced-Motion respektiert (siehe @media unten). */
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--motion-feedback),
+    transform var(--motion-feedback),
+    display var(--motion-feedback) allow-discrete,
+    overlay var(--motion-feedback) allow-discrete;
+}
+
+@starting-style {
+  .popover:popover-open {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.popover:not(:popover-open) {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popover { transition: none; transform: none; }
+  .popover:not(:popover-open) { opacity: 1; transform: none; }
+}
+
+/* Menu-Pattern: vertikale Liste klickbarer Items. */
+.popover__menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.popover__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+  padding: var(--space-6) var(--space-12);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: var(--font-sm);
+  font-weight: var(--fw-500);
+  text-align: start;
+  cursor: pointer;
+  transition: background var(--motion-feedback);
+}
+
+.popover__item:hover {
+  background: var(--color-bg-secondary);
+}
+
+.popover__item:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.popover__item--danger {
+  color: var(--status-danger-fg);
+}
+
+.popover__item--danger:hover {
+  background: var(--status-danger-bg);
+}
+
+/* Optional structural sections für komplexere Popovers */
+.popover__header {
+  padding: var(--space-4) var(--space-12) var(--space-8);
+  font-weight: var(--fw-600);
+  color: var(--color-text-secondary);
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.popover__divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-4) calc(-1 * var(--space-8));
+  border: none;
+}

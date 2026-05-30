@@ -13,6 +13,22 @@
  *   --btn-weight, --btn-letter, --btn-transform
  *   --btn-hover-motion, --btn-transition
  *
+ * Struktur:
+ *   <button class="btn">Bestätigen</button>
+ *   <button class="btn btn--secondary">Verschieben</button>
+ *   <button class="btn btn--ghost">Abbrechen</button>
+ *
+ *   Größenvarianten:
+ *   <button class="btn btn--sm">Klein</button>
+ *   <button class="btn">Standard</button>
+ *   <button class="btn btn--lg">Groß</button>
+ *
+ *   Disabled:
+ *   <button class="btn" disabled>Nicht verfügbar</button>
+ *
+ *   Als Link gestylt (Anchor mit Button-Look):
+ *   <a class="btn" href="#">CTA-Link</a>
+ *
  * Modifier:
  *   .btn--secondary   transparent mit Border
  *   .btn--ghost       transparent, nur Textfarbe
@@ -25,8 +41,8 @@
   --_btn-bg-hover:   var(--btn-bg-hover, color-mix(in oklch, var(--btn-bg) 88%, black));
   --_btn-bg-active:  var(--btn-bg-active, color-mix(in oklch, var(--btn-bg) 75%, black));
   --_btn-border:     var(--btn-border, transparent);
-  --_btn-px:         var(--btn-px, var(--space-20));
-  --_btn-py:         var(--btn-py, var(--space-12));
+  --_btn-px:         var(--btn-px, var(--density-control-px));
+  --_btn-py:         var(--btn-py, var(--density-control-py));
   --_btn-weight:     var(--btn-weight, 600);
   --_btn-letter:     var(--btn-letter, 0);
   --_btn-transform:  var(--btn-transform, none);
@@ -90,6 +106,14 @@
   --btn-bg: transparent;
   --btn-fg: var(--color-interactive);
   --btn-border: transparent;
+  /* Ghost ist explicit "subtle" — opinionated Theme-Identity-Token
+     (uppercase, letter-spacing, weight) gehören nicht zu diesem Pattern.
+     Sonst werden Topbar-Nav-Items oder secondary Actions visuell zu
+     aufdringlich und die UI verliert ihre Hierarchie. Identity bleibt
+     für .btn (primary) und .btn--secondary erhalten. */
+  --btn-transform: none;
+  --btn-letter: 0;
+  --btn-weight: var(--fw-500);
 }
 
 .btn--sm {

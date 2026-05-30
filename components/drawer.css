@@ -31,7 +31,7 @@
   max-height: 100dvh;
   width: var(--drawer-width, min(24rem, 100vw));
   margin-block: 0;
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--drawer-shadow, var(--elevation-5));
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -52,26 +52,54 @@
   margin-inline-end: auto;
 }
 
-.drawer[open] {
-  animation: drawer-slide-end var(--motion-entrance);
+/* Entry + Exit Animation via @starting-style + allow-discrete.
+   Smooth slide-in UND slide-out. Baseline 2024+. */
+.drawer {
+  transform: none;
+  transition:
+    transform var(--motion-entrance),
+    display var(--motion-entrance) allow-discrete,
+    overlay var(--motion-entrance) allow-discrete;
 }
 
-.drawer--start[open] {
-  animation-name: drawer-slide-start;
+@starting-style {
+  .drawer[open] {
+    transform: translateX(100%);
+  }
+  .drawer--start[open] {
+    transform: translateX(-100%);
+  }
 }
 
-.drawer[open]::backdrop {
-  animation: modal-backdrop-enter var(--motion-entrance);
+.drawer:not([open]) {
+  transform: translateX(100%);
 }
 
-@keyframes drawer-slide-end {
-  from { transform: translateX(100%); }
-  to   { transform: none; }
+.drawer--start:not([open]) {
+  transform: translateX(-100%);
 }
 
-@keyframes drawer-slide-start {
-  from { transform: translateX(-100%); }
-  to   { transform: none; }
+.drawer::backdrop {
+  opacity: 1;
+  transition:
+    opacity var(--motion-entrance),
+    display var(--motion-entrance) allow-discrete,
+    overlay var(--motion-entrance) allow-discrete;
+}
+
+@starting-style {
+  .drawer[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+.drawer:not([open])::backdrop {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer, .drawer::backdrop { transition: none; }
+  .drawer:not([open]) { transform: none; }
 }
 
 .drawer__header {

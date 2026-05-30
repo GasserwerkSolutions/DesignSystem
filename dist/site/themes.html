@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="de" data-tone="trust" data-mode="light" data-density="comfortable">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Theme-Generator — Design System</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./../../main.css">
+  <link rel="stylesheet" href="./assets/site.css">
+  <script defer src="./../../dist/js/design-system.iife.js"></script>
+  <script defer src="./assets/site.js"></script>
+  <script defer src="./assets/theme-generator.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-shell__topbar">
+      <div class="site-topbar">
+        <a class="site-topbar__brand" href="./index.html">
+          <strong>Design System</strong>
+          <span class="badge badge--neutral">v0.31.0</span>
+        </a>
+        <button type="button" class="site-topbar__menu-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-topbar-nav" data-mobile-menu>☰</button>
+        <nav class="site-topbar__nav" aria-label="Hauptnavigation" id="site-topbar-nav">
+          <a class="site-topbar__link" href="./index.html">Overview</a>
+          <a class="site-topbar__link" href="./foundations.html">Foundations</a>
+          <div class="site-topbar__mega" data-mega>
+            <button type="button" class="site-topbar__link site-topbar__link--mega" aria-haspopup="true" aria-expanded="false" data-mega-trigger>Components<span class="site-topbar__chevron" aria-hidden="true">▾</span></button>
+            <div class="site-topbar__mega-panel" data-mega-panel hidden role="menu" aria-label="Components nach Kategorie">
+              
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Layout</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/app-shell.html">App-Shell Layout-Primitive</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/card.html">Card Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/divider.html">Divider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/list-row.html">List-Row Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/panel-list.html">Panel-List Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/section.html">Section Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Form</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/button.html">Button Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/checkbox.html">Checkbox + Radio Components</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/combobox.html">Combobox Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/date-input.html">Date-Input Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/field.html">Field Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/file-upload.html">File-Upload Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/otp-input.html">OTP Input — One-Time Password / Multi-Field-Code</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/range.html">Range-Slider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/search.html">Search-Input Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/segmented.html">Segmented Control</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/select.html">Select Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/slider.html">Slider Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/switch.html">Switch Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Feedback</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/alert.html">Alert Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/banner.html">Banner Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/callout.html">Callout Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/empty-state.html">Empty-State Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/progress.html">Progress Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/skeleton.html">Skeleton Loader</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/spinner.html">Spinner Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/toast.html">Toast / Notification Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Navigation</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/accordion.html">Accordion Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/back-to-top.html">Back-to-Top Button</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/breadcrumbs.html">Breadcrumbs Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/nav.html">Nav Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/pagination.html">Pagination Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/scroll-spy.html">Scroll-Spy Navigation</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/steps.html">Steps Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tabs.html">Tabs Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tree.html">Tree Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Overlay</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/command-palette.html">Command Palette</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/drawer.html">Drawer Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/hover-card.html">Hover-Card — Rich Preview on Hover</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/modal.html">Modal Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/popover.html">Popover Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tooltip.html">Tooltip Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Data Display</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/avatar.html">Avatar Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/avatar-stack.html">Avatar-Stack Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/badge.html">Badge Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/chart.html">Chart Container</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/code-block.html">CodeBlock Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/funnel.html">Funnel Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/stat.html">Stat Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/table.html">Table Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/tag.html">Tag Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/timeline.html">Timeline Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/trend.html">Trend Component</a></li>
+                </ul>
+              </section>
+              <section class="site-topbar__mega-group" role="presentation">
+                <h3 class="site-topbar__mega-cat">Primitive</h3>
+                <ul class="site-topbar__mega-list" role="presentation">
+                  
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/chevron.html">Chevron Component</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+                  <li role="presentation"><a role="menuitem" class="site-topbar__mega-link" href="./components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
+                </ul>
+              </section>
+            </div>
+          </div>
+          <a class="site-topbar__link is-active" href="./themes.html">Themes</a>
+          <a class="site-topbar__link" href="./recipes.html">Recipes</a>
+          <div class="site-topbar__switches">
+            <label class="visually-hidden" for="site-tone">Tone</label>
+        <select id="site-tone" class="site-select" data-axis="tone">
+          <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option>
+        </select>
+            <button type="button" class="btn btn--ghost btn--sm" data-axis="mode">Light/Dark</button>
+            <label class="visually-hidden" for="site-density">Density</label>
+        <select id="site-density" class="site-select" data-axis="density">
+          <option value="comfortable">Comfortable</option>
+          <option value="compact">Compact</option>
+          <option value="spacious">Spacious</option>
+        </select>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <aside class="app-shell__sidebar">
+      <nav class="site-sidebar" aria-label="Components">
+        <input type="search" class="site-sidebar__search" placeholder="Suchen …" data-sidebar-search>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Layout</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/app-shell.html">App-Shell Layout-Primitive</a></li>
+            <li><a class="site-sidebar__link" href="./components/card.html">Card Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/divider.html">Divider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/list-row.html">List-Row Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/panel-list.html">Panel-List Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/section.html">Section Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Form</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/button.html">Button Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/checkbox.html">Checkbox + Radio Components</a></li>
+            <li><a class="site-sidebar__link" href="./components/combobox.html">Combobox Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/date-input.html">Date-Input Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/field.html">Field Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/file-upload.html">File-Upload Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/otp-input.html">OTP Input — One-Time Password / Multi-Field-Code</a></li>
+            <li><a class="site-sidebar__link" href="./components/range.html">Range-Slider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/search.html">Search-Input Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/segmented.html">Segmented Control</a></li>
+            <li><a class="site-sidebar__link" href="./components/select.html">Select Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/slider.html">Slider Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/switch.html">Switch Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Feedback</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/alert.html">Alert Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/banner.html">Banner Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/callout.html">Callout Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/empty-state.html">Empty-State Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/progress.html">Progress Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/skeleton.html">Skeleton Loader</a></li>
+            <li><a class="site-sidebar__link" href="./components/spinner.html">Spinner Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/toast.html">Toast / Notification Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Navigation</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/accordion.html">Accordion Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/back-to-top.html">Back-to-Top Button</a></li>
+            <li><a class="site-sidebar__link" href="./components/breadcrumbs.html">Breadcrumbs Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/nav.html">Nav Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/pagination.html">Pagination Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/scroll-spy.html">Scroll-Spy Navigation</a></li>
+            <li><a class="site-sidebar__link" href="./components/steps.html">Steps Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tabs.html">Tabs Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tree.html">Tree Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Overlay</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/command-palette.html">Command Palette</a></li>
+            <li><a class="site-sidebar__link" href="./components/drawer.html">Drawer Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/hover-card.html">Hover-Card — Rich Preview on Hover</a></li>
+            <li><a class="site-sidebar__link" href="./components/modal.html">Modal Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/popover.html">Popover Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tooltip.html">Tooltip Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Data Display</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/avatar.html">Avatar Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/avatar-stack.html">Avatar-Stack Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/badge.html">Badge Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/chart.html">Chart Container</a></li>
+            <li><a class="site-sidebar__link" href="./components/code-block.html">CodeBlock Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/funnel.html">Funnel Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/stat.html">Stat Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/table.html">Table Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/tag.html">Tag Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/timeline.html">Timeline Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/trend.html">Trend Component</a></li>
+          </ul>
+        </div>
+        
+        <div class="site-sidebar__group">
+          <div class="site-sidebar__group-label">Primitive</div>
+          <ul class="site-sidebar__list">
+            <li><a class="site-sidebar__link" href="./components/chevron.html">Chevron Component</a></li>
+            <li><a class="site-sidebar__link" href="./components/copy-button.html">Copy Button — Copy-to-Clipboard</a></li>
+            <li><a class="site-sidebar__link" href="./components/kbd.html">KBD — Keyboard Shortcut Display</a></li>
+            <li><a class="site-sidebar__link" href="./components/theme-toggle.html">Theme Toggle — Light/Dark Mode Switch</a></li>
+          </ul>
+        </div>
+      </nav>
+    </aside>
+    <main class="app-shell__main">
+      
+      <article class="site-doc">
+        <header class="site-doc__header">
+          <h1 class="site-doc__title">Theme-Generator</h1>
+          <p class="site-doc__lede">
+            Wähle eine Hauptfarbe — der Generator erzeugt eine 11-Step-OKLCH-
+            Skala (50 – 950), prüft Color-Blind-Safety, und exportiert das
+            Ergebnis als <code>[data-tone~="…"]</code>-Block.
+          </p>
+        </header>
+
+        <section class="site-doc__section">
+          <h2>1. Hauptfarbe wählen</h2>
+          <div class="theme-gen__inputs">
+            <label class="theme-gen__field">
+              <span>HEX-Wert</span>
+              <div class="theme-gen__hex-row">
+                <input type="color" id="tg-color" value="#22c55e" data-theme-gen-color>
+                <input type="text" id="tg-hex" value="#22c55e" data-theme-gen-hex spellcheck="false">
+              </div>
+            </label>
+            <label class="theme-gen__field">
+              <span>Tone-Name</span>
+              <input type="text" id="tg-name" value="custom" data-theme-gen-name spellcheck="false">
+            </label>
+          </div>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>2. Generierte Palette (OKLCH)</h2>
+          <ol class="theme-gen__palette" data-theme-gen-palette aria-label="11-Step-Palette">
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#dfffe4;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>50</strong>
+            <code>#dfffe4</code>
+            <span class="site-muted">L 0.97 · C 0.049 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#bbfac6;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>100</strong>
+            <code>#bbfac6</code>
+            <span class="site-muted">L 0.93 · C 0.094 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#99e6a8;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>200</strong>
+            <code>#99e6a8</code>
+            <span class="site-muted">L 0.86 · C 0.115 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#66ca7e;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>300</strong>
+            <code>#66ca7e</code>
+            <span class="site-muted">L 0.76 · C 0.145 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#1fae53;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>400</strong>
+            <code>#1fae53</code>
+            <span class="site-muted">L 0.66 · C 0.174 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#00893c;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>500</strong>
+            <code>#00893c</code>
+            <span class="site-muted">L 0.55 · C 0.153 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#006b2d;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>600</strong>
+            <code>#006b2d</code>
+            <span class="site-muted">L 0.46 · C 0.128 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#005422;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>700</strong>
+            <code>#005422</code>
+            <span class="site-muted">L 0.39 · C 0.109 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#004219;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>800</strong>
+            <code>#004219</code>
+            <span class="site-muted">L 0.33 · C 0.092 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#003010;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>900</strong>
+            <code>#003010</code>
+            <span class="site-muted">L 0.27 · C 0.075 · H 150°</span>
+          </div>
+        </li>
+        <li class="theme-gen__swatch">
+          <div class="theme-gen__swatch-color" style="background:#001f08;"></div>
+          <div class="theme-gen__swatch-meta">
+            <strong>950</strong>
+            <code>#001f08</code>
+            <span class="site-muted">L 0.21 · C 0.058 · H 150°</span>
+          </div>
+        </li></ol>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>3. Color-Blind-Safety</h2>
+          <p class="site-muted">Simulation via Brettel/Viénot-Mollon. Adjacent steps brauchen ein wahrnehmbares Lightness-Delta in jedem Modus — sonst fließen sie ineinander.</p>
+          <div class="theme-gen__cb-rows" data-theme-gen-cb>
+          <div class="theme-gen__cb-row">
+            <div class="theme-gen__cb-label">
+              <strong>Deuteranopie</strong>
+              <span class="badge badge--warning">
+                knapp · Δ0.005 (100↔200)
+              </span>
+            </div>
+            <div class="theme-gen__cb-strip"><div class="theme-gen__cb-swatch" style="background:#00ffc5;" title="50"></div><div class="theme-gen__cb-swatch" style="background:#00ffad;" title="100"></div><div class="theme-gen__cb-swatch" style="background:#00ff94;" title="200"></div><div class="theme-gen__cb-swatch" style="background:#00ff71;" title="300"></div><div class="theme-gen__cb-swatch" style="background:#00f94d;" title="400"></div><div class="theme-gen__cb-swatch" style="background:#00b638;" title="500"></div><div class="theme-gen__cb-swatch" style="background:#008a2a;" title="600"></div><div class="theme-gen__cb-swatch" style="background:#006920;" title="700"></div><div class="theme-gen__cb-swatch" style="background:#004f18;" title="800"></div><div class="theme-gen__cb-swatch" style="background:#003410;" title="900"></div><div class="theme-gen__cb-swatch" style="background:#061c08;" title="950"></div></div>
+          </div>
+          <div class="theme-gen__cb-row">
+            <div class="theme-gen__cb-label">
+              <strong>Protanopie</strong>
+              <span class="badge badge--warning">
+                knapp · Δ0.006 (100↔200)
+              </span>
+            </div>
+            <div class="theme-gen__cb-strip"><div class="theme-gen__cb-swatch" style="background:#00ffda;" title="50"></div><div class="theme-gen__cb-swatch" style="background:#00ffbe;" title="100"></div><div class="theme-gen__cb-swatch" style="background:#00ffa2;" title="200"></div><div class="theme-gen__cb-swatch" style="background:#00ff7a;" title="300"></div><div class="theme-gen__cb-swatch" style="background:#00f851;" title="400"></div><div class="theme-gen__cb-swatch" style="background:#00b63b;" title="500"></div><div class="theme-gen__cb-swatch" style="background:#008a2c;" title="600"></div><div class="theme-gen__cb-swatch" style="background:#006921;" title="700"></div><div class="theme-gen__cb-swatch" style="background:#004f19;" title="800"></div><div class="theme-gen__cb-swatch" style="background:#003410;" title="900"></div><div class="theme-gen__cb-swatch" style="background:#0e1c08;" title="950"></div></div>
+          </div>
+          <div class="theme-gen__cb-row">
+            <div class="theme-gen__cb-label">
+              <strong>Tritanopie</strong>
+              <span class="badge badge--warning">
+                knapp · Δ0.019 (50↔100)
+              </span>
+            </div>
+            <div class="theme-gen__cb-strip"><div class="theme-gen__cb-swatch" style="background:#c9ff4e;" title="50"></div><div class="theme-gen__cb-swatch" style="background:#a9ff4c;" title="100"></div><div class="theme-gen__cb-swatch" style="background:#8bf446;" title="200"></div><div class="theme-gen__cb-swatch" style="background:#5dd33d;" title="300"></div><div class="theme-gen__cb-swatch" style="background:#1bb235;" title="400"></div><div class="theme-gen__cb-swatch" style="background:#008c2a;" title="500"></div><div class="theme-gen__cb-swatch" style="background:#006d20;" title="600"></div><div class="theme-gen__cb-swatch" style="background:#005519;" title="700"></div><div class="theme-gen__cb-swatch" style="background:#004314;" title="800"></div><div class="theme-gen__cb-swatch" style="background:#00300e;" title="900"></div><div class="theme-gen__cb-swatch" style="background:#001f09;" title="950"></div></div>
+          </div></div>
+          <div class="theme-gen__cb-verdict" data-theme-gen-cb-verdict><div class="alert alert--warning" role="alert"><span class="alert__icon" aria-hidden="true">!</span><div class="alert__body"><strong>Knappe Stufen</strong><p>Mindestens ein adjacenter Schritt fließt unter einer CB-Simulation ineinander. Wähle eine andere Hauptfarbe oder akzeptiere bewusst, dass diese Stufen nicht als Encoding-Differenz taugen.</p></div></div></div>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>4. Live-Vorschau</h2>
+          <p class="site-muted">Components wie unter dem generierten Theme aussehen würden.</p>
+          <div class="theme-gen__preview" data-theme-gen-preview>
+            <div class="theme-gen__preview-card card">
+              <h3>Buchung bestätigen</h3>
+              <p>Anna, Donnerstag 14:00 — Damen-Haarschnitt.</p>
+              <div class="theme-gen__preview-actions">
+                <button class="btn">Bestätigen</button>
+                <button class="btn btn--secondary">Verschieben</button>
+                <button class="btn btn--ghost">Abbrechen</button>
+              </div>
+              <div class="alert alert--success" role="status" style="margin-top: var(--space-16);">
+                <span class="alert__icon" aria-hidden="true">✓</span>
+                <div class="alert__body">
+                  <strong class="alert__title">Bereit</strong>
+                  <p>Bestätigung versendet Anna eine Erinnerung.</p>
+                </div>
+              </div>
+              <div style="display: flex; gap: var(--space-8); margin-top: var(--space-16);">
+                <span class="badge badge--info">Neu</span>
+                <span class="badge badge--success">Aktiv</span>
+                <span class="tag">VIP-Kundin</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="site-doc__section">
+          <h2>5. Export</h2>
+          <p class="site-muted">Kopiere den Block nach <code>themes/&lt;name&gt;.css</code>, ergänze die Import-Zeile in <code>main.css</code>, und das Theme ist via <code>data-tone="&lt;name&gt;"</code> verfügbar.</p>
+          <div class="theme-gen__export">
+            <button class="btn btn--sm" data-theme-gen-copy>In Zwischenablage kopieren</button>
+            <pre class="code-block"><code data-theme-gen-css>:root {
+  --custom-50: #dfffe4;
+  --custom-100: #bbfac6;
+  --custom-200: #99e6a8;
+  --custom-300: #66ca7e;
+  --custom-400: #1fae53;
+  --custom-500: #00893c;
+  --custom-600: #006b2d;
+  --custom-700: #005422;
+  --custom-800: #004219;
+  --custom-900: #003010;
+  --custom-950: #001f08;
+}
+
+[data-tone~=&quot;custom&quot;] {
+  --color-interactive:       var(--custom-600);
+  --color-interactive-light: var(--custom-100);
+  --color-interactive-dark:  var(--custom-800);
+  --color-focus:             var(--custom-600);
+  --color-focus-ring:        var(--custom-100);
+
+  --btn-bg:       var(--custom-600);
+  --btn-bg-hover: var(--custom-700);
+  --btn-fg:       white;
+  --btn-radius:   var(--radius-8);
+
+  --card-bg:     white;
+  --card-border: 1px solid var(--custom-100);
+  --card-radius: var(--radius-12);
+
+  --color-success: var(--custom-600);
+
+  --input-focus-border: var(--custom-600);
+  --input-focus-ring:   var(--custom-100);
+}</code></pre>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

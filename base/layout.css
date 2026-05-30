@@ -11,16 +11,50 @@
   padding: 0 var(--space-inline);
 }
 
+/* Editorial-Container: opt-in für Prosa-Spalten. Themes setzen --prose-max,
+   nicht --container-max — sonst erbt jeder Layout-Container (Topbar, Grids)
+   die Verengung via Custom-Property-Cascade. Siehe ADR-001. */
+.container--prose {
+  max-width: var(--prose-max, 70ch);
+}
+
+/* Stack: vertikaler Layout-Container mit konsistentem Gap.
+   --stack-gap kontrolliert den Abstand; Modifier setzen ihn.
+   --stack-align (default stretch) für items-Alignment ohne extra Klasse. */
 .stack {
   display: flex;
   flex-direction: column;
   gap: var(--stack-gap, var(--space-12));
+  align-items: var(--stack-align, stretch);
 }
 
+.stack--xs { --stack-gap: var(--space-4); }
 .stack--sm { --stack-gap: var(--space-8); }
 .stack--md { --stack-gap: var(--space-16); }
 .stack--lg { --stack-gap: var(--space-32); }
 .stack--xl { --stack-gap: var(--space-48); }
+
+/* Cluster: horizontaler Stack mit flex-wrap. Toolbars, Tag-Listen,
+   gemischte Inline-Inhalte mit konsistentem Gap und natürlichem Umbruch.
+   --cluster-align (default center) und --cluster-justify (default start)
+   sind via Custom-Property überschreibbar, ohne neue Klassen. */
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cluster-gap, var(--space-12));
+  align-items:     var(--cluster-align,   center);
+  justify-content: var(--cluster-justify, flex-start);
+}
+
+.cluster--xs { --cluster-gap: var(--space-4); }
+.cluster--sm { --cluster-gap: var(--space-8); }
+.cluster--md { --cluster-gap: var(--space-16); }
+.cluster--lg { --cluster-gap: var(--space-24); }
+.cluster--xl { --cluster-gap: var(--space-32); }
+
+.cluster--between { --cluster-justify: space-between; }
+.cluster--end     { --cluster-justify: flex-end; }
+.cluster--center  { --cluster-justify: center; }
 
 .flex {
   display: flex;
@@ -85,6 +119,36 @@
   aspect-ratio: 16 / 9;
 }
 
+.aspect-golden {
+  aspect-ratio: var(--phi) / 1;
+}
+
+.aspect-golden--portrait {
+  aspect-ratio: 1 / var(--phi);
+}
+
+/* Split: zwei-Spalten Layout-Primitive für Editorial-Inhalte.
+   Default 1:1. Modifier setzen das Verhältnis ohne neue Klasse-Explosion.
+   Ergänzt .grid-2 (gleich-große Spalten) um harmonische Aufteilungen. */
+.split {
+  display: grid;
+  grid-template-columns: var(--split-ratio, 1fr 1fr);
+  gap: var(--split-gap, var(--space-block));
+  align-items: var(--split-align, start);
+}
+
+/* Goldener Schnitt: kurzer Teil links (1), langer rechts (φ).
+   Klassisches Editorial-Verhältnis — Sidebar-Note + Body, oder
+   Lead-Paragraph + Hero-Image. */
+.split--golden         { --split-ratio: 1fr 1.618fr; }
+.split--golden-reverse { --split-ratio: 1.618fr 1fr; }
+
+@media (max-width: 768px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
 .block { display: block; }
 .inline { display: inline; }
 .inline-block { display: inline-block; }
@@ -100,3 +164,14 @@
 
 .w-full { width: 100%; }
 .w-auto { width: auto; }
+
+/* Container-Query-Wrapper (opt-in).
+   Macht Children @container-aware: sie passen sich an die Breite dieses
+   Wrappers an, nicht an die Viewport-Breite. Tokens für die Breakpoints
+   siehe tokens.css → CONTAINER-QUERY BREAKPOINTS.
+
+   Vorsicht: container-type: inline-size erzeugt Containment — height: 100%
+   für Kinder funktioniert anders. Deshalb opt-in, nicht Default. */
+.cq {
+  container-type: inline-size;
+}

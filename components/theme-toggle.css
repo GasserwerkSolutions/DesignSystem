@@ -1,0 +1,119 @@
+/**
+ * Theme Toggle — Light/Dark Mode Switch
+ * ======================================
+ *
+ * Icon-Button mit Sonne ↔ Mond, toggelt `data-mode` auf html-Element.
+ * Zeigt das ZIEL des Toggles (aktuell-light → Mond-Icon, aktuell-dark →
+ * Sonnen-Icon) — nicht den Current-State.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --theme-toggle-size      Quadrat-Dimension (default 2.5rem)
+ *     --theme-toggle-bg / --theme-toggle-fg / --theme-toggle-border
+ *     --theme-toggle-radius
+ *
+ * Struktur:
+ *   <button class="theme-toggle" aria-label="Auf Dark Mode wechseln"
+ *           data-theme-toggle>
+ *     <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+ *     <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+ *   </button>
+ *
+ * Konsument-JS (~15 LOC):
+ *   document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
+ *     btn.addEventListener("click", () => {
+ *       const root = document.documentElement;
+ *       const current = root.getAttribute("data-mode") ||
+ *         (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+ *       const next = current === "dark" ? "light" : "dark";
+ *       root.setAttribute("data-mode", next);
+ *       localStorage.setItem("ds-mode", next);
+ *       btn.setAttribute("aria-label",
+ *         next === "dark" ? "Auf Light Mode wechseln" : "Auf Dark Mode wechseln");
+ *     });
+ *   });
+ *
+ * Mit View-Transitions (Browser-Support: Chrome 111+, Safari 18+):
+ *   document.startViewTransition(() => root.setAttribute("data-mode", next));
+ *   → smooth Crossfade aller Mode-sensitiven Tokens (light-dark resolve
+ *     interpoliert nicht out-of-box, aber view-transition macht ein
+ *     visuelles Crossfade-Snapshot).
+ *
+ * Modifier:
+ *   .theme-toggle--sm   kompakter
+ *   .theme-toggle--lg   größer
+ */
+
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--theme-toggle-size, 2.5rem);
+  height: var(--theme-toggle-size, 2.5rem);
+  padding: 0;
+  background: var(--theme-toggle-bg, transparent);
+  color: var(--theme-toggle-fg, var(--color-text-primary));
+  border: 1px solid var(--theme-toggle-border, var(--color-border));
+  border-radius: var(--theme-toggle-radius, var(--radius-md));
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    background var(--motion-feedback),
+    color var(--motion-feedback);
+}
+
+.theme-toggle:hover {
+  background: var(--color-surface-hover, var(--color-bg-tertiary));
+}
+
+.theme-toggle:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.theme-toggle__icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-lg);
+  line-height: 1;
+  transition:
+    opacity var(--motion-feedback),
+    transform var(--motion-feedback);
+}
+
+/* Light-Mode: Sonne sichtbar, Mond versteckt. Click switcht zu Dark. */
+[data-mode="light"] .theme-toggle__icon--moon,
+:root:not([data-mode="dark"]) .theme-toggle__icon--moon {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0);
+}
+
+/* Dark-Mode: Mond sichtbar, Sonne versteckt. Click switcht zu Light. */
+[data-mode="dark"] .theme-toggle__icon--sun {
+  opacity: 0;
+  transform: rotate(90deg) scale(0);
+}
+
+/* Auto-Dark via prefers-color-scheme (kein explizites data-mode): Mond */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mode="light"]) .theme-toggle__icon--sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0);
+  }
+  :root:not([data-mode="light"]):not([data-mode="dark"]) .theme-toggle__icon--moon {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.theme-toggle--sm {
+  --theme-toggle-size: 2rem;
+}
+
+.theme-toggle--lg {
+  --theme-toggle-size: 3rem;
+}
