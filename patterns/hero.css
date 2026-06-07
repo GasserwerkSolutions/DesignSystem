@@ -1,0 +1,98 @@
+@layer patterns {
+  /** Hero Pattern */
+
+  .hero {
+    --section-py: var(--hero-py, var(--space-96));
+    background: var(--hero-bg, transparent);
+    color: var(--hero-fg, var(--color-text-primary));
+    overflow: clip;
+  }
+
+  .hero__inner {
+    display: grid;
+    gap: var(--hero-gap, var(--space-40));
+    align-items: center;
+  }
+
+  .hero__content {
+    display: grid;
+    gap: var(--space-20);
+    max-width: var(--hero-content-max, 760px);
+  }
+
+  .hero__eyebrow {
+    margin: 0;
+    color: var(--hero-eyebrow-fg, var(--color-interactive-dark));
+    font-size: var(--font-sm);
+    font-weight: var(--fw-700);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+
+  .hero__title {
+    margin: 0;
+    color: var(--hero-title-fg, currentColor);
+    font-family: var(--heading-font);
+    font-size: var(--hero-title-size, var(--font-7xl));
+    font-weight: var(--heading-weight);
+    line-height: 1.05;
+    letter-spacing: var(--ls-tight);
+  }
+
+  .hero__lead {
+    margin: 0;
+    color: var(--hero-lead-fg, var(--color-text-secondary));
+    font-size: var(--hero-lead-size, var(--font-xl));
+    line-height: var(--lh-loose);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .hero__media {
+    overflow: hidden;
+    border-radius: var(--hero-media-radius, var(--radius-2xl));
+    box-shadow: var(--hero-media-shadow, var(--elevation-3));
+  }
+
+  .hero__media img,
+  .hero__media picture,
+  .hero__media video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .hero--center .hero__content {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero--center .hero__actions {
+    justify-content: center;
+  }
+
+  .hero--soft {
+    --hero-bg: var(--color-bg-secondary);
+  }
+
+  .hero--fullbleed {
+    min-height: var(--hero-min-h, 72svh);
+    display: grid;
+    place-items: center;
+  }
+
+  .hero--fullbleed .hero__inner {
+    width: 100%;
+  }
+
+  @container (min-width: 800px) {
+    .hero--split .hero__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr);
+    }
+  }
+}
