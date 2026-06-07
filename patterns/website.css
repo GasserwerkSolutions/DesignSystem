@@ -26,8 +26,7 @@
   max-width: none;
 }
 
-.section-head__eyebrow,
-.eyebrow {
+.section-head__eyebrow {
   margin: 0;
   color: var(--section-head-eyebrow-fg, var(--color-interactive-dark));
   font-size: var(--font-sm);
