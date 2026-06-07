@@ -1,0 +1,50 @@
+@layer patterns {
+  .site-header {
+    position: relative;
+    z-index: var(--z-dropdown);
+    background: var(--site-header-bg, color-mix(in oklch, var(--color-surface) 92%, transparent));
+    border-block-end: var(--site-header-border, 1px solid var(--color-border-light));
+    backdrop-filter: var(--site-header-backdrop, blur(16px));
+  }
+
+  .site-header--sticky {
+    position: sticky;
+    inset-block-start: 0;
+  }
+
+  .site-header__inner {
+    display: flex;
+    min-height: var(--site-header-h, 72px);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-24);
+  }
+
+  .site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    color: var(--color-text-primary);
+    font-weight: var(--fw-700);
+    text-decoration: none;
+  }
+
+  .site-header__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--site-header-nav-gap, var(--space-20));
+  }
+
+  .site-header__link {
+    color: var(--color-text-secondary);
+    font-size: var(--font-sm);
+    font-weight: var(--fw-600);
+    text-decoration: none;
+  }
+
+  .site-header__link:hover {
+    color: var(--color-text-primary);
+  }
+}
