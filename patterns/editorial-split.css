@@ -1,0 +1,50 @@
+@layer patterns {
+  /** Editorial Split Pattern */
+
+  .editorial-split {
+    display: grid;
+    gap: var(--editorial-split-gap, var(--space-32));
+    align-items: var(--editorial-split-align, center);
+  }
+
+  .editorial-split__content {
+    display: grid;
+    gap: var(--space-16);
+  }
+
+  .editorial-split__media {
+    overflow: hidden;
+    border-radius: var(--editorial-split-radius, var(--radius-2xl));
+    background: var(--color-surface-subtle);
+  }
+
+  .editorial-split__media img,
+  .editorial-split__media picture,
+  .editorial-split__media video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .editorial-split--boxed {
+    padding: var(--space-24);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--elevation-2);
+  }
+
+  @container (min-width: 800px) {
+    .editorial-split {
+      grid-template-columns: var(--editorial-split-ratio, 1fr 1fr);
+    }
+
+    .editorial-split--golden {
+      --editorial-split-ratio: 1fr var(--phi);
+    }
+
+    .editorial-split--reverse > .editorial-split__media {
+      order: 2;
+    }
+  }
+}
