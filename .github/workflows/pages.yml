@@ -34,8 +34,20 @@ jobs:
       - name: Build JavaScript and tokens
         run: npm run build
 
+      - name: Check website pattern contracts
+        run: npm run check:patterns
+
       - name: Build documentation site
         run: npm run build:site
+
+      - name: Check generated site links and assets
+        run: npm run check:site:links
+
+      - name: Check generated site rendering
+        run: npm run check:site:responsive
+
+      - name: Check generated site interactions
+        run: npm run check:site
 
       - name: Add Pages marker
         run: touch dist/site/.nojekyll
