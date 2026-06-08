@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Musikraum — Klangabende</title>
+  <meta name="description" content="Klangabende im Musikraum: gemeinsam spielen, frei entdecken und intuitiv musizieren." />
+
+  <style>
+    :root {
+      --bg: #f8f4ec;
+      --bg-soft: #efe4d2;
+      --bg-warm: #fffaf1;
+      --surface: #ffffff;
+      --surface-soft: #fbf1df;
+      --surface-deep: #34251b;
+      --text: #2e241b;
+      --muted: #786756;
+      --quiet: #9a8774;
+      --brand: #9b5a2e;
+      --brand-dark: #6d3e22;
+      --brand-soft: #efd2b7;
+      --gold: #d7a24b;
+      --sage: #66734f;
+      --border: #e4d4c0;
+      --radius-sm: 0.65rem;
+      --radius-md: 1rem;
+      --radius-lg: 1.55rem;
+      --radius-xl: 2.25rem;
+      --shadow-sm: 0 1px 2px rgba(48, 31, 18, 0.07);
+      --shadow-md: 0 20px 55px rgba(48, 31, 18, 0.13);
+      --container: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(215, 162, 75, 0.18), transparent 28rem),
+        radial-gradient(circle at 90% 8%, rgba(102, 115, 79, 0.14), transparent 25rem),
+        var(--bg);
+      line-height: 1.65;
+    }
+
+    svg, img { display: block; max-width: 100%; }
+    a { color: inherit; }
+
+    .container {
+      width: min(100% - 2rem, var(--container));
+      margin-inline: auto;
+    }
+
+    .section { padding-block: clamp(4rem, 8vw, 7rem); }
+    .section--soft { background: rgba(239, 228, 210, 0.52); border-block: 1px solid var(--border); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.85rem;
+      padding: 0.78rem 1.2rem;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: var(--brand);
+      color: white;
+      font-weight: 760;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .btn:hover { background: var(--brand-dark); transform: translateY(-1px); }
+    .btn--ghost { color: var(--brand-dark); background: transparent; border-color: var(--border); box-shadow: none; }
+    .btn--ghost:hover { background: var(--brand-soft); border-color: var(--brand-soft); }
+    .btn--light { background: white; color: var(--brand-dark); }
+    .btn--light:hover { background: var(--brand-soft); color: var(--brand-dark); }
+    .btn--sm { min-height: 2.35rem; padding: 0.55rem 0.9rem; font-size: 0.92rem; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: color-mix(in srgb, var(--bg-warm) 88%, transparent);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+    }
+
+    .site-header__inner {
+      min-height: 4.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand { display: grid; line-height: 1.05; text-decoration: none; letter-spacing: -0.035em; }
+    .brand strong { font-size: 1.15rem; font-weight: 880; }
+    .brand span { margin-top: 0.22rem; color: var(--muted); font-size: 0.82rem; letter-spacing: 0.02em; }
+
+    .site-nav { display: flex; align-items: center; gap: 1.2rem; color: var(--muted); font-size: 0.95rem; font-weight: 720; }
+    .site-nav a { text-decoration: none; }
+    .site-nav a:hover { color: var(--brand-dark); }
+
+    .hero {
+      padding-block: clamp(5rem, 10vw, 9rem);
+      overflow: hidden;
+    }
+
+    .hero__inner {
+      display: grid;
+      align-items: center;
+      gap: clamp(2.5rem, 6vw, 5rem);
+    }
+
+    .hero__content { display: grid; gap: 1.2rem; max-width: 780px; }
+    .eyebrow { margin: 0; color: var(--brand-dark); font-size: 0.82rem; font-weight: 850; letter-spacing: 0.14em; text-transform: uppercase; }
+
+    .hero__title {
+      margin: 0;
+      max-width: 11ch;
+      font-size: clamp(3.6rem, 9vw, 7.6rem);
+      line-height: 0.92;
+      letter-spacing: -0.085em;
+    }
+
+    .hero__lead {
+      margin: 0;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: clamp(1.15rem, 2vw, 1.42rem);
+      line-height: 1.75;
+    }
+
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 0.8rem; padding-top: 0.55rem; }
+
+    .sound-card {
+      position: relative;
+      min-height: 430px;
+      display: grid;
+      place-items: center;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      background:
+        radial-gradient(circle at center, rgba(215, 162, 75, 0.18), transparent 11rem),
+        var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .sound-card::before, .sound-card::after {
+      content: "";
+      position: absolute;
+      width: 22rem;
+      aspect-ratio: 1;
+      border: 1px solid rgba(155, 90, 46, 0.18);
+      border-radius: 999px;
+    }
+
+    .sound-card::before { transform: translate(-19%, -12%); }
+    .sound-card::after { width: 31rem; transform: translate(18%, 10%); }
+
+    .sound-card__content { position: relative; z-index: 1; display: grid; gap: 1rem; max-width: 27rem; text-align: center; }
+    .sound-mark { width: 8rem; aspect-ratio: 1; display: grid; place-items: center; margin-inline: auto; color: var(--brand-dark); background: var(--brand-soft); border-radius: 999px; font-size: 3.1rem; font-weight: 850; box-shadow: inset 0 0 0 1px rgba(109, 62, 34, 0.12); }
+    .sound-card h2 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.35rem); line-height: 1.05; letter-spacing: -0.055em; }
+    .sound-card p { margin: 0; color: var(--muted); }
+
+    .section-head { display: grid; gap: 0.75rem; max-width: 790px; margin-bottom: 2rem; }
+    .section-head--center { margin-inline: auto; text-align: center; }
+    .section-title { margin: 0; font-size: clamp(2.1rem, 5vw, 4.15rem); line-height: 1.02; letter-spacing: -0.075em; }
+    .section-lead { margin: 0; color: var(--muted); font-size: 1.1rem; }
+
+    .cards { display: grid; gap: 1rem; }
+    .card { display: grid; gap: 0.75rem; padding: clamp(1.15rem, 2vw, 1.55rem); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+    .card--strong { border-color: color-mix(in srgb, var(--brand) 68%, var(--border)); box-shadow: var(--shadow-md); }
+    .card h3 { margin: 0; font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.025em; }
+    .card p { margin: 0; color: var(--muted); }
+
+    .split { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+    .flow { display: grid; gap: 1rem; }
+    .flow p { margin: 0; color: var(--muted); }
+
+    .image-panel { padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); }
+    .image-panel__caption { margin: 0.9rem 0 0; color: var(--muted); font-size: 0.95rem; }
+
+    .benefit-grid { display: grid; gap: 1rem; }
+    .benefit { display: grid; grid-template-columns: auto 1fr; gap: 0.85rem; align-items: start; padding: clamp(1.1rem, 2vw, 1.45rem); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+    .benefit::before { content: ""; width: 0.75rem; aspect-ratio: 1; margin-top: 0.55rem; background: var(--gold); border-radius: 999px; }
+    .benefit h3 { margin: 0 0 0.25rem; font-size: 1.1rem; }
+    .benefit p { margin: 0; color: var(--muted); }
+
+    .timeline { display: grid; gap: 1rem; counter-reset: step; }
+    .timeline-card { counter-increment: step; padding: clamp(1.15rem, 2vw, 1.45rem); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+    .timeline-card::before { content: counter(step); display: inline-grid; place-items: center; width: 2.25rem; aspect-ratio: 1; margin-bottom: 1rem; color: white; background: var(--brand); border-radius: 999px; font-weight: 850; }
+    .timeline-card h3 { margin: 0 0 0.45rem; }
+    .timeline-card p { margin: 0; color: var(--muted); }
+
+    .practical { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+    .facts { display: grid; gap: 0.65rem; padding: clamp(1.2rem, 3vw, 1.8rem); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); }
+    .fact { display: grid; grid-template-columns: 9rem 1fr; gap: 1rem; padding-block: 0.7rem; border-bottom: 1px solid var(--border); }
+    .fact:last-child { border-bottom: 0; }
+    .fact dt { color: var(--quiet); font-weight: 760; }
+    .fact dd { margin: 0; font-weight: 760; }
+
+    .check-list { display: grid; gap: 0.8rem; margin: 0; padding: 0; list-style: none; }
+    .check-list li { display: grid; grid-template-columns: auto 1fr; gap: 0.75rem; align-items: start; color: var(--muted); }
+    .check-list li::before { content: "✓"; display: inline-grid; place-items: center; width: 1.6rem; aspect-ratio: 1; color: var(--brand-dark); background: var(--brand-soft); border-radius: 999px; font-weight: 850; }
+
+    .booking-box { padding: clamp(2rem, 5vw, 4rem); color: white; background: radial-gradient(circle at top right, rgba(215, 162, 75, 0.35), transparent 19rem), var(--surface-deep); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); }
+    .booking-box h2 { margin: 0; font-size: clamp(2rem, 5vw, 4rem); line-height: 1; letter-spacing: -0.075em; }
+    .booking-box p { max-width: 62ch; color: rgba(255, 255, 255, 0.76); }
+    .booking-box__empty { margin-top: 1.5rem; padding: 1.2rem; color: rgba(255,255,255,0.72); border: 1px dashed rgba(255,255,255,0.28); border-radius: var(--radius-lg); }
+
+    .cta-grid { display: grid; gap: 1rem; }
+    .cta-card { display: grid; gap: 0.9rem; padding: clamp(1.35rem, 3vw, 2rem); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); }
+    .cta-card h3 { margin: 0; font-size: clamp(1.7rem, 3vw, 2.7rem); line-height: 1.05; letter-spacing: -0.055em; }
+    .cta-card p { margin: 0; color: var(--muted); }
+
+    .site-footer { padding-block: 3rem; color: var(--muted); background: var(--surface); border-top: 1px solid var(--border); }
+    .footer-grid { display: grid; gap: 2rem; }
+    .footer-brand { display: grid; gap: 0.35rem; }
+    .footer-brand strong { color: var(--text); font-size: 1.2rem; letter-spacing: -0.035em; }
+    .footer-links { display: grid; gap: 0.5rem; }
+    .footer-links h3 { margin: 0 0 0.3rem; color: var(--text); font-size: 0.95rem; }
+    .footer-links a { text-decoration: none; }
+    .footer-links a:hover { color: var(--brand-dark); }
+    .footer-bottom { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.92rem; }
+    .footer-bottom a { text-decoration: none; }
+
+    @media (min-width: 720px) {
+      .cards, .benefit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .timeline { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+      .cta-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr auto auto; }
+    }
+
+    @media (min-width: 920px) {
+      .hero__inner, .split, .practical { grid-template-columns: minmax(0, 1fr) minmax(320px, 0.9fr); }
+    }
+
+    @media (max-width: 820px) {
+      .site-nav { display: none; }
+      .site-header__inner > .btn { display: none; }
+      .hero__title { max-width: 10ch; }
+      .timeline { grid-template-columns: 1fr; }
+      .fact { grid-template-columns: 1fr; gap: 0.2rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="#start" aria-label="Musikraum Start">
+        <strong>Musikraum</strong>
+        <span>Lauschen. Spielen. Entdecken.</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        <a href="#start">Start</a>
+        <a href="#klangabende">Klangabende</a>
+        <a href="#klangbehandlung">Klangbehandlung</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+
+      <a class="btn btn--sm" href="#termine">Termine ansehen</a>
+    </div>
+  </header>
+
+  <main id="start">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="eyebrow">Klangabende · Gruppe · frei spielen</p>
+          <h1 id="hero-title" class="hero__title">Gemeinsam spielen und entdecken</h1>
+          <p class="hero__lead">
+            In meinem Musikraum stehen Instrumente aus aller Welt bereit. Wir probieren aus, hören einander zu und lassen gemeinsam einen Klang entstehen, der aus dem Moment kommt.
+          </p>
+          <div class="hero__actions">
+            <a class="btn" href="#termine">Termine anschauen</a>
+            <a class="btn btn--ghost" href="#worum-es-geht">Mehr erfahren</a>
+          </div>
+        </div>
+
+        <div class="sound-card" aria-label="Illustration Klangraum">
+          <div class="sound-card__content">
+            <div class="sound-mark" aria-hidden="true">♪</div>
+            <h2>Musik intuitiv erleben</h2>
+            <p>Du brauchst kein Instrument, keine Noten und keine Erfahrung.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="worum-es-geht" class="section" aria-labelledby="about-title">
+      <div class="container">
+        <header class="section-head section-head--center">
+          <p class="eyebrow">Worum es geht</p>
+          <h2 id="about-title" class="section-title">Musik intuitiv erleben</h2>
+          <p class="section-lead">
+            Wer gern Musik hört, ist musikalisch — und kann selbst musizieren. Du brauchst kein Instrument, keine Noten und keine Erfahrung. Neugier und Freude am gemeinsamen Klang reichen.
+          </p>
+        </header>
+
+        <div class="cards">
+          <article class="card card--strong">
+            <h3>Viele Instrumente</h3>
+            <p>Vom Didgeridoo über die Harfe bis zu Flöten und Klanginstrumenten: Alles darf in Ruhe in die Hand genommen und ausprobiert werden.</p>
+          </article>
+          <article class="card">
+            <h3>Gemeinsam ins Spiel finden</h3>
+            <p>Wir hören aufeinander und stimmen uns ein, bis aus einzelnen Klängen ein gemeinsames Spiel entsteht.</p>
+          </article>
+          <article class="card">
+            <h3>Leicht hineinkommen</h3>
+            <p>Ich gebe einfache Impulse zu Klang, Rhythmus und Zusammenspiel — genug Orientierung, damit du dich frei ausprobieren kannst.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--soft" aria-labelledby="first-tone-title">
+      <div class="container split">
+        <div class="flow">
+          <p class="eyebrow">Ein erster Ton genügt</p>
+          <h2 id="first-tone-title" class="section-title">Du musst nicht wissen, was daraus wird.</h2>
+          <p>Oft reicht ein erster Klang — und die anderen antworten. So entsteht Musik nicht aus einem Plan, sondern aus dem Moment.</p>
+        </div>
+
+        <figure class="image-panel">
+          <svg viewBox="0 0 620 430" role="img" aria-label="Der Musikraum mit Instrumenten" xmlns="http://www.w3.org/2000/svg">
+            <rect width="620" height="430" rx="36" fill="var(--surface-soft)" />
+            <circle cx="178" cy="158" r="76" fill="var(--brand-soft)" />
+            <rect x="92" y="286" width="436" height="34" rx="17" fill="var(--brand)" opacity="0.22" />
+            <path d="M392 82 C474 156 474 292 392 368" fill="none" stroke="var(--brand-dark)" stroke-width="16" stroke-linecap="round" opacity="0.62" />
+            <path d="M405 106 L405 346" stroke="var(--gold)" stroke-width="5" opacity="0.9" />
+            <rect x="122" y="334" width="304" height="28" rx="14" fill="var(--sage)" opacity="0.55" />
+          </svg>
+          <p class="image-panel__caption">Der Musikraum. Die Klangabende finden in meinem eingerichteten Musikraum statt.</p>
+        </figure>
+      </div>
+    </section>
+
+    <section id="klangabende" class="section" aria-labelledby="room-title">
+      <div class="container split">
+        <div class="flow">
+          <p class="eyebrow">Der Musikraum</p>
+          <h2 id="room-title" class="section-title">Die Instrumente sind da und dürfen entdeckt werden.</h2>
+          <p>Die Klangabende finden in meinem eingerichteten Musikraum statt. Die Instrumente sind da, klingen verschieden und dürfen in Ruhe entdeckt werden.</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Was wir machen</h3>
+            <p>Wir spielen gemeinsam, hören einander zu und lassen den Abend seinen eigenen Klang finden. Weiter unten siehst du, welche Termine offen sind.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--soft" aria-labelledby="important-title">
+      <div class="container">
+        <header class="section-head section-head--center">
+          <p class="eyebrow">Was wichtig ist</p>
+          <h2 id="important-title" class="section-title">Was die Klangabende besonders macht</h2>
+          <p class="section-lead">Ein klarer Rahmen, einfache Instrumente und viel Raum fürs Hören machen den Einstieg leicht — auch ohne Vorerfahrung.</p>
+        </header>
+
+        <div class="benefit-grid">
+          <article class="benefit"><div><h3>Einfachheit</h3><p>Viele Instrumente lassen sich intuitiv spielen und klingen gut zusammen. So kannst du dich auf den Klang einlassen, statt zuerst Technik oder Noten lernen zu müssen.</p></div></article>
+          <article class="benefit"><div><h3>Zuhören</h3><p>Wir beginnen nicht mit Leistung, sondern mit Aufmerksamkeit. Wer hört, findet leichter hinein — in den eigenen Ton, in den gemeinsamen Puls und in das, was im Raum entsteht.</p></div></article>
+          <article class="benefit"><div><h3>Freiheit</h3><p>Es wird nichts einstudiert. Ich gebe einfache Impulse, danach darf das Spiel wachsen: frei, lebendig und manchmal überraschend.</p></div></article>
+          <article class="benefit"><div><h3>Zeit</h3><p>Du bekommst Zeit zum Ankommen, Ausprobieren und Vertrautwerden. Aus einzelnen Klängen entsteht Schritt für Schritt ein gemeinsames Ganzes.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="flow-title">
+      <div class="container">
+        <header class="section-head section-head--center">
+          <p class="eyebrow">Ablauf</p>
+          <h2 id="flow-title" class="section-title">So kann ein Klangabend entstehen</h2>
+          <p class="section-lead">Der Abend hat einen ruhigen Rahmen. Was darin klingt, entsteht gemeinsam — aus Zuhören, Ausprobieren und dem Moment.</p>
+        </header>
+
+        <div class="timeline">
+          <article class="timeline-card"><h3>Ankommen</h3><p>Wir kommen im Raum an. Der Alltag darf leiser werden, und du kannst in Ruhe wahrnehmen, welches Instrument dich anspricht.</p></article>
+          <article class="timeline-card"><h3>Instrument wählen</h3><p>Du nimmst dir ein Instrument und probierst erste Klänge aus. Es muss nichts richtig sein — ein Ton genügt, um zu beginnen.</p></article>
+          <article class="timeline-card"><h3>Aufeinander hören</h3><p>Nach und nach entsteht ein gemeinsamer Puls oder eine gemeinsame Stimmung. Manchmal trägt ein Rhythmus, manchmal eine Pause.</p></article>
+          <article class="timeline-card"><h3>Gemeinsam spielen</h3><p>Die einzelnen Klänge verbinden sich. Jeder bringt etwas Eigenes mit, und daraus wächst ein Klang, der nur an diesem Abend so entstehen kann.</p></article>
+          <article class="timeline-card"><h3>Nachklingen lassen</h3><p>Am Ende wird es wieder stiller. Wir lassen den letzten Ton ausklingen und nehmen uns einen Moment, bevor der Abend zu Ende geht.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--soft" aria-labelledby="practical-title">
+      <div class="container practical">
+        <div class="flow">
+          <p class="eyebrow">Praktisches</p>
+          <h2 id="practical-title" class="section-title">Der Rahmen bleibt einfach</h2>
+          <p>Alles ist so gehalten, dass du leicht ankommen und mitspielen kannst. Du brauchst nichts vorzubereiten. Weiter unten kannst du schauen, was frei ist.</p>
+
+          <h3>Vielleicht passt es zu dir, wenn du</h3>
+          <ul class="check-list">
+            <li>Musik gern hörst und selbst einmal Klang ausprobieren möchtest</li>
+            <li>gemeinsam spielen willst, ohne etwas leisten zu müssen</li>
+            <li>neugierig auf neue Instrumente bist</li>
+            <li>Freude an einem ruhigen, offenen Abend hast</li>
+            <li>erleben möchtest, wie aus einzelnen Tönen etwas Gemeinsames entsteht</li>
+          </ul>
+        </div>
+
+        <dl class="facts" aria-label="Rahmen">
+          <div class="fact"><dt>Form</dt><dd>Klangabend in der Gruppe</dd></div>
+          <div class="fact"><dt>Gruppe</dt><dd>begrenzte Platzzahl</dd></div>
+          <div class="fact"><dt>Ort</dt><dd>eingerichteter Musikraum</dd></div>
+          <div class="fact"><dt>Dauer</dt><dd>je nach Termin</dd></div>
+          <div class="fact"><dt>Termine</dt><dd>weiter unten</dd></div>
+          <div class="fact"><dt>Preis</dt><dd>beim Termin</dd></div>
+          <div class="fact"><dt>Erfahrung</dt><dd>nicht nötig</dd></div>
+          <div class="fact"><dt>Instrumente</dt><dd>viele zum Ausprobieren</dd></div>
+          <div class="fact"><dt>Telefon</dt><dd><a href="tel:+41796755869">079 675 58 69</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="termine" class="section" aria-labelledby="dates-title">
+      <div class="container booking-box">
+        <p class="eyebrow" style="color: rgba(255,255,255,.72);">Termine</p>
+        <h2 id="dates-title">Schauen, welcher Abend passt</h2>
+        <p>Wenn dich ein Abend anspricht, kannst du hier schauen, ob noch ein Platz frei ist. Danach melde ich mich mit der Bestätigung.</p>
+        <div class="booking-box__empty">Terminliste oder Buchungsmodul hier einsetzen.</div>
+      </div>
+    </section>
+
+    <section id="klangbehandlung" class="section section--soft" aria-labelledby="treatment-title">
+      <div class="container cta-grid">
+        <article class="cta-card">
+          <p class="eyebrow">Lieber für dich allein?</p>
+          <h3 id="treatment-title">Entdecke die Klangbehandlung</h3>
+          <p>Liegend, einzeln, zum Loslassen — Klang als Wohltat für Körper und Geist.</p>
+          <a class="btn btn--ghost" href="#kontakt">Zur Klangbehandlung →</a>
+        </article>
+        <article class="cta-card">
+          <p class="eyebrow">Klangabende</p>
+          <h3>Noch Fragen?</h3>
+          <p>Wenn du unsicher bist, ob ein Klangabend zu dir passt, melde dich einfach. Du brauchst keine Vorerfahrung.</p>
+          <a class="btn" href="#kontakt">Kontakt aufnehmen</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer id="kontakt" class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <strong>Musikraum</strong>
+          <span>Lauschen. Spielen. Entdecken.</span>
+        </div>
+        <div class="footer-links">
+          <h3>Angebote</h3>
+          <a href="#klangabende">Klangabende</a>
+          <a href="#klangbehandlung">Klangbehandlung</a>
+        </div>
+        <div class="footer-links">
+          <h3>Kontakt</h3>
+          <a href="mailto:info@musikraum.ch">info@musikraum.ch</a>
+          <a href="tel:+41796755869">079 675 58 69</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Musikraum</span>
+        <span><a href="#">Impressum</a> · <a href="#">Datenschutz</a></span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
