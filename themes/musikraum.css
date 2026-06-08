@@ -1,0 +1,116 @@
+/**
+ * Theme: MUSIKRAUM
+ * ==================
+ * Tone: Ruhig, warm, erdig, editorial, schweizerisch zurückhaltend.
+ * Primär für: Musikraum / Franz Gasser, Klangarbeit, leise Beratungsseiten.
+ *
+ * Herkunft der Markenwerte: Musikraum-Rebuild-Spezifikation
+ * aus assets/klang.css. Dieses Theme setzt nur Design-Tokens und keine
+ * Komponenten- oder Layout-Selektoren.
+ */
+
+[data-tone~="musikraum"] {
+  /* Brand palette — aus dem Musikraum-Klangsystem abgeleitet */
+  --musikraum-ink:         #2f2b25;
+  --musikraum-muted:       #6c645b;
+  --musikraum-paper:       #f1d9ad;
+  --musikraum-paper-soft:  #e6c48d;
+  --musikraum-surface:     #fff3dd;
+  --musikraum-forest:      #70675a;
+  --musikraum-forest-dark: #403b34;
+  --musikraum-moss:        #9d998b;
+  --musikraum-clay:        #8a7560;
+  --musikraum-gold:        #b89a63;
+  --musikraum-accent:      #587271;
+  --musikraum-accent-dark: #4b6261;
+  --musikraum-cream:       #f8e6c4;
+  --musikraum-border:      #d3b47e;
+
+  /* Page colors — mode-aware, damit nested Dark/Light-Scopes stabil bleiben */
+  --color-bg:           light-dark(var(--musikraum-paper), var(--musikraum-forest-dark));
+  --color-bg-secondary: light-dark(var(--musikraum-cream), #312d28);
+  --color-bg-tertiary:  light-dark(var(--musikraum-paper-soft), #4a443c);
+  --color-bg-inverse:   light-dark(var(--musikraum-forest-dark), var(--musikraum-cream));
+
+  --color-surface:        light-dark(var(--musikraum-surface), #4a443c);
+  --color-surface-subtle: light-dark(var(--musikraum-cream), #403b34);
+  --color-surface-hover:  light-dark(#f6dfb8, #554e45);
+
+  --color-text-primary:   light-dark(var(--musikraum-ink), var(--musikraum-cream));
+  --color-text-secondary: light-dark(var(--musikraum-muted), #d9c8a8);
+  --color-text-tertiary:  light-dark(var(--musikraum-clay), var(--musikraum-moss));
+  --color-text-muted:     light-dark(var(--musikraum-muted), #b7aa95);
+
+  --color-border:       light-dark(var(--musikraum-border), #5f574d);
+  --color-border-light: light-dark(#e3c993, #4f493f);
+  --color-border-dark:  light-dark(var(--musikraum-gold), #8a7560);
+
+  /* Interactive */
+  --color-interactive:       light-dark(var(--musikraum-accent), #9fb9b7);
+  --color-interactive-light: light-dark(#d7e2df, #334746);
+  --color-interactive-dark:  light-dark(var(--musikraum-accent-dark), #c1d3d1);
+  --color-on-interactive:    light-dark(white, #24302f);
+  --color-focus:             light-dark(var(--musikraum-accent), #c1d3d1);
+  --color-focus-ring:        light-dark(#c7d8d5, #587271);
+
+  /* Typography */
+  --font-display:       "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-body:          system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --heading-font:       var(--font-display);
+  --heading-weight:     500;
+  --heading-line-height: 1.08;
+  --h1-letter:          -0.04em;
+  --text-size-h1:       clamp(2.5rem, 1.75rem + 3.75vw, 5rem);
+  --text-size-h2:       clamp(1.875rem, 1.45rem + 2vw, 3.25rem);
+  --text-size-h3:       clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --body-size:          var(--font-lg);
+  --body-line-height:   1.75;
+  --body-max-width:     64ch;
+  --prose-max:          64ch;
+
+  /* Spacing */
+  --space-inline:  clamp(var(--space-20), 4vw, var(--space-48));
+  --space-block:   var(--space-32);
+  --space-section: clamp(var(--space-64), 8vw, var(--space-128));
+
+  /* Motion — ruhig, ohne Bounce */
+  --duration-fast:   var(--motion-base);
+  --duration-medium: var(--motion-slow);
+  --easing-medium:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Button */
+  --btn-bg:           var(--color-interactive);
+  --btn-bg-hover:     var(--color-interactive-dark);
+  --btn-fg:           var(--color-on-interactive);
+  --btn-border:       transparent;
+  --btn-radius:       var(--radius-8);
+  --btn-weight:       650;
+  --btn-letter:       0.01em;
+  --btn-transform:    none;
+  --btn-hover-motion: translateY(-1px);
+  --btn-transition:   background var(--duration-medium) var(--easing-medium),
+                      border-color var(--duration-medium) var(--easing-medium),
+                      color var(--duration-medium) var(--easing-medium),
+                      transform var(--duration-fast) var(--easing-medium);
+
+  /* Card */
+  --card-bg:              var(--color-surface);
+  --card-border:          1px solid color-mix(in oklch, var(--color-border) 72%, transparent);
+  --card-radius:          var(--radius-8);
+  --card-padding:         clamp(var(--space-20), 3vw, var(--space-32));
+  --card-shadow:          0 2px 6px rgba(74, 65, 56, 0.05),
+                          0 14px 36px rgba(74, 65, 56, 0.11);
+  --card-hover-transform: translateY(-2px);
+  --card-hover-shadow:    0 4px 12px rgba(42, 35, 28, 0.09),
+                          0 28px 64px rgba(42, 35, 28, 0.18);
+
+  /* Badge */
+  --badge-radius:    var(--radius-full);
+  --badge-letter:    0.08em;
+  --badge-transform: uppercase;
+  --badge-weight:    650;
+
+  /* Inputs */
+  --input-focus-border: var(--color-interactive);
+  --input-focus-ring:   var(--color-focus-ring);
+}
