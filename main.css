@@ -9,6 +9,7 @@
 @import "./themes/industrial.css" layer(themes);
 @import "./themes/modern.css"     layer(themes);
 @import "./themes/minimal.css"    layer(themes);
+@import "./themes/musikraum.css"  layer(themes);
 
 @import "./semantic/dark.css"     layer(mode);
 @import "./semantic/density.css"  layer(mode);
