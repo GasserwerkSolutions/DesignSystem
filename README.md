@@ -1,7 +1,7 @@
 # Design System
 
 Contract-based Multi-Tone CSS Design System.
-**6 Tones × 2 Modes × 3 Densities × Container-Queries** = 4 orthogonale Achsen.
+**7 Tones × 2 Modes × 3 Densities × Container-Queries** = 4 orthogonale Achsen.
 **54 Components**, **WCAG-AA validiert**, **17.5 KB gzip**.
 
 ```html
@@ -66,13 +66,58 @@ IIFE-Variante für `file://` ohne Build-Step:
 
 | Achse | Werte | Wie | Beispiel |
 |---|---|---|---|
-| **Tone** | trust, playful, premium, industrial, modern, minimal | `<html data-tone="trust">` | Brand-Identität |
+| **Tone** | trust, playful, premium, industrial, modern, minimal, musikraum | `<html data-tone="trust">` | Brand-Identität |
 | **Mode** | light, dark, auto | `<html data-mode="dark">` | Light/Dark/System |
 | **Density** | comfortable, compact, spacious | `<html data-density="compact">` | Touch vs Desktop |
 | **Container** | inline-size queries | `<div class="cq">…</div>` | Component reagiert auf Container, nicht Viewport |
 
 Achsen sind **orthogonal** — jede Kombination funktioniert (über 100 Modi
 × Tones validiert, 1008 WCAG-AA-Paare im static-Contrast-Check).
+
+---
+
+## Musikraum Tone
+
+Der Tone `musikraum` bildet die warme, stille und editoriale Markenwelt von
+Musikraum / Franz Gasser ab. Die Token-Werte stammen aus der bestehenden
+Musikraum-Spezifikation (`assets/klang.css`): warme Papier- und Holzflächen,
+dunkle Wald-/Steintöne, gedämpfte Akzente, Serif-Headlines und ruhige Motion.
+
+```html
+<html data-tone="musikraum" data-mode="light" data-density="comfortable">
+  <body>
+    <section class="section">
+      <div class="container container--prose">
+        <p class="badge">Musikraum</p>
+        <h1>Jeder Mensch ist musikalisch</h1>
+        <p>Gemeinsam spielen, entdecken und aufeinander hören.</p>
+        <a class="btn" href="/Klangabende/">Klangabend entdecken</a>
+      </div>
+    </section>
+  </body>
+</html>
+```
+
+Selektiver Import für statische oder CMS-generierte Sites:
+
+```css
+@import "@gasserwerksolutions/design-system/tokens/tokens.css";
+@import "@gasserwerksolutions/design-system/semantic/semantic.css";
+@import "@gasserwerksolutions/design-system/themes/musikraum.css";
+@import "@gasserwerksolutions/design-system/semantic/dark.css";
+@import "@gasserwerksolutions/design-system/semantic/density.css";
+@import "@gasserwerksolutions/design-system/base/reset.css";
+@import "@gasserwerksolutions/design-system/base/typography.css";
+@import "@gasserwerksolutions/design-system/base/layout.css";
+@import "@gasserwerksolutions/design-system/components/button.css";
+@import "@gasserwerksolutions/design-system/components/card.css";
+@import "@gasserwerksolutions/design-system/components/section.css";
+@import "@gasserwerksolutions/design-system/components/nav.css";
+```
+
+Für den Musikraum-Rebuild gilt: `musikraum` liefert die Theme-Tokens; Header,
+Hero/Subhero, Footer, Booking-Mount und spezifische Seiten-Sections bleiben
+Projektkomponenten der Website oder der CMS-Plattform.
 
 ---
 
@@ -196,92 +241,5 @@ npm run check:full           # Alles, blocking gate vor publish
 - **54 Components**
 - **271 Design Tokens** (DTCG-konform exportiert in `dist/tokens.json`)
 - **17.5 KB** gzipped (bundle)
-- **6 Tones × 2 Modes × 3 Densities × Container-Queries**
+- **7 Tones × 2 Modes × 3 Densities × Container-Queries**
 - **1008** WCAG-AA-Paare verifiziert
-- **50** automated Site-Asserts (smoke + interactions + parser self-test)
-- **6** End-to-End User-Journey-Tests
-- **3** VRT Sensitivity-Suite Mutationen
-- **0** pageerror in der generierten Doc-Site
-
----
-
-## Modern CSS Foundation
-
-Aggressiv adoptiert (Baseline 2024+):
-
-- `color-mix(in oklch, ...)` — perceptually-uniform color mixing
-- `light-dark(L, D)` — single-source-of-truth mode-aware tokens
-- `@container (inline-size)` — Component-level responsive
-- `@property` — typed custom properties (animatable, color-picker in DevTools)
-- `@starting-style` + `transition-behavior: allow-discrete` — smooth
-  enter/exit für popover, modal, drawer
-- `interpolate-size: allow-keywords` — height: auto Animation
-- `field-sizing: content` — auto-grow textarea
-- `accent-color` — branding für native form controls
-- `scrollbar-gutter: stable` — kein Layout-Shift
-- `@scope` — vorbereitet (nicht aktiv)
-- `view-transitions` — smooth Cross-Fade beim Tone/Mode-Switch (Chrome 111+)
-
-Logical Properties durchgehend (RTL-bereit), `prefers-*` media queries
-flächendeckend, forced-colors-mode (Windows HC) für 20 Surfaces explicit.
-
----
-
-## Architektur
-
-```
-tokens/           Primitive Werte (rem-based, fluid typography)
-semantic/         Bedeutungs-Mapping (--color-interactive, --card-bg, ...)
-  semantic.css    light-dark() Mode-Resolution + Status-Token-Tripel
-  dark.css        Multi-Shadow-Overrides + color-scheme-Mappings
-  density.css     3 Density-Tiers (control/row/item)
-themes/           6 Tones, jeder setzt nur Tokens
-base/             Reset, Typography, Layout, Print
-state/            Global interaction defaults, prefers-* + forced-colors
-components/       54 Components — Contract (Tokens in) + Selektoren (CSS out)
-js/               TypeScript Companion JS für interactive Components
-scripts/          Lint, Contrast, A11Y, Visual, Journeys, Site-Builder, Release
-dist/             Generated artifacts:
-  main.min.css        Minified CSS
-  tokens.json         W3C DTCG Token export
-  tokens.d.ts         TypeScript types
-  bundle-stats.json   Größen-Report
-  js/                 Compiled JS bundles (ESM + IIFE)
-  site/               Interactive Documentation Site
-```
-
----
-
-## Doc-Site
-
-Generierte interactive Documentation:
-- **Index**: Component-Grid nach Kategorien
-- **Foundations**: 271 Tokens mit Live-Editor
-- **Themes**: HEX → OKLCH-Palette-Generator + Color-Blind-Safety
-- **Components/X**: Live-Beispiele, Tone-Übersicht (6 Tiles), Modifier-Demos
-- **Mega-Menu**: alle 54 Components in 7 Kategorien
-- **Mobile-optimized**
-
-```bash
-npm run build:site
-open dist/site/index.html
-```
-
----
-
-## Architektur-Entscheidungen
-
-- [ADR-001 — Container-Width-Inheritance](./ADR-001-container-max-inheritance.md)
-- [ADR-002 — Modern-CSS-Architektur (light-dark, @starting-style, @property)](./ADR-002-modern-css-architecture.md)
-- [ADR-003 — Status-Farben Sand-Filter (CLEAR 4 Prinzip 4)](./ADR-003-status-color-sand-filter.md)
-- [ADR-004 — Tone-Paletten Chroma-Filter (CLEAR 4 Prinzip 3)](./ADR-004-palette-chroma-filter.md)
-- [ADR-005 — Bounce nur als explizites Opt-In (CLEAR 4 Prinzip 1)](./ADR-005-bounce-only-as-explicit-opt-in.md)
-- [ADR-006 — Exit-Path-Enforcement via `:has()` (CLEAR 4 Prinzip 2)](./ADR-006-exit-path-enforcement.md)
-- [ADR-007 — Reduced-Motion-Bewusstsein als Two-Layer-Garantie (CLEAR 4 Prinzip 5)](./ADR-007-reduced-motion-awareness.md)
-- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.31
-
----
-
-## License
-
-[MIT](./LICENSE)
