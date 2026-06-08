@@ -1,14 +1,14 @@
 /**
- * @gws/design-system-js — Companion JavaScript für interactive Components
- * ========================================================================
+ * @gasserwerksolutions/design-system — Companion JavaScript für interactive Components
+ * ================================================================================
  *
  * Per-Component-Imports (tree-shakable):
- *   import { setupCombobox } from "@gws/design-system-js/setup-combobox";
- *   import { setupPopovers } from "@gws/design-system-js/setup-popover";
- *   import { setupDismissers } from "@gws/design-system-js/setup-dismiss";
+ *   import { setupCombobox } from "@gasserwerksolutions/design-system/js/setup-combobox";
+ *   import { setupPopovers } from "@gasserwerksolutions/design-system/js/setup-popover";
+ *   import { setupDismissers } from "@gasserwerksolutions/design-system/js/setup-dismiss";
  *
  * Auto-Init alles in einem Aufruf:
- *   import { setupAll } from "@gws/design-system-js";
+ *   import { setupAll } from "@gasserwerksolutions/design-system/js";
  *   setupAll();
  */
 
