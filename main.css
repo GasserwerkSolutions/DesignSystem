@@ -78,3 +78,5 @@
 @import "./components/hover-card.css"      layer(components);
 @import "./components/back-to-top.css"     layer(components);
 @import "./components/scroll-spy.css"      layer(components);
+
+@import "./patterns/website.css" layer(patterns);
