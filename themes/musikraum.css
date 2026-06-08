@@ -40,6 +40,7 @@
   --color-text-secondary: light-dark(var(--musikraum-muted), #d9c8a8);
   --color-text-tertiary:  light-dark(var(--musikraum-clay), var(--musikraum-moss));
   --color-text-muted:     light-dark(var(--musikraum-muted), #b7aa95);
+  --color-text-on-dark:   var(--musikraum-cream);
 
   --color-border:       light-dark(var(--musikraum-border), #5f574d);
   --color-border-light: light-dark(#e3c993, #4f493f);
@@ -113,4 +114,37 @@
   /* Inputs */
   --input-focus-border: var(--color-interactive);
   --input-focus-ring:   var(--color-focus-ring);
+
+  /* Website patterns */
+  --site-header-bg:       color-mix(in oklch, var(--musikraum-surface) 88%, transparent);
+  --site-header-border:   1px solid color-mix(in oklch, var(--musikraum-border) 62%, transparent);
+  --site-header-h:        78px;
+  --site-header-nav-gap:  var(--space-24);
+
+  --hero-bg:              linear-gradient(135deg, var(--musikraum-paper) 0%, var(--musikraum-cream) 100%);
+  --hero-fg:              var(--color-text-primary);
+  --hero-eyebrow-fg:      var(--musikraum-clay);
+  --hero-title-fg:        var(--musikraum-ink);
+  --hero-lead-fg:         var(--musikraum-muted);
+  --hero-title-size:      var(--text-size-h1);
+  --hero-lead-size:       clamp(1.125rem, 1rem + 0.65vw, 1.5rem);
+  --hero-content-max:     820px;
+  --hero-gap:             clamp(var(--space-32), 5vw, var(--space-64));
+  --hero-py:              clamp(var(--space-80), 10vw, var(--space-128));
+  --hero-media-radius:    var(--radius-8);
+  --hero-media-shadow:    var(--card-shadow);
+
+  --editorial-split-gap:    clamp(var(--space-32), 5vw, var(--space-64));
+  --editorial-split-radius: var(--radius-8);
+
+  --cta-band-bg:      var(--musikraum-surface);
+  --cta-band-fg:      var(--musikraum-ink);
+  --cta-band-border:  1px solid color-mix(in oklch, var(--musikraum-border) 72%, transparent);
+  --cta-band-radius:  var(--radius-8);
+  --cta-band-shadow:  var(--card-shadow);
+  --cta-band-padding: clamp(var(--space-32), 5vw, var(--space-64));
+
+  --site-footer-bg: var(--musikraum-forest-dark);
+  --site-footer-fg: #d8c7aa;
+  --site-footer-py: clamp(var(--space-48), 7vw, var(--space-80));
 }
