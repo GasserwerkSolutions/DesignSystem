@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="de" data-tone="trust" data-mode="light" data-density="comfortable">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zahnarztpraxis am Stadtpark — Beispiel Landing Page</title>
+    <meta
+      name="description"
+      content="Beispiel einer klaren Zahnarzt-Landing-Page mit Hero, Vertrauen, Leistungen, Team, FAQ und Kontakt."
+    />
+    <link rel="stylesheet" href="../main.css" />
+  </head>
+  <body>
+    <header class="site-header site-header--sticky">
+      <div class="container site-header__inner">
+        <a class="site-header__brand" href="#top" aria-label="Zahnarztpraxis am Stadtpark">
+          Zahnarztpraxis am Stadtpark
+        </a>
+        <nav class="site-header__nav" aria-label="Hauptnavigation">
+          <a href="#leistungen">Leistungen</a>
+          <a href="#angstpatienten">Angstpatienten</a>
+          <a href="#team">Team</a>
+          <a href="#kontakt">Kontakt</a>
+        </nav>
+        <a class="btn btn--sm" href="#kontakt">Termin anfragen</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="section hero hero--split hero--soft cq" aria-labelledby="hero-title">
+        <div class="container hero__inner">
+          <div class="hero__content">
+            <p class="hero__eyebrow">Zahnarztpraxis für die ganze Familie</p>
+            <h1 id="hero-title" class="hero__title">
+              Ruhige Zahnmedizin mit klarer Beratung.
+            </h1>
+            <p class="hero__lead">
+              Moderne Prophylaxe, ästhetische Behandlungen und sorgfältige Akutversorgung — verständlich erklärt, ohne Zeitdruck und mit einem Team, das zuhört.
+            </p>
+            <div class="hero__actions">
+              <a class="btn" href="#kontakt">Termin anfragen</a>
+              <a class="btn btn--ghost" href="tel:+41440000000">044 000 00 00</a>
+            </div>
+          </div>
+
+          <div class="hero__media" aria-hidden="true">
+            <svg viewBox="0 0 720 520" role="img" aria-label="Illustration einer hellen Zahnarztpraxis" xmlns="http://www.w3.org/2000/svg">
+              <rect width="720" height="520" rx="36" fill="var(--color-surface)" />
+              <rect x="56" y="64" width="608" height="392" rx="28" fill="var(--color-bg-secondary)" />
+              <circle cx="188" cy="176" r="64" fill="var(--color-interactive-light)" />
+              <rect x="296" y="132" width="264" height="32" rx="16" fill="var(--color-border)" />
+              <rect x="296" y="188" width="216" height="24" rx="12" fill="var(--color-border)" />
+              <rect x="120" y="304" width="480" height="52" rx="26" fill="var(--color-interactive)" opacity="0.22" />
+              <rect x="176" y="372" width="368" height="28" rx="14" fill="var(--color-border-dark)" opacity="0.55" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section class="trustbar cq" aria-label="Praxis Fakten">
+        <div class="container trustbar__grid">
+          <div class="trustbar__item">
+            <strong class="trustbar__value">Mo–Fr</strong>
+            <span class="trustbar__label">Sprechzeiten ab 07:30</span>
+          </div>
+          <div class="trustbar__item">
+            <strong class="trustbar__value">Akut</strong>
+            <span class="trustbar__label">Kurzfristige Schmerztermine</span>
+          </div>
+          <div class="trustbar__item">
+            <strong class="trustbar__value">3 Min.</strong>
+            <span class="trustbar__label">Vom Bahnhof Beispielstadt</span>
+          </div>
+          <div class="trustbar__item">
+            <strong class="trustbar__value">Familie</strong>
+            <span class="trustbar__label">Kinder, Erwachsene, Senioren</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="leistungen" class="section cq" aria-labelledby="services-title">
+        <div class="container">
+          <header class="section-head section-head--center">
+            <p class="section-head__eyebrow">Leistungen</p>
+            <h2 id="services-title" class="section-head__title">Was Patientinnen und Patienten häufig brauchen</h2>
+            <p class="section-head__lead">
+              Die Startseite zeigt nur die wichtigsten Behandlungsfelder. Detailseiten können später aus denselben Pattern-Bausteinen entstehen.
+            </p>
+          </header>
+
+          <div class="service-grid">
+            <article class="service-card service-card--featured">
+              <span class="service-card__icon" aria-hidden="true">✓</span>
+              <h3 class="service-card__title">Prophylaxe & Kontrolle</h3>
+              <p class="service-card__text">Regelmäßige Vorsorge, professionelle Zahnreinigung und verständliche Empfehlungen für zuhause.</p>
+              <a class="service-card__more" href="#kontakt">Termin planen</a>
+            </article>
+            <article class="service-card">
+              <span class="service-card__icon" aria-hidden="true">✦</span>
+              <h3 class="service-card__title">Ästhetische Zahnmedizin</h3>
+              <p class="service-card__text">Schonende Korrekturen, helle Füllungen und Beratung zu einem natürlichen Lächeln.</p>
+              <a class="service-card__more" href="#kontakt">Beratung anfragen</a>
+            </article>
+            <article class="service-card">
+              <span class="service-card__icon" aria-hidden="true">+</span>
+              <h3 class="service-card__title">Schmerz & Akut</h3>
+              <p class="service-card__text">Bei akuten Beschwerden klären wir die nächsten Schritte schnell und ruhig.</p>
+              <a class="service-card__more" href="tel:+41440000000">Direkt anrufen</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="angstpatienten" class="section cq" aria-labelledby="calm-title">
+        <div class="container editorial-split editorial-split--boxed">
+          <div class="editorial-split__content">
+            <p class="section-head__eyebrow">Für Angstpatienten</p>
+            <h2 id="calm-title" class="section-head__title">Erst erklären. Dann behandeln.</h2>
+            <p>
+              Viele Menschen kommen mit Unsicherheit in die Praxis. Deshalb beginnt jeder Termin mit einer ruhigen Einordnung: Was ist dringend, was hat Zeit und welche Optionen gibt es?
+            </p>
+            <p>
+              Die Seite vermeidet bewusst harte Versprechen. Sie schafft Vertrauen durch Klarheit, Ablauf, Kontaktmöglichkeiten und eine seriöse Tonalität.
+            </p>
+          </div>
+          <div class="editorial-split__media" aria-hidden="true">
+            <svg viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
+              <rect width="520" height="360" rx="28" fill="var(--color-bg-secondary)" />
+              <circle cx="172" cy="156" r="72" fill="var(--color-interactive-light)" />
+              <rect x="272" y="104" width="156" height="24" rx="12" fill="var(--color-border-dark)" opacity="0.5" />
+              <rect x="272" y="148" width="196" height="18" rx="9" fill="var(--color-border)" />
+              <rect x="272" y="184" width="132" height="18" rx="9" fill="var(--color-border)" />
+              <rect x="108" y="264" width="304" height="26" rx="13" fill="var(--color-interactive)" opacity="0.18" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <section id="team" class="section cq" aria-labelledby="team-title">
+        <div class="container">
+          <header class="section-head section-head--center">
+            <p class="section-head__eyebrow">Team</p>
+            <h2 id="team-title" class="section-head__title">Persönlich, ruhig und gut organisiert</h2>
+            <p class="section-head__lead">Ein kurzer Teamblock reicht auf einer Landing Page. Mehr Biografien gehören auf eine eigene Teamseite.</p>
+          </header>
+
+          <div class="feature-grid feature-grid--3">
+            <article class="feature-card">
+              <span class="feature-card__icon" aria-hidden="true">Dr.</span>
+              <h3 class="feature-card__title">Dr. med. dent. Meyer</h3>
+              <p class="feature-card__text">Allgemeine Zahnmedizin, Prophylaxe und ästhetische Beratung.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-card__icon" aria-hidden="true">DH</span>
+              <h3 class="feature-card__title">Dentalhygiene Team</h3>
+              <p class="feature-card__text">Sorgfältige Reinigung, Vorsorge und praktische Tipps für den Alltag.</p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-card__icon" aria-hidden="true">↗</span>
+              <h3 class="feature-card__title">Empfang</h3>
+              <p class="feature-card__text">Termine, Rückfragen und erste Einschätzung bei akuten Beschwerden.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section cq" aria-labelledby="faq-title">
+        <div class="container faq-section">
+          <header class="section-head section-head--center">
+            <p class="section-head__eyebrow">Fragen</p>
+            <h2 id="faq-title" class="section-head__title">Häufige Fragen vor dem ersten Termin</h2>
+          </header>
+
+          <div class="faq-list">
+            <details class="accordion">
+              <summary class="accordion__summary">Nehmen Sie neue Patientinnen und Patienten auf?</summary>
+              <div class="accordion__content">Ja, neue Patientinnen und Patienten können über das Kontaktformular oder telefonisch anfragen.</div>
+            </details>
+            <details class="accordion">
+              <summary class="accordion__summary">Was mache ich bei Zahnschmerzen?</summary>
+              <div class="accordion__content">Rufen Sie direkt in der Praxis an. Das Team klärt, ob ein kurzfristiger Akuttermin möglich ist.</div>
+            </details>
+            <details class="accordion">
+              <summary class="accordion__summary">Ist die Praxis gut erreichbar?</summary>
+              <div class="accordion__content">Die Beispielpraxis liegt zentral, wenige Minuten vom Bahnhof entfernt und mit Parkmöglichkeiten in der Nähe.</div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section id="kontakt" class="section cq" aria-labelledby="contact-title">
+        <div class="container contact-section">
+          <div>
+            <header class="section-head">
+              <p class="section-head__eyebrow">Kontakt</p>
+              <h2 id="contact-title" class="section-head__title">Termin anfragen</h2>
+              <p class="section-head__lead">
+                Für echte Projekte kann dieser Block an Telefon, Formular, Buchungssystem oder Praxissoftware angebunden werden.
+              </p>
+            </header>
+            <form class="card" action="#" method="post">
+              <div class="field">
+                <label class="field__label" for="name">Name</label>
+                <input class="input" id="name" name="name" autocomplete="name" />
+              </div>
+              <div class="field">
+                <label class="field__label" for="phone">Telefon</label>
+                <input class="input" id="phone" name="phone" autocomplete="tel" />
+              </div>
+              <div class="field">
+                <label class="field__label" for="message">Anliegen</label>
+                <textarea class="textarea" id="message" name="message" rows="4"></textarea>
+              </div>
+              <button class="btn" type="submit">Anfrage senden</button>
+            </form>
+          </div>
+
+          <aside class="contact-card" aria-label="Praxisdaten">
+            <h3>Praxisdaten</h3>
+            <ul class="contact-card__list">
+              <li><strong>Telefon</strong><br /><a href="tel:+41440000000">044 000 00 00</a></li>
+              <li><strong>E-Mail</strong><br /><a href="mailto:praxis@example.ch">praxis@example.ch</a></li>
+              <li><strong>Adresse</strong><br />Stadtpark 12<br />8000 Zürich</li>
+              <li><strong>Öffnungszeiten</strong><br />Mo–Fr, 07:30–17:30</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section cq" aria-labelledby="cta-title">
+        <div class="container">
+          <div class="cta-band cta-band--split">
+            <div>
+              <h2 id="cta-title" class="cta-band__title">Bereit für eine klare Praxis-Website?</h2>
+              <p class="cta-band__text">Diese Landing Page ist ein Muster für Gasserwerk: vertrauensstark, schnell erfassbar und ohne unnötige Komplexität.</p>
+            </div>
+            <div class="cta-band__actions">
+              <a class="btn" href="#kontakt">Kontaktblock ansehen</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <div>
+          <strong>Zahnarztpraxis am Stadtpark</strong>
+          <p>Beispiel-Landing-Page für eine moderne Zahnarztpraxis.</p>
+        </div>
+        <nav class="site-footer__nav" aria-label="Footer Navigation">
+          <a href="#leistungen">Leistungen</a>
+          <a href="#team">Team</a>
+          <a href="#kontakt">Kontakt</a>
+          <a href="#top">Nach oben</a>
+        </nav>
+      </div>
+    </footer>
+
+    <div class="sticky-action" aria-label="Schnellkontakt">
+      <a class="btn" href="tel:+41440000000">Jetzt anrufen</a>
+      <a class="btn btn--ghost" href="#kontakt">Termin anfragen</a>
+    </div>
+  </body>
+</html>
