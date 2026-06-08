@@ -35,6 +35,7 @@
     "state/",
     "themes/",
     "tokens/",
+    "examples/",
     "dist/js/",
     "dist/main.min.css",
     "dist/bundle-stats.json",
@@ -45,6 +46,9 @@
     "ADR-003-status-color-sand-filter.md",
     "ADR-004-palette-chroma-filter.md",
     "ADR-005-bounce-only-as-explicit-opt-in.md",
+    "ADR-006-exit-path-enforcement.md",
+    "ADR-007-reduced-motion-awareness.md",
+    "ADR-008-popover-trigger-lookup-hardening.md",
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md"
