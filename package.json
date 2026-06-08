@@ -14,6 +14,10 @@
       "types": "./dist/js/index.d.ts",
       "import": "./dist/js/index.js"
     },
+    "./js/*": {
+      "types": "./dist/js/*.d.ts",
+      "import": "./dist/js/*.js"
+    },
     "./js/bundle": "./dist/js/design-system.bundle.js",
     "./js/iife": "./dist/js/design-system.iife.js",
     "./components/*": "./components/*",
