@@ -5,7 +5,7 @@ Contract-based Multi-Tone CSS Design System.
 **54 Components**, **WCAG-AA validiert**, **17.5 KB gzip**.
 
 ```html
-<link rel="stylesheet" href="./node_modules/@gws/design-system/main.css">
+<link rel="stylesheet" href="./node_modules/@gasserwerksolutions/design-system/main.css">
 <html data-tone="trust" data-mode="light" data-density="comfortable">
   <body>
     <button class="btn">Call to action</button>
@@ -20,21 +20,21 @@ Drei Achsen-Attribute auf `<html>`, ein Stylesheet, los geht's.
 ## Install
 
 ```bash
-npm install @gws/design-system
+npm install @gasserwerksolutions/design-system
 ```
 
 ```css
-@import "@gws/design-system";              /* alles, 17.5 KB gzip */
-@import "@gws/design-system/min";          /* pre-minified */
+@import "@gasserwerksolutions/design-system";              /* alles, 17.5 KB gzip */
+@import "@gasserwerksolutions/design-system/min";          /* pre-minified */
 ```
 
 Per-Component-Import (CSS-Tree-Shaking):
 
 ```css
-@import "@gws/design-system/tokens/tokens.css";
-@import "@gws/design-system/semantic/semantic.css";
-@import "@gws/design-system/themes/trust.css";
-@import "@gws/design-system/components/button.css";
+@import "@gasserwerksolutions/design-system/tokens/tokens.css";
+@import "@gasserwerksolutions/design-system/semantic/semantic.css";
+@import "@gasserwerksolutions/design-system/themes/trust.css";
+@import "@gasserwerksolutions/design-system/components/button.css";
 /* … nur was du brauchst */
 ```
 
@@ -42,21 +42,21 @@ Optional: Companion-JS (TypeScript) für interactive Components (Combobox,
 File-Upload, Slider, Theme-Toggle, OTP-Input, Copy-Button, Popover-Anchor):
 
 ```js
-import { setupAll } from "@gws/design-system/js";
+import { setupAll } from "@gasserwerksolutions/design-system/js";
 setupAll();
 ```
 
 Tree-shakable per Component:
 
 ```js
-import { setupCombobox } from "@gws/design-system/js/setup-combobox";
-import { setupThemeToggle } from "@gws/design-system/js/setup-theme-toggle";
+import { setupCombobox } from "@gasserwerksolutions/design-system/js/setup-combobox";
+import { setupThemeToggle } from "@gasserwerksolutions/design-system/js/setup-theme-toggle";
 ```
 
 IIFE-Variante für `file://` ohne Build-Step:
 
 ```html
-<script src="./node_modules/@gws/design-system/dist/js/design-system.iife.js"></script>
+<script src="./node_modules/@gasserwerksolutions/design-system/dist/js/design-system.iife.js"></script>
 <script>DS.setupAll()</script>
 ```
 
@@ -84,8 +84,8 @@ CSS-First-DS — funktioniert mit jedem Framework via CSS-Import.
 
 ```jsx
 // main.jsx
-import "@gws/design-system";
-import { setupAll } from "@gws/design-system/js";
+import "@gasserwerksolutions/design-system";
+import { setupAll } from "@gasserwerksolutions/design-system/js";
 
 function App() {
   useEffect(() => { setupAll(); }, []);
@@ -101,8 +101,8 @@ function App() {
 
 ```vue
 <!-- main.js -->
-import "@gws/design-system";
-import { setupAll } from "@gws/design-system/js";
+import "@gasserwerksolutions/design-system";
+import { setupAll } from "@gasserwerksolutions/design-system/js";
 
 <!-- App.vue -->
 <script setup>
@@ -120,8 +120,8 @@ onMounted(setupAll);
 ```svelte
 <!-- App.svelte -->
 <script>
-  import "@gws/design-system";
-  import { setupAll } from "@gws/design-system/js";
+  import "@gasserwerksolutions/design-system";
+  import { setupAll } from "@gasserwerksolutions/design-system/js";
   import { onMount } from "svelte";
   onMount(setupAll);
 </script>
