@@ -69,7 +69,7 @@ jobs:
         run: npm run build && npm run build:site && touch dist/site/.nojekyll
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist/site
 
