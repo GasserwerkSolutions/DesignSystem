@@ -8,11 +8,16 @@
  */
 
 import { anchorPopoverByTrigger } from "./anchor-popover.js";
+import { combineCleanups, type Cleanup } from "./lifecycle.js";
 
-export function setupPopover(panel: HTMLElement): void {
-  anchorPopoverByTrigger(panel, {
+const cleanups = new WeakMap<HTMLElement, Cleanup>();
+
+export function setupPopover(panel: HTMLElement): Cleanup {
+  const existing = cleanups.get(panel);
+  if (existing) return existing;
+  const releaseAnchor = anchorPopoverByTrigger(panel, {
     onToggle: (e) => {
-      const trigger = document.querySelector<HTMLElement>(
+      const trigger = panel.ownerDocument.querySelector<HTMLElement>(
         `[popovertarget="${panel.id}"]`
       );
       if (trigger) {
@@ -23,8 +28,14 @@ export function setupPopover(panel: HTMLElement): void {
       }
     },
   });
+  const cleanup: Cleanup = () => {
+    releaseAnchor();
+    cleanups.delete(panel);
+  };
+  cleanups.set(panel, cleanup);
+  return cleanup;
 }
 
-export function setupPopovers(root: ParentNode = document): void {
-  root.querySelectorAll<HTMLElement>(".popover").forEach(setupPopover);
+export function setupPopovers(root: ParentNode = document): Cleanup {
+  return combineCleanups([...root.querySelectorAll<HTMLElement>(".popover")].map(setupPopover));
 }

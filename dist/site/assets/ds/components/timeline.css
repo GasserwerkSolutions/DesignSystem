@@ -1,0 +1,130 @@
+/**
+ * Timeline Component
+ * ===================
+ *
+ * Vertikale Aktivitäts-Liste. Markers auf einer Linie, Inhalt rechts.
+ * Typische Use-Cases: Activity-Feed, Booking-History, Audit-Log,
+ * Order-Tracking.
+ *
+ * Pures CSS, kein JS. Linie ist ein pseudo-element pro Item (läuft von
+ * Marker-Top bis Item-Bottom, kontinuierlich da gap=0); der Marker hat
+ * eigenen Background, der die Linie an der Schnittstelle visuell unterbricht.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --timeline-marker-size       (default 0.75rem)
+ *     --timeline-marker-gap        (default --space-12)
+ *     --timeline-line-color        (default --color-border)
+ *     --timeline-line-width        (default 2px)
+ *     --timeline-item-spacing      (default --space-16)
+ *
+ * Struktur:
+ *   <ol class="timeline">
+ *     <li class="timeline__item">
+ *       <span class="timeline__marker timeline__marker--success" aria-hidden="true"></span>
+ *       <div class="timeline__body">
+ *         <time class="timeline__time" datetime="2026-05-26T09:00">09:00</time>
+ *         <strong class="timeline__title">Termin gebucht</strong>
+ *         <p>Anna Meier — Haarschnitt</p>
+ *       </div>
+ *     </li>
+ *   </ol>
+ *
+ * Marker-Modifier (zieht aus --status-*-Tokens von v0.3.1):
+ *   .timeline__marker--success    grün gefüllt
+ *   .timeline__marker--warning    amber gefüllt
+ *   .timeline__marker--danger     rot gefüllt
+ *   .timeline__marker--current    highlighted mit Focus-Ring (aktiver Schritt)
+ */
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.timeline__item {
+  display: grid;
+  grid-template-columns: var(--timeline-marker-size, 0.75rem) 1fr;
+  column-gap: var(--timeline-marker-gap, var(--space-12));
+  position: relative;
+}
+
+/* Linie: pseudo-element am Item, läuft von Marker-Top bis Item-Bottom.
+   Auf dem letzten Item kein ::before — Timeline endet sauber.
+   Logical Property (inset-inline-start) für RTL-Symmetrie. */
+.timeline__item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0.4rem;
+  inset-block-end:   0;
+  inset-inline-start: calc(var(--timeline-marker-size, 0.75rem) / 2);
+  width: var(--timeline-line-width, 2px);
+  background: var(--timeline-line-color, var(--color-border));
+  transform: translateX(-50%);
+}
+
+.timeline__marker {
+  width:  var(--timeline-marker-size, 0.75rem);
+  height: var(--timeline-marker-size, 0.75rem);
+  border-radius: var(--radius-full);
+  background: var(--marker-bg, var(--card-bg));
+  border: 2px solid var(--marker-border, var(--color-border-dark));
+  /* Align mit Mitte der ersten Text-Zeile. Wer kein <time> nutzt, kann
+     via --timeline-marker-offset auf 0.4rem korrigieren (Title-Baseline). */
+  margin-block-start: var(--timeline-marker-offset, 0.2rem);
+  position: relative;          /* Über der Linie stacken */
+  z-index: 1;
+}
+
+.timeline__body {
+  padding-block-end: var(--timeline-item-spacing, var(--space-16));
+  min-width: 0;
+}
+
+.timeline__item:last-child .timeline__body {
+  padding-block-end: 0;
+}
+
+.timeline__time {
+  display: block;
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+  margin-block-end: var(--space-2);
+}
+
+.timeline__title {
+  display: block;
+  font-weight: var(--fw-600);
+  color: var(--color-text-primary);
+  margin-block-end: var(--space-4);
+}
+
+.timeline__body p {
+  margin: 0;
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+/* Marker-Variants — ziehen aus --status-*-Token-Set. */
+.timeline__marker--success {
+  --marker-bg:     var(--status-success-border);
+  --marker-border: var(--status-success-border);
+}
+
+.timeline__marker--warning {
+  --marker-bg:     var(--status-warning-border);
+  --marker-border: var(--status-warning-border);
+}
+
+.timeline__marker--danger {
+  --marker-bg:     var(--status-danger-border);
+  --marker-border: var(--status-danger-border);
+}
+
+.timeline__marker--current {
+  --marker-bg:     var(--color-interactive);
+  --marker-border: var(--color-interactive);
+  box-shadow: 0 0 0 4px var(--color-focus-ring);
+}

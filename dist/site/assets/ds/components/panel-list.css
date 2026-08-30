@@ -1,0 +1,79 @@
+/**
+ * Panel-List Component
+ * =====================
+ *
+ * Key-Value-Reihen mit Trennlinien zwischen ihnen.
+ * Für Analytics-Panels (Top Pages, Traffic Sources, Devices).
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --panel-list-divider, --panel-list-row-py
+ *
+ * Struktur:
+ *   <ul class="panel-list">
+ *     <li class="panel-list__row">
+ *       <span class="panel-list__key">/homepage</span>
+ *       <span class="panel-list__value">1'234</span>
+ *     </li>
+ *   </ul>
+ *
+ *   Semantisch korrekt als <dl>:
+ *   <dl class="panel-list panel-list--dl">
+ *     <div class="panel-list__row">
+ *       <dt class="panel-list__key">/homepage</dt>
+ *       <dd class="panel-list__value">1'234</dd>
+ *     </div>
+ *   </dl>
+ *
+ * Modifier:
+ *   .panel-list--dense    kompakteres Padding
+ *   .panel-list--dl       <dl>-Container: resettet dt/dd Margin
+ */
+
+.panel-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.panel-list__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  padding-block: var(--panel-list-row-py, var(--space-12));
+  border-block-end: 1px solid var(--panel-list-divider, var(--color-border));
+  min-width: 0;
+}
+
+.panel-list__row:last-child {
+  border-block-end: none;
+}
+
+.panel-list__key {
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-list__value {
+  color: var(--color-text-primary);
+  font-weight: var(--fw-600);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-size: var(--font-sm);
+}
+
+.panel-list--dense {
+  --panel-list-row-py: var(--space-8);
+}
+
+.panel-list--dl dt,
+.panel-list--dl dd {
+  margin: 0;
+}

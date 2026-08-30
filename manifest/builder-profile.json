@@ -1,0 +1,76 @@
+{
+  "$schema": "./builder-profile.schema.json",
+  "schemaVersion": 1,
+  "id": "builder",
+  "label": "Gasserwerk Builder Website Profile",
+  "entry": "profiles/builder.css",
+  "layers": [
+    "reset",
+    "tokens",
+    "semantic",
+    "themes",
+    "mode",
+    "base",
+    "state",
+    "components",
+    "patterns",
+    "treatments",
+    "utilities",
+    "overrides"
+  ],
+  "imports": [
+    "tokens/tokens.css",
+    "semantic/semantic.css",
+    "semantic/dark.css",
+    "semantic/density.css",
+    "base/reset.css",
+    "base/typography.css",
+    "base/layout.css",
+    "base/print.css",
+    "state/state.css",
+    "components/chevron.css",
+    "components/button.css",
+    "components/card.css",
+    "components/section.css",
+    "components/badge.css",
+    "components/nav.css",
+    "components/field.css",
+    "components/accordion.css",
+    "patterns/website.css"
+  ],
+  "components": [
+    { "id": "button", "css": "components/button.css", "contract": "class:btn", "javascript": null },
+    { "id": "card", "css": "components/card.css", "contract": "class:card", "javascript": null },
+    { "id": "section", "css": "components/section.css", "contract": "class:section", "javascript": null },
+    { "id": "badge", "css": "components/badge.css", "contract": "class:badge", "javascript": null },
+    { "id": "nav", "css": "components/nav.css", "contract": "class:nav", "javascript": null },
+    { "id": "field", "css": "components/field.css", "contract": "label plus form control", "javascript": null },
+    { "id": "accordion", "css": "components/accordion.css", "contract": "details.accordion", "javascript": null }
+  ],
+  "patterns": [
+    { "id": "site-header", "css": "patterns/site-header.css" },
+    { "id": "hero", "css": "patterns/hero.css" },
+    { "id": "section-head", "css": "patterns/section-head.css" },
+    { "id": "trustbar", "css": "patterns/trustbar.css" },
+    { "id": "service-grid", "css": "patterns/service-grid.css" },
+    { "id": "editorial-split", "css": "patterns/editorial-split.css" },
+    { "id": "cta-band", "css": "patterns/cta-band.css" },
+    { "id": "faq-section", "css": "patterns/faq-section.css" },
+    { "id": "contact-section", "css": "patterns/contact-section.css" },
+    { "id": "sticky-action", "css": "patterns/sticky-action.css" },
+    { "id": "site-footer", "css": "patterns/site-footer.css" }
+  ],
+  "htmlContract": {
+    "requiredAttributes": ["data-mode", "data-density", "data-design-system"],
+    "densityValues": ["compact", "comfortable", "spacious"],
+    "modeValues": ["light", "dark", "auto"]
+  },
+  "compatibility": {
+    "policy": "Baseline 2024+ with progressive fallbacks",
+    "minimum": {
+      "chrome": 117,
+      "safari": 17.5,
+      "firefox": 129
+    }
+  }
+}

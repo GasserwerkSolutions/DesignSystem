@@ -1,0 +1,105 @@
+/**
+ * Field Component
+ * ================
+ *
+ * Form-Field-Wrapper: Label + Input + Hint/Error.
+ * Konsistentes Spacing, Error-Zustand, Inline-Layout-Variante.
+ *
+ * CONTRACT:
+ *   Keine spezifischen Tokens — nutzt semantic --color-error, --color-text-*.
+ *
+ * Struktur:
+ *   <div class="field">
+ *     <label class="field__label" for="email">
+ *       Email <span class="required">*</span>
+ *     </label>
+ *     <input id="email" type="email" placeholder="…">
+ *     <p class="field__hint">Wir versenden keinen Spam.</p>
+ *   </div>
+ *
+ *   Mit Error:
+ *   <div class="field field--error">
+ *     <label class="field__label" for="phone">Telefon</label>
+ *     <input id="phone" type="tel" aria-invalid="true" aria-describedby="phone-err">
+ *     <p class="field__error" id="phone-err">Ungültige Nummer</p>
+ *   </div>
+ *
+ * Modifier:
+ *   .field--inline   Label links, Input rechts (kompakte Formulare)
+ *   .field--error    Input bekommt roten Border, Error-Text aktiv
+ */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.field__label {
+  font-size: var(--font-sm);
+  font-weight: var(--fw-600);
+  color: var(--color-text-primary);
+  line-height: var(--lh-normal);
+  margin: 0;
+  display: block;
+}
+
+.field__label .required {
+  color: var(--color-error);
+  font-weight: var(--fw-700);
+  margin-inline-start: var(--space-2);
+}
+
+.field__hint {
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary);
+  line-height: var(--lh-normal);
+  margin: 0;
+}
+
+.field__error {
+  font-size: var(--font-xs);
+  color: var(--color-error);
+  font-weight: var(--fw-500);
+  line-height: var(--lh-normal);
+  margin: 0;
+}
+
+/* Error-Zustand: Input/Textarea bekommt roten Border */
+.field--error > input,
+.field--error > textarea,
+.field--error > select {
+  border-color: var(--color-error);
+}
+
+.field--error > input:focus,
+.field--error > textarea:focus,
+.field--error > select:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-error) 20%, transparent);
+}
+
+/* Horizontales Layout */
+.field--inline {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+}
+
+.field--inline > .field__label {
+  flex: 0 0 auto;
+  min-width: 8rem;
+}
+
+.field--inline > input,
+.field--inline > textarea,
+.field--inline > select {
+  flex: 1 1 auto;
+  width: auto;
+}
+
+.field--inline > .field__hint,
+.field--inline > .field__error {
+  flex-basis: 100%;
+}

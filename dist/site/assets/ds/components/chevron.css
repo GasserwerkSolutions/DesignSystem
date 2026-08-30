@@ -1,0 +1,59 @@
+/**
+ * Chevron Component (Utility)
+ * ============================
+ *
+ * Zusammensetzbare CSS-only Caret/Triangle-Markierung. Pures CSS via
+ * Border-Trick (kein SVG-Mask, kein Image), currentColor-aware,
+ * configurable über Custom-Properties.
+ *
+ * Wird genutzt von Tree (pointing-right + rotate-90-on-open) und
+ * Combobox (pointing-down + rotate-180-on-expanded). Select nutzt
+ * BEWUSST kein .chevron — sein pseudo-element auf .select-wrap::after
+ * bleibt markup-light (kein Extra-DOM für Konsumenten nötig).
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --chevron-size       (default 0.6rem)
+ *     --chevron-thickness  (default 0.42 — Verhältnis von Tiefe zu Größe)
+ *     --chevron-color      (default currentColor)
+ *
+ * Struktur:
+ *   <span class="chevron" aria-hidden="true"></span>             // pointing down
+ *   <span class="chevron chevron--right" aria-hidden="true"></span>  // pointing right
+ *
+ * Rotation kommt von der nutzenden Component (z.B. tree.css setzt
+ * transform: rotate(90deg) wenn das parent <details> open ist).
+ */
+
+.chevron {
+  --_size:      var(--chevron-size, 0.6rem);
+  --_thickness: var(--chevron-thickness, 0.42);
+
+  display: inline-block;
+  width:  var(--_size);
+  height: var(--_size);
+  flex-shrink: 0;
+  color: var(--chevron-color, currentColor);
+  transition: transform var(--motion-feedback);
+}
+
+/* Default: pointing down (▼) — für Selects, Comboboxes, Disclosure-Down. */
+.chevron::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-inline: calc(var(--_size) / 2) solid transparent;
+  border-block-start: calc(var(--_size) * var(--_thickness)) solid currentColor;
+}
+
+/* Pointing right (▸) — für Tree, Accordion-Expand. */
+.chevron--right::before {
+  border-inline: 0;
+  border-block: calc(var(--_size) / 2) solid transparent;
+  border-inline-start: calc(var(--_size) * var(--_thickness)) solid currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron { transition: none; }
+}

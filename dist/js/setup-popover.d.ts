@@ -6,5 +6,6 @@
  * Diese Setup-Funktion fügt das Trigger-Anchoring hinzu (anchor-popover
  * Utility) plus syncs aria-expanded auf dem Trigger-Button.
  */
-export declare function setupPopover(panel: HTMLElement): void;
-export declare function setupPopovers(root?: ParentNode): void;
+import { type Cleanup } from "./lifecycle.js";
+export declare function setupPopover(panel: HTMLElement): Cleanup;
+export declare function setupPopovers(root?: ParentNode): Cleanup;

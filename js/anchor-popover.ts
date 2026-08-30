@@ -26,18 +26,24 @@ export interface AnchorOptions {
   onToggle?: (event: ToggleEvent) => void;
 }
 
+import { type Cleanup } from "./lifecycle.js";
+
+const cleanups = new WeakMap<HTMLElement, Cleanup>();
+
 export function anchorPopoverByTrigger(
   panel: HTMLElement,
   options: AnchorOptions = {}
-): void {
+): Cleanup {
+  const existing = cleanups.get(panel);
+  if (existing) return existing;
   const { matchWidth = false, offset = 4, onToggle } = options;
 
-  panel.addEventListener("beforetoggle", (rawEvent) => {
+  const handleToggle = (rawEvent: Event): void => {
     const e = rawEvent as ToggleEvent;
     if (onToggle) onToggle(e);
     if (e.newState !== "open") return;
 
-    const trigger = document.querySelector<HTMLElement>(
+    const trigger = panel.ownerDocument.querySelector<HTMLElement>(
       `[popovertarget="${panel.id}"]`
     );
     if (!trigger) return;
@@ -46,5 +52,19 @@ export function anchorPopoverByTrigger(
     panel.style.top = `${r.bottom + offset}px`;
     panel.style.left = `${r.left}px`;
     if (matchWidth) panel.style.minWidth = `${r.width}px`;
-  });
+  };
+  panel.addEventListener("beforetoggle", handleToggle);
+
+  let active = true;
+  const cleanup: Cleanup = () => {
+    if (!active) return;
+    active = false;
+    panel.removeEventListener("beforetoggle", handleToggle);
+    panel.style.removeProperty("top");
+    panel.style.removeProperty("left");
+    panel.style.removeProperty("min-width");
+    cleanups.delete(panel);
+  };
+  cleanups.set(panel, cleanup);
+  return cleanup;
 }

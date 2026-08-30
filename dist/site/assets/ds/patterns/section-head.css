@@ -1,0 +1,59 @@
+@layer patterns {
+  /**
+   * Section Head Pattern
+   * Reusable eyebrow/title/lead block for website sections.
+   */
+
+  .section-head {
+    display: grid;
+    gap: var(--section-head-gap, var(--space-12));
+    max-width: var(--section-head-max, 760px);
+    margin-block-end: var(--section-head-mb, var(--space-32));
+  }
+
+  .section-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .section-head--split {
+    max-width: none;
+  }
+
+  .section-head__eyebrow {
+    margin: 0;
+    color: var(--section-head-eyebrow-fg, var(--color-interactive-dark));
+    font-size: var(--font-sm);
+    font-weight: var(--fw-700);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+
+  .section-head__title {
+    margin: 0;
+    color: var(--section-head-title-fg, var(--color-text-primary));
+    font-family: var(--heading-font);
+    font-size: var(--section-head-title-size, var(--text-size-h2));
+    font-weight: var(--heading-weight);
+    line-height: var(--heading-line-height);
+  }
+
+  .section-head__lead {
+    margin: 0;
+    color: var(--section-head-lead-fg, var(--color-text-secondary));
+    font-size: var(--section-head-lead-size, var(--font-lg));
+    line-height: var(--lh-loose);
+  }
+
+  @container (min-width: 760px) {
+    .section-head--split {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: end;
+      column-gap: var(--space-48);
+    }
+
+    .section-head--split > .section-head__lead {
+      grid-column: 2;
+    }
+  }
+}

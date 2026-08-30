@@ -1,0 +1,84 @@
+/**
+ * Stat Component
+ * ===============
+ *
+ * Metric-Display für Dashboards (UMSATZ, TERMINE, Besucher, etc.)
+ * und Funnel-Steps.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --stat-bg, --stat-fg, --stat-border, --stat-radius, --stat-padding
+ *     --stat-label-color, --stat-value-weight, --stat-value-color
+ *     --stat-sub-color
+ *
+ * Struktur:
+ *   <div class="stat">
+ *     <span class="stat__label">UMSATZ HEUTE</span>
+ *     <span class="stat__value">CHF 0</span>
+ *     <span class="stat__sub">erwartet</span>
+ *   </div>
+ *
+ * Modifier:
+ *   .stat--emphasis   hervorgehoben (z. B. letzter Funnel-Step)
+ *   .stat--ghost      ohne Border/Background (als Text-Block)
+ *   .stat--compact    reduziertes Padding
+ */
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--stat-padding, var(--space-24));
+  background: var(--stat-bg, var(--color-bg-secondary));
+  color: var(--stat-fg, var(--color-text-primary));
+  border: 1px solid var(--stat-border, var(--color-border));
+  border-radius: var(--stat-radius, var(--radius-lg));
+}
+
+.stat__label {
+  font-size: var(--font-xs);
+  font-weight: var(--fw-600);
+  color: var(--stat-label-color, var(--color-text-tertiary));
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+}
+
+.stat__value {
+  font-size: var(--font-3xl);
+  font-weight: var(--stat-value-weight, var(--fw-700));
+  line-height: 1.1;
+  color: var(--stat-value-color, var(--color-text-primary));
+  font-family: var(--heading-font);
+}
+
+.stat__sub {
+  font-size: var(--font-xs);
+  color: var(--stat-sub-color, var(--color-text-tertiary));
+}
+
+.stat--emphasis {
+  --stat-bg: var(--color-interactive);
+  --stat-border: var(--color-interactive);
+  --stat-label-color: color-mix(in oklch, white 75%, var(--color-interactive));
+  --stat-value-color: white;
+  --stat-sub-color: color-mix(in oklch, white 75%, var(--color-interactive));
+}
+
+.stat--ghost {
+  --stat-bg: transparent;
+  --stat-border: transparent;
+  padding-inline: 0;
+}
+
+.stat--compact {
+  --stat-padding: var(--space-16);
+  gap: var(--space-4);
+}
+
+/* Utility: responsives Grid aus mehreren Stats */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: var(--space-16);
+}

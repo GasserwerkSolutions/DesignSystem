@@ -1,0 +1,77 @@
+/**
+ * Breadcrumbs Component
+ * ======================
+ *
+ * Navigations-Pfad: Home > Settings > Profile
+ *
+ * Struktur:
+ *   <nav class="breadcrumbs" aria-label="Breadcrumb">
+ *     <ol>
+ *       <li><a href="/">Home</a></li>
+ *       <li><a href="/settings">Einstellungen</a></li>
+ *       <li aria-current="page">Profil</li>
+ *     </ol>
+ *   </nav>
+ *
+ * Modifier:
+ *   .breadcrumbs--slash (default) / --chevron / --dot
+ */
+
+.breadcrumbs {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.breadcrumbs > ol {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.breadcrumbs li {
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.breadcrumbs li::before {
+  content: none;
+}
+
+.breadcrumbs li + li::before {
+  content: var(--breadcrumbs-separator, "/");
+  color: var(--color-text-tertiary);
+}
+
+.breadcrumbs--chevron li + li::before {
+  content: "›";
+}
+
+.breadcrumbs--dot li + li::before {
+  content: "·";
+}
+
+.breadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+  padding: var(--space-2) var(--space-xs);
+  border-radius: var(--radius-sm);
+  transition: color var(--motion-feedback), background var(--motion-feedback);
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-interactive);
+  background: var(--color-bg-secondary);
+  text-decoration: none;
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: var(--color-text-primary);
+  font-weight: var(--fw-600);
+}

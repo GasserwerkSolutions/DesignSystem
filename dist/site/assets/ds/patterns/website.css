@@ -1,0 +1,13 @@
+@layer patterns;
+
+@import "./site-header.css" layer(patterns);
+@import "./hero.css" layer(patterns);
+@import "./section-head.css" layer(patterns);
+@import "./trustbar.css" layer(patterns);
+@import "./service-grid.css" layer(patterns);
+@import "./editorial-split.css" layer(patterns);
+@import "./cta-band.css" layer(patterns);
+@import "./faq-section.css" layer(patterns);
+@import "./contact-section.css" layer(patterns);
+@import "./sticky-action.css" layer(patterns);
+@import "./site-footer.css" layer(patterns);

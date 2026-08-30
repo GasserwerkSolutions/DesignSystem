@@ -1,0 +1,43 @@
+/**
+ * Density-Mode Token-Overrides
+ * =============================
+ *
+ * Orthogonal zu Themes und Dark-Mode — `data-density` kann frei mit
+ * `data-tone` und `data-mode` kombiniert werden.
+ *
+ * Aktivierung:
+ *   <html data-density="compact">   ~32px tall controls
+ *   <html data-density="spacious">  ~48px tall controls
+ *   (kein Attribut)                 comfortable, ~40px (Default aus semantic.css)
+ *
+ * Sub-tree-fähig: <div data-density="compact"> innerhalb eines anderen
+ * Density-Scopes wirkt automatisch via Custom-Property-Cascade. Anders als
+ * dark.css braucht Density KEINEN Descendant-Partner-Selector — Themes
+ * setzen keine Density-Tokens destruktiv um, der Cascade trägt das alleine.
+ *
+ * Themes überschreiben Component-Tokens (z.B. --btn-py) direkt; Density
+ * wirkt nur als Fallback. Wer ein Theme density-responsive haben will,
+ * entfernt dort die spezifischen Padding-Setzungen.
+ *
+ * Layer: mode (gemeinsam mit dark.css — orthogonale UI-Modi).
+ */
+
+/* Compact: ~32px tall controls, ~28px-Rows. Touch-Target ≥24px erfüllt. */
+[data-density="compact"] {
+  --density-control-py: var(--space-8);
+  --density-control-px: var(--space-16);
+  --density-row-py:     var(--space-8);
+  --density-row-px:     var(--space-12);
+  --density-item-py:    var(--space-4);
+  --density-item-px:    var(--space-8);
+}
+
+/* Spacious: ~48px tall controls — Touch-friendly, Editorial-Komfort. */
+[data-density="spacious"] {
+  --density-control-py: var(--space-16);
+  --density-control-px: var(--space-24);
+  --density-row-py:     var(--space-16);
+  --density-row-px:     var(--space-20);
+  --density-item-py:    var(--space-12);
+  --density-item-px:    var(--space-16);
+}

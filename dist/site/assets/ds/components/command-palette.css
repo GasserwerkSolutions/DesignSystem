@@ -1,0 +1,202 @@
+/**
+ * Command Palette (Cmd+K)
+ * ========================
+ *
+ * Floating-Dialog mit Search + Filtered-List für Power-User-Navigation.
+ * Standard-Pattern in modernen Apps (GitHub, VSCode, Linear, etc.).
+ *
+ * Nutzt native <dialog> (A11Y, modal-blocking, Escape-close, ::backdrop)
+ * — gleiche Architektur wie Modal. Listbox via WAI-ARIA-Combobox-Pattern.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --cmd-bg, --cmd-fg, --cmd-radius, --cmd-shadow
+ *     --cmd-search-bg, --cmd-list-bg
+ *     --cmd-item-hover-bg, --cmd-item-active-bg
+ *     --cmd-max-w, --cmd-max-h
+ *
+ * Struktur:
+ *   <dialog class="cmd-palette" id="palette">
+ *     <div class="cmd-palette__inner">
+ *       <div class="cmd-palette__search">
+ *         <input type="search" class="cmd-palette__input"
+ *                placeholder="Suchen oder Befehl wählen …"
+ *                aria-label="Befehl suchen"
+ *                aria-controls="palette-list"
+ *                aria-autocomplete="list">
+ *         <kbd class="kbd kbd--sm">Esc</kbd>
+ *       </div>
+ *       <ul class="cmd-palette__list" id="palette-list" role="listbox">
+ *         <li class="cmd-palette__group">Aktionen</li>
+ *         <li class="cmd-palette__item" role="option" tabindex="-1">
+ *           <span class="cmd-palette__item-icon">+</span>
+ *           <span class="cmd-palette__item-label">Neue Buchung</span>
+ *           <kbd class="kbd kbd--sm">⌘N</kbd>
+ *         </li>
+ *         <li class="cmd-palette__item" role="option" tabindex="-1">
+ *           <span class="cmd-palette__item-icon">⌕</span>
+ *           <span class="cmd-palette__item-label">Kunde suchen</span>
+ *         </li>
+ *       </ul>
+ *       <div class="cmd-palette__footer">
+ *         <kbd class="kbd kbd--sm">↑↓</kbd> navigieren
+ *         <kbd class="kbd kbd--sm">↵</kbd> auswählen
+ *       </div>
+ *     </div>
+ *   </dialog>
+ *
+ * Open via:
+ *   document.getElementById("palette").showModal();
+ *
+ * Keyboard-Pattern (Konsument JS, ~30 LOC):
+ *   - Cmd+K / Ctrl+K → showModal()
+ *   - ↑/↓ verschiebt aria-selected zwischen .cmd-palette__item
+ *   - Enter → emittiert Action-Event mit aktivem Item
+ *   - Tippen im Input filtert via [data-search-text]
+ */
+
+.cmd-palette {
+  padding: 0;
+  border: none;
+  border-radius: var(--cmd-radius, var(--radius-lg));
+  background: var(--cmd-bg, var(--color-surface));
+  color: var(--cmd-fg, var(--color-text-primary));
+  box-shadow: var(--cmd-shadow, var(--elevation-5));
+  width: 100%;
+  max-width: var(--cmd-max-w, min(40rem, calc(100% - 2rem)));
+  max-height: var(--cmd-max-h, 70vh);
+  margin-block-start: 10vh;
+  overflow: hidden;
+}
+
+.cmd-palette::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.cmd-palette__inner {
+  display: flex;
+  flex-direction: column;
+  max-height: inherit;
+}
+
+.cmd-palette__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  border-block-end: 1px solid var(--color-border);
+  background: var(--cmd-search-bg, transparent);
+}
+
+.cmd-palette__input {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font-size: var(--font-base);
+  color: inherit;
+  outline: none;
+  padding: 0;
+  box-shadow: none;
+}
+
+.cmd-palette__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-8);
+  overflow-y: auto;
+  background: var(--cmd-list-bg, transparent);
+}
+
+.cmd-palette__list > li::before {
+  content: none;
+}
+
+.cmd-palette__group {
+  padding: var(--space-12) var(--space-12) var(--space-4);
+  font-size: var(--font-xs);
+  font-weight: var(--fw-700);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-tertiary, var(--color-text-secondary));
+}
+
+.cmd-palette__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-text-primary);
+  font-size: var(--font-sm);
+}
+
+.cmd-palette__item:hover,
+.cmd-palette__item[aria-selected="true"],
+.cmd-palette__item--active {
+  background: var(--cmd-item-active-bg, var(--color-interactive-light));
+  color: var(--color-interactive-dark);
+}
+
+.cmd-palette__item-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: var(--font-base);
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.cmd-palette__item-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cmd-palette__item .kbd {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
+
+.cmd-palette__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-16);
+  border-block-start: 1px solid var(--color-border);
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary, var(--color-text-secondary));
+}
+
+/* Entry/Exit-Animation via @starting-style (siehe modal.css) */
+.cmd-palette {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--motion-feedback),
+    transform var(--motion-feedback),
+    display var(--motion-feedback) allow-discrete,
+    overlay var(--motion-feedback) allow-discrete;
+}
+
+@starting-style {
+  .cmd-palette[open] {
+    opacity: 0;
+    transform: translateY(-1rem) scale(0.97);
+  }
+}
+
+.cmd-palette:not([open]) {
+  opacity: 0;
+  transform: translateY(-1rem) scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmd-palette { transition: none; }
+  .cmd-palette:not([open]) { opacity: 1; transform: none; }
+}

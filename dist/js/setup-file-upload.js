@@ -9,22 +9,29 @@
  * Selected-Filename wird im .file-upload__text-Element angezeigt,
  * mit "+N weitere"-Suffix bei multiple-Selection.
  */
+import { combineCleanups } from "./lifecycle.js";
+const cleanups = new WeakMap();
 export function setupFileUpload(label) {
+    const existing = cleanups.get(label);
+    if (existing)
+        return existing;
     const input = label.querySelector('input[type="file"]');
     const text = label.querySelector(".file-upload__text");
     const defaultText = text?.textContent ?? "";
+    const controller = new AbortController();
+    const signal = controller.signal;
     let depth = 0;
     label.addEventListener("dragenter", (ev) => {
         ev.preventDefault();
         depth++;
         label.dataset.dragging = "true";
-    });
-    label.addEventListener("dragover", (ev) => ev.preventDefault());
+    }, { signal });
+    label.addEventListener("dragover", (ev) => ev.preventDefault(), { signal });
     label.addEventListener("dragleave", () => {
         depth = Math.max(0, depth - 1);
         if (depth === 0)
             delete label.dataset.dragging;
-    });
+    }, { signal });
     label.addEventListener("drop", (ev) => {
         ev.preventDefault();
         depth = 0;
@@ -33,7 +40,7 @@ export function setupFileUpload(label) {
             return;
         input.files = ev.dataTransfer.files;
         input.dispatchEvent(new Event("change", { bubbles: true }));
-    });
+    }, { signal });
     input?.addEventListener("change", () => {
         if (!text)
             return;
@@ -47,8 +54,16 @@ export function setupFileUpload(label) {
         else {
             text.textContent = `✓ ${input.files[0].name}  (+${n - 1} weitere)`;
         }
-    });
+    }, { signal });
+    const cleanup = () => {
+        controller.abort();
+        depth = 0;
+        delete label.dataset.dragging;
+        cleanups.delete(label);
+    };
+    cleanups.set(label, cleanup);
+    return cleanup;
 }
 export function setupFileUploads(root = document) {
-    root.querySelectorAll(".file-upload").forEach(setupFileUpload);
+    return combineCleanups([...root.querySelectorAll(".file-upload")].map(setupFileUpload));
 }

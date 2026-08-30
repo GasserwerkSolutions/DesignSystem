@@ -6,47 +6,46 @@
  * über die Felder von `.otp-input`.
  */
 
-export function setupOtpInput(root: ParentNode = document): void {
-  const groups = root.querySelectorAll<HTMLElement>(".otp-input");
-  groups.forEach((group) => {
-    if (group.dataset.otpInit === "1") return;
-    group.dataset.otpInit = "1";
+import { combineCleanups, type Cleanup } from "./lifecycle.js";
 
-    const fields = Array.from(
-      group.querySelectorAll<HTMLInputElement>(".otp-input__field")
-    );
+const cleanups = new WeakMap<HTMLElement, Cleanup>();
 
-    fields.forEach((field, i) => {
-      field.addEventListener("input", () => {
-        /* Auf ein einzelnes Zeichen begrenzen, dann zum nächsten Feld */
-        field.value = field.value.replace(/[^0-9]/g, "").slice(0, 1);
-        if (field.value && i < fields.length - 1) {
-          fields[i + 1].focus();
-        }
-      });
+function setupGroup(group: HTMLElement): Cleanup {
+  const existing = cleanups.get(group);
+  if (existing) return existing;
+  const controller = new AbortController();
+  const signal = controller.signal;
+  const fields = Array.from(group.querySelectorAll<HTMLInputElement>(".otp-input__field"));
 
-      field.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace" && !field.value && i > 0) {
-          fields[i - 1].focus();
-        } else if (e.key === "ArrowLeft" && i > 0) {
-          fields[i - 1].focus();
-          e.preventDefault();
-        } else if (e.key === "ArrowRight" && i < fields.length - 1) {
-          fields[i + 1].focus();
-          e.preventDefault();
-        }
-      });
+  fields.forEach((field, i) => {
+    field.addEventListener("input", () => {
+      field.value = field.value.replace(/[^0-9]/g, "").slice(0, 1);
+      if (field.value && i < fields.length - 1) fields[i + 1].focus();
+    }, { signal });
 
-      field.addEventListener("paste", (e) => {
-        e.preventDefault();
-        const data = (e.clipboardData?.getData("text") || "")
-          .replace(/[^0-9]/g, "");
-        for (let j = 0; j < data.length && i + j < fields.length; j++) {
-          fields[i + j].value = data[j];
-        }
-        const focusIdx = Math.min(i + data.length, fields.length - 1);
-        fields[focusIdx].focus();
-      });
-    });
+    field.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && !field.value && i > 0) fields[i - 1].focus();
+      else if (e.key === "ArrowLeft" && i > 0) { fields[i - 1].focus(); e.preventDefault(); }
+      else if (e.key === "ArrowRight" && i < fields.length - 1) { fields[i + 1].focus(); e.preventDefault(); }
+    }, { signal });
+
+    field.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const data = (e.clipboardData?.getData("text") || "").replace(/[^0-9]/g, "");
+      for (let j = 0; j < data.length && i + j < fields.length; j++) fields[i + j].value = data[j];
+      fields[Math.min(i + data.length, fields.length - 1)]?.focus();
+    }, { signal });
   });
+
+  const cleanup: Cleanup = () => {
+    controller.abort();
+    cleanups.delete(group);
+  };
+  cleanups.set(group, cleanup);
+  return cleanup;
+}
+
+export function setupOtpInput(root: ParentNode = document): Cleanup {
+  const groups = root.querySelectorAll<HTMLElement>(".otp-input");
+  return combineCleanups([...groups].map(setupGroup));
 }

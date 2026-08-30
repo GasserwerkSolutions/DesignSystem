@@ -1,0 +1,43 @@
+/**
+ * Trend Component
+ * ================
+ *
+ * Richtungs-Indikator mit Farbe (↑↓→) für KPI-Änderungen,
+ * Score-Vergleich, etc.
+ *
+ * CONTRACT:
+ *   Optional: --trend-color
+ *
+ * Struktur:
+ *   <span class="trend trend--up">
+ *     <span class="trend__icon" aria-hidden="true">↑</span>
+ *     <span>+12 %</span>
+ *   </span>
+ *
+ * Modifier:
+ *   .trend--up      positiv (Success-Farbe)
+ *   .trend--down    negativ (Error-Farbe)
+ *   .trend--flat    neutral (tertiärer Text)
+ */
+
+.trend {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--font-sm);
+  font-weight: var(--fw-600);
+  font-variant-numeric: tabular-nums;
+  color: var(--trend-color, var(--color-text-secondary));
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.trend__icon {
+  font-size: 1.1em;
+  line-height: 1;
+  display: inline-flex;
+}
+
+.trend--up   { --trend-color: var(--color-success); }
+.trend--down { --trend-color: var(--color-error); }
+.trend--flat { --trend-color: var(--color-text-tertiary); }

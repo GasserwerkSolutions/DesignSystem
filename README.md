@@ -2,7 +2,7 @@
 
 Contract-based Multi-Tone CSS Design System.
 **7 Tones × 2 Modes × 3 Densities × Container-Queries** = 4 orthogonale Achsen.
-**54 Components**, **WCAG-AA validiert**, **17.5 KB gzip**.
+**57 Components**, **WCAG-AA validiert**, **23.9 KB gzip** im Vollprofil.
 
 ```html
 <link rel="stylesheet" href="./node_modules/@gasserwerksolutions/design-system/main.css">
@@ -19,12 +19,15 @@ Drei Achsen-Attribute auf `<html>`, ein Stylesheet, los geht's.
 
 ## Install
 
+Bis zur separaten Veröffentlichung im öffentlichen npm-Register wird immer
+ein exakter GitHub-Release installiert:
+
 ```bash
-npm install @gasserwerksolutions/design-system
+npm install "github:GasserwerkSolutions/DesignSystem#v0.32.0"
 ```
 
 ```css
-@import "@gasserwerksolutions/design-system";              /* alles, 17.5 KB gzip */
+@import "@gasserwerksolutions/design-system";              /* Vollprofil, 23.9 KB gzip */
 @import "@gasserwerksolutions/design-system/min";          /* pre-minified */
 ```
 
@@ -36,6 +39,21 @@ Per-Component-Import (CSS-Tree-Shaking):
 @import "@gasserwerksolutions/design-system/themes/trust.css";
 @import "@gasserwerksolutions/design-system/components/button.css";
 /* … nur was du brauchst */
+```
+
+Für den Gasserwerk Builder existiert ein versioniertes Website-Profil ohne
+Dashboard- und Spezialkomponenten:
+
+```css
+@import "@gasserwerksolutions/design-system/profiles/builder";
+```
+
+Das Builder-Profil enthält sieben kuratierte Components und elf Website-
+Patterns. Es wird zusätzlich als selbstständiges JavaScript-Artefakt mit
+eingebettetem CSS, Manifest und SHA-256 ausgeliefert:
+
+```js
+import "@gasserwerksolutions/design-system/profiles/builder.js";
 ```
 
 Optional: Companion-JS (TypeScript) für interactive Components (Combobox,
@@ -133,7 +151,7 @@ import "@gasserwerksolutions/design-system";
 import { setupAll } from "@gasserwerksolutions/design-system/js";
 
 function App() {
-  useEffect(() => { setupAll(); }, []);
+  useEffect(() => setupAll(), []);
   return (
     <html data-tone="trust" data-mode="light">
       <button className="btn">CTA</button>
@@ -151,8 +169,10 @@ import { setupAll } from "@gasserwerksolutions/design-system/js";
 
 <!-- App.vue -->
 <script setup>
-import { onMounted } from "vue";
-onMounted(setupAll);
+import { onMounted, onUnmounted } from "vue";
+let cleanup = () => {};
+onMounted(() => { cleanup = setupAll(); });
+onUnmounted(() => cleanup());
 </script>
 
 <template>
@@ -168,7 +188,7 @@ onMounted(setupAll);
   import "@gasserwerksolutions/design-system";
   import { setupAll } from "@gasserwerksolutions/design-system/js";
   import { onMount } from "svelte";
-  onMount(setupAll);
+  onMount(setupAll); // setupAll gibt die Cleanup-Funktion zurück
 </script>
 
 <button class="btn">CTA</button>
@@ -219,12 +239,15 @@ nutzen für tone-spezifische Mode-Variants.
 ## Scripts
 
 ```bash
-npm run lint                 # Theme-Contract + axis-blocker (5 checks)
+npm run lint:strict          # Theme-Contract inkl. destruktiver Mode-Tokens
 npm run test:lint            # Lint regression tests (21 cases)
 npm run check:contrast       # 1008 WCAG-AA Paare (6×4×kritisch + nested)
 npm run check:a11y           # axe-core lint + self-test mutations
 npm run check:visual         # VRT — 12 baselines + 3 sensitivity-suite
-npm run check:journeys       # Puppeteer user flows (6 journeys)
+npm run check:journeys       # Puppeteer user flows (7 journeys)
+npm run check:rendered       # axe + VRT + Journeys parallel
+npm run check:examples       # 4 Beispiele × 5 Viewports, Assets + Overflow
+npm run check:profiles       # Builder-Manifest, Hash und Größenbudget
 npm run check:site           # Site smoke + 50 interaction asserts
 npm run check:package        # @imports in main.css ∈ files-list + exports map
 npm run measure              # Bundle-Size-Report (raw/gzip/brotli per Layer)
@@ -238,8 +261,9 @@ npm run check:full           # Alles, blocking gate vor publish
 
 ## Production Stats
 
-- **54 Components**
-- **271 Design Tokens** (DTCG-konform exportiert in `dist/tokens.json`)
-- **17.5 KB** gzipped (bundle)
+- **57 Components**
+- **275 Design Tokens** (DTCG-konform exportiert in `dist/tokens.json`)
+- **23.9 KB** gzipped (Vollprofil)
+- **9.5 KB** gzipped (kuratiertes Builder-Profil)
 - **7 Tones × 2 Modes × 3 Densities × Container-Queries**
 - **1008** WCAG-AA-Paare verifiziert

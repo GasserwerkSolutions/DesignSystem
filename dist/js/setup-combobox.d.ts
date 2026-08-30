@@ -23,5 +23,6 @@
  *     </div>
  *   </div>
  */
-export declare function setupCombobox(combobox: HTMLElement): void;
-export declare function setupComboboxes(root?: ParentNode): void;
+import { type Cleanup } from "./lifecycle.js";
+export declare function setupCombobox(combobox: HTMLElement): Cleanup;
+export declare function setupComboboxes(root?: ParentNode): Cleanup;

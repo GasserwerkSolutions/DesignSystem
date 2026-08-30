@@ -1,0 +1,129 @@
+/**
+ * Hover-Card — Rich Preview on Hover
+ * ===================================
+ *
+ * Detail-Preview-Bubble bei Hover/Focus über einem Link oder Avatar.
+ * Differenzierung im DS:
+ *   - Tooltip: kurzer Text-only Hint
+ *   - Hover-Card: rich Content (Avatar + Name + Stats + Bio)
+ *   - Popover: click-triggered, interactive
+ *
+ * Pure CSS via Hover-Wrapper + Pseudo-Pseudo-Element-Layout. Touch-Users
+ * sehen kein hover-State, daher rein dekorativ — wichtige Info gehört
+ * NICHT exclusive in eine Hover-Card.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --hover-card-bg, --hover-card-fg, --hover-card-border
+ *     --hover-card-radius, --hover-card-shadow
+ *     --hover-card-w, --hover-card-padding
+ *     --hover-card-offset    Abstand zum Trigger (default --space-8)
+ *     --hover-card-delay     Open-Delay (default 300ms — verhindert
+ *                            ungewolltes Popping bei flüchtigem Hover)
+ *
+ * Struktur:
+ *   <span class="hover-card-host">
+ *     <a href="/users/anna">@anna</a>
+ *     <div class="hover-card" role="tooltip">
+ *       <header class="hover-card__header">
+ *         <span class="avatar avatar--c3">AM</span>
+ *         <div>
+ *           <strong>Anna Meier</strong>
+ *           <div class="hover-card__meta">@anna · seit 2024</div>
+ *         </div>
+ *       </header>
+ *       <p>Stylistin, Family-Salon Spezialistin.</p>
+ *       <div class="hover-card__stats">
+ *         <span><strong>247</strong> Buchungen</span>
+ *         <span><strong>4.9</strong> ★</span>
+ *       </div>
+ *     </div>
+ *   </span>
+ *
+ * Modifier:
+ *   .hover-card--instant    kein Open-Delay
+ */
+
+.hover-card-host {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.hover-card {
+  position: absolute;
+  inset-block-start: calc(100% + var(--hover-card-offset, var(--space-8)));
+  inset-inline-start: 0;
+  width: var(--hover-card-w, 18rem);
+  padding: var(--hover-card-padding, var(--space-16));
+  background: var(--hover-card-bg, var(--color-surface));
+  color: var(--hover-card-fg, var(--color-text-primary));
+  border: 1px solid var(--hover-card-border, var(--color-border));
+  border-radius: var(--hover-card-radius, var(--radius-md));
+  box-shadow: var(--hover-card-shadow, var(--elevation-4));
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--motion-feedback),
+    transform var(--motion-feedback),
+    visibility 0s var(--motion-feedback);
+  z-index: var(--z-tooltip);
+  pointer-events: none;
+}
+
+.hover-card-host:hover .hover-card,
+.hover-card-host:focus-within .hover-card {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: var(--hover-card-delay, 300ms), var(--hover-card-delay, 300ms), 0s;
+  pointer-events: auto;
+}
+
+.hover-card--instant {
+  --hover-card-delay: 0ms;
+}
+
+.hover-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  margin-block-end: var(--space-12);
+}
+
+.hover-card__header strong {
+  display: block;
+  font-size: var(--font-base);
+  color: var(--color-text-primary);
+}
+
+.hover-card__meta {
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary, var(--color-text-secondary));
+}
+
+.hover-card > p {
+  font-size: var(--font-sm);
+  line-height: var(--lh-normal);
+  color: var(--color-text-secondary);
+  margin-block: 0 var(--space-12);
+}
+
+.hover-card__stats {
+  display: flex;
+  gap: var(--space-16);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  padding-block-start: var(--space-8);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.hover-card__stats strong {
+  font-weight: var(--fw-700);
+  color: var(--color-text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-card { transition: none; transform: none; }
+}

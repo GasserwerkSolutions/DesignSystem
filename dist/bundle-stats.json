@@ -1,15 +1,14 @@
 {
-  "timestamp": "2026-05-28T18:39:00.122Z",
-  "version": "0.30.0",
+  "version": "0.32.0",
   "bundle": {
-    "raw": 140611,
-    "gzip": 21150,
-    "brotli": 17743
+    "raw": 163766,
+    "gzip": 24424,
+    "brotli": 20571
   },
   "minified": {
-    "raw": 112226,
-    "gzip": 19637,
-    "brotli": 16959
+    "raw": 129440,
+    "gzip": 22629,
+    "brotli": 19472
   },
   "layers": [
     {
@@ -24,12 +23,12 @@
     },
     {
       "label": "themes",
-      "raw": 12355,
-      "files": 6
+      "raw": 19368,
+      "files": 7
     },
     {
       "label": "base",
-      "raw": 13424,
+      "raw": 13489,
       "files": 4
     },
     {
@@ -39,7 +38,7 @@
     },
     {
       "label": "components",
-      "raw": 176359,
+      "raw": 176896,
       "files": 57
     }
   ],
@@ -73,6 +72,10 @@
       "raw": 4337
     },
     {
+      "name": "otp-input",
+      "raw": 4120
+    },
+    {
       "name": "timeline",
       "raw": 4052
     },
@@ -82,7 +85,7 @@
     },
     {
       "name": "spinner",
-      "raw": 3970
+      "raw": 3969
     },
     {
       "name": "tree",
@@ -111,10 +114,6 @@
     {
       "name": "button",
       "raw": 3607
-    },
-    {
-      "name": "otp-input",
-      "raw": 3582
     },
     {
       "name": "modal",

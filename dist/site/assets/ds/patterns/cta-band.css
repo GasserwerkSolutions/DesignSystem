@@ -1,0 +1,57 @@
+@layer patterns {
+  /** CTA Band Pattern */
+
+  .cta-band {
+    display: grid;
+    gap: var(--cta-band-gap, var(--space-20));
+    padding: var(--cta-band-padding, var(--space-40));
+    color: var(--cta-band-fg, var(--color-text-primary));
+    background: var(--cta-band-bg, var(--color-surface));
+    border: var(--cta-band-border, 1px solid var(--color-border));
+    border-radius: var(--cta-band-radius, var(--radius-2xl));
+    box-shadow: var(--cta-band-shadow, var(--elevation-2));
+  }
+
+  .cta-band--center {
+    text-align: center;
+  }
+
+  .cta-band--center .cta-band__actions {
+    justify-content: center;
+  }
+
+  .cta-band--strong {
+    --cta-band-bg: var(--color-bg-inverse);
+    --cta-band-fg: var(--color-text-on-dark);
+    --cta-band-border: none;
+  }
+
+  .cta-band__title {
+    margin: 0;
+    color: currentColor;
+    font-family: var(--heading-font);
+    font-size: var(--text-size-h2);
+    line-height: var(--lh-tight);
+  }
+
+  .cta-band__text {
+    margin: 0;
+    color: color-mix(in oklch, currentColor 72%, transparent);
+    font-size: var(--font-lg);
+    line-height: var(--lh-loose);
+  }
+
+  .cta-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  @container (min-width: 760px) {
+    .cta-band--split {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+  }
+}

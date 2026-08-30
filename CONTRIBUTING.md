@@ -15,7 +15,7 @@ Custom-Properties darin. `npm run lint` enforced.
 
 Layer-Cascade:
 ```
-reset → tokens → semantic → themes → mode → base → state → components
+reset → tokens → semantic → themes → mode → base → state → components → patterns → treatments → utilities → overrides
 ```
 
 Komponente bekommt ihre Werte über Custom-Properties. Defaults im
@@ -52,6 +52,8 @@ semantic-Layer, Themes overriden, Components consumen mit `var(--token, fallback
 3. Kategorisieren in `scripts/build-site.js` (siehe `CATEGORIES`-Map).
 
 4. Optional: TypeScript-Setup in `js/setup-<name>.ts` + export in `js/index.ts`.
+   Jeder Initialisierer muss idempotent sein und eine `Cleanup`-Funktion
+   zurückgeben, damit Builder-Preview und SPAs sicher remounten können.
 
 5. Validieren:
    ```bash
@@ -70,11 +72,14 @@ semantic-Layer, Themes overriden, Components consumen mit `var(--token, fallback
 | `check:a11y` | axe-core lint |
 | `check:visual` | 12 VRT baselines |
 | `check:journeys` | Puppeteer user flows |
+| `check:rendered` | axe + VRT + Journeys parallel |
+| `check:examples` | Beispielseiten bei 320–1280 px inkl. Assets/Overflow |
+| `check:profiles` | Builder-Profil, Manifest, Hash und Größenbudget |
 | `check:site` | 50 site asserts (smoke + interactions) |
 | `check:package` | files-list ∈ @imports + exports-map vs tarball |
 | `measure:check` | Bundle-Budget |
 
-`check:full` chained alles. Muss grün vor PR sein.
+`check:full` chained alles mit `lint:strict`. Muss grün vor PR sein.
 
 ## Commit-Style
 
@@ -104,7 +109,9 @@ npm run release -- patch  # 0.X.Y → 0.X.(Y+1)
 npm run release -- minor  # 0.X.Y → 0.(X+1).0
 ```
 
-Release-Pipeline: check:full → tarball-audit → version bump → optional publish.
+Release-Pipeline: Pull Request → verpflichtendes `check:full` → Tarball-Audit →
+GitHub-Release-Tag. Ein npm-Publish ist ein separater, bewusst autorisierter
+Schritt und wird in Installationsanweisungen nicht vorausgesetzt.
 
 ## Browser-Support
 

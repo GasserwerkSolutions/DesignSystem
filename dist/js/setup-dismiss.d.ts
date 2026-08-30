@@ -12,5 +12,6 @@
  *
  * Auto-Init via setupDismissers(); Single-Element via setupDismisser(el).
  */
-export declare function setupDismisser(button: HTMLElement): void;
-export declare function setupDismissers(root?: ParentNode): void;
+import { type Cleanup } from "./lifecycle.js";
+export declare function setupDismisser(button: HTMLElement): Cleanup;
+export declare function setupDismissers(root?: ParentNode): Cleanup;

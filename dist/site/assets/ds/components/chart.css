@@ -1,0 +1,147 @@
+/**
+ * Chart Container
+ * ================
+ *
+ * Library-agnostischer Frame für Daten-Visualisierungen. Konsument bringt
+ * das Rendering mit (SVG inline, Canvas, Chart.js, D3, Recharts, Observable
+ * Plot, etc.). Das DS liefert:
+ *   - Container-Komposition (Header, Body, Legend, Source)
+ *   - Kategorische Color-Palette (--chart-1 .. -8) via Okabe-Ito
+ *     (Color-Blind-Safe, Cell Press / academic gold standard)
+ *   - Semantic-Aliases (--chart-positive/-negative/-neutral)
+ *
+ * Die Palette ist tone-agnostisch (gleich in allen Themes) und mode-aware
+ * durch Overrides in dark.css.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --chart-bg / --chart-border / --chart-radius / --chart-padding
+ *
+ * Struktur:
+ *   <figure class="chart">
+ *     <figcaption class="chart__header">
+ *       <div>
+ *         <h3 class="chart__title">Umsatz Q1</h3>
+ *         <p class="chart__subtitle">CHF, monatlich</p>
+ *       </div>
+ *       <span class="chart__trend chart__trend--positive">+12.4%</span>
+ *     </figcaption>
+ *     <div class="chart__body">
+ *       <!-- Konsument-SVG, Canvas, Library-Output -->
+ *     </div>
+ *     <ul class="chart__legend">
+ *       <li><span class="chart__swatch" style="--swatch: var(--chart-1)"></span> Umsatz</li>
+ *       <li><span class="chart__swatch" style="--swatch: var(--chart-3)"></span> Buchungen</li>
+ *     </ul>
+ *     <p class="chart__source">Stand: 14:32 · Buchungssystem</p>
+ *   </figure>
+ *
+ * Trend-Modifier (zieht --chart-positive/-negative aus den Status-Bordern):
+ *   .chart__trend--positive
+ *   .chart__trend--negative
+ *   .chart__trend--neutral
+ */
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--chart-padding, var(--space-24));
+  background: var(--chart-bg, var(--card-bg));
+  border: 1px solid var(--chart-border, var(--color-border));
+  border-radius: var(--chart-radius, var(--radius-lg));
+  margin: 0;
+  min-width: 0;
+}
+
+.chart__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-12);
+  margin: 0;
+}
+
+.chart__title {
+  margin: 0;
+  font-size: var(--font-base);
+  font-weight: var(--fw-600);
+  color: var(--color-text-primary);
+}
+
+.chart__subtitle {
+  margin: var(--space-2) 0 0;
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary);
+}
+
+.chart__trend {
+  font-size: var(--font-sm);
+  font-weight: var(--fw-600);
+  font-variant-numeric: tabular-nums;
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.chart__trend--positive {
+  color: var(--chart-positive);
+  background: color-mix(in oklch, var(--chart-positive) 12%, var(--color-bg));
+}
+
+.chart__trend--negative {
+  color: var(--chart-negative);
+  background: color-mix(in oklch, var(--chart-negative) 12%, var(--color-bg));
+}
+
+.chart__trend--neutral {
+  color: var(--color-text-secondary);
+  background: var(--color-bg-tertiary);
+}
+
+.chart__body {
+  width: 100%;
+  min-width: 0;
+}
+
+/* SVG/Canvas innerhalb des Body responsive halten. Konsument-Markup
+   muss kein width:100% mehr setzen. */
+.chart__body > svg,
+.chart__body > canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart__legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-16);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+}
+
+.chart__legend > li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.chart__swatch {
+  display: inline-block;
+  width:  0.75rem;
+  height: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--swatch, var(--chart-neutral));
+  flex-shrink: 0;
+}
+
+.chart__source {
+  margin: 0;
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary);
+}

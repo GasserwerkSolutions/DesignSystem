@@ -1,0 +1,79 @@
+/**
+ * KBD — Keyboard Shortcut Display
+ * ================================
+ *
+ * Visuelle Darstellung von Tastatur-Shortcuts in Help-Texten, Tooltips,
+ * Command-Hints. Semantisch das native <kbd>-Element.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --kbd-bg, --kbd-fg, --kbd-border, --kbd-radius, --kbd-shadow
+ *     --kbd-px, --kbd-py
+ *
+ * Struktur:
+ *   Single key:
+ *   <kbd class="kbd">⌘</kbd>
+ *
+ *   Combo:
+ *   <kbd class="kbd-combo">
+ *     <kbd class="kbd">⌘</kbd>
+ *     <kbd class="kbd">K</kbd>
+ *   </kbd>
+ *
+ *   Inline in Text:
+ *   Drücke <kbd class="kbd">Esc</kbd> zum Abbrechen.
+ *
+ * Modifier:
+ *   .kbd--sm   kompakter (für inline-Text)
+ *   .kbd--lg   größer (für Help-Sections)
+ */
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--kbd-py, 0.125rem) var(--kbd-px, var(--space-6));
+  background: var(--kbd-bg, var(--color-surface));
+  color: var(--kbd-fg, var(--color-text-primary));
+  border: 1px solid var(--kbd-border, var(--color-border-dark));
+  border-radius: var(--kbd-radius, var(--radius-sm));
+  box-shadow: var(--kbd-shadow, 0 1px 0 0 var(--color-border-dark));
+  font-family: var(--font-mono);
+  font-size: var(--font-xs);
+  font-weight: var(--fw-600);
+  line-height: 1;
+  min-width: 1.5em;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.kbd--sm {
+  --kbd-py: 0.0625rem;
+  --kbd-px: var(--space-4);
+  font-size: 0.6875rem;
+}
+
+.kbd--lg {
+  --kbd-py: var(--space-4);
+  --kbd-px: var(--space-8);
+  font-size: var(--font-sm);
+}
+
+/* Combo: mehrere kbd nebeneinander mit "+" oder leerem Spacing */
+.kbd-combo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.kbd-combo .kbd + .kbd::before {
+  content: "+";
+  margin-inline-end: var(--space-2);
+  color: var(--color-text-tertiary, var(--color-text-secondary));
+  font-weight: var(--fw-400);
+}

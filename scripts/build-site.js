@@ -300,7 +300,7 @@ function parseModifiers(bodyLines) {
 }
 
 function parseHeader(filePath) {
-  const source = fs.readFileSync(filePath, "utf8");
+  const source = fs.readFileSync(filePath, "utf8").replace(/\r\n?/g, "\n");
   const headerText = extractHeaderRaw(source);
   if (!headerText) {
     return {
@@ -370,7 +370,7 @@ function parseHeader(filePath) {
  * `/* CATEGORY ... *​/` Kommentar gezogen wird (Pattern aus tokens.css).
  */
 function parseTokenFile(filePath) {
-  const src = fs.readFileSync(filePath, "utf8");
+  const src = fs.readFileSync(filePath, "utf8").replace(/\r\n?/g, "\n");
   const tokens = [];
   let group = "Misc";
 
@@ -2017,7 +2017,7 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
   }
   .site-doc__title { font-size: var(--font-3xl, 2rem); margin: var(--space-4) 0 var(--space-12); }
   .site-doc__lede  { font-size: var(--font-lg); color: var(--color-text-secondary); max-width: 60ch; }
-  .site-doc__cta   { display: flex; gap: var(--space-12); margin-top: var(--space-24); }
+  .site-doc__cta   { display: flex; flex-wrap: wrap; gap: var(--space-12); margin-top: var(--space-24); }
   .site-doc__section { display: flex; flex-direction: column; gap: var(--space-16); }
   .site-doc__section > h2 { margin: 0; font-size: var(--font-xl); }
   .site-doc__footer { margin-top: var(--space-32); padding-top: var(--space-16); border-top: 1px solid var(--color-border); }

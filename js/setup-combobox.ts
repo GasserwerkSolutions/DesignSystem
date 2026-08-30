@@ -25,11 +25,23 @@
  */
 
 import { anchorPopoverByTrigger } from "./anchor-popover.js";
+import { combineCleanups, noopCleanup, type Cleanup } from "./lifecycle.js";
 
-export function setupCombobox(combobox: HTMLElement): void {
+const cleanups = new WeakMap<HTMLElement, Cleanup>();
+
+function hidePopover(panel: HTMLElement): void {
+  const popover = panel as HTMLElement & { hidePopover?: () => void };
+  popover.hidePopover?.();
+}
+
+export function setupCombobox(combobox: HTMLElement): Cleanup {
+  const existing = cleanups.get(combobox);
+  if (existing) return existing;
   const trigger = combobox.querySelector<HTMLButtonElement>(".combobox__trigger");
   const panel   = combobox.querySelector<HTMLElement>(".combobox__panel");
-  if (!trigger || !panel) return;
+  if (!trigger || !panel) return noopCleanup;
+  const controller = new AbortController();
+  const signal = controller.signal;
 
   const search = panel.querySelector<HTMLInputElement>(".combobox__search-input");
   const value  = trigger.querySelector<HTMLElement>(".combobox__value");
@@ -52,10 +64,10 @@ export function setupCombobox(combobox: HTMLElement): void {
       const label = opt.querySelector<HTMLElement>(".combobox__option-label");
       value.textContent = (label?.textContent ?? opt.textContent ?? "").trim();
     }
-    panel.hidePopover();
+    hidePopover(panel);
   };
 
-  anchorPopoverByTrigger(panel, {
+  const releaseAnchor = anchorPopoverByTrigger(panel, {
     matchWidth: true,
     onToggle: (e) => {
       trigger.setAttribute(
@@ -64,14 +76,14 @@ export function setupCombobox(combobox: HTMLElement): void {
       );
       if (e.newState !== "open") return;
       setActive(-1);
-      requestAnimationFrame(() => search?.focus());
+      panel.ownerDocument.defaultView?.requestAnimationFrame(() => search?.focus());
     },
   });
 
   panel.addEventListener("click", (e) => {
     const opt = (e.target as HTMLElement).closest<HTMLElement>(".combobox__option");
     if (opt) select(opt);
-  });
+  }, { signal });
 
   combobox.addEventListener("keydown", (e) => {
     const opts = visibleOptions();
@@ -85,10 +97,10 @@ export function setupCombobox(combobox: HTMLElement): void {
       e.preventDefault();
       select(opts[active]);
     } else if (e.key === "Escape") {
-      panel.hidePopover();
+      hidePopover(panel);
       trigger.focus();
     }
-  });
+  }, { signal });
 
   search?.addEventListener("input", () => {
     const q = search.value.toLowerCase();
@@ -97,9 +109,20 @@ export function setupCombobox(combobox: HTMLElement): void {
       o.hidden = q !== "" && !haystack.includes(q);
     });
     setActive(-1);
-  });
+  }, { signal });
+
+  const cleanup: Cleanup = () => {
+    controller.abort();
+    releaseAnchor();
+    trigger.setAttribute("aria-expanded", "false");
+    panel.querySelectorAll<HTMLElement>(".combobox__option--active")
+      .forEach((option) => option.classList.remove("combobox__option--active"));
+    cleanups.delete(combobox);
+  };
+  cleanups.set(combobox, cleanup);
+  return cleanup;
 }
 
-export function setupComboboxes(root: ParentNode = document): void {
-  root.querySelectorAll<HTMLElement>(".combobox").forEach(setupCombobox);
+export function setupComboboxes(root: ParentNode = document): Cleanup {
+  return combineCleanups([...root.querySelectorAll<HTMLElement>(".combobox")].map(setupCombobox));
 }

@@ -21,6 +21,7 @@ export { setupCopyButton } from "./setup-copy-button.js";
 export { setupOtpInput } from "./setup-otp-input.js";
 export { setupThemeToggle } from "./setup-theme-toggle.js";
 export { anchorPopoverByTrigger, type AnchorOptions } from "./anchor-popover.js";
+export { combineCleanups, noopCleanup, type Cleanup } from "./lifecycle.js";
 
 import { setupDismissers } from "./setup-dismiss.js";
 import { setupPopovers } from "./setup-popover.js";
@@ -30,18 +31,21 @@ import { setupSliders } from "./setup-slider.js";
 import { setupCopyButton } from "./setup-copy-button.js";
 import { setupOtpInput } from "./setup-otp-input.js";
 import { setupThemeToggle } from "./setup-theme-toggle.js";
+import { combineCleanups, type Cleanup } from "./lifecycle.js";
 
 /**
  * Initialisiert alle interactive Components in einem Aufruf.
  * Für selektive Adoption: einzelne setup*-Functions importieren.
  */
-export function setupAll(root: ParentNode = document): void {
-  setupDismissers(root);
-  setupPopovers(root);
-  setupComboboxes(root);
-  setupFileUploads(root);
-  setupSliders(root);
-  setupCopyButton(root);
-  setupOtpInput(root);
-  setupThemeToggle(root);
+export function setupAll(root: ParentNode = document): Cleanup {
+  return combineCleanups([
+    setupDismissers(root),
+    setupPopovers(root),
+    setupComboboxes(root),
+    setupFileUploads(root),
+    setupSliders(root),
+    setupCopyButton(root),
+    setupOtpInput(root),
+    setupThemeToggle(root),
+  ]);
 }

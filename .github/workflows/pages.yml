@@ -1,22 +1,20 @@
-name: Deploy Pages
+name: Verify and deploy Design System
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: design-system-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,39 +32,47 @@ jobs:
       - name: Install browser dependencies
         run: bash scripts/install-browser-deps.sh
 
-      - name: Build JavaScript and tokens
-        run: npm run build
+      - name: Verify source, browser behavior, accessibility and package
+        run: npm run check:full
 
-      - name: Check website pattern contracts
-        run: npm run check:patterns
+      - name: Security audit
+        run: npm audit --audit-level=high
 
-      - name: Build documentation site
-        run: npm run build:site
+      - name: Verify generated artifacts are committed
+        run: npm run check:generated
 
-      - name: Check generated site links and assets
-        run: npm run check:site:links
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: verify
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Check generated site rendering
-        run: npm run check:site:responsive
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
 
-      - name: Check generated site interactions
-        run: npm run check:site
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Add Pages marker
-        run: touch dist/site/.nojekyll
+      - name: Build documentation artifact
+        run: npm run build && npm run build:site && touch dist/site/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/site
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

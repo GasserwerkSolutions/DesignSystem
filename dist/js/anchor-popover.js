@@ -13,15 +13,19 @@
  * Firefox: experimental), kann Konsument dies durch eigene CSS-Rule
  * mit unique anchor-name pro Trigger ersetzen — dann onOpen weglassen.
  */
+const cleanups = new WeakMap();
 export function anchorPopoverByTrigger(panel, options = {}) {
+    const existing = cleanups.get(panel);
+    if (existing)
+        return existing;
     const { matchWidth = false, offset = 4, onToggle } = options;
-    panel.addEventListener("beforetoggle", (rawEvent) => {
+    const handleToggle = (rawEvent) => {
         const e = rawEvent;
         if (onToggle)
             onToggle(e);
         if (e.newState !== "open")
             return;
-        const trigger = document.querySelector(`[popovertarget="${panel.id}"]`);
+        const trigger = panel.ownerDocument.querySelector(`[popovertarget="${panel.id}"]`);
         if (!trigger)
             return;
         const r = trigger.getBoundingClientRect();
@@ -29,5 +33,19 @@ export function anchorPopoverByTrigger(panel, options = {}) {
         panel.style.left = `${r.left}px`;
         if (matchWidth)
             panel.style.minWidth = `${r.width}px`;
-    });
+    };
+    panel.addEventListener("beforetoggle", handleToggle);
+    let active = true;
+    const cleanup = () => {
+        if (!active)
+            return;
+        active = false;
+        panel.removeEventListener("beforetoggle", handleToggle);
+        panel.style.removeProperty("top");
+        panel.style.removeProperty("left");
+        panel.style.removeProperty("min-width");
+        cleanups.delete(panel);
+    };
+    cleanups.set(panel, cleanup);
+    return cleanup;
 }

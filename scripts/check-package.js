@@ -17,6 +17,7 @@
 
 const { execSync } = require("node:child_process");
 const fs = require("node:fs");
+const os = require("node:os");
 const path = require("node:path");
 
 const ROOT = path.resolve(__dirname, "..");
@@ -36,10 +37,17 @@ if (!importPaths.length) {
    z.B. "[tsc] compile..." vom build-Output beginnt auch mit "[". Wir
    anchor an "[{" (Array-Start + Object-Start) und den letzten "}]" (das
    ist eindeutig der JSON-Trailer). */
-const rawOutput = execSync("npm pack --dry-run --json", {
-  cwd: ROOT,
-  stdio: ["ignore", "pipe", "ignore"],
-}).toString();
+const npmCache = fs.mkdtempSync(path.join(os.tmpdir(), "gws-ds-npm-cache-"));
+let rawOutput;
+try {
+  rawOutput = execSync("npm pack --dry-run --json", {
+    cwd: ROOT,
+    env: { ...process.env, npm_config_cache: npmCache },
+    stdio: ["ignore", "pipe", "ignore"],
+  }).toString();
+} finally {
+  fs.rmSync(npmCache, { recursive: true, force: true });
+}
 /* JSON ist eingerückt formatiert: "[\n  {\n    \"id\":...". Wir splitten
    am ersten "[\n" als Anker und parsen den Rest. */
 const idx = rawOutput.search(/^\[\s*$/m);

@@ -1,0 +1,131 @@
+/**
+ * Tag Component (interactive chip)
+ * =================================
+ *
+ * Editierbares/clickbares Label. Differenzierung zu Badge:
+ *   - Badge: read-only Status-Label, klein (font-xs), pill (radius-full)
+ *   - Tag:   interactive Chip (font-sm, radius-md), optional removable/clickable
+ *
+ * Typische Use-Cases:
+ *   - Filter-Chips ("Bestätigt", "Letzte Woche")
+ *   - Multi-Select-Display ("Anna ×", "Marc ×")
+ *   - Skill / Kategorie / Hashtag-Listen
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --tag-bg / --tag-fg / --tag-border
+ *     --tag-hover-bg
+ *     --tag-px / --tag-py / --tag-radius / --tag-size
+ *
+ * Struktur — Default (static):
+ *   <span class="tag">React</span>
+ *
+ * Removable (User kann ×-Button klicken):
+ *   <span class="tag">
+ *     Filter: Bestätigt
+ *     <button class="tag__remove" type="button" aria-label="Filter entfernen">×</button>
+ *   </span>
+ *
+ * Clickable (ganzes Tag als Filter-Toggle):
+ *   <button class="tag tag--clickable" type="button">React</button>
+ *
+ * Modifier:
+ *   .tag--solid       filled accent (interactive color)
+ *   .tag--outline     transparent + border
+ *   .tag--clickable   cursor + hover + focus-visible (für <button>)
+ *   .tag--sm          kleinere Variante
+ *
+ * A11Y-Hinweis zu --solid:
+ *   Default --tag-bg = --color-interactive (X-600) + --tag-fg = white folgt
+ *   dem gleichen Pattern wie .btn — Kontrast ~3:1 (UI-Component-Norm WCAG
+ *   SC 1.4.11 ok, normal-text-Norm SC 1.4.3 borderline). Für strikte AA-
+ *   Anforderung --tag-bg auf eine X-700/800-Variante überschreiben.
+ *
+ * Dismiss-Handler (Konsument):
+ *   document.querySelectorAll(".tag__remove").forEach((btn) =>
+ *     btn.addEventListener("click", () => btn.closest(".tag").remove())
+ *   );
+ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--tag-py, var(--space-4)) var(--tag-px, var(--space-8));
+  background: var(--tag-bg, var(--color-bg-tertiary));
+  color: var(--tag-fg, var(--color-text-secondary));
+  border: 1px solid var(--tag-border, transparent);
+  border-radius: var(--tag-radius, var(--radius-md));
+  font-family: inherit;
+  font-size: var(--tag-size, var(--font-sm));
+  font-weight: var(--fw-500);
+  line-height: 1.3;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.tag--sm {
+  --tag-size: var(--font-xs);
+  --tag-px:   var(--space-6);
+  --tag-py:   var(--space-2);
+}
+
+.tag--solid {
+  --tag-bg: var(--color-interactive);
+  --tag-fg: white;
+}
+
+.tag--outline {
+  --tag-bg:     transparent;
+  --tag-border: var(--color-border-dark);
+  --tag-fg:     var(--color-text-secondary);
+}
+
+.tag--clickable {
+  cursor: pointer;
+  transition: background var(--motion-feedback),
+              border-color var(--motion-feedback);
+}
+
+.tag--clickable:hover {
+  background: var(--tag-hover-bg,
+              color-mix(in oklch, var(--tag-bg, var(--color-bg-tertiary)) 75%, var(--color-text-primary)));
+}
+
+.tag--clickable:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Remove-Button: erbt currentColor, hat eigene Touch-Affordance. */
+.tag__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width:  1rem;
+  height: 1rem;
+  margin-inline-start: var(--space-2);
+  margin-inline-end:   calc(-1 * var(--space-2));
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity var(--motion-feedback),
+              background var(--motion-feedback);
+}
+
+.tag__remove:hover {
+  opacity: 1;
+  background: color-mix(in oklch, currentColor 15%, transparent);
+}
+
+.tag__remove:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+  opacity: 1;
+}

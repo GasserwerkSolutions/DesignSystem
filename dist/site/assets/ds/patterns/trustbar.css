@@ -1,0 +1,37 @@
+@layer patterns {
+  /** Trustbar Pattern */
+
+  .trustbar {
+    background: var(--trustbar-bg, var(--color-surface));
+    border-block: var(--trustbar-border, 1px solid var(--color-border-light));
+  }
+
+  .trustbar__grid {
+    display: grid;
+    gap: var(--trustbar-gap, var(--space-16));
+    padding-block: var(--trustbar-py, var(--space-20));
+  }
+
+  .trustbar__item {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .trustbar__value {
+    color: var(--trustbar-value-fg, var(--color-text-primary));
+    font-size: var(--font-xl);
+    font-weight: var(--fw-700);
+    line-height: var(--lh-tight);
+  }
+
+  .trustbar__label {
+    color: var(--trustbar-label-fg, var(--color-text-secondary));
+    font-size: var(--font-sm);
+  }
+
+  @container (min-width: 640px) {
+    .trustbar__grid {
+      grid-template-columns: repeat(var(--trustbar-cols, 4), minmax(0, 1fr));
+    }
+  }
+}

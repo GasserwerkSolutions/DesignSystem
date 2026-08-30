@@ -1,0 +1,115 @@
+/**
+ * Segmented Control
+ * ==================
+ *
+ * Hybrid zwischen Button-Group, Radio-Buttons und Tabs. Mehrere mutuell-
+ * exklusive Optionen in einer kompakten Reihe, eine ist aktiv.
+ *
+ * Nutzt native <input type="radio"> + <label> für volle A11Y + Form-
+ * Integration (FormData, keyboard navigation, screen-reader-support).
+ * Visueller Rebuild via appearance:none auf den Radios.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --segmented-bg, --segmented-active-bg, --segmented-active-fg
+ *     --segmented-radius, --segmented-py, --segmented-px
+ *     --segmented-gap (default 2px Track-Inset)
+ *
+ * Struktur:
+ *   <fieldset class="segmented">
+ *     <legend class="visually-hidden">Ansicht</legend>
+ *     <label class="segmented__item">
+ *       <input type="radio" name="view" value="list" checked>
+ *       <span>Liste</span>
+ *     </label>
+ *     <label class="segmented__item">
+ *       <input type="radio" name="view" value="grid">
+ *       <span>Grid</span>
+ *     </label>
+ *     <label class="segmented__item">
+ *       <input type="radio" name="view" value="map">
+ *       <span>Karte</span>
+ *     </label>
+ *   </fieldset>
+ *
+ * Modifier:
+ *   .segmented--sm     kompakter (für Toolbars)
+ *   .segmented--lg     größer (für Hero-Toggles)
+ *   .segmented--block  full-width
+ */
+
+.segmented {
+  display: inline-flex;
+  gap: var(--segmented-gap, 2px);
+  padding: var(--segmented-gap, 2px);
+  background: var(--segmented-bg, var(--color-bg-tertiary));
+  border: 1px solid var(--color-border);
+  border-radius: var(--segmented-radius, var(--radius-md));
+  /* Reset fieldset defaults */
+  margin: 0;
+}
+
+.segmented__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--segmented-py, var(--space-6)) var(--segmented-px, var(--space-16));
+  border-radius: var(--segmented-radius, var(--radius-md));
+  font-size: var(--font-sm);
+  font-weight: var(--fw-500);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--motion-feedback), color var(--motion-feedback);
+}
+
+.segmented__item input[type="radio"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  cursor: inherit;
+  box-shadow: none;
+}
+
+.segmented__item input[type="radio"]:focus-visible + span {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--segmented-radius, var(--radius-md));
+}
+
+.segmented__item:hover {
+  color: var(--color-text-primary);
+}
+
+.segmented__item:has(input[type="radio"]:checked) {
+  background: var(--segmented-active-bg, var(--color-surface));
+  color: var(--segmented-active-fg, var(--color-text-primary));
+  box-shadow: var(--elevation-1);
+}
+
+.segmented--sm {
+  --segmented-py: var(--space-4);
+  --segmented-px: var(--space-12);
+}
+.segmented--sm .segmented__item { font-size: var(--font-xs); }
+
+.segmented--lg {
+  --segmented-py: var(--space-12);
+  --segmented-px: var(--space-24);
+}
+.segmented--lg .segmented__item { font-size: var(--font-base); }
+
+.segmented--block {
+  display: flex;
+  width: 100%;
+}
+.segmented--block .segmented__item {
+  flex: 1;
+}

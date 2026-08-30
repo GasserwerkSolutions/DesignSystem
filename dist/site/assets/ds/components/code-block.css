@@ -1,0 +1,89 @@
+/**
+ * CodeBlock Component
+ * ====================
+ *
+ * Prominente Code-Anzeige — für Embed-Snippets, API-Keys, Widget-Code.
+ * Dark by default, via Modifier auf light umschaltbar.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --code-block-bg, --code-block-fg, --code-block-border, --code-block-radius
+ *     --code-copy-bg, --code-copy-fg, --code-copy-border, --code-copy-hover-bg
+ *
+ * Struktur:
+ *   <pre class="code-block"><code>…</code></pre>
+ *
+ *   Oder mit Copy-Button:
+ *   <div class="code-block">
+ *     <pre><code>…</code></pre>
+ *     <button class="code-block__copy">Copy</button>
+ *   </div>
+ *
+ * Modifier:
+ *   .code-block--light    heller Look (gegen Callout-Hintergründe)
+ *   .code-block--inline   inline ohne Block-Formatierung (z. B. in List-Rows)
+ */
+
+.code-block {
+  position: relative;
+  display: block;
+  font-family: var(--font-code);
+  font-size: var(--font-sm);
+  line-height: 1.6;
+  background: var(--code-block-bg, var(--color-bg-inverse));
+  color: var(--code-block-fg, var(--color-text-on-dark));
+  border: 1px solid var(--code-block-border, transparent);
+  border-radius: var(--code-block-radius, var(--radius-md));
+  padding: var(--space-16) var(--space-20);
+  padding-inline-end: var(--space-64);  /* Platz für Copy-Button */
+  margin: 0;
+  overflow-x: auto;
+  word-wrap: normal;
+  white-space: pre;
+}
+
+.code-block > code,
+.code-block code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+  border-radius: 0;
+}
+
+.code-block__copy {
+  position: absolute;
+  inset-block-start: var(--space-8);
+  inset-inline-end: var(--space-8);
+  padding: var(--space-4) var(--space-8);
+  background: var(--code-copy-bg, rgba(255, 255, 255, 0.08));
+  color: var(--code-copy-fg, inherit);
+  border: 1px solid var(--code-copy-border, rgba(255, 255, 255, 0.15));
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--font-xs);
+  font-weight: var(--fw-600);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--easing-fast);
+}
+
+.code-block__copy:hover {
+  background: var(--code-copy-hover-bg, rgba(255, 255, 255, 0.18));
+}
+
+.code-block--light {
+  --code-block-bg: var(--color-bg-secondary);
+  --code-block-fg: var(--color-text-primary);
+  --code-block-border: var(--color-border);
+  --code-copy-bg: var(--color-bg);
+  --code-copy-fg: var(--color-text-secondary);
+  --code-copy-border: var(--color-border);
+  --code-copy-hover-bg: var(--color-bg-tertiary);
+}
+
+.code-block--inline {
+  display: inline-block;
+  padding: var(--space-2) var(--space-6);
+  padding-inline-end: var(--space-6);
+  font-size: 0.9em;
+}

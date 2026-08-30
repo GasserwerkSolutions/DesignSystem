@@ -1,0 +1,13 @@
+@layer patterns {
+  /** FAQ Section Pattern */
+
+  .faq-section {
+    display: grid;
+    gap: var(--faq-section-gap, var(--space-24));
+  }
+
+  .faq-list {
+    display: grid;
+    gap: var(--faq-list-gap, var(--space-12));
+  }
+}

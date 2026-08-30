@@ -17,5 +17,6 @@ export interface SliderOptions {
      *  data-format-prefix + data-format-suffix Attribute werden gelesen. */
     format?: (value: string) => string;
 }
-export declare function setupSlider(slider: HTMLElement, opts?: SliderOptions): void;
-export declare function setupSliders(root?: ParentNode): void;
+import { type Cleanup } from "./lifecycle.js";
+export declare function setupSlider(slider: HTMLElement, opts?: SliderOptions): Cleanup;
+export declare function setupSliders(root?: ParentNode): Cleanup;

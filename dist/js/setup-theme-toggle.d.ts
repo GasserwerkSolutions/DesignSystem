@@ -6,4 +6,5 @@
  * persistiert in localStorage. Nutzt View-Transitions wenn verfügbar für
  * smooth Cross-Fade aller mode-sensitiven Tokens.
  */
-export declare function setupThemeToggle(root?: ParentNode): void;
+import { type Cleanup } from "./lifecycle.js";
+export declare function setupThemeToggle(root?: ParentNode): Cleanup;

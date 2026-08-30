@@ -1,0 +1,76 @@
+/**
+ * Progress Component
+ * ===================
+ *
+ * Fill-Bar für Usage-Limits, Upload-Status, generische Fortschritts-Anzeigen.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --progress-track, --progress-fill, --progress-height, --progress-radius
+ *
+ * Struktur:
+ *   <div class="progress" role="progressbar"
+ *        aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+ *     <div class="progress__fill" style="width: 45%"></div>
+ *   </div>
+ *
+ *   Mit Label-Header:
+ *   <div class="progress-group">
+ *     <div class="progress-group__header">
+ *       <span>Bookings</span>
+ *       <span>45 / 100</span>
+ *     </div>
+ *     <div class="progress">…</div>
+ *   </div>
+ *
+ * Modifier:
+ *   .progress--thin    0.25rem Höhe
+ *   .progress--thick   1rem Höhe
+ *   .progress--success / --warning / --danger   farbvariante
+ */
+
+.progress {
+  height: var(--progress-height, 0.5rem);
+  background: var(--progress-track, var(--color-bg-tertiary));
+  border-radius: var(--progress-radius, var(--radius-full));
+  overflow: hidden;
+}
+
+.progress__fill {
+  height: 100%;
+  background: var(--progress-fill, var(--color-interactive));
+  border-radius: inherit;
+  transition: width var(--duration-medium) var(--easing-medium);
+}
+
+.progress--thin  { --progress-height: 0.25rem; }
+.progress--thick { --progress-height: 1rem; }
+
+.progress--success { --progress-fill: var(--color-success); }
+.progress--warning { --progress-fill: var(--color-warning); }
+.progress--danger  { --progress-fill: var(--color-error); }
+
+.progress-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.progress-group__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-8);
+  font-size: var(--font-sm);
+}
+
+.progress-group__header > :first-child {
+  color: var(--color-text-secondary);
+  font-weight: var(--fw-500);
+}
+
+.progress-group__header > :last-child {
+  color: var(--color-text-primary);
+  font-weight: var(--fw-600);
+  font-variant-numeric: tabular-nums;
+}

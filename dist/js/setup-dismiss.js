@@ -12,14 +12,31 @@
  *
  * Auto-Init via setupDismissers(); Single-Element via setupDismisser(el).
  */
+import { combineCleanups, noopCleanup } from "./lifecycle.js";
+const cleanups = new WeakMap();
 export function setupDismisser(button) {
+    const existing = cleanups.get(button);
+    if (existing)
+        return existing;
     const selector = button.dataset.dismiss;
     if (!selector)
-        return;
-    button.addEventListener("click", () => {
-        button.closest(selector)?.remove();
-    });
+        return noopCleanup;
+    const handleClick = () => {
+        try {
+            button.closest(selector)?.remove();
+        }
+        catch {
+            /* Invalid consumer selectors must not break unrelated controls. */
+        }
+    };
+    button.addEventListener("click", handleClick);
+    const cleanup = () => {
+        button.removeEventListener("click", handleClick);
+        cleanups.delete(button);
+    };
+    cleanups.set(button, cleanup);
+    return cleanup;
 }
 export function setupDismissers(root = document) {
-    root.querySelectorAll("[data-dismiss]").forEach(setupDismisser);
+    return combineCleanups([...root.querySelectorAll("[data-dismiss]")].map(setupDismisser));
 }

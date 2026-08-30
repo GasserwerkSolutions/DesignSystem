@@ -1,5 +1,45 @@
 # Changelog
 
+## [0.32.0] — Builder-Profil, Release-Integrität und gerenderte Qualitätsgates
+
+Diese Version macht das Design System reproduzierbar im Gasserwerk Builder
+verwendbar und schließt die beim Integrationsaudit gefundenen Release-Lücken.
+
+### Builder-Vertrag
+
+- Kuratiertes Builder-Profil mit sieben Components und elf Website-Patterns
+- Maschinenlesbares Manifest plus JSON-Schema
+- Selbstständiges Browser-Artefakt mit eingebettetem CSS, Manifest, Version
+  und SHA-256
+- Eigenes Größenbudget: 9.5 KB gzip bei 14 KB Obergrenze
+- Explizite Cascade-Erweiterung um `patterns`, `treatments`, `utilities` und
+  `overrides`
+
+### Laufzeit
+
+- Alle Companion-JS-Initialisierer sind idempotent
+- `setupAll()` und Einzelinitialisierer geben Cleanup-Funktionen zurück
+- Builder-Remount-Journey beweist Cleanup und erneute Initialisierung
+
+### Qualität und Veröffentlichung
+
+- Ein einziger Pages-Workflow für PR-Prüfung und verifiziertes Main-Deployment
+- `lint:strict`, gerenderte Checks, Beispielseiten, Profilprüfung,
+  Paketprüfung und Security-Audit sind verpflichtend
+- Visuelle Baseline-Aktualisierungen werden als prüfbares Artefakt geliefert
+  und nicht mehr direkt nach `main` geschrieben
+- Vier Beispiele werden bei 320, 360, 390, 768 und 1280 Pixeln geprüft
+- Globale Link- und Premium-Button-Transitions auf explizite Eigenschaften begrenzt; das Builder-Profil nutzt für Sticky Actions eine opake Oberfläche statt teurem `backdrop-filter`-Blur und besteht dadurch die exportierte Produktions-QA
+- Defektes Musikraum-Bild durch eine lokale, skalierbare Klangillustration
+  ersetzt; Header-, SVG- und Dokumentationsüberläufe repariert
+- Build-Abhängigkeiten ohne bekannte npm-Sicherheitsmeldungen
+
+### Korrigierte Metadaten
+
+- 57 Components, 275 Tokens, 23.9 KB gzip im Vollprofil
+- Installation ist bis zu einem separaten npm-Publish an einen exakten
+  GitHub-Release gebunden
+
 ## [0.31.0] — Reduced-Motion-Bewusstsein als Two-Layer-Garantie (CLEAR 4 Prinzip 5)
 
 Fünfte konkrete Umsetzung der Nervensystem-Verfassung. Der letzte
