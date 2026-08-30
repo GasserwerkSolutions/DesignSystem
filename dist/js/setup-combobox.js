@@ -24,11 +24,22 @@
  *   </div>
  */
 import { anchorPopoverByTrigger } from "./anchor-popover.js";
+import { combineCleanups, noopCleanup } from "./lifecycle.js";
+const cleanups = new WeakMap();
+function hidePopover(panel) {
+    const popover = panel;
+    popover.hidePopover?.();
+}
 export function setupCombobox(combobox) {
+    const existing = cleanups.get(combobox);
+    if (existing)
+        return existing;
     const trigger = combobox.querySelector(".combobox__trigger");
     const panel = combobox.querySelector(".combobox__panel");
     if (!trigger || !panel)
-        return;
+        return noopCleanup;
+    const controller = new AbortController();
+    const signal = controller.signal;
     const search = panel.querySelector(".combobox__search-input");
     const value = trigger.querySelector(".combobox__value");
     const visibleOptions = () => panel.querySelectorAll(".combobox__option:not([hidden])");
@@ -48,23 +59,23 @@ export function setupCombobox(combobox) {
             const label = opt.querySelector(".combobox__option-label");
             value.textContent = (label?.textContent ?? opt.textContent ?? "").trim();
         }
-        panel.hidePopover();
+        hidePopover(panel);
     };
-    anchorPopoverByTrigger(panel, {
+    const releaseAnchor = anchorPopoverByTrigger(panel, {
         matchWidth: true,
         onToggle: (e) => {
             trigger.setAttribute("aria-expanded", e.newState === "open" ? "true" : "false");
             if (e.newState !== "open")
                 return;
             setActive(-1);
-            requestAnimationFrame(() => search?.focus());
+            panel.ownerDocument.defaultView?.requestAnimationFrame(() => search?.focus());
         },
     });
     panel.addEventListener("click", (e) => {
         const opt = e.target.closest(".combobox__option");
         if (opt)
             select(opt);
-    });
+    }, { signal });
     combobox.addEventListener("keydown", (e) => {
         const opts = visibleOptions();
         if (e.key === "ArrowDown") {
@@ -80,10 +91,10 @@ export function setupCombobox(combobox) {
             select(opts[active]);
         }
         else if (e.key === "Escape") {
-            panel.hidePopover();
+            hidePopover(panel);
             trigger.focus();
         }
-    });
+    }, { signal });
     search?.addEventListener("input", () => {
         const q = search.value.toLowerCase();
         panel.querySelectorAll(".combobox__option").forEach((o) => {
@@ -91,8 +102,18 @@ export function setupCombobox(combobox) {
             o.hidden = q !== "" && !haystack.includes(q);
         });
         setActive(-1);
-    });
+    }, { signal });
+    const cleanup = () => {
+        controller.abort();
+        releaseAnchor();
+        trigger.setAttribute("aria-expanded", "false");
+        panel.querySelectorAll(".combobox__option--active")
+            .forEach((option) => option.classList.remove("combobox__option--active"));
+        cleanups.delete(combobox);
+    };
+    cleanups.set(combobox, cleanup);
+    return cleanup;
 }
 export function setupComboboxes(root = document) {
-    root.querySelectorAll(".combobox").forEach(setupCombobox);
+    return combineCleanups([...root.querySelectorAll(".combobox")].map(setupCombobox));
 }

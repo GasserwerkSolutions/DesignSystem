@@ -40,6 +40,12 @@ const DIFF_DIR   = path.join(VISUAL_DIR, "_diff");
 const UPDATE = process.argv.includes("--update");
 const CREATE = process.argv.includes("--create");
 const SELF_TEST = process.argv.includes("--self-test");
+const FORCE_CROSS_HOST = process.argv.includes("--force-cross-host");
+const REQUIRE_HOST_MATCH = process.argv.includes("--require-host-match") || process.env.CI === "true";
+const ONLY_ARG = process.argv.find((arg) => arg.startsWith("--only="));
+const ONLY_LABELS = ONLY_ARG
+  ? new Set(ONLY_ARG.slice("--only=".length).split(",").filter(Boolean))
+  : null;
 
 const TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
 const MODES = ["light", "dark"];
@@ -310,7 +316,11 @@ async function selfTest() {
 
       // Subprocess-Call ohne --self-test → normaler VRT-Run gegen Baselines.
       // Wir erwarten exit=1 (= Mutation gefangen).
-      const res = spawnSync("node", [__filename], {
+      const res = spawnSync("node", [
+        __filename,
+        "--force-cross-host",
+        `--only=${m.expectedFails.join(",")}`,
+      ], {
         encoding: "utf8",
         cwd: ROOT,
         timeout: 120_000,
@@ -408,16 +418,24 @@ async function main() {
 
   const currentHost = await getHostInfo(browser);
 
+  let hostMismatch = false;
+
   // Host-Drift gegen Baseline-Metadata prüfen — sichtbar machen, dass
   // Pixel-Diffs auf Browser/Platform-Drift zurückgehen könnten.
   if (fs.existsSync(METADATA_FILE)) {
     const baselineMeta = JSON.parse(fs.readFileSync(METADATA_FILE, "utf8"));
     const drifts = compareHostInfo(baselineMeta, currentHost);
     if (drifts.length > 0) {
+      hostMismatch = true;
       console.warn("  [warn] Host-Drift gegenüber Baseline-Metadata:");
       drifts.forEach((d) => console.warn(`         → ${d}`));
       console.warn("         Pixel-Diffs könnten auf Browser/Platform-Drift zurückgehen.");
       console.warn("         Baseline auf aktuellem Host regenerieren: npm run check:visual:update");
+      if (REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST) {
+        console.error("         CI verlangt exakt den kanonischen Baseline-Host.");
+      } else if (!FORCE_CROSS_HOST) {
+        console.warn("         Lokaler Pixelvergleich wird übersprungen; CI auf Linux bleibt verbindlich.");
+      }
       console.warn("");
     }
   } else if (!UPDATE && !CREATE) {
@@ -429,6 +447,7 @@ async function main() {
   let createdCount = 0;
   let failCount = 0;
   let okCount = 0;
+  let skippedCount = 0;
 
   try {
     const page = await browser.newPage();
@@ -437,6 +456,7 @@ async function main() {
     for (const tone of TONES) {
       for (const mode of MODES) {
         const label = `${tone}-${mode}`;
+        if (ONLY_LABELS && !ONLY_LABELS.has(label)) continue;
         const baselineFile = path.join(VISUAL_DIR, `${label}.png`);
         const baselineExists = fs.existsSync(baselineFile);
 
@@ -452,6 +472,12 @@ async function main() {
         if (CREATE) {
           // Baseline existiert + nur --create → skip Vergleich
           console.log(`  [skip]  ${label}  (baseline existiert, --create only)`);
+          continue;
+        }
+
+        if (hostMismatch && !FORCE_CROSS_HOST) {
+          console.log(`  [skip]  ${label}  (anderer Baseline-Host)`);
+          skippedCount++;
           continue;
         }
 
@@ -503,8 +529,9 @@ async function main() {
 
   console.log("");
   console.log(
-    `Visual-Check: ${okCount} ok · ${createdCount} created · ${failCount} fail`
+    `Visual-Check: ${okCount} ok · ${createdCount} created · ${skippedCount} host-skipped · ${failCount} fail`
   );
+  if (hostMismatch && REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST) process.exit(1);
   if (failCount > 0) process.exit(1);
 }
 

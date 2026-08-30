@@ -27,7 +27,9 @@ const PAGES = [
 ];
 
 const VIEWPORTS = [
+  { label: "small-mobile", width: 320, height: 760 },
   { label: "mobile", width: 360, height: 800 },
+  { label: "large-mobile", width: 390, height: 844 },
   { label: "tablet", width: 768, height: 900 },
   { label: "desktop", width: 1280, height: 900 },
   { label: "wide", width: 1440, height: 1000 },
@@ -64,6 +66,18 @@ async function checkPage(browser, rel, viewport) {
     const scrollWidth = Math.max(doc.scrollWidth, body.scrollWidth);
     const clientWidth = doc.clientWidth;
     const overflowX = scrollWidth - clientWidth;
+    const clippedInteractive = [...document.querySelectorAll("a, button, input, select, textarea")]
+      .filter((element) => {
+        const style = getComputedStyle(element);
+        if (style.display === "none" || style.visibility === "hidden") return false;
+        const rect = element.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0 && (rect.left < -2 || rect.right > clientWidth + 2);
+      })
+      .map((element) => {
+        const classes = typeof element.className === "string" ? element.className.trim().split(/\s+/).slice(0, 2).join(".") : "";
+        return `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ""}${classes ? `.${classes}` : ""}`;
+      })
+      .slice(0, 8);
 
     const visibleTopbar = !!document.querySelector(".app-shell__topbar");
     const visibleMain = !!document.querySelector(".app-shell__main");
@@ -76,6 +90,7 @@ async function checkPage(browser, rel, viewport) {
       visibleTopbar,
       visibleMain,
       overflowX,
+      clippedInteractive,
       darkBg,
     };
   });
@@ -83,6 +98,7 @@ async function checkPage(browser, rel, viewport) {
   if (!result.dsLoaded) issues.push("DS CSS not detected via assets/ds/main.css");
   if (!result.visibleTopbar || !result.visibleMain) issues.push("missing topbar/main app shell");
   if (result.overflowX > 2) issues.push(`horizontal overflow ${result.overflowX}px`);
+  if (result.clippedInteractive.length) issues.push(`clipped interactive controls: ${result.clippedInteractive.join(", ")}`);
   if (!result.darkBg) issues.push("dark-mode token did not resolve");
 
   await page.close();

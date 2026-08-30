@@ -1,0 +1,111 @@
+/**
+ * Funnel Component
+ * =================
+ *
+ * Vertikale Conversion-Funnel-Visualisierung: Label + Count + Bar + Dropoff zum nächsten Step.
+ * Für Analytics-Funnel-Pages, Onboarding-Conversion, Sales-Pipelines.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --funnel-fill, --funnel-track, --funnel-bar-height
+ *
+ * Struktur:
+ *   <ol class="funnel">
+ *     <li class="funnel__step">
+ *       <div class="funnel__header">
+ *         <span class="funnel__label">Besucher</span>
+ *         <span class="funnel__count">1'247</span>
+ *       </div>
+ *       <div class="funnel__bar">
+ *         <div class="funnel__fill" style="width: 100%"></div>
+ *       </div>
+ *       <div class="funnel__dropoff">→ 42 % zum nächsten Schritt</div>
+ *     </li>
+ *     …
+ *   </ol>
+ *
+ * Modifier (auf .funnel__fill):
+ *   .funnel__fill--success / --warning / --danger
+ *
+ * Modifier (auf .funnel__dropoff):
+ *   .funnel__dropoff--good    grün (hohe Conversion)
+ *   .funnel__dropoff--bad     rot (hoher Dropoff)
+ */
+
+.funnel {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.funnel > li::before {
+  content: none;
+}
+
+.funnel__step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+}
+
+.funnel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-12);
+}
+
+.funnel__label {
+  font-size: var(--font-sm);
+  font-weight: var(--fw-600);
+  color: var(--color-text-primary);
+}
+
+.funnel__count {
+  font-family: var(--heading-font);
+  font-size: var(--font-xl);
+  font-weight: var(--fw-700);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.funnel__bar {
+  height: var(--funnel-bar-height, 0.75rem);
+  background: var(--funnel-track, var(--color-bg-tertiary));
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.funnel__fill {
+  height: 100%;
+  background: var(--funnel-fill, var(--color-interactive));
+  border-radius: inherit;
+  transition: width var(--duration-medium) var(--easing-medium);
+}
+
+.funnel__fill--success { --funnel-fill: var(--color-success); }
+.funnel__fill--warning { --funnel-fill: var(--color-warning); }
+.funnel__fill--danger  { --funnel-fill: var(--color-error); }
+
+.funnel__dropoff {
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+  padding-inline-start: var(--space-8);
+}
+
+.funnel__dropoff--good {
+  color: var(--color-success);
+  font-weight: var(--fw-600);
+}
+
+.funnel__dropoff--bad {
+  color: var(--color-error);
+  font-weight: var(--fw-600);
+}

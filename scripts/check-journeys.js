@@ -273,6 +273,30 @@ async function journeyTreeExpandCollapse(page) {
   assert(reExpanded, "After second click: tree node should be open again");
 }
 
+async function journeyLifecycleCleanup(page) {
+  await reload(page);
+
+  const state = await page.evaluate(() => {
+    const cleanup = DS.setupAll();
+    cleanup();
+    const slider = document.getElementById("slider-volume");
+    const output = document.querySelector('output[for="slider-volume"]');
+    slider.value = "73";
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+    const afterCleanup = output.value;
+
+    const cleanupAgain = DS.setupAll();
+    slider.dispatchEvent(new Event("input", { bubbles: true }));
+    const afterRemount = output.value;
+    cleanupAgain();
+    return { afterCleanup, afterRemount, cleanupType: typeof cleanup };
+  });
+
+  assert(state.cleanupType === "function", "setupAll should return a cleanup function");
+  assert(state.afterCleanup !== "73", "cleanup should detach existing slider listeners");
+  assert(state.afterRemount === "73", "setupAll should re-initialize after cleanup");
+}
+
 // ============================================================
 // Main
 // ============================================================
@@ -298,6 +322,7 @@ async function main() {
     await journey("Slider: input event syncs output + --range-fill-pct", journeySliderSync, page);
     await journey("File-Upload: drag-counter handles nested dragenter/leave", journeyFileUploadDragCounter, page);
     await journey("Tree: summary click toggles details[open] state", journeyTreeExpandCollapse, page);
+    await journey("Lifecycle: repeated setup is idempotent and cleanup allows remount", journeyLifecycleCleanup, page);
 
     console.log("");
     console.log(`${passed} passed, ${failed} failed`);

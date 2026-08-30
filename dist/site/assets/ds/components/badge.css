@@ -1,0 +1,102 @@
+/**
+ * Badge Component
+ * ================
+ *
+ * Für Status-Tags (Live, Kostenlos, ENTERPRISE, Industry-Labels, etc.)
+ *
+ * CONTRACT:
+ *   Required: --badge-bg, --badge-fg
+ *   Optional:
+ *     --badge-border, --badge-radius
+ *     --badge-weight, --badge-letter, --badge-transform
+ *     --badge-px, --badge-py
+ *
+ * Struktur:
+ *   <span class="badge badge--info">Neu</span>
+ *
+ *   Mit Status-Dot:
+ *   <span class="badge badge--success">
+ *     <span class="badge__dot" aria-hidden="true"></span>
+ *     Aktiv
+ *   </span>
+ *
+ *   Variants nebeneinander:
+ *   <span class="badge badge--strong">Premium</span>
+ *   <span class="badge badge--warning">Bald ausverkauft</span>
+ *   <span class="badge badge--outline">Beta</span>
+ *
+ * Modifier:
+ *   .badge--strong     filled (interactive accent)
+ *   .badge--success    subtle success
+ *   .badge--warning    subtle warning
+ *   .badge--danger     subtle error
+ *   .badge--info       subtle info
+ *   .badge--neutral    subtle neutral/gray
+ *   .badge--outline    outlined (transparent bg)
+ *
+ * Child:
+ *   .badge__dot        Status-Indikator-Punkt (nutzt currentColor)
+ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--badge-py, var(--space-2)) var(--badge-px, var(--space-8));
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  border: 1px solid var(--badge-border, transparent);
+  border-radius: var(--badge-radius);
+  font-family: inherit;
+  font-size: var(--font-xs);
+  font-weight: var(--badge-weight, 600);
+  letter-spacing: var(--badge-letter, 0);
+  text-transform: var(--badge-transform, none);
+  line-height: 1.4;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.badge__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-full);
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.badge--strong {
+  --badge-bg: var(--color-interactive);
+  --badge-fg: white;
+}
+
+.badge--success {
+  --badge-bg: var(--status-success-bg);
+  --badge-fg: var(--status-success-fg);
+}
+
+.badge--warning {
+  --badge-bg: var(--status-warning-bg);
+  --badge-fg: var(--status-warning-fg);
+}
+
+.badge--danger {
+  --badge-bg: var(--status-danger-bg);
+  --badge-fg: var(--status-danger-fg);
+}
+
+.badge--info {
+  --badge-bg: var(--status-info-bg);
+  --badge-fg: var(--status-info-fg);
+}
+
+.badge--neutral {
+  --badge-bg: var(--status-neutral-bg);
+  --badge-fg: var(--status-neutral-fg);
+}
+
+.badge--outline {
+  --badge-bg: transparent;
+  --badge-border: var(--color-border-dark);
+  --badge-fg: var(--color-text-secondary);
+}

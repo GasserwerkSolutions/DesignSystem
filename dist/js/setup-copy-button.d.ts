@@ -6,4 +6,5 @@
  * data-copy-text (Inline-String). Sets data-state="copied" on success,
  * "error" on failure. Auto-clears state after 1500ms.
  */
-export declare function setupCopyButton(root?: ParentNode): void;
+import { type Cleanup } from "./lifecycle.js";
+export declare function setupCopyButton(root?: ParentNode): Cleanup;

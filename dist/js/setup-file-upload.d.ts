@@ -9,5 +9,6 @@
  * Selected-Filename wird im .file-upload__text-Element angezeigt,
  * mit "+N weitere"-Suffix bei multiple-Selection.
  */
-export declare function setupFileUpload(label: HTMLElement): void;
-export declare function setupFileUploads(root?: ParentNode): void;
+import { type Cleanup } from "./lifecycle.js";
+export declare function setupFileUpload(label: HTMLElement): Cleanup;
+export declare function setupFileUploads(root?: ParentNode): Cleanup;

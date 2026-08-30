@@ -1,0 +1,91 @@
+/**
+ * Slider Component (composition über .range)
+ * ===========================================
+ *
+ * Wrapper um `<input type="range" class="range">` mit Label, Value-Display
+ * und optionaler Skala. Native input behält Form-Integration, Keyboard
+ * (Pfeil-Tasten, PageUp/Down, Home/End) und Screen-Reader-Support.
+ *
+ * Track-Fill kommt aus dem erweiterten .range (linear-gradient + custom
+ * property --range-fill-pct). Konsument updated die Property via JS.
+ *
+ * CONTRACT:
+ *   .slider           — Wrapper, vertikale Komposition
+ *   .slider__header   — Label + Value-Display nebeneinander
+ *   .slider__label    — <label>-Element für den Input
+ *   .slider__value    — <output>-Element zeigt aktuellen Wert
+ *   .slider__scale    — optionale min/mid/max-Marker unter dem Track
+ *
+ * Struktur:
+ *   <div class="slider">
+ *     <div class="slider__header">
+ *       <label class="slider__label" for="vol">Lautstärke</label>
+ *       <output class="slider__value" for="vol">50</output>
+ *     </div>
+ *     <input type="range" id="vol" class="range" min="0" max="100" value="50">
+ *     <div class="slider__scale">
+ *       <span>0</span><span>50</span><span>100</span>
+ *     </div>
+ *   </div>
+ *
+ * JS-Snippet (Konsument kopiert ins eigene Setup) — updated Track-Fill
+ * und synct <output> auf input event:
+ *
+ *   document.querySelectorAll(".slider").forEach((slider) => {
+ *     const input  = slider.querySelector('input[type="range"]');
+ *     const output = slider.querySelector(".slider__value");
+ *     if (!input) return;
+ *     const sync = () => {
+ *       const min = +input.min || 0;
+ *       const max = +input.max || 100;
+ *       const pct = ((input.valueAsNumber - min) / (max - min)) * 100;
+ *       input.style.setProperty("--range-fill-pct", pct + "%");
+ *       if (output) output.value = input.value;
+ *     };
+ *     input.addEventListener("input", sync);
+ *     sync();
+ *   });
+ *
+ * Diskrete Ticks (Browser-native, optional):
+ *   <input type="range" class="range" list="ticks">
+ *   <datalist id="ticks">
+ *     <option value="0"><option value="25"><option value="50">
+ *   </datalist>
+ */
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.slider__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.slider__label {
+  font-size: var(--font-sm);
+  font-weight: var(--fw-600);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.slider__value {
+  font-family: var(--font-mono);
+  font-size: var(--font-sm);
+  font-weight: var(--fw-600);
+  color: var(--color-interactive);
+  font-variant-numeric: tabular-nums;
+}
+
+.slider__scale {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: var(--space-2);
+  font-size: var(--font-xs);
+  color: var(--color-text-tertiary);
+  font-variant-numeric: tabular-nums;
+}

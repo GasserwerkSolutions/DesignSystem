@@ -1,0 +1,194 @@
+/**
+ * STATE STYLES
+ * ============
+ * Interactive states: focus, hover, active, disabled.
+ * Plus zentraler A11Y-Support (prefers-contrast).
+ *
+ * Regel: Diese Layer liefert Defaults für naked Elements. Components
+ * gewinnen gegen state bei Konflikten (layer-components > layer-state).
+ */
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+*:focus-visible {
+  border-radius: 2px;
+}
+
+a:hover {
+  color: var(--color-interactive-dark);
+  text-decoration: underline;
+}
+
+a:active {
+  color: var(--color-interactive-dark);
+}
+
+a:visited {
+  color: var(--color-interactive-dark);
+}
+
+/* Generische Buttons ohne .btn-Komponente: dezentes Opacity-Feedback.
+   .btn steuert Hover/Active selbst (Background + Transform). */
+button:not(.btn):hover {
+  opacity: 0.9;
+}
+
+button:not(.btn):active {
+  opacity: 0.8;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+}
+
+input:invalid:focus,
+textarea:invalid:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+/* ==========================================================
+   A11Y — prefers-contrast
+   Ergänzt prefers-reduced-motion aus reset.css.
+   ========================================================== */
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-border:         var(--gray-700);
+    --color-border-dark:    var(--gray-900);
+    --color-text-secondary: var(--gray-800);
+    --color-text-tertiary:  var(--gray-700);
+  }
+}
+
+/* Windows High-Contrast-Mode / Forced-Colors-Support
+   Browser remappt Farben zu System-Palette (CanvasText, Canvas, ButtonText,
+   Highlight, etc.). Identities die auf bg-color basieren (Status-Bgs via
+   color-mix) verschwinden — wir geben jedem Surface einen sichtbaren Border. */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+
+  /* Surfaces — sichtbare Trennung zu Canvas */
+  .btn,
+  .card,
+  .stat,
+  .callout,
+  .banner,
+  .alert,
+  .toast,
+  .modal,
+  .drawer,
+  .popover,
+  .tooltip,
+  .table-wrap,
+  .badge,
+  .tag,
+  .kbd,
+  .segmented,
+  .copy-btn,
+  .cmd-palette,
+  .otp-input__field,
+  .theme-toggle {
+    border: 1px solid CanvasText;
+  }
+
+  /* Buttons: System-Button-Colors damit hover/active erkennbar */
+  .btn {
+    forced-color-adjust: none;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+  .btn:hover,
+  .btn:focus-visible {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  /* Inputs: sichtbarer Focus-Ring per HighlightText */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+  }
+
+  /* Segmented-Control: aktives Segment via Highlight */
+  .segmented__item:has(input:checked) {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  /* Status-Indicator (Spinner, Skeleton) sichtbar machen */
+  .spinner,
+  .skeleton {
+    forced-color-adjust: none;
+    border-color: CanvasText;
+  }
+
+  /* Disabled-State: User braucht visuelles Signal */
+  :disabled,
+  [aria-disabled="true"] {
+    color: GrayText;
+    border-color: GrayText;
+  }
+
+  /* CLEAR 4 P2 Exit-Path-Hints bleiben in forced-colors lesbar via
+     System-Palette. */
+  .empty-state:not(:has(button, a))::after,
+  .alert--danger:not(:has(button, a))::after {
+    background: Canvas;
+    color: CanvasText;
+    border-inline-start-color: CanvasText;
+    forced-color-adjust: none;
+  }
+}
+
+/* prefers-reduced-data \u2014 Background-Images, Shadows etc. zur\u00fccknehmen */
+@media (prefers-reduced-data: reduce) {
+  .code-block,
+  .search-input {
+    background-image: none;
+  }
+  .card,
+  .stat,
+  .callout {
+    box-shadow: none;
+  }
+}
+
+/* prefers-reduced-transparency \u2014 Browser-Hinweis dass User Transparenz
+   reduziert haben m\u00f6chte (z.B. \u00e4ltere Augen, kognitive Last). Backdrops,
+   blur-Filters, semi-transparente Surfaces solid machen. */
+@media (prefers-reduced-transparency: reduce) {
+  .modal::backdrop,
+  .drawer::backdrop,
+  .cmd-palette::backdrop {
+    background: var(--color-bg-inverse);
+    backdrop-filter: none;
+  }
+  .app-shell__topbar {
+    backdrop-filter: none;
+  }
+  .popover,
+  .tooltip,
+  .hover-card,
+  .modal,
+  .drawer,
+  .cmd-palette {
+    background: var(--color-surface);
+  }
+}

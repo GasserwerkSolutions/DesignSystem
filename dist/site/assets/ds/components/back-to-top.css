@@ -1,0 +1,101 @@
+/**
+ * Back-to-Top Button
+ * ===================
+ *
+ * Floating Button am Viewport-Rand der bei Scroll > Threshold sichtbar wird
+ * und auf Klick zum Page-Top scrollt. Reine Anchor-Lösung (kein JS nötig),
+ * Sichtbarkeit via `:target` oder CSS-Scroll-driven-Animations.
+ *
+ * Pattern: Anchor mit `href="#"` zum Top. CSS-Scroll-driven-Animation
+ * blendet ihn bei genug Scroll ein.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --btt-size           Quadrat-Dimension (default 3rem)
+ *     --btt-offset         Abstand zum Viewport-Rand (default --space-24)
+ *     --btt-bg / --btt-fg / --btt-radius
+ *     --btt-threshold      Scroll-Distanz ab der er erscheint (default 300px)
+ *
+ * Struktur:
+ *   <a href="#top" class="back-to-top" aria-label="Zum Anfang">↑</a>
+ *
+ *   Im Body irgendwo am Anfang einen target:
+ *   <a id="top"></a>...
+ *
+ * Modifier:
+ *   .back-to-top--right   (default) rechts unten
+ *   .back-to-top--left    links unten
+ */
+
+.back-to-top {
+  position: fixed;
+  inset-block-end: var(--btt-offset, var(--space-24));
+  inset-inline-end: var(--btt-offset, var(--space-24));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btt-size, 3rem);
+  height: var(--btt-size, 3rem);
+  background: var(--btt-bg, var(--color-interactive));
+  color: var(--btt-fg, white);
+  text-decoration: none;
+  border-radius: var(--btt-radius, var(--radius-full));
+  box-shadow: var(--elevation-4);
+  font-size: var(--font-lg);
+  z-index: var(--z-dropdown);
+  /* Default versteckt; Scroll-driven-Animation enthüllt */
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.85) translateY(0.5rem);
+  transition:
+    opacity var(--motion-feedback),
+    transform var(--motion-feedback),
+    visibility 0s var(--motion-feedback);
+}
+
+/* Scroll-driven Animation: sobald html mehr als --btt-threshold gescrollt
+   wurde, fade-in. Chrome 115+, Safari noch nicht (graceful: button bleibt
+   versteckt — Konsument kann mit JS togglen für volle Browser-Support). */
+@supports (animation-timeline: scroll()) {
+  .back-to-top {
+    animation: back-to-top-reveal both;
+    animation-timeline: scroll(root);
+    animation-range: var(--btt-threshold, 300px) calc(var(--btt-threshold, 300px) + 100px);
+  }
+}
+
+@keyframes back-to-top-reveal {
+  to {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+}
+
+/* Fallback für JS-toggle: .back-to-top.is-visible */
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.back-to-top:hover {
+  background: var(--color-interactive-dark);
+  transform: scale(1.05);
+}
+
+.back-to-top:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.back-to-top--left {
+  inset-inline-start: var(--btt-offset, var(--space-24));
+  inset-inline-end: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top { transition: none; animation: none; }
+  .back-to-top.is-visible,
+  @supports (animation-timeline: scroll()) { .back-to-top { opacity: 1; visibility: visible; transform: none; } }
+}

@@ -19,6 +19,10 @@ export interface SliderOptions {
   format?: (value: string) => string;
 }
 
+import { combineCleanups, noopCleanup, type Cleanup } from "./lifecycle.js";
+
+const cleanups = new WeakMap<HTMLElement, Cleanup>();
+
 function makeFormatter(input: HTMLInputElement, opts: SliderOptions): (v: string) => string {
   if (opts.format) return opts.format;
   const prefix = input.dataset.formatPrefix ?? "";
@@ -26,10 +30,12 @@ function makeFormatter(input: HTMLInputElement, opts: SliderOptions): (v: string
   return (v: string) => `${prefix}${v}${suffix}`;
 }
 
-export function setupSlider(slider: HTMLElement, opts: SliderOptions = {}): void {
+export function setupSlider(slider: HTMLElement, opts: SliderOptions = {}): Cleanup {
+  const existing = cleanups.get(slider);
+  if (existing) return existing;
   const input  = slider.querySelector<HTMLInputElement>('input[type="range"]');
   const output = slider.querySelector<HTMLOutputElement>(".slider__value");
-  if (!input) return;
+  if (!input) return noopCleanup;
 
   const format = makeFormatter(input, opts);
 
@@ -43,8 +49,14 @@ export function setupSlider(slider: HTMLElement, opts: SliderOptions = {}): void
 
   input.addEventListener("input", sync);
   sync();
+  const cleanup: Cleanup = () => {
+    input.removeEventListener("input", sync);
+    cleanups.delete(slider);
+  };
+  cleanups.set(slider, cleanup);
+  return cleanup;
 }
 
-export function setupSliders(root: ParentNode = document): void {
-  root.querySelectorAll<HTMLElement>(".slider").forEach((el) => setupSlider(el));
+export function setupSliders(root: ParentNode = document): Cleanup {
+  return combineCleanups([...root.querySelectorAll<HTMLElement>(".slider")].map((el) => setupSlider(el)));
 }

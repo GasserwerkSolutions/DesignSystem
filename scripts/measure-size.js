@@ -175,7 +175,6 @@ async function main() {
   const components = measureComponents();
 
   const stats = {
-    timestamp: new Date().toISOString(),
     version: PKG.version,
     bundle: bundleStats,
     minified: minStats,

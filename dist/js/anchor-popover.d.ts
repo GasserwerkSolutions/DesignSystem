@@ -24,4 +24,5 @@ export interface AnchorOptions {
      */
     onToggle?: (event: ToggleEvent) => void;
 }
-export declare function anchorPopoverByTrigger(panel: HTMLElement, options?: AnchorOptions): void;
+import { type Cleanup } from "./lifecycle.js";
+export declare function anchorPopoverByTrigger(panel: HTMLElement, options?: AnchorOptions): Cleanup;

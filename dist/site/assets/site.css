@@ -269,7 +269,7 @@
   }
   .site-doc__title { font-size: var(--font-3xl, 2rem); margin: var(--space-4) 0 var(--space-12); }
   .site-doc__lede  { font-size: var(--font-lg); color: var(--color-text-secondary); max-width: 60ch; }
-  .site-doc__cta   { display: flex; gap: var(--space-12); margin-top: var(--space-24); }
+  .site-doc__cta   { display: flex; flex-wrap: wrap; gap: var(--space-12); margin-top: var(--space-24); }
   .site-doc__section { display: flex; flex-direction: column; gap: var(--space-16); }
   .site-doc__section > h2 { margin: 0; font-size: var(--font-xl); }
   .site-doc__footer { margin-top: var(--space-32); padding-top: var(--space-16); border-top: 1px solid var(--color-border); }

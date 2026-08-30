@@ -12,6 +12,8 @@
  *   <input type="range" id="price" data-format-prefix="CHF ">
  * → output zeigt "CHF 120" statt "120".
  */
+import { combineCleanups, noopCleanup } from "./lifecycle.js";
+const cleanups = new WeakMap();
 function makeFormatter(input, opts) {
     if (opts.format)
         return opts.format;
@@ -20,10 +22,13 @@ function makeFormatter(input, opts) {
     return (v) => `${prefix}${v}${suffix}`;
 }
 export function setupSlider(slider, opts = {}) {
+    const existing = cleanups.get(slider);
+    if (existing)
+        return existing;
     const input = slider.querySelector('input[type="range"]');
     const output = slider.querySelector(".slider__value");
     if (!input)
-        return;
+        return noopCleanup;
     const format = makeFormatter(input, opts);
     const sync = () => {
         const min = parseFloat(input.min || "0");
@@ -35,7 +40,13 @@ export function setupSlider(slider, opts = {}) {
     };
     input.addEventListener("input", sync);
     sync();
+    const cleanup = () => {
+        input.removeEventListener("input", sync);
+        cleanups.delete(slider);
+    };
+    cleanups.set(slider, cleanup);
+    return cleanup;
 }
 export function setupSliders(root = document) {
-    root.querySelectorAll(".slider").forEach((el) => setupSlider(el));
+    return combineCleanups([...root.querySelectorAll(".slider")].map((el) => setupSlider(el)));
 }

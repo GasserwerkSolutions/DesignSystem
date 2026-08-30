@@ -1,0 +1,49 @@
+/**
+ * Theme: PLAYFUL
+ * ==============
+ * Tone: Freundlich, Kreativ, Lebendig, Modern
+ * Primär für: Salons (Trend), Gym, Ecommerce
+ */
+
+[data-tone~="playful"] {
+  /* Colors */
+  --color-interactive:       var(--playful-600);
+  --color-interactive-light: var(--playful-100);
+  --color-interactive-dark:  var(--playful-700);
+  --color-focus:             var(--playful-600);
+  --color-focus-ring:        var(--playful-200);
+
+  /* Typography */
+  --heading-font:        var(--font-sans);
+  --heading-weight:      700;
+  --heading-line-height: 1.15;
+  --h1-letter:           var(--ls-tight);
+  --text-size-h1:        var(--font-5xl);
+
+  /* Spacing */
+  --space-inline:  var(--space-16);
+  --space-block:   var(--space-24);
+  --space-section: var(--space-56);
+
+  /* Motion — Playful behält Tempo (kurze Durations) für lebendigen
+     Charakter, aber kein Overshoot in den Default-Easings. CLEAR 4
+     Prinzip 1: federnde Bewegung nur via explizites --motion-emphasis.
+     Wer eine bouncy Animation für ein opt-in-Moment will (Erfolgs-
+     Bestätigung, "ta-da"), nutzt `transition: ... var(--motion-emphasis)`. */
+  --duration-fast:   var(--motion-fastest);
+  --duration-medium: var(--motion-fast);
+
+  /* Button */
+  --btn-bg:           var(--playful-600);
+  --btn-bg-hover:     var(--playful-700);
+  --btn-fg:           white;
+  --btn-radius:       var(--radius-20);
+  --btn-weight:       700;
+  --btn-hover-motion: scale(1.08);
+  /* btn-transition fällt weg — fall-back auf System-Default
+     (var(--motion-fast) var(--easing-fast)). */
+
+  /* Card */
+  --card-radius: var(--radius-20);
+  --card-shadow: 0 4px 12px rgba(217, 119, 6, 0.15);
+}

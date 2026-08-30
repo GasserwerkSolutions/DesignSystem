@@ -1,0 +1,86 @@
+/**
+ * Empty-State Component
+ * ======================
+ *
+ * Zentrierter Placeholder für leere Listen/Tables/Views.
+ * Icon + Title + Body + optional CTA.
+ *
+ * CONTRACT:
+ *   Optional: --empty-state-padding, --empty-icon-bg, --empty-icon-fg
+ *
+ * Struktur:
+ *   <div class="empty-state">
+ *     <div class="empty-state__icon" aria-hidden="true">📭</div>
+ *     <h3 class="empty-state__title">Noch keine Buchungen</h3>
+ *     <p class="empty-state__body">Sobald das Widget installiert ist, erscheinen Buchungen hier.</p>
+ *     <button class="btn">Widget einrichten</button>
+ *   </div>
+ *
+ * Modifier:
+ *   .empty-state--compact  reduziertes Padding
+ */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--empty-state-padding, var(--space-2xl) var(--space-lg));
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.empty-state__icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border-radius: var(--radius-full);
+  background: var(--empty-icon-bg, var(--color-bg-tertiary));
+  color: var(--empty-icon-fg, var(--color-text-tertiary));
+}
+
+.empty-state__title {
+  font-size: var(--font-lg);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.empty-state__body {
+  max-width: 36ch;
+  margin: 0;
+  font-size: var(--font-sm);
+  line-height: var(--lh-normal);
+}
+
+.empty-state--compact {
+  --empty-state-padding: var(--space-lg);
+}
+
+.empty-state--compact .empty-state__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+}
+
+/* CLEAR 4 Prinzip 2: "Kein Zustand ohne Ausgang. Jeder Empty-State zeigt
+   eine nächste Handlung." Strukturelle Durchsetzung via :has() — wenn
+   weder Button noch Link enthalten ist, erscheint ein kalmer Hint nach
+   dem Body. Hint ist visible auch in Production weil Verfassungs-
+   Verletzung ein Bug ist, kein zu versteckendes Detail. */
+.empty-state:not(:has(button, a))::after {
+  content: "ℹ Empty-State braucht eine nächste Handlung (CLEAR 4 P2)";
+  display: block;
+  margin-block-start: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--status-info-bg);
+  color: var(--color-text-secondary);
+  border-inline-start: 3px solid var(--color-info);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-xs);
+  font-family: var(--font-mono);
+  text-align: start;
+  max-width: 36ch;
+}
