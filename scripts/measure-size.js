@@ -44,7 +44,8 @@ const CHECK_MODE = process.argv.includes("--check");
    ============================================================ */
 
 function fileSize(filePath) {
-  return fs.statSync(filePath).size;
+  const text = fs.readFileSync(filePath, "utf8").replace(/\r\n?/g, "\n");
+  return Buffer.byteLength(text);
 }
 
 function gzipSize(buffer) {
