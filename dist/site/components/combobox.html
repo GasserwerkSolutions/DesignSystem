@@ -133,7 +133,7 @@
           <div class="site-topbar__switches">
             <label class="visually-hidden" for="site-tone">Tone</label>
         <select id="site-tone" class="site-select" data-axis="tone">
-          <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option>
+          <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option><option value="musikraum">Musikraum</option>
         </select>
             <button type="button" class="btn btn--ghost btn--sm" data-axis="mode">Light/Dark</button>
             <label class="visually-hidden" for="site-density">Density</label>
@@ -362,7 +362,7 @@
         
         <section class="site-doc__section">
           <h2>Tone-Übersicht</h2>
-          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <p class="site-muted">Dieselbe Komponente unter allen 7 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
           <div class="site-tone-strip">
             
             <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
@@ -538,6 +538,36 @@
              aria-controls="t-minimal-cb-1-list">
     </div>
     <ul class="combobox__listbox" id="t-minimal-cb-1-list" role="listbox" aria-labelledby="t-minimal-cb-1-label">
+      <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
+        Damen-Haarschnitt
+      </li>
+    </ul>
+  </div>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="musikraum" data-tone-jump="musikraum">
+              <header class="site-tone-tile__label">musikraum</header>
+              <div class="site-tone-tile__preview"><label class="field__label" id="t-musikraum-cb-1-label" for="t-musikraum-cb-1-trigger">Service</label>
+<div class="combobox">
+  <button class="combobox__trigger" type="button"
+          id="t-musikraum-cb-1-trigger"
+          role="combobox"
+          aria-labelledby="t-musikraum-cb-1-label t-musikraum-cb-1-value"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="t-musikraum-cb-1-list"
+          popovertarget="t-musikraum-cb-1-panel">
+    <span class="combobox__value" id="t-musikraum-cb-1-value">Service wählen …</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </button>
+  <div class="combobox__panel" id="t-musikraum-cb-1-panel" popover>
+    <div class="combobox__search">
+      <input type="text" class="combobox__search-input"
+             placeholder="Suchen …"
+             aria-autocomplete="list"
+             aria-controls="t-musikraum-cb-1-list">
+    </div>
+    <ul class="combobox__listbox" id="t-musikraum-cb-1-list" role="listbox" aria-labelledby="t-musikraum-cb-1-label">
       <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
         Damen-Haarschnitt
       </li>

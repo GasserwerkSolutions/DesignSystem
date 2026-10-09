@@ -556,7 +556,7 @@ function pageShell({ title, navHref, body, sidebar, relRoot = "./", extraScripts
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapeHtml(title)} — Design System</title>
+  <title>${escapeHtml(title === "Design System" ? title : `${title} — Design System`)}</title>
   <link rel="icon" href="${relRoot}assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="${projectRoot}main.css">
   <link rel="stylesheet" href="${relRoot}assets/site.css">
@@ -644,8 +644,10 @@ function renderMegaMenu(navHref, relRoot, components, isActive) {
           </div>`;
 }
 
+const SITE_TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal", "musikraum"];
+
 function toneSwitcher() {
-  const tones = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
+  const tones = SITE_TONES;
   return `<label class="visually-hidden" for="site-tone">Tone</label>
         <select id="site-tone" class="site-select" data-axis="tone">
           ${tones
@@ -792,12 +794,12 @@ function rewriteIdsInHtml(html, prefix) {
 
 function renderToneStrip(meta) {
   if (!meta.markup.length) return "";
-  const tones = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
+  const tones = SITE_TONES;
   const sample = meta.markup[0].html;
   return `
         <section class="site-doc__section">
           <h2>Tone-Übersicht</h2>
-          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <p class="site-muted">Dieselbe Komponente unter allen ${tones.length} Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
           <div class="site-tone-strip">
             ${tones
               .map(
@@ -1678,7 +1680,7 @@ function renderIndexPage(components) {
           <h1 class="site-doc__title">Design System</h1>
           <p class="site-doc__lede">
             Contract-basiertes Multi-Tone CSS-System.
-            6 Tones × 2 Modes × 3 Densities, ${components.length} Components,
+            ${SITE_TONES.length} Tones × 2 Modes × 3 Densities, ${components.length} Components,
             WCAG-AA validiert.
           </p>
           <div class="site-doc__cta">

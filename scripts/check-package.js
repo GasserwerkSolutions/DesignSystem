@@ -101,3 +101,23 @@ if (missingExports.length) {
   process.exit(1);
 }
 console.log(`  [ok] alle ${exportTargets.length} exports-Targets im Tarball.`);
+
+/* Dokumentierte Consumer-Subpaths müssen in exports stehen. Node blockiert
+   alles, was nicht explizit gemappt ist — files allein reicht nicht. */
+const requiredExports = [
+  "./base/*",
+  "./semantic/*",
+  "./state/*",
+  "./tokens/*",
+  "./components/*",
+  "./themes/*",
+  "./patterns/*",
+];
+const missingExportKeys = requiredExports.filter((key) => !(key in (pkg.exports || {})));
+if (missingExportKeys.length) {
+  console.error("[check-package] dokumentierte Subpaths fehlen in exports:");
+  for (const key of missingExportKeys) console.error(`  - ${key}`);
+  process.exit(1);
+}
+console.log(`  [ok] ${requiredExports.length} dokumentierte Subpaths in exports.`);
+
