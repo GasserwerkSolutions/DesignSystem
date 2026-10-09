@@ -7,9 +7,24 @@
   "style": "main.css",
   "module": "./dist/js/index.js",
   "types": "./dist/js/index.d.ts",
+  "homepage": "https://gasserwerksolutions.github.io/DesignSystem/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GasserwerkSolutions/DesignSystem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GasserwerkSolutions/DesignSystem/issues"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": "./main.css",
     "./min": "./dist/main.min.css",
+    "./base/*": "./base/*",
+    "./semantic/*": "./semantic/*",
+    "./state/*": "./state/*",
+    "./tokens/*": "./tokens/*",
     "./js": {
       "types": "./dist/js/index.d.ts",
       "import": "./dist/js/index.js"
@@ -42,7 +57,6 @@
     "state/",
     "themes/",
     "tokens/",
-    "examples/",
     "dist/js/",
     "dist/profiles/",
     "dist/main.min.css",

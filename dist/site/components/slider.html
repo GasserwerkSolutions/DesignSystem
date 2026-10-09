@@ -133,7 +133,7 @@
           <div class="site-topbar__switches">
             <label class="visually-hidden" for="site-tone">Tone</label>
         <select id="site-tone" class="site-select" data-axis="tone">
-          <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option>
+          <option value="trust">Trust</option><option value="playful">Playful</option><option value="premium">Premium</option><option value="industrial">Industrial</option><option value="modern">Modern</option><option value="minimal">Minimal</option><option value="musikraum">Musikraum</option>
         </select>
             <button type="button" class="btn btn--ghost btn--sm" data-axis="mode">Light/Dark</button>
             <label class="visually-hidden" for="site-density">Density</label>
@@ -329,7 +329,7 @@
         
         <section class="site-doc__section">
           <h2>Tone-Übersicht</h2>
-          <p class="site-muted">Dieselbe Komponente unter allen 6 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
+          <p class="site-muted">Dieselbe Komponente unter allen 7 Tones. Klick auf eine Kachel um die ganze Seite auf diesen Tone zu schalten.</p>
           <div class="site-tone-strip">
             
             <article class="site-tone-tile" data-tone="trust" data-tone-jump="trust">
@@ -405,6 +405,19 @@
     <output class="slider__value" for="t-minimal-vol">50</output>
   </div>
   <input type="range" id="t-minimal-vol" class="range" min="0" max="100" value="50">
+  <div class="slider__scale">
+    <span>0</span><span>50</span><span>100</span>
+  </div>
+</div></div>
+            </article>
+            <article class="site-tone-tile" data-tone="musikraum" data-tone-jump="musikraum">
+              <header class="site-tone-tile__label">musikraum</header>
+              <div class="site-tone-tile__preview"><div class="slider">
+  <div class="slider__header">
+    <label class="slider__label" for="t-musikraum-vol">Lautstärke</label>
+    <output class="slider__value" for="t-musikraum-vol">50</output>
+  </div>
+  <input type="range" id="t-musikraum-vol" class="range" min="0" max="100" value="50">
   <div class="slider__scale">
     <span>0</span><span>50</span><span>100</span>
   </div>

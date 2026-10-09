@@ -4,6 +4,8 @@ Contract-based Multi-Tone CSS Design System.
 **7 Tones × 2 Modes × 3 Densities × Container-Queries** = 4 orthogonale Achsen.
 **57 Components**, **WCAG-AA validiert**, **23.9 KB gzip** im Vollprofil.
 
+Katalog: [gasserwerksolutions.github.io/DesignSystem](https://gasserwerksolutions.github.io/DesignSystem/)
+
 ```html
 <link rel="stylesheet" href="./node_modules/@gasserwerksolutions/design-system/main.css">
 <html data-tone="trust" data-mode="light" data-density="comfortable">
@@ -31,14 +33,14 @@ npm install "github:GasserwerkSolutions/DesignSystem#v0.32.0"
 @import "@gasserwerksolutions/design-system/min";          /* pre-minified */
 ```
 
-Per-Component-Import (CSS-Tree-Shaking):
+Per-Component-Import (nur die Layer, die du brauchst):
 
 ```css
 @import "@gasserwerksolutions/design-system/tokens/tokens.css";
 @import "@gasserwerksolutions/design-system/semantic/semantic.css";
 @import "@gasserwerksolutions/design-system/themes/trust.css";
 @import "@gasserwerksolutions/design-system/components/button.css";
-/* … nur was du brauchst */
+/* base/*, semantic/*, state/*, tokens/* sind ebenfalls exportiert */
 ```
 
 Für den Gasserwerk Builder existiert ein versioniertes Website-Profil ohne
@@ -56,12 +58,27 @@ eingebettetem CSS, Manifest und SHA-256 ausgeliefert:
 import "@gasserwerksolutions/design-system/profiles/builder.js";
 ```
 
-Optional: Companion-JS (TypeScript) für interactive Components (Combobox,
-File-Upload, Slider, Theme-Toggle, OTP-Input, Copy-Button, Popover-Anchor):
+---
+
+## Wann JavaScript nötig ist
+
+Die meisten Components sind reines CSS. Diese brauchen den Companion
+(`setupAll()` oder den Einzel-Import):
+
+| Component | Setup |
+|---|---|
+| Combobox | `setupCombobox` |
+| File-Upload | `setupFileUpload` |
+| Slider | `setupSlider` |
+| OTP-Input | `setupOtpInput` |
+| Copy-Button | `setupCopyButton` |
+| Popover-Anchor | `setupPopover` |
+| Theme-Toggle | `setupThemeToggle` |
+| Dismiss (Toast, Banner) | `setupDismissers` |
 
 ```js
 import { setupAll } from "@gasserwerksolutions/design-system/js";
-setupAll();
+const cleanup = setupAll();
 ```
 
 Tree-shakable per Component:
@@ -92,56 +109,16 @@ IIFE-Variante für `file://` ohne Build-Step:
 Achsen sind **orthogonal** — jede Kombination funktioniert (über 100 Modi
 × Tones validiert, 1008 WCAG-AA-Paare im static-Contrast-Check).
 
----
-
-## Musikraum Tone
-
-Der Tone `musikraum` bildet die warme, stille und editoriale Markenwelt von
-Musikraum / Franz Gasser ab. Die Token-Werte stammen aus der bestehenden
-Musikraum-Spezifikation (`assets/klang.css`): warme Papier- und Holzflächen,
-dunkle Wald-/Steintöne, gedämpfte Akzente, Serif-Headlines und ruhige Motion.
-
-```html
-<html data-tone="musikraum" data-mode="light" data-density="comfortable">
-  <body>
-    <section class="section">
-      <div class="container container--prose">
-        <p class="badge">Musikraum</p>
-        <h1>Jeder Mensch ist musikalisch</h1>
-        <p>Gemeinsam spielen, entdecken und aufeinander hören.</p>
-        <a class="btn" href="/Klangabende/">Klangabend entdecken</a>
-      </div>
-    </section>
-  </body>
-</html>
-```
-
-Selektiver Import für statische oder CMS-generierte Sites:
-
-```css
-@import "@gasserwerksolutions/design-system/tokens/tokens.css";
-@import "@gasserwerksolutions/design-system/semantic/semantic.css";
-@import "@gasserwerksolutions/design-system/themes/musikraum.css";
-@import "@gasserwerksolutions/design-system/semantic/dark.css";
-@import "@gasserwerksolutions/design-system/semantic/density.css";
-@import "@gasserwerksolutions/design-system/base/reset.css";
-@import "@gasserwerksolutions/design-system/base/typography.css";
-@import "@gasserwerksolutions/design-system/base/layout.css";
-@import "@gasserwerksolutions/design-system/components/button.css";
-@import "@gasserwerksolutions/design-system/components/card.css";
-@import "@gasserwerksolutions/design-system/components/section.css";
-@import "@gasserwerksolutions/design-system/components/nav.css";
-```
-
-Für den Musikraum-Rebuild gilt: `musikraum` liefert die Theme-Tokens; Header,
-Hero/Subhero, Footer, Booking-Mount und spezifische Seiten-Sections bleiben
-Projektkomponenten der Website oder der CMS-Plattform.
+`musikraum` ist ein Marken-Tone (warme Papier- und Holzflächen, Serif-Headlines).
+Token-Quelle und Seitenaufbau bleiben beim konsumierenden Projekt; das System
+liefert nur die Theme-Tokens. Beispiel: `examples/`.
 
 ---
 
 ## Framework Integration
 
-CSS-First-DS — funktioniert mit jedem Framework via CSS-Import.
+CSS-First. Die Achsen sitzen auf `document.documentElement`, nicht im
+Komponentenbaum.
 
 ### React
 
@@ -149,25 +126,32 @@ CSS-First-DS — funktioniert mit jedem Framework via CSS-Import.
 // main.jsx
 import "@gasserwerksolutions/design-system";
 import { setupAll } from "@gasserwerksolutions/design-system/js";
+import { useEffect } from "react";
 
-function App() {
+const root = document.documentElement;
+root.dataset.tone = "trust";
+root.dataset.mode = "light";
+root.dataset.density = "comfortable";
+
+export function App() {
   useEffect(() => setupAll(), []);
-  return (
-    <html data-tone="trust" data-mode="light">
-      <button className="btn">CTA</button>
-    </html>
-  );
+  return <button className="btn">CTA</button>;
 }
 ```
 
 ### Vue
 
-```vue
-<!-- main.js -->
+```js
+// main.js
 import "@gasserwerksolutions/design-system";
 import { setupAll } from "@gasserwerksolutions/design-system/js";
 
-<!-- App.vue -->
+const root = document.documentElement;
+root.dataset.tone = "trust";
+root.dataset.mode = "light";
+```
+
+```vue
 <script setup>
 import { onMounted, onUnmounted } from "vue";
 let cleanup = () => {};
@@ -183,12 +167,14 @@ onUnmounted(() => cleanup());
 ### Svelte
 
 ```svelte
-<!-- App.svelte -->
 <script>
   import "@gasserwerksolutions/design-system";
   import { setupAll } from "@gasserwerksolutions/design-system/js";
   import { onMount } from "svelte";
-  onMount(setupAll); // setupAll gibt die Cleanup-Funktion zurück
+
+  document.documentElement.dataset.tone = "trust";
+  document.documentElement.dataset.mode = "light";
+  onMount(setupAll);
 </script>
 
 <button class="btn">CTA</button>
@@ -196,16 +182,16 @@ onUnmounted(() => cleanup());
 
 ### Astro / Next.js / SvelteKit
 
-CSS-Import in der jeweiligen entry-Datei. `setupAll()` in einem
-client-only-Hook (Astro: `<script>`, Next: `useEffect`, SvelteKit:
-`onMount`).
+CSS-Import in der Entry-Datei. Achsen auf dem Dokument-`<html>` setzen
+(Astro/SvelteKit-Layout, Next `app/layout`). `setupAll()` nur in einem
+client-only-Hook.
 
 ---
 
 ## Theme Generator
 
 HEX → 11-Step-OKLCH-Skala mit Color-Blind-Safety-Check und CSS-Export.
-Doc-Site: `/dist/site/themes.html`.
+Im Katalog: [themes.html](https://gasserwerksolutions.github.io/DesignSystem/themes.html).
 
 ```bash
 npm run build:site
@@ -230,7 +216,6 @@ nutzen für tone-spezifische Mode-Variants.
 ```css
 [data-tone~="custom"] {
   --color-interactive: light-dark(#0080ff, #4da8ff);
-  /* anderes Token */
 }
 ```
 
