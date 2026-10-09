@@ -1,0 +1,285 @@
+/**
+ * Aussage Treatment
+ * =================
+ *
+ * Leise Linien-Grammatik: Die Struktur hält den Inhalt wie eine Halterung
+ * oben und unten, und ihre Form sagt, welche Art Aussage er macht.
+ *
+ * «ist» steht für Identität: voller Rand oben und unten. «hat» steht für
+ * eine Eigenschaft: derselbe Rand mit feiner Auslassung in der Mitte.
+ * «kann» steht für eine Möglichkeit: voller Rand und eine feine Schräge von
+ * oben rechts nach unten links, die hinter dem Inhalt durchläuft und nur am
+ * oberen und unteren Rand sichtbar ist. «tut» steht für eine Handlung: Rand
+ * über die halbe Breite, oben links und unten rechts. «verbunden» steht für
+ * «steht in Verbindung mit»: feine Masslinie mit Endstrichen.
+ *
+ * Beziehung über die Seite (Passermarke): Elemente, die zueinander in
+ * Beziehung stehen, tragen an derselben Stelle ihres Randes einen kurzen
+ * Querstrich, oben und unten. Vier Stellen im Goldenen Schnitt (23.6, 38.2,
+ * 61.8 und 76.4 Prozent der Breite), gewählt mit data-bezug="1" bis "4",
+ * mehrere mit Leerzeichen (data-bezug="1 3"). Wird ein Element überfahren,
+ * fokussiert oder per Anker angesprungen, verlängern sich die Marken aller
+ * Elemente derselben Beziehung — eine Änderung der Form, nicht der Farbe.
+ *
+ * Die Linien sind Hinweise, nicht Träger: Die Bedeutung steht im Inhalt.
+ * Ihre Farbe kommt aus der Textfarbe des Elements und passt sich so jedem
+ * Tone, Mode und jeder inversen Fläche an. Die Aussage ersetzt den
+ * sichtbaren Rahmen des Elements (Randfarbe transparent, Breite bleibt,
+ * kein Layoutsprung).
+ *
+ * Ebene: treatments, nach patterns — die Linien liegen auch auf Karten,
+ * Sektionen und Website-Mustern. Gezeichnet wird mit background-image; ein
+ * Element mit eigenem Hintergrundbild gibt es über das Unter-Bild weiter.
+ *
+ * CONTRACT:
+ *   Optional:
+ *     --aussage-farbe        Linienfarbe (Default: Textfarbe zu 24 Prozent)
+ *     --aussage-stark        starker Rand (Default: 2 px)
+ *     --aussage-fein         feine Linie für Schräge, Masslinie, Marken (Default: 1 px)
+ *     --aussage-luecke       Auslassung bei «hat» (Default: 8 px)
+ *     --aussage-schraege     Spanne der Schräge bei «kann» (Default: 24 px)
+ *     --aussage-einzug       Einzug der Masslinie bei «verbunden» (Default: 16 px)
+ *     --aussage-marke        Länge der Passermarke und der Endstriche (Default: 6 px)
+ *     --aussage-marke-aktiv  Länge der Passermarke bei Hover, Fokus, Anker (Default: 16 px)
+ *     --aussage-unter        eigenes Hintergrundbild unter den Linien, zentriert, deckend
+ *
+ * Struktur:
+ *   <article class="card aussage aussage--ist">
+ *     <h3>Lorbeer &amp; Schere</h3>
+ *     <p>Coiffeursalon in der Berner Altstadt, geführt von Livia Brunner.</p>
+ *   </article>
+ *
+ *   Hat — Eigenschaften, Angaben, Besitz:
+ *   <article class="card aussage aussage--hat">
+ *     <h3>Öffnungszeiten</h3>
+ *     <p>Dienstag bis Freitag 9–18 Uhr, Samstag 8–14 Uhr.</p>
+ *   </article>
+ *
+ *   Kann — Möglichkeit, Angebot:
+ *   <article class="card aussage aussage--kann">
+ *     <h3>Farbe und Balayage</h3>
+ *     <p>Freihändig oder in der Folie, mit Beratung vor der Farbe.</p>
+ *   </article>
+ *
+ *   Tut — Handlung, Ablauf:
+ *   <article class="card aussage aussage--tut">
+ *     <h3>Termin buchen</h3>
+ *     <p>Online oder per Telefon, in zwei Minuten.</p>
+ *   </article>
+ *
+ *   Verbunden — steht in Verbindung mit:
+ *   <article class="card aussage aussage--verbunden">
+ *     <h3>Mit Weiterbildung</h3>
+ *     <p>Mitglied im Berufsverband, jährliche Farbkurse.</p>
+ *   </article>
+ *
+ *   Beziehung über die Seite:
+ *   <article class="card aussage aussage--kann" data-bezug="2">
+ *     <h3>Farbe</h3>
+ *     <p>Balayage, Strähnen, Tönung.</p>
+ *   </article>
+ *
+ * Modifier:
+ *   .aussage--ist        voller Rand oben und unten
+ *   .aussage--hat        voller Rand mit feiner Auslassung in der Mitte
+ *   .aussage--kann       voller Rand, Schräge sichtbar nur am Rand
+ *   .aussage--kann-durchgehend  Schräge über die ganze Höhe, für Bildkacheln ohne Text
+ *   .aussage--tut        Rand über die halbe Breite, oben links und unten rechts
+ *   .aussage--verbunden  feine Masslinie mit Endstrichen
+ *   .aussage--luft       Abstand oben und unten für Elemente ohne eigenes Padding
+ *
+ * Regel: Kein Theme darf .aussage selektieren.
+ */
+
+.aussage {
+  --_farbe: var(--aussage-farbe, color-mix(in oklab, currentColor 24%, transparent));
+  --_stark: var(--aussage-stark, var(--border-2));
+  --_fein:  var(--aussage-fein, var(--border-1));
+  --_linie: linear-gradient(var(--_farbe), var(--_farbe));
+  --_leer:  linear-gradient(transparent, transparent);
+
+  /* Linien der Aussage — je Modifier gesetzt. Bild, Ort und Mass sind
+     gleich lange Listen. */
+  --_l-bild: var(--_leer);
+  --_l-ort:  0 0;
+  --_l-mass: 0 0;
+
+  /* Passermarken: vier Stellen, je oben und unten. */
+  --_m1: var(--_leer);
+  --_m2: var(--_leer);
+  --_m3: var(--_leer);
+  --_m4: var(--_leer);
+  --_m1-lang: var(--aussage-marke, var(--space-6));
+  --_m2-lang: var(--aussage-marke, var(--space-6));
+  --_m3-lang: var(--aussage-marke, var(--space-6));
+  --_m4-lang: var(--aussage-marke, var(--space-6));
+  --_m1-breit: var(--_fein);
+  --_m2-breit: var(--_fein);
+  --_m3-breit: var(--_fein);
+  --_m4-breit: var(--_fein);
+
+  border-color: transparent;
+  background-repeat: no-repeat;
+  background-image:
+    var(--_l-bild),
+    var(--_m1), var(--_m1),
+    var(--_m2), var(--_m2),
+    var(--_m3), var(--_m3),
+    var(--_m4), var(--_m4),
+    var(--aussage-unter, none);
+  background-position:
+    var(--_l-ort),
+    23.6% 0, 23.6% 100%,
+    38.2% 0, 38.2% 100%,
+    61.8% 0, 61.8% 100%,
+    76.4% 0, 76.4% 100%,
+    center;
+  background-size:
+    var(--_l-mass),
+    var(--_m1-breit) var(--_m1-lang), var(--_m1-breit) var(--_m1-lang),
+    var(--_m2-breit) var(--_m2-lang), var(--_m2-breit) var(--_m2-lang),
+    var(--_m3-breit) var(--_m3-lang), var(--_m3-breit) var(--_m3-lang),
+    var(--_m4-breit) var(--_m4-lang), var(--_m4-breit) var(--_m4-lang),
+    cover;
+}
+
+/* ist — geschlossen: voller Rand oben und unten. */
+.aussage--ist {
+  --_l-bild: var(--_linie), var(--_linie);
+  --_l-ort:  0 0, 0 100%;
+  --_l-mass: 100% var(--_stark), 100% var(--_stark);
+}
+
+/* hat — hält etwas: derselbe Rand, in der Mitte eine feine Auslassung. */
+.aussage--hat {
+  --_halb: calc(50% - var(--aussage-luecke, var(--space-8)) / 2);
+  --_l-bild: var(--_linie), var(--_linie), var(--_linie), var(--_linie);
+  --_l-ort:  0 0, 100% 0, 0 100%, 100% 100%;
+  --_l-mass:
+    var(--_halb) var(--_stark), var(--_halb) var(--_stark),
+    var(--_halb) var(--_stark), var(--_halb) var(--_stark);
+}
+
+/* kann — offen: voller Rand, dazu eine feine Schräge von oben rechts nach
+   unten links. Die Schräge läuft gedanklich hinter dem Inhalt durch und ist
+   nur dort sichtbar, wo sie oben rechts und unten links auf den Rand trifft —
+   so streicht sie nie Text durch. Jeder Ansatz ist ein schmaler Streifen,
+   dessen Diagonale die rechte obere mit der linken unteren Ecke verbindet. */
+.aussage--kann,
+.aussage--kann-durchgehend {
+  --_spanne: var(--aussage-schraege, var(--space-24));
+  --_schraege: linear-gradient(
+    to top left,
+    transparent calc(50% - var(--_fein) / 2 - 0.5px),
+    var(--_farbe) calc(50% - var(--_fein) / 2),
+    var(--_farbe) calc(50% + var(--_fein) / 2),
+    transparent calc(50% + var(--_fein) / 2 + 0.5px)
+  );
+}
+
+.aussage--kann {
+  --_l-bild: var(--_linie), var(--_linie), var(--_schraege), var(--_schraege);
+  --_l-ort:
+    0 0, 0 100%,
+    calc(50% + var(--_spanne) / 2) 0,
+    calc(50% - var(--_spanne) / 2) 100%;
+  --_l-mass:
+    100% var(--_stark), 100% var(--_stark),
+    var(--space-4) var(--space-16), var(--space-4) var(--space-16);
+}
+
+/* kann, durchgehend — die Schräge sichtbar über die ganze Höhe. Nur für
+   Elemente ohne Text in der Mitte, etwa Bildkacheln. */
+.aussage--kann-durchgehend {
+  --_l-bild: var(--_linie), var(--_linie), var(--_schraege);
+  --_l-ort:  0 0, 0 100%, 50% 0;
+  --_l-mass: 100% var(--_stark), 100% var(--_stark), var(--_spanne) 100%;
+}
+
+/* tut — in Bewegung: Rand über die halbe Breite, oben am Anfang, unten am
+   Ende der Leserichtung. */
+.aussage--tut {
+  --_l-bild: var(--_linie), var(--_linie);
+  --_l-ort:  0 0, 100% 100%;
+  --_l-mass: 50% var(--_stark), 50% var(--_stark);
+}
+
+/* verbunden — Masslinie: feine Linie oben und unten mit Endstrichen, wie
+   die Bemassung zwischen zwei Punkten. Leicht eingerückt, damit die
+   Endstriche auch in runden Ecken sichtbar bleiben. */
+.aussage--verbunden {
+  --_einzug: var(--aussage-einzug, var(--space-16));
+  --_ende: var(--aussage-marke, var(--space-6));
+  --_l-bild:
+    var(--_linie), var(--_linie),
+    var(--_linie), var(--_linie), var(--_linie), var(--_linie);
+  --_l-ort:
+    var(--_einzug) 0, var(--_einzug) 100%,
+    left var(--_einzug) top, right var(--_einzug) top,
+    left var(--_einzug) bottom, right var(--_einzug) bottom;
+  --_l-mass:
+    calc(100% - 2 * var(--_einzug)) var(--_fein), calc(100% - 2 * var(--_einzug)) var(--_fein),
+    var(--_fein) var(--_ende), var(--_fein) var(--_ende),
+    var(--_fein) var(--_ende), var(--_fein) var(--_ende);
+}
+
+/* Leserichtung rechts nach links: «tut» und «kann» spiegeln. */
+.aussage--tut:dir(rtl) {
+  --_l-ort: 100% 0, 0 100%;
+}
+
+.aussage--kann:dir(rtl),
+.aussage--kann-durchgehend:dir(rtl) {
+  --_schraege: linear-gradient(
+    to top right,
+    transparent calc(50% - var(--_fein) / 2 - 0.5px),
+    var(--_farbe) calc(50% - var(--_fein) / 2),
+    var(--_farbe) calc(50% + var(--_fein) / 2),
+    transparent calc(50% + var(--_fein) / 2 + 0.5px)
+  );
+}
+
+.aussage--kann:dir(rtl) {
+  --_l-ort:
+    0 0, 0 100%,
+    calc(50% - var(--_spanne) / 2) 0,
+    calc(50% + var(--_spanne) / 2) 100%;
+}
+
+/* Passermarken: dieselbe Stelle für alles, was zusammengehört. */
+.aussage[data-bezug~="1"] { --_m1: var(--_linie); }
+.aussage[data-bezug~="2"] { --_m2: var(--_linie); }
+.aussage[data-bezug~="3"] { --_m3: var(--_linie); }
+.aussage[data-bezug~="4"] { --_m4: var(--_linie); }
+
+/* Beziehung zeigen: Fährt man über ein Element, fokussiert darin oder
+   springt per Anker hin, werden die Marken aller Elemente derselben
+   Beziehung länger und kräftiger — keine Bewegung, nur Form. */
+:root:has(.aussage[data-bezug~="1"]:is(:hover, :focus-within, :target)) .aussage[data-bezug~="1"] {
+  --_m1-lang: var(--aussage-marke-aktiv, var(--space-16));
+  --_m1-breit: var(--_stark);
+}
+:root:has(.aussage[data-bezug~="2"]:is(:hover, :focus-within, :target)) .aussage[data-bezug~="2"] {
+  --_m2-lang: var(--aussage-marke-aktiv, var(--space-16));
+  --_m2-breit: var(--_stark);
+}
+:root:has(.aussage[data-bezug~="3"]:is(:hover, :focus-within, :target)) .aussage[data-bezug~="3"] {
+  --_m3-lang: var(--aussage-marke-aktiv, var(--space-16));
+  --_m3-breit: var(--_stark);
+}
+:root:has(.aussage[data-bezug~="4"]:is(:hover, :focus-within, :target)) .aussage[data-bezug~="4"] {
+  --_m4-lang: var(--aussage-marke-aktiv, var(--space-16));
+  --_m4-breit: var(--_stark);
+}
+
+/* Abstand für Elemente ohne eigenes Padding. */
+.aussage--luft {
+  padding-block: var(--space-12);
+}
+
+/* Erzwungene Farben: Linien in der Systemfarbe für Text. */
+@media (forced-colors: active) {
+  .aussage {
+    --_farbe: CanvasText;
+  }
+}

@@ -1,4 +1,4 @@
-@layer reset, tokens, semantic, themes, mode, base, state, components, patterns;
+@layer reset, tokens, semantic, themes, mode, base, state, components, patterns, treatments;
 
 @import "./tokens/tokens.css"     layer(tokens);
 @import "./semantic/semantic.css" layer(semantic);
@@ -80,3 +80,5 @@
 @import "./components/scroll-spy.css"      layer(components);
 
 @import "./patterns/website.css" layer(patterns);
+
+@import "./components/aussage.css" layer(treatments);
