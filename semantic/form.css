@@ -1,0 +1,49 @@
+/**
+ * Orthogonal form axes. Colors, typography, motion and functional state are
+ * intentionally excluded. Defaults live in semantic.css.
+ * Scopes may be applied at document or component-subtree level.
+ */
+[data-space="compact"] {
+  --space-inline: var(--space-12);
+  --space-block: var(--space-16);
+  --space-section: var(--space-48);
+  --layout-gap: var(--space-12);
+  --component-gap: var(--space-8);
+  --component-padding: var(--space-16);
+  --control-px: var(--space-16);
+  --control-py: var(--space-8);
+  --row-px: var(--space-12);
+  --row-py: var(--space-8);
+}
+[data-space="spacious"] {
+  --space-inline: var(--space-24);
+  --space-block: var(--space-32);
+  --space-section: var(--space-96);
+  --layout-gap: var(--space-32);
+  --component-gap: var(--space-16);
+  --component-padding: var(--space-32);
+  --control-px: var(--space-24);
+  --control-py: var(--space-12);
+  --row-px: var(--space-20);
+  --row-py: var(--space-16);
+}
+[data-shape="defined"] {
+  --shape-control: var(--radius-0);
+  --shape-surface: var(--radius-0);
+  --shape-media: var(--radius-0);
+  --shape-pill: var(--radius-0);
+}
+[data-shape="soft"] {
+  --shape-control: var(--radius-8);
+  --shape-surface: var(--radius-16);
+  --shape-media: var(--radius-24);
+  --shape-pill: var(--radius-full);
+}
+[data-weight="fine"] {
+  --stroke-default: var(--border-1);
+  --stroke-emphasis: var(--border-2);
+}
+[data-weight="strong"] {
+  --stroke-default: var(--border-2);
+  --stroke-emphasis: var(--border-4);
+}
