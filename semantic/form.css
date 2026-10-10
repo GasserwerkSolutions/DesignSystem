@@ -14,6 +14,9 @@
   --control-py: var(--space-8);
   --row-px: var(--space-12);
   --row-py: var(--space-8);
+  --btn-px: var(--control-px);
+  --btn-py: var(--control-py);
+  --card-padding: var(--component-padding);
 }
 [data-space="spacious"] {
   --space-inline: var(--space-24);
@@ -26,18 +29,27 @@
   --control-py: var(--space-12);
   --row-px: var(--space-20);
   --row-py: var(--space-16);
+  --btn-px: var(--control-px);
+  --btn-py: var(--control-py);
+  --card-padding: var(--component-padding);
 }
 [data-shape="defined"] {
   --shape-control: var(--radius-0);
   --shape-surface: var(--radius-0);
   --shape-media: var(--radius-0);
   --shape-pill: var(--radius-0);
+  --btn-radius: var(--shape-control);
+  --card-radius: var(--shape-surface);
+  --badge-radius: var(--shape-pill);
 }
 [data-shape="soft"] {
   --shape-control: var(--radius-8);
   --shape-surface: var(--radius-16);
   --shape-media: var(--radius-24);
   --shape-pill: var(--radius-full);
+  --btn-radius: var(--shape-control);
+  --card-radius: var(--shape-surface);
+  --badge-radius: var(--shape-pill);
 }
 [data-weight="fine"] {
   --stroke-default: var(--border-1);
