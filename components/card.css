@@ -64,10 +64,10 @@
 
 .card {
   background:    var(--card-bg);
-  border:        var(--card-border, 1px solid var(--color-border));
-  border-radius: var(--card-radius, var(--radius-lg));
+  border:        var(--card-border, var(--stroke-default) solid var(--color-border));
+  border-radius: var(--card-radius, var(--shape-surface));
   box-shadow:    var(--card-shadow, var(--elevation-3));
-  padding:       var(--card-padding, var(--space-24));
+  padding:       var(--card-padding, var(--component-padding));
 
   /* Performance: layout/paint isolation. Browser kann das Card-Layout
      unabhängig vom Page-Layout berechnen. Bei vielen Cards (Grid mit
@@ -88,7 +88,7 @@
 }
 
 .card--bordered {
-  --card-border: 2px solid var(--color-border-dark);
+  --card-border: var(--stroke-emphasis) solid var(--color-border-dark);
   --card-shadow: var(--elevation-0);
 }
 
@@ -98,12 +98,12 @@
    lohnt. */
 .card--split {
   display: grid;
-  gap: var(--space-16);
+  gap: var(--component-gap);
   padding: 0;
 }
 
-.card--split > .card__lead { padding: var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) 0; }
-.card--split > .card__body { padding: 0 var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)); }
+.card--split > .card__lead { padding: var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) 0; }
+.card--split > .card__body { padding: 0 var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)); }
 .card--split > .card__lead img,
 .card--split > .card__lead picture { display: block; width: 100%; height: auto; border-radius: var(--radius-md); }
 
@@ -112,6 +112,6 @@
     grid-template-columns: var(--card-split-ratio, 1fr 1.618fr);
     align-items: stretch;
   }
-  .card--split > .card__lead { padding: var(--card-padding, var(--space-24)) 0 var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)); }
-  .card--split > .card__body { padding: var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) 0; }
+  .card--split > .card__lead { padding: var(--card-padding, var(--component-padding)) 0 var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)); }
+  .card--split > .card__body { padding: var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) 0; }
 }

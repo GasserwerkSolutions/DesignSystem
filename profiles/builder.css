@@ -13,6 +13,7 @@
 @import "../semantic/semantic.css" layer(semantic);
 @import "../semantic/dark.css" layer(mode);
 @import "../semantic/density.css" layer(mode);
+@import "../semantic/form.css" layer(mode);
 
 @import "../base/reset.css" layer(reset);
 @import "../base/typography.css" layer(base);

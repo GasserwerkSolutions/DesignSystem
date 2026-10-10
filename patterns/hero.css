@@ -10,13 +10,13 @@
 
   .hero__inner {
     display: grid;
-    gap: var(--hero-gap, var(--space-40));
+    gap: var(--hero-gap, var(--layout-gap));
     align-items: center;
   }
 
   .hero__content {
     display: grid;
-    gap: var(--space-20);
+    gap: var(--component-gap);
     min-inline-size: 0;
     max-width: var(--hero-content-max, 760px);
   }
@@ -50,14 +50,14 @@
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-12);
+    gap: var(--component-gap);
     align-items: center;
   }
 
   .hero__media {
     min-inline-size: 0;
     overflow: hidden;
-    border-radius: var(--hero-media-radius, var(--radius-2xl));
+    border-radius: var(--hero-media-radius, var(--shape-media));
     box-shadow: var(--hero-media-shadow, var(--elevation-3));
   }
 

@@ -227,6 +227,21 @@
   --space-block:   var(--space-24);
   --space-section: var(--space-48);
 
+  /* Form axes: semantic defaults */
+  --layout-gap: var(--space-block);
+  --component-gap: var(--space-12);
+  --component-padding: var(--space-24);
+  --control-px: var(--density-control-px);
+  --control-py: var(--density-control-py);
+  --row-px: var(--density-row-px);
+  --row-py: var(--density-row-py);
+  --shape-control: var(--radius-md);
+  --shape-surface: var(--radius-lg);
+  --shape-media: var(--radius-2xl);
+  --shape-pill: var(--radius-full);
+  --stroke-default: var(--border-1);
+  --stroke-emphasis: var(--border-2);
+
   /* T-Shirt Spacing-Skala (parallel zur numerischen, konsistentes Vokabular) */
   --space-xs:  var(--space-4);
   --space-sm:  var(--space-8);
@@ -336,16 +351,16 @@
      direkt überschreiben (gewinnt durch Layer-Reihenfolge). */
   --btn-bg:     var(--color-interactive);
   --btn-fg:     white;
-  --btn-radius: var(--radius-md);
-  --btn-px:     var(--density-control-px);
-  --btn-py:     var(--density-control-py);
+  --btn-radius: var(--shape-control);
+  --btn-px:     var(--control-px);
+  --btn-py:     var(--control-py);
   --btn-weight: 600;
 
   /* Card */
   --card-bg:      light-dark(white, var(--gray-900));
-  --card-radius:  var(--radius-lg);
+  --card-radius:  var(--shape-surface);
   --card-shadow:  var(--shadow-card);
-  --card-padding: var(--space-24);
+  --card-padding: var(--component-padding);
 
   /* Section */
   --section-py: var(--space-section);
@@ -375,7 +390,7 @@
   --nav-border:      var(--color-border);
 
   /* Badge */
-  --badge-radius:    var(--radius-full);
+  --badge-radius:    var(--shape-pill);
   --badge-weight:    600;
   --badge-letter:    0;
   --badge-transform: none;

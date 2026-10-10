@@ -89,6 +89,7 @@
     "check:journeys": "node scripts/check-journeys.js",
     "check:rendered": "node scripts/check-rendered.js",
     "check:patterns": "node scripts/check-patterns.js",
+    "check:form": "node scripts/check-form-axes.js",
     "check:site": "node scripts/check-site.js",
     "check:site:links": "node scripts/check-site-links.js",
     "check:site:responsive": "node scripts/check-site-responsive.js",
@@ -107,7 +108,7 @@
     "build:site": "npm run build:site:raw && npm run build:site:assets",
     "build:profiles": "node scripts/build-profiles.js",
     "build": "npm run build:js && npm run build:tokens && npm run build:profiles",
-    "check": "npm run lint && npm run test:lint && npm run check:contrast && npm run check:patterns",
+    "check": "npm run lint && npm run test:lint && npm run check:contrast && npm run check:patterns && npm run check:form",
     "check:full": "npm run build && npm run lint:strict && npm run test:lint && npm run check:patterns && npm run check:profiles && npm run check:contrast && npm run check:contrast:browser && npm run check:rendered && npm run check:examples && npm run measure:check && npm run build:site && npm run check:site:links && npm run check:site:responsive && npm run check:site && npm run check:package",
     "release": "node scripts/release.js",
     "prepublishOnly": "npm run check:full && npm run check:tools"
