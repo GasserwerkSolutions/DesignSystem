@@ -18,39 +18,48 @@
     <section aria-label="Natural editorial cards">
       <h2>Leistungen</h2>
       <div id="natural" class="card-grid--natural">
-        <article id="short" class="card card--content-fit card--fluid-pad">
+        <div class="card-slot" id="short-slot"><article id="short" class="card card--content-fit card--fluid-pad">
           <div class="card__header"><small>Kurz</small><h3>Haarschnitt</h3></div>
           <div class="card__body"><p>Persönlich und unkompliziert.</p></div>
           <div class="card__footer"><a href="#details">Mehr erfahren</a></div>
-        </article>
-        <article id="long" class="card card--content-fit card--fluid-pad">
+        </article></div>
+        <div class="card-slot" id="long-slot"><article id="long" class="card card--content-fit card--fluid-pad">
           <div class="card__header"><small>Intensiv</small><h3>Beratung und Haarpflege</h3></div>
           <div class="card__body">
             <p>Hier nehmen wir uns Zeit, um die Ausgangslage sorgfältig zu verstehen und auf die Wünsche einzugehen.</p>
             <p>Das ausführliche Gespräch und die individuelle Empfehlung stehen im Mittelpunkt.</p>
-            <p>Die Begleitung umfasst mehrere abgestimmte Schritte und eine verständliche Erklärung.</p>
+            <p>Die Begleitung umfasst mehrere abgestimmte Schritte und eine verständliche Erklärung. SuperLangUngetrenntesWortMitSehrVielenSilbenUndZahlen123456789012345678901234567890DassNichtHorizontalAusbrechenDarf.</p>
           </div>
           <div class="card__footer"><a href="#details">Mehr erfahren</a></div>
-        </article>
+        </article></div>
       </div>
     </section>
     <section aria-label="Intentional comparisons">
       <h2>Vergleich</h2>
       <div id="comparison" class="card-grid--natural card-grid--compare">
-        <article id="price-short" class="card card--content-fit card--action-aligned">
+        <div class="card-slot"><article id="price-short" class="card card--content-fit card--action-aligned">
           <div class="card__header"><h3>Basis</h3></div>
           <div class="card__body"><p>Ein einfacher Einstieg.</p></div>
           <div class="card__footer"><a href="#price-short">Auswählen</a></div>
-        </article>
-        <article id="price-long" class="card card--content-fit card--action-aligned">
+        </article></div>
+        <div class="card-slot"><article id="price-long" class="card card--content-fit card--action-aligned">
           <div class="card__header"><h3>Plus</h3></div>
           <div class="card__body">
             <p>Eine ausführlichere Beratung für besondere Anforderungen.</p>
             <p>Zusätzliche Leistungen sind enthalten.</p>
           </div>
           <div class="card__footer"><a href="#price-long">Auswählen</a></div>
-        </article>
+        </article></div>
       </div>
+    </section>
+    <section aria-label="Different card slot widths" id="probes">
+      <div id="probe-narrow" class="card-slot" style="inline-size: 300px; max-inline-size: 100%">
+        <article id="narrow-card" class="card card--content-fit card--fluid-pad"><div class="card__header"><h3>Schmal</h3></div><div class="card__body"><p>Kurze Beschreibung.</p></div></article>
+      </div>
+      <div id="probe-wide" class="card-slot" style="inline-size: 520px; max-inline-size: 100%">
+        <article id="wide-card" class="card card--content-fit card--fluid-pad"><div class="card__header"><h3>Breit</h3></div><div class="card__body"><p>Identische kurze Beschreibung.</p></div></article>
+      </div>
+      <article id="unwrapped" class="card card--content-fit card--fluid-pad"><div class="card__body"><p>Card ohne expliziten Container.</p></div></article>
     </section>
   </main>
 </body>
