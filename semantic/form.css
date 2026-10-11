@@ -2,12 +2,14 @@
  * Orthogonal form axes. Colors, typography, motion and functional state are
  * intentionally excluded. Defaults live in semantic.css.
  * Scopes may be applied at document or component-subtree level.
+ * The layout gap separates independent groups; the component gap groups
+ * related content, generally with an intentional 2:1 hierarchy.
  */
 [data-space="compact"] {
-  --space-inline: var(--space-12);
+  --space-inline: var(--space-16);
   --space-block: var(--space-16);
   --space-section: var(--space-48);
-  --layout-gap: var(--space-12);
+  --layout-gap: var(--space-16);
   --component-gap: var(--space-8);
   --component-padding: var(--space-16);
   --control-px: var(--space-16);
