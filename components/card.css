@@ -115,3 +115,67 @@
   .card--split > .card__lead { padding: var(--card-padding, var(--component-padding)) 0 var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)); }
   .card--split > .card__body { padding: var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) 0; }
 }
+
+/**
+ * CONTENT-FIRST CARD LAYOUT (opt-in)
+ * ==================================
+ * An editorial/service card follows its content, not the height of the
+ * tallest sibling. Use comparison rows only when equal-height alignment
+ * communicates an actual comparison (e.g. prices/plans).
+ *
+ * The grid is a sizing container for the optional fluid card padding.
+ * auto-fill (not auto-fit) keeps a last/only card from expanding across
+ * an arbitrarily wide editorial page.
+ */
+.card-grid--natural {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--card-grid-min, 17rem)), 1fr));
+  gap: var(--layout-gap);
+  align-items: start;
+  container-type: inline-size;
+}
+
+.card--content-fit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--component-gap);
+  min-inline-size: 0;
+  block-size: auto;
+  align-self: start;
+}
+
+/* In a card, labels and titles form a tighter group than independent blocks. */
+.card--content-fit > :is(.card__header, .card__body) {
+  display: grid;
+  gap: var(--component-gap);
+  min-inline-size: 0;
+}
+.card--content-fit > .card__header {
+  gap: var(--space-8);
+}
+
+.card--content-fit > :is(.card__header, .card__body) > :is(h2, h3, h4, p) {
+  margin-block: 0;
+}
+
+/*
+ * Optional responsive breathing room. This is intentionally bounded by
+ * semantic --component-padding / --card-padding and measured relative to
+ * the nearest parent sizing container (the natural grid when used together).
+ * It does NOT grow based on the amount of blank content inside the card.
+ */
+.card--fluid-pad {
+  padding: clamp(var(--space-16), 2cqi, var(--card-padding, var(--component-padding)));
+}
+
+/* Comparison is an explicit exception, not the default editorial behavior. */
+.card-grid--natural.card-grid--compare {
+  align-items: stretch;
+}
+.card-grid--compare > .card--content-fit {
+  align-self: stretch;
+}
+.card--action-aligned > .card__footer {
+  margin-block-start: auto;
+  padding-block-start: var(--component-gap);
+}
