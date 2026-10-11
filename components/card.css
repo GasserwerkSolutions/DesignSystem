@@ -123,16 +123,29 @@
  * tallest sibling. Use comparison rows only when equal-height alignment
  * communicates an actual comparison (e.g. prices/plans).
  *
- * The grid is a sizing container for the optional fluid card padding.
- * auto-fill (not auto-fit) keeps a last/only card from expanding across
- * an arbitrarily wide editorial page.
+ * The GRID chooses tracks; a CARD-SLOT query container chooses fluid
+ * padding per card. Never use outer grid width for the card's own padding.
+ * auto-fill (not auto-fit) keeps a last/only card from spanning the page.
  */
 .card-grid--natural {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--card-grid-min, 17rem)), 1fr));
   gap: var(--layout-gap);
   align-items: start;
-  container-type: inline-size;
+}
+
+/* Explicit sizing boundary: the immediate Grid child wraps each card.
+ * Inline-size containment affects only its inline axis; the card's
+ * content can still determine its natural block size.
+ */
+.card-grid--natural > .card-slot {
+  container: card-slot / inline-size;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.card-grid--natural > .card-slot > .card--content-fit {
+  align-self: stretch;
 }
 
 .card--content-fit {
@@ -160,13 +173,25 @@
 }
 
 /*
- * Optional responsive breathing room. This is intentionally bounded by
- * semantic --component-padding / --card-padding and measured relative to
- * the nearest parent sizing container (the natural grid when used together).
- * It does NOT grow based on the amount of blank content inside the card.
+ * Optional responsive breathing room.
+ *
+ * Without the named card-slot ancestor, the fallback is conservative:
+ * cqi would otherwise refer to another query container or the viewport.
+ * With a card-slot, 6cqi means 6% of THIS card's available column width,
+ * clamped between 16px and the semantic --card-padding upper bound.
  */
 .card--fluid-pad {
-  padding: clamp(var(--space-16), 2cqi, var(--card-padding, var(--component-padding)));
+  padding: var(--space-16);
+}
+@container card-slot (min-width: 0px) {
+  .card--fluid-pad {
+    padding: clamp(var(--space-16), 6cqi, var(--card-padding, var(--component-padding)));
+  }
+}
+
+/* Break unspaced technical terms without forcing grid overflow. */
+.card--content-fit > :is(.card__header, .card__body) {
+  overflow-wrap: anywhere;
 }
 
 /* Comparison is an explicit exception, not the default editorial behavior. */
@@ -175,6 +200,13 @@
 }
 .card-grid--compare > .card--content-fit {
   align-self: stretch;
+}
+/* A slot remains row-height aware; its flex child fills only comparison rows. */
+.card-grid--compare > .card-slot {
+  align-self: stretch;
+}
+.card-grid--compare > .card-slot > .card--content-fit {
+  flex: 1 1 auto;
 }
 .card--action-aligned > .card__footer {
   margin-block-start: auto;
