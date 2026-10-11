@@ -1,0 +1,58 @@
+name: One-time audit dependency lock patch for PR 15
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  patch-audit-lock:
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'fix/defined-min-radius-2' &&
+      github.event.pull_request.number == 15
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout the exact PR commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - name: Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Patch vulnerable transitive lockfile dependency
+        run: |
+          set -euo pipefail
+          npm ci
+          npm audit fix --package-lock-only --ignore-scripts --no-fund
+          node - <<'NODE'
+          const lock = require('./package-lock.json');
+          const v = lock.packages['node_modules/source-map-js']?.version;
+          if (v !== '1.2.2') throw new Error('Expected patched source-map-js@1.2.2; got ' + v);
+          console.log('source-map-js is patched:', v);
+          NODE
+          npm ci
+          npm audit --audit-level=high
+          npm run build
+          npm run check:form
+      - name: Commit verified lockfile and resulting dist changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- package-lock.json dist
+          if git diff --cached --quiet; then
+            echo "Lockfile already patched; no files to commit."
+            exit 0
+          fi
+          git diff --cached --stat
+          git commit -m "fix(deps): update vulnerable source-map-js to 1.2.2"
+          git push origin HEAD:refs/heads/fix/defined-min-radius-2
