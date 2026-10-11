@@ -1,0 +1,24 @@
+name: Verify website spacing contract
+
+on:
+  pull_request:
+    paths:
+      - "semantic/form.css"
+      - "scripts/check-form-axes.js"
+      - "docs/form-axes.md"
+      - ".github/workflows/spacing-contract.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spacing-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify normal/wide spacing presets and legacy mapping
+        run: node scripts/check-form-axes.js
