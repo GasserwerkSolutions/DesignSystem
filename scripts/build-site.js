@@ -412,6 +412,12 @@ function tokenKind(token) {
     return "palette-color";
   if (/^--color-|^--status-.*-(bg|fg|border)/.test(n)) return "semantic-color";
   if (/^--chart-/.test(n)) return "chart-color";
+  // Semantic contract tokens are Foundations, not orphaned raw values.
+  // Keep the classification explicit to avoid sweeping component internals.
+  if (/^--(?:layout-gap|component-(?:gap|padding)|control-(?:px|py)|row-(?:px|py))$/.test(n)) return "spacing";
+  if (/^--shape-(?:control|surface|media|pill)$/.test(n)) return "radius";
+  if (/^--stroke-(?:default|emphasis)$/.test(n)) return "border";
+  if (/^--prose-line-max$/.test(n)) return "container";
   if (/^--space-/.test(n)) return "spacing";
   if (/^--density-/.test(n)) return "spacing";
   if (/^--radius-/.test(n)) return "radius";
