@@ -5,15 +5,31 @@
  * The layout gap separates independent groups; the component gap groups
  * related content, generally with an intentional 2:1 hierarchy.
  * Public-facing spacing vocabulary: normal / wide. Keep compact / spacious
- * aliases for already generated websites while consumers migrate.
+ * selectors for already generated websites while consumers migrate.
  */
-/* Normal is the readable, everyday website baseline; compact is a legacy alias. */
-[data-space="normal"],
-[data-space="compact"] {
+/* New default website endpoint. The legacy compact rule below stays unchanged. */
+[data-space="normal"] {
   --space-inline: var(--space-16);
   --space-block: var(--space-16);
   --space-section: var(--space-48);
   --layout-gap: var(--space-16);
+  --component-gap: var(--space-8);
+  --component-padding: var(--space-16);
+  --control-px: var(--space-16);
+  --control-py: var(--space-8);
+  --row-px: var(--space-12);
+  --row-py: var(--space-8);
+  --btn-px: var(--control-px);
+  --btn-py: var(--control-py);
+  --card-padding: var(--component-padding);
+}
+/* Legacy compact contract: preserve its exact original values for existing sites.
+ * It is not presented as a new UI option. */
+[data-space="compact"] {
+  --space-inline: var(--space-12);
+  --space-block: var(--space-16);
+  --space-section: var(--space-48);
+  --layout-gap: var(--space-12);
   --component-gap: var(--space-8);
   --component-padding: var(--space-16);
   --control-px: var(--space-16);
