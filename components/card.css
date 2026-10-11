@@ -138,13 +138,13 @@
  * Inline-size containment affects only its inline axis; the card's
  * content can still determine its natural block size.
  */
-.card-grid--natural > .card-slot {
+.card-slot {
   container: card-slot / inline-size;
   display: flex;
   flex-direction: column;
   min-inline-size: 0;
 }
-.card-grid--natural > .card-slot > .card--content-fit {
+.card-slot > .card--content-fit {
   align-self: stretch;
 }
 
