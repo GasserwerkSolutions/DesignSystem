@@ -1,0 +1,35 @@
+name: Verify intrinsic card layout
+
+on:
+  pull_request:
+    paths:
+      - "components/card.css"
+      - "scripts/check-card-*.js"
+      - "tests/card-proportions.html"
+      - ".github/workflows/card-proportions.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Chromium libraries
+        run: bash scripts/install-browser-deps.sh
+      - name: Verify structural CSS contract
+        run: node scripts/check-card-contract.js
+      - name: Verify desktop/mobile card layouts in Chromium
+        run: node scripts/check-card-browser.js
+      - name: Install Chromium and WebKit with platform dependencies
+        run: npx playwright install --with-deps chromium webkit
+      - name: Verify focus visibility and intrinsic layout in Chromium and WebKit
+        run: node scripts/check-card-cross-browser.js

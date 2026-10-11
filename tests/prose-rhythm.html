@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="de-CH" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prose typography contract fixture</title>
+  <link rel="stylesheet" href="../main.css">
+  <style>
+    .fixture { width: 100%; max-width: 1100px; padding: 0 16px; margin: 0 auto; }
+    .ui-copy { width: 100%; }
+    .fixture > section { margin-block: 16px; }
+  </style>
+</head>
+<body>
+  <main class="fixture">
+    <section class="prose" aria-label="Editorial content">
+      <h2 id="first-heading">A calm editorial headline</h2>
+      <p id="first-paragraph">An example of longer website copy. Reading the text should be comfortable rather than exhausting, and a readable line width helps users follow successive lines across the page without losing their place.</p>
+      <p id="second-paragraph">A second paragraph adds context while preserving a measured vertical gap. The column should remain narrower than the surrounding layout on desktop.</p>
+      <h3 id="second-heading">A useful next point</h3>
+      <p id="final-paragraph">The heading is closer to this paragraph than to the preceding one.</p>
+    </section>
+    <section class="ui-copy" aria-label="Unconstrained UI content">
+      <p id="ui-paragraph">This is a plain UI paragraph and must not inherit the opt-in prose line length.</p>
+      <p>A second UI paragraph keeps the preceding paragraph from matching p:last-child.</p>
+    </section>
+  </main>
+</body>
+</html>

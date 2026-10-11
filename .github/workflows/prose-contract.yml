@@ -1,0 +1,32 @@
+name: Verify website prose typography
+
+on:
+  pull_request:
+    paths:
+      - "base/typography.css"
+      - "semantic/semantic.css"
+      - "scripts/check-prose-*.js"
+      - "tests/prose-rhythm.html"
+      - ".github/workflows/prose-contract.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Chromium system dependencies
+        run: bash scripts/install-browser-deps.sh
+      - name: Check token and selector contract
+        run: node scripts/check-prose-contract.js
+      - name: Render real prose layout on desktop and mobile
+        run: node scripts/check-prose-browser.js

@@ -3,14 +3,39 @@
 Three independent choices, usable on `<html>` or a subtree:
 
 ```html
-<div data-space="compact" data-shape="defined" data-weight="fine">...</div>
+<div data-space="normal" data-shape="defined" data-weight="fine">...</div>
 ```
 
 | Axis | Values | Responsibility |
 | --- | --- | --- |
-| `data-space` | `compact`, `spacious` | Gaps, padding, section rhythm |
+| `data-space` | `normal`, `wide` | Gaps, padding, section rhythm (public naming) |
 | `data-shape` | `defined`, `soft` | Corner radii of controls, surfaces and media |
 | `data-weight` | `fine`, `strong` | Physical stroke widths; not font-weight |
+
+The spacing scale is deliberately an everyday website range rather than an
+"extra tight" mode. **Normal** is the comfortable baseline; **Wide** adds room
+between content blocks. Both preserve the proximity hierarchy (gap between
+independent groups roughly twice the gap within one group).
+
+| Spacing token | Normal | Wide |
+| --- | ---: | ---: |
+| Outer inline padding | 16px | 24px |
+| Internal component gap | 8px | 16px |
+| Layout gap between groups | 16px | 32px |
+| Component padding | 16px | 32px |
+| Section rhythm | 48px | 96px |
+
+Pixel values are based on a 16px browser root size; the CSS uses rem-backed
+shared tokens, not hardcoded pixels. Breakpoints, content density, legibility,
+and individual components may require opt-in overrides. These values are
+**presets**, not a continuous slider implementation.
+
+For compatibility, the deprecated `compact` option retains its **original**
+12px outer/layout gaps (it is not exactly equivalent to the new `normal`
+baseline). `spacious` remains an exact alias of `wide`. Existing generated
+websites remain stable, especially when pinned to their CSS version.
+New builder controls should show **Normal – Wide** and emit the new values;
+renderer contracts can migrate independently with tests.
 
 There is no color or motion coupling. Brand colors and color modes remain separate.
 Absence of attributes preserves the current semantic defaults.

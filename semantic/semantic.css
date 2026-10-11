@@ -371,7 +371,8 @@
   /* Prose — opt-in via .container--prose. Themes mit Editorial-Charakter
      (premium) verengen hier statt --container-max, damit UI-Container
      ihre volle Breite behalten. Siehe ADR-001. */
-  --prose-max:     70ch;
+  --prose-max:      70ch;
+  --prose-line-max: 65ch; /* Comfortable line length for opt-in .prose copy */
 
   /* Input — bg mode-aware via light-dark; text/border erbt von --color-* */
   --input-bg:           light-dark(white, var(--gray-900));
