@@ -115,3 +115,107 @@
   .card--split > .card__lead { padding: var(--card-padding, var(--component-padding)) 0 var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)); }
   .card--split > .card__body { padding: var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) 0; }
 }
+
+/**
+ * CONTENT-FIRST CARD LAYOUT (opt-in)
+ * ==================================
+ * An editorial/service card follows its content, not the height of the
+ * tallest sibling. Use comparison rows only when equal-height alignment
+ * communicates an actual comparison (e.g. prices/plans).
+ *
+ * The GRID chooses tracks; a CARD-SLOT query container chooses fluid
+ * padding per card. Never use outer grid width for the card's own padding.
+ * auto-fill (not auto-fit) keeps a last/only card from spanning the page.
+ */
+.card-grid--natural {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--card-grid-min, 17rem)), 1fr));
+  gap: var(--layout-gap);
+  align-items: start;
+}
+
+/* Explicit sizing boundary: the immediate Grid child wraps each card.
+ * Inline-size containment affects only its inline axis; the card's
+ * content can still determine its natural block size.
+ */
+.card-slot {
+  container: card-slot / inline-size;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.card-slot > .card--content-fit {
+  align-self: stretch;
+}
+
+.card--content-fit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--component-gap);
+  min-inline-size: 0;
+  block-size: auto;
+  align-self: start;
+
+  /* Opt-in accessibility fix: global .card uses paint containment, which
+   * clips focus rings from edge-aligned children. Keep layout containment
+   * but allow focus outlines, popovers and visual affordances to paint out.
+   * Existing non-opt-in .card instances remain byte-for-byte unchanged.
+   */
+  contain: layout;
+}
+
+/* In a card, labels and titles form a tighter group than independent blocks. */
+.card--content-fit > :is(.card__header, .card__body) {
+  display: grid;
+  gap: var(--component-gap);
+  min-inline-size: 0;
+}
+.card--content-fit > .card__header {
+  /* Label and heading belong closer than independent blocks. */
+  gap: calc(var(--component-gap) / 2);
+}
+
+.card--content-fit > :is(.card__header, .card__body) > :is(h2, h3, h4, p) {
+  margin-block: 0;
+}
+
+/*
+ * Optional responsive breathing room.
+ *
+ * Without the named card-slot ancestor, the fallback is conservative:
+ * cqi would otherwise refer to another query container or the viewport.
+ * With a card-slot, 6cqi means 6% of THIS card's available column width,
+ * clamped between 16px and the semantic --card-padding upper bound.
+ */
+.card--fluid-pad {
+  padding: var(--space-16);
+}
+@container card-slot (min-width: 0px) {
+  .card--fluid-pad {
+    padding: clamp(var(--space-16), 6cqi, var(--card-padding, var(--component-padding)));
+  }
+}
+
+/* Break unspaced technical terms without forcing grid overflow. */
+.card--content-fit > :is(.card__header, .card__body) {
+  overflow-wrap: anywhere;
+}
+
+/* Comparison is an explicit exception, not the default editorial behavior. */
+.card-grid--natural.card-grid--compare {
+  align-items: stretch;
+}
+.card-grid--compare > .card--content-fit {
+  align-self: stretch;
+}
+/* A slot remains row-height aware; its flex child fills only comparison rows. */
+.card-grid--compare > .card-slot {
+  align-self: stretch;
+}
+.card-grid--compare > .card-slot > .card--content-fit {
+  flex: 1 1 auto;
+}
+.card--action-aligned > .card__footer {
+  margin-block-start: auto;
+  padding-block-start: var(--component-gap);
+}

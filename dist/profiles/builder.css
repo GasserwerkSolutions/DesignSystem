@@ -229,6 +229,19 @@
     --space-inline: var(--space-16);
     --space-block: var(--space-24);
     --space-section: var(--space-48);
+    --layout-gap: var(--space-block);
+    --component-gap: var(--space-12);
+    --component-padding: var(--space-24);
+    --control-px: var(--density-control-px);
+    --control-py: var(--density-control-py);
+    --row-px: var(--density-row-px);
+    --row-py: var(--density-row-py);
+    --shape-control: var(--radius-md);
+    --shape-surface: var(--radius-lg);
+    --shape-media: var(--radius-2xl);
+    --shape-pill: var(--radius-full);
+    --stroke-default: var(--border-1);
+    --stroke-emphasis: var(--border-2);
     --space-xs: var(--space-4);
     --space-sm: var(--space-8);
     --space-md: var(--space-16);
@@ -268,17 +281,18 @@
     --shadow-modal: var(--elevation-5);
     --btn-bg: var(--color-interactive);
     --btn-fg: white;
-    --btn-radius: var(--radius-md);
-    --btn-px: var(--density-control-px);
-    --btn-py: var(--density-control-py);
+    --btn-radius: var(--shape-control);
+    --btn-px: var(--control-px);
+    --btn-py: var(--control-py);
     --btn-weight: 600;
     --card-bg: light-dark(white, var(--gray-900));
-    --card-radius: var(--radius-lg);
+    --card-radius: var(--shape-surface);
     --card-shadow: var(--shadow-card);
-    --card-padding: var(--space-24);
+    --card-padding: var(--component-padding);
     --section-py: var(--space-section);
     --container-max: 1280px;
     --prose-max: 70ch;
+    --prose-line-max: 65ch;
     --input-bg: light-dark(white, var(--gray-900));
     --input-border: var(--color-border);
     --input-text: var(--color-text-primary);
@@ -291,7 +305,7 @@
     --nav-active-text: var(--color-interactive-dark);
     --nav-hover-bg: var(--color-bg-secondary);
     --nav-border: var(--color-border);
-    --badge-radius: var(--radius-full);
+    --badge-radius: var(--shape-pill);
     --badge-weight: 600;
     --badge-letter: 0;
     --badge-transform: none;
@@ -357,6 +371,82 @@
     --density-row-px: var(--space-20);
     --density-item-py: var(--space-12);
     --density-item-px: var(--space-16);
+  }
+}
+
+/* semantic/form.css */
+@layer mode {
+  [data-space=normal] {
+    --space-inline: var(--space-16);
+    --space-block: var(--space-16);
+    --space-section: var(--space-48);
+    --layout-gap: var(--space-16);
+    --component-gap: var(--space-8);
+    --component-padding: var(--space-16);
+    --control-px: var(--space-16);
+    --control-py: var(--space-8);
+    --row-px: var(--space-12);
+    --row-py: var(--space-8);
+    --btn-px: var(--control-px);
+    --btn-py: var(--control-py);
+    --card-padding: var(--component-padding);
+  }
+  [data-space=compact] {
+    --space-inline: var(--space-12);
+    --space-block: var(--space-16);
+    --space-section: var(--space-48);
+    --layout-gap: var(--space-12);
+    --component-gap: var(--space-8);
+    --component-padding: var(--space-16);
+    --control-px: var(--space-16);
+    --control-py: var(--space-8);
+    --row-px: var(--space-12);
+    --row-py: var(--space-8);
+    --btn-px: var(--control-px);
+    --btn-py: var(--control-py);
+    --card-padding: var(--component-padding);
+  }
+  [data-space=wide],
+  [data-space=spacious] {
+    --space-inline: var(--space-24);
+    --space-block: var(--space-32);
+    --space-section: var(--space-96);
+    --layout-gap: var(--space-32);
+    --component-gap: var(--space-16);
+    --component-padding: var(--space-32);
+    --control-px: var(--space-24);
+    --control-py: var(--space-12);
+    --row-px: var(--space-20);
+    --row-py: var(--space-16);
+    --btn-px: var(--control-px);
+    --btn-py: var(--control-py);
+    --card-padding: var(--component-padding);
+  }
+  [data-shape=defined] {
+    --shape-control: var(--radius-2);
+    --shape-surface: var(--radius-2);
+    --shape-media: var(--radius-2);
+    --shape-pill: var(--radius-2);
+    --btn-radius: var(--shape-control);
+    --card-radius: var(--shape-surface);
+    --badge-radius: var(--shape-pill);
+  }
+  [data-shape=soft] {
+    --shape-control: var(--radius-8);
+    --shape-surface: var(--radius-16);
+    --shape-media: var(--radius-24);
+    --shape-pill: var(--radius-full);
+    --btn-radius: var(--shape-control);
+    --card-radius: var(--shape-surface);
+    --badge-radius: var(--shape-pill);
+  }
+  [data-weight=fine] {
+    --stroke-default: var(--border-1);
+    --stroke-emphasis: var(--border-2);
+  }
+  [data-weight=strong] {
+    --stroke-default: var(--border-2);
+    --stroke-emphasis: var(--border-4);
   }
 }
 
@@ -556,6 +646,23 @@
   p:last-child {
     margin-bottom: 0;
   }
+  .prose > :where(p, ul, ol, blockquote) {
+    max-inline-size: min(100%, var(--prose-line-max, 65ch));
+  }
+  .prose > p {
+    margin-block: 0 var(--space-24);
+    overflow-wrap: break-word;
+  }
+  .prose > p:last-child {
+    margin-block-end: 0;
+  }
+  .prose > :where(h2, h3) {
+    margin-block-start: var(--space-48);
+    margin-block-end: var(--space-12);
+  }
+  .prose > :where(h2, h3):first-child {
+    margin-block-start: 0;
+  }
   .lead {
     font-size: var(--font-lg);
     line-height: var(--lh-loose);
@@ -676,7 +783,7 @@
   .stack {
     display: flex;
     flex-direction: column;
-    gap: var(--stack-gap, var(--space-12));
+    gap: var(--stack-gap, var(--component-gap));
     align-items: var(--stack-align, stretch);
   }
   .stack--xs {
@@ -697,7 +804,7 @@
   .cluster {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--cluster-gap, var(--space-12));
+    gap: var(--cluster-gap, var(--component-gap));
     align-items: var(--cluster-align, center);
     justify-content: var(--cluster-justify, flex-start);
   }
@@ -742,22 +849,22 @@
   }
   .grid {
     display: grid;
-    gap: var(--space-block);
+    gap: var(--layout-gap);
   }
   .grid-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-block);
+    gap: var(--layout-gap);
   }
   .grid-3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-block);
+    gap: var(--layout-gap);
   }
   .grid-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-block);
+    gap: var(--layout-gap);
   }
   @media (max-width: 1024px) {
     .grid-4 {
@@ -786,7 +893,7 @@
   .split {
     display: grid;
     grid-template-columns: var(--split-ratio, 1fr 1fr);
-    gap: var(--split-gap, var(--space-block));
+    gap: var(--split-gap, var(--layout-gap));
     align-items: var(--split-align, start);
   }
   .split--golden {
@@ -1108,10 +1215,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-8);
+    gap: var(--component-gap);
     background: var(--btn-bg);
     color: var(--btn-fg);
-    border: 1px solid var(--_btn-border);
+    border: var(--stroke-default) solid var(--_btn-border);
     border-radius: var(--btn-radius);
     padding-block: var(--_btn-py);
     padding-inline: var(--_btn-px);
@@ -1172,10 +1279,10 @@
 @layer components {
   .card {
     background: var(--card-bg);
-    border: var(--card-border, 1px solid var(--color-border));
-    border-radius: var(--card-radius, var(--radius-lg));
+    border: var(--card-border, var(--stroke-default) solid var(--color-border));
+    border-radius: var(--card-radius, var(--shape-surface));
     box-shadow: var(--card-shadow, var(--elevation-3));
-    padding: var(--card-padding, var(--space-24));
+    padding: var(--card-padding, var(--component-padding));
     contain: layout paint;
     transition: transform var(--duration-medium) var(--easing-medium), box-shadow var(--duration-medium) var(--easing-medium);
   }
@@ -1187,19 +1294,19 @@
     --card-shadow: var(--elevation-0);
   }
   .card--bordered {
-    --card-border: 2px solid var(--color-border-dark);
+    --card-border: var(--stroke-emphasis) solid var(--color-border-dark);
     --card-shadow: var(--elevation-0);
   }
   .card--split {
     display: grid;
-    gap: var(--space-16);
+    gap: var(--component-gap);
     padding: 0;
   }
   .card--split > .card__lead {
-    padding: var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) 0;
+    padding: var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) 0;
   }
   .card--split > .card__body {
-    padding: 0 var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24));
+    padding: 0 var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding));
   }
   .card--split > .card__lead img,
   .card--split > .card__lead picture {
@@ -1214,11 +1321,73 @@
       align-items: stretch;
     }
     .card--split > .card__lead {
-      padding: var(--card-padding, var(--space-24)) 0 var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24));
+      padding: var(--card-padding, var(--component-padding)) 0 var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding));
     }
     .card--split > .card__body {
-      padding: var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)) 0;
+      padding: var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) 0;
     }
+  }
+  .card-grid--natural {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--card-grid-min, 17rem)), 1fr));
+    gap: var(--layout-gap);
+    align-items: start;
+  }
+  .card-slot {
+    container: card-slot / inline-size;
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+  .card-slot > .card--content-fit {
+    align-self: stretch;
+  }
+  .card--content-fit {
+    display: flex;
+    flex-direction: column;
+    gap: var(--component-gap);
+    min-inline-size: 0;
+    block-size: auto;
+    align-self: start;
+    contain: layout;
+  }
+  .card--content-fit > :is(.card__header, .card__body) {
+    display: grid;
+    gap: var(--component-gap);
+    min-inline-size: 0;
+  }
+  .card--content-fit > .card__header {
+    gap: calc(var(--component-gap) / 2);
+  }
+  .card--content-fit > :is(.card__header, .card__body) > :is(h2, h3, h4, p) {
+    margin-block: 0;
+  }
+  .card--fluid-pad {
+    padding: var(--space-16);
+  }
+  @container card-slot (min-width: 0px) {
+    .card--fluid-pad {
+      padding: clamp(var(--space-16), 6cqi, var(--card-padding, var(--component-padding)));
+    }
+  }
+  .card--content-fit > :is(.card__header, .card__body) {
+    overflow-wrap: anywhere;
+  }
+  .card-grid--natural.card-grid--compare {
+    align-items: stretch;
+  }
+  .card-grid--compare > .card--content-fit {
+    align-self: stretch;
+  }
+  .card-grid--compare > .card-slot {
+    align-self: stretch;
+  }
+  .card-grid--compare > .card-slot > .card--content-fit {
+    flex: 1 1 auto;
+  }
+  .card--action-aligned > .card__footer {
+    margin-block-start: auto;
+    padding-block-start: var(--component-gap);
   }
 }
 
@@ -1226,7 +1395,7 @@
 @layer components {
   .section {
     width: 100%;
-    padding-block: var(--section-py, var(--space-48));
+    padding-block: var(--section-py, var(--space-section));
     background: var(--section-bg, transparent);
     border-block-start: var(--section-divider, none);
     contain: layout paint;
@@ -1633,12 +1802,12 @@
       }
       .hero__inner {
         display: grid;
-        gap: var(--hero-gap, var(--space-40));
+        gap: var(--hero-gap, var(--layout-gap));
         align-items: center;
       }
       .hero__content {
         display: grid;
-        gap: var(--space-20);
+        gap: var(--component-gap);
         min-inline-size: 0;
         max-width: var(--hero-content-max, 760px);
       }
@@ -1668,13 +1837,13 @@
       .hero__actions {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--space-12);
+        gap: var(--component-gap);
         align-items: center;
       }
       .hero__media {
         min-inline-size: 0;
         overflow: hidden;
-        border-radius: var(--hero-media-radius, var(--radius-2xl));
+        border-radius: var(--hero-media-radius, var(--shape-media));
         box-shadow: var(--hero-media-shadow, var(--elevation-3));
       }
       .hero__media img,
@@ -1808,22 +1977,22 @@
       .service-grid,
       .feature-grid {
         display: grid;
-        gap: var(--service-grid-gap, var(--space-20));
+        gap: var(--service-grid-gap, var(--layout-gap));
       }
       .service-card,
       .feature-card {
         display: grid;
-        gap: var(--service-card-gap, var(--space-12));
-        padding: var(--service-card-padding, var(--space-24));
+        gap: var(--service-card-gap, var(--component-gap));
+        padding: var(--service-card-padding, var(--component-padding));
         background: var(--service-card-bg, var(--card-bg, var(--color-surface)));
-        border: var(--service-card-border, 1px solid var(--color-border));
-        border-radius: var(--service-card-radius, var(--radius-lg));
+        border: var(--service-card-border, var(--stroke-default) solid var(--color-border));
+        border-radius: var(--service-card-radius, var(--shape-surface));
         box-shadow: var(--service-card-shadow, var(--elevation-1));
         contain: layout paint;
       }
       .service-card--featured,
       .feature-card--featured {
-        --service-card-border: 2px solid var(--color-interactive);
+        --service-card-border: var(--stroke-emphasis) solid var(--color-interactive);
         --service-card-shadow: var(--elevation-3);
       }
       .service-card__icon,
