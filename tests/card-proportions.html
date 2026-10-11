@@ -11,6 +11,19 @@
     .fixture > section { margin-block: 32px; }
     /* Only this fixture selects colours; layout uses actual DesignSystem CSS. */
     .card { --card-bg: var(--color-surface); }
+    /* Strict screenshot probe: keyboard focus must paint outside the Card. */
+    .focus-card { position: relative; }
+    .focus-edge-action {
+      position: absolute;
+      inset-block-start: 18px;
+      inset-inline-end: 0;
+      padding: 6px;
+      background: #fff;
+    }
+    .focus-edge-action:focus {
+      outline: 6px solid rgb(255, 0, 255);
+      outline-offset: 2px;
+    }
   </style>
 </head>
 <body>
@@ -50,6 +63,15 @@
           </div>
           <div class="card__footer"><a href="#price-long">Auswählen</a></div>
         </article></div>
+      </div>
+    </section>
+    <section aria-label="Visible keyboard focus">
+      <div id="focus-slot" class="card-slot" style="max-inline-size: 330px">
+        <article id="focus-card" class="card card--content-fit focus-card">
+          <div class="card__header"><h3>Fokus bleibt sichtbar</h3></div>
+          <div class="card__body"><p>Diese Card darf den Fokusindikator nicht abschneiden.</p></div>
+          <a id="edge-action" class="focus-edge-action" href="#focus-card">Öffnen</a>
+        </article>
       </div>
     </section>
     <section aria-label="Different card slot widths" id="probes">
