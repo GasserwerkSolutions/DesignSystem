@@ -151,7 +151,8 @@
   min-inline-size: 0;
 }
 .card--content-fit > .card__header {
-  gap: var(--space-8);
+  /* Label and heading belong closer than independent blocks. */
+  gap: calc(var(--component-gap) / 2);
 }
 
 .card--content-fit > :is(.card__header, .card__body) > :is(h2, h3, h4, p) {
