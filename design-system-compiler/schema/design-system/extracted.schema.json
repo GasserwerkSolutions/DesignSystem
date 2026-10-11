@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:gasserwerk:legacy-design-observation:1.0.0-preview",
+  "$comment": "Preview evidence schema only. Not a Strength First website contract and not an approval.",
+  "title": "Legacy design observation (internal, partial)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "status",
+    "source",
+    "sourceInventory",
+    "designSystem",
+    "analysis",
+    "semanticMapping",
+    "output",
+    "decisions",
+    "publication"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0-preview"
+    },
+    "kind": {
+      "const": "legacy-website-observation"
+    },
+    "status": {
+      "const": "NOT_A_STRENGTH_FIRST_APPROVAL"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "file",
+        "sha256",
+        "language",
+        "title"
+      ],
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "sourceInventory": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "sha256",
+          "role"
+        ],
+        "properties": {
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "role": {
+            "type": "string"
+          },
+          "emittedAs": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "designSystem": {
+      "type": "object",
+      "required": [
+        "package",
+        "profile",
+        "sourceHashes"
+      ],
+      "properties": {
+        "package": {
+          "type": "string"
+        },
+        "profile": {
+          "const": "builder"
+        },
+        "sourceHashes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "analysis": {
+      "type": "object",
+      "required": [
+        "responsiveObservedAt",
+        "observations",
+        "sourceClasses",
+        "sourceAxes",
+        "unresolvedNavigation",
+        "overflowObservedAt"
+      ]
+    },
+    "semanticMapping": {
+      "type": "object",
+      "required": [
+        "matchedComponents",
+        "matchedPatterns",
+        "matchedLayouts",
+        "unmatchedSourceClasses",
+        "observedAxisAttributes",
+        "status"
+      ]
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "mode",
+        "html",
+        "webComponent"
+      ],
+      "properties": {
+        "mode": {
+          "const": "ISOLATED_LEGACY_SNAPSHOT"
+        },
+        "html": {
+          "const": "element.html"
+        },
+        "webComponent": {
+          "const": "element.mjs"
+        }
+      }
+    },
+    "decisions": {
+      "type": "object",
+      "required": [
+        "inferredDesignChoices",
+        "requiredHumanChecks"
+      ],
+      "properties": {
+        "inferredDesignChoices": {
+          "const": []
+        },
+        "requiredHumanChecks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "publication": {
+      "const": "BLOCKED"
+    }
+  }
+}

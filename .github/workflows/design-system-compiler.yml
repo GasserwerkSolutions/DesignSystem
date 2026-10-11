@@ -1,0 +1,23 @@
+name: Legacy DesignSystem compiler proof
+on:
+  push:
+    branches: [integration/designsystem-contracts-15-18]
+    paths: ["design-system-compiler/**", ".github/workflows/design-system-compiler.yml"]
+  pull_request:
+    paths: ["design-system-compiler/**", ".github/workflows/design-system-compiler.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  import-and-regression:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.16.0"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install chromium --with-deps
+      - run: node --test design-system-compiler/tests/pipeline.test.mjs
+      - run: node design-system-compiler/cli.mjs --source design-system-compiler/tests/fixtures/old-site/index.html --out /tmp/ds-legacy-proof --visual
