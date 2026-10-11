@@ -62,12 +62,13 @@ test("Unsafe scripts and remote stylesheets are rejected without output",async(t
  await assert.rejects(runPipeline({input:file,out,repoRoot:repo}),/E_SOURCE_EXTERNAL_OR_ROOTED/);
 });
 test("CSS local asset is pinned, emitted with hash, no remote imports",async(t)=>{
- const root=await work(t),styles=path.join(root,"styles");await fs.mkdir(styles);
- await fs.writeFile(path.join(root,"index.html"),'<html><head><link rel="stylesheet" href="styles/page.css"></head><body><h1>Hello</h1></body></html>');
+ const root=await work(t),input=path.join(root,"input"),styles=path.join(input,"styles");
+ await fs.mkdir(styles,{recursive:true});
+ await fs.writeFile(path.join(input,"index.html"),'<html><head><link rel="stylesheet" href="styles/page.css"></head><body><h1>Hello</h1></body></html>');
  await fs.writeFile(path.join(styles,"page.css"),'body{background-image:url("../dot.png")}');
  const png=Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4z8DwHwAFgAI/ScLh9AAAAABJRU5ErkJggg==","base64");
- await fs.writeFile(path.join(root,"dot.png"),png);
- const report=await runPipeline({input:path.join(root,"index.html"),out:path.join(root,"out"),repoRoot:repo});
+ await fs.writeFile(path.join(input,"dot.png"),png);
+ const report=await runPipeline({input:path.join(input,"index.html"),out:path.join(root,"out"),repoRoot:repo});
  assert.ok(Object.keys(report.outputFiles).some(x=>/^assets\/[0-9a-f]{64}\.png$/.test(x)));
  const html=await fs.readFile(path.join(root,"out/element.html"),"utf8");
  assert.match(html,/background-image:url\("assets\/[a-f0-9]{64}\.png"\)/);
