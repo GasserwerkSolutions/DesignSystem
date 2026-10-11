@@ -292,6 +292,7 @@
     --section-py: var(--space-section);
     --container-max: 1280px;
     --prose-max: 70ch;
+    --prose-line-max: 65ch;
     --input-bg: light-dark(white, var(--gray-900));
     --input-border: var(--color-border);
     --input-text: var(--color-text-primary);
@@ -375,6 +376,21 @@
 
 /* semantic/form.css */
 @layer mode {
+  [data-space=normal] {
+    --space-inline: var(--space-16);
+    --space-block: var(--space-16);
+    --space-section: var(--space-48);
+    --layout-gap: var(--space-16);
+    --component-gap: var(--space-8);
+    --component-padding: var(--space-16);
+    --control-px: var(--space-16);
+    --control-py: var(--space-8);
+    --row-px: var(--space-12);
+    --row-py: var(--space-8);
+    --btn-px: var(--control-px);
+    --btn-py: var(--control-py);
+    --card-padding: var(--component-padding);
+  }
   [data-space=compact] {
     --space-inline: var(--space-12);
     --space-block: var(--space-16);
@@ -390,6 +406,7 @@
     --btn-py: var(--control-py);
     --card-padding: var(--component-padding);
   }
+  [data-space=wide],
   [data-space=spacious] {
     --space-inline: var(--space-24);
     --space-block: var(--space-32);
@@ -628,6 +645,23 @@
   }
   p:last-child {
     margin-bottom: 0;
+  }
+  .prose > :where(p, ul, ol, blockquote) {
+    max-inline-size: min(100%, var(--prose-line-max, 65ch));
+  }
+  .prose > p {
+    margin-block: 0 var(--space-24);
+    overflow-wrap: break-word;
+  }
+  .prose > p:last-child {
+    margin-block-end: 0;
+  }
+  .prose > :where(h2, h3) {
+    margin-block-start: var(--space-48);
+    margin-block-end: var(--space-12);
+  }
+  .prose > :where(h2, h3):first-child {
+    margin-block-start: 0;
   }
   .lead {
     font-size: var(--font-lg);
@@ -1292,6 +1326,68 @@
     .card--split > .card__body {
       padding: var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) var(--card-padding, var(--component-padding)) 0;
     }
+  }
+  .card-grid--natural {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--card-grid-min, 17rem)), 1fr));
+    gap: var(--layout-gap);
+    align-items: start;
+  }
+  .card-slot {
+    container: card-slot / inline-size;
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+  .card-slot > .card--content-fit {
+    align-self: stretch;
+  }
+  .card--content-fit {
+    display: flex;
+    flex-direction: column;
+    gap: var(--component-gap);
+    min-inline-size: 0;
+    block-size: auto;
+    align-self: start;
+    contain: layout;
+  }
+  .card--content-fit > :is(.card__header, .card__body) {
+    display: grid;
+    gap: var(--component-gap);
+    min-inline-size: 0;
+  }
+  .card--content-fit > .card__header {
+    gap: calc(var(--component-gap) / 2);
+  }
+  .card--content-fit > :is(.card__header, .card__body) > :is(h2, h3, h4, p) {
+    margin-block: 0;
+  }
+  .card--fluid-pad {
+    padding: var(--space-16);
+  }
+  @container card-slot (min-width: 0px) {
+    .card--fluid-pad {
+      padding: clamp(var(--space-16), 6cqi, var(--card-padding, var(--component-padding)));
+    }
+  }
+  .card--content-fit > :is(.card__header, .card__body) {
+    overflow-wrap: anywhere;
+  }
+  .card-grid--natural.card-grid--compare {
+    align-items: stretch;
+  }
+  .card-grid--compare > .card--content-fit {
+    align-self: stretch;
+  }
+  .card-grid--compare > .card-slot {
+    align-self: stretch;
+  }
+  .card-grid--compare > .card-slot > .card--content-fit {
+    flex: 1 1 auto;
+  }
+  .card--action-aligned > .card__footer {
+    margin-block-start: auto;
+    padding-block-start: var(--component-gap);
   }
 }
 

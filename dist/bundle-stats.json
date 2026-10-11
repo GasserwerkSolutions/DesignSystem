@@ -1,14 +1,14 @@
 {
   "version": "0.32.0",
   "bundle": {
-    "raw": 166375,
-    "gzip": 24818,
-    "brotli": 20880
+    "raw": 168992,
+    "gzip": 25229,
+    "brotli": 21220
   },
   "minified": {
-    "raw": 131688,
-    "gzip": 23014,
-    "brotli": 19768
+    "raw": 133780,
+    "gzip": 23391,
+    "brotli": 20078
   },
   "layers": [
     {
@@ -18,7 +18,7 @@
     },
     {
       "label": "semantic",
-      "raw": 23177,
+      "raw": 24312,
       "files": 4
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "label": "base",
-      "raw": 13494,
+      "raw": 14262,
       "files": 4
     },
     {
@@ -38,7 +38,7 @@
     },
     {
       "label": "components",
-      "raw": 177070,
+      "raw": 180320,
       "files": 57
     }
   ],
@@ -46,6 +46,10 @@
     {
       "name": "combobox",
       "raw": 9112
+    },
+    {
+      "name": "card",
+      "raw": 7384
     },
     {
       "name": "popover",
@@ -70,10 +74,6 @@
     {
       "name": "select",
       "raw": 4337
-    },
-    {
-      "name": "card",
-      "raw": 4134
     },
     {
       "name": "otp-input",
