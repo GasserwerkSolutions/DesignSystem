@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="de-CH" data-space="compact" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intrinsic cards fixture</title>
+  <link rel="stylesheet" href="../main.css">
+  <style>
+    body { margin: 0; }
+    .fixture { max-width: 1080px; margin-inline: auto; padding-inline: 16px; }
+    .fixture > section { margin-block: 32px; }
+    /* Only this fixture selects colours; layout uses actual DesignSystem CSS. */
+    .card { --card-bg: var(--color-surface); }
+  </style>
+</head>
+<body>
+  <main class="fixture">
+    <section aria-label="Natural editorial cards">
+      <h2>Leistungen</h2>
+      <div id="natural" class="card-grid--natural">
+        <article id="short" class="card card--content-fit card--fluid-pad">
+          <div class="card__header"><small>Kurz</small><h3>Haarschnitt</h3></div>
+          <div class="card__body"><p>Persönlich und unkompliziert.</p></div>
+          <div class="card__footer"><a href="#details">Mehr erfahren</a></div>
+        </article>
+        <article id="long" class="card card--content-fit card--fluid-pad">
+          <div class="card__header"><small>Intensiv</small><h3>Beratung und Haarpflege</h3></div>
+          <div class="card__body">
+            <p>Hier nehmen wir uns Zeit, um die Ausgangslage sorgfältig zu verstehen und auf die Wünsche einzugehen.</p>
+            <p>Das ausführliche Gespräch und die individuelle Empfehlung stehen im Mittelpunkt.</p>
+            <p>Die Begleitung umfasst mehrere abgestimmte Schritte und eine verständliche Erklärung.</p>
+          </div>
+          <div class="card__footer"><a href="#details">Mehr erfahren</a></div>
+        </article>
+      </div>
+    </section>
+    <section aria-label="Intentional comparisons">
+      <h2>Vergleich</h2>
+      <div id="comparison" class="card-grid--natural card-grid--compare">
+        <article id="price-short" class="card card--content-fit card--action-aligned">
+          <div class="card__header"><h3>Basis</h3></div>
+          <div class="card__body"><p>Ein einfacher Einstieg.</p></div>
+          <div class="card__footer"><a href="#price-short">Auswählen</a></div>
+        </article>
+        <article id="price-long" class="card card--content-fit card--action-aligned">
+          <div class="card__header"><h3>Plus</h3></div>
+          <div class="card__body">
+            <p>Eine ausführlichere Beratung für besondere Anforderungen.</p>
+            <p>Zusätzliche Leistungen sind enthalten.</p>
+          </div>
+          <div class="card__footer"><a href="#price-long">Auswählen</a></div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
