@@ -12,9 +12,18 @@ assert.match(card, /grid-template-columns:\s*repeat\(auto-fill, minmax\(min\(100
 assert.match(card, /\.card-grid--natural\s*\{[^}]*align-items:\s*start;/s);
 assert.match(card, /\.card--content-fit\s*\{[^}]*block-size:\s*auto;/s);
 assert.match(card, /\.card--content-fit > \.card__header\s*\{[^}]*gap:\s*calc\(var\(--component-gap\) \/ 2\);/s);
-assert.match(card, /\.card--fluid-pad\s*\{[^}]*padding:\s*clamp\(var\(--space-16\), 2cqi, var\(--card-padding, var\(--component-padding\)\)\)/s);
+assert.match(card, /\\.card-slot\\s*\\{[^}]*container:\\s*card-slot \\/ inline-size;/s);
+assert.doesNotMatch(card.match(/\\.card-grid--natural\\s*\\{([^}]*)\\}/s)?.[1] ?? "", /container-type:/,
+  "Outer grid must not act as every card's cqi container");
+assert.match(card, /\\.card--fluid-pad\\s*\\{\\s*padding:\\s*var\\(--space-16\\);/);
+assert.match(card, /@container card-slot \\(min-width: 0px\\)\\s*\\{[\\s\\S]*?padding:\\s*clamp\\(var\\(--space-16\\), 6cqi, var\\(--card-padding, var\\(--component-padding\\)\\)\\)/);
+assert.doesNotMatch(card, /container-type:\\s*size\\b/);
+assert.match(card, /overflow-wrap:\\s*anywhere;/);
+assert.match(card, /\\.card-grid--compare > \\.card-slot > \\.card--content-fit\\s*\\{\\s*flex:\\s*1 1 auto;/);
 assert.match(card, /\.card-grid--natural\.card-grid--compare\s*\{\s*align-items:\s*stretch;/);
 assert.match(card, /\.card--action-aligned > \.card__footer\s*\{[^}]*margin-block-start:\s*auto;/s);
 assert.doesNotMatch(card.slice(card.indexOf("CONTENT-FIRST CARD LAYOUT")), /(?:height|block-size):\s*\d+(px|rem)/);
 assert.ok(fixture.includes('id="natural"') && fixture.includes('id="comparison"'));
+assert.ok(fixture.includes('id="probe-narrow"') && fixture.includes('id="probe-wide"'));
+assert.ok(fixture.includes('id="unwrapped"'));
 console.log("OK: intrinsic card layout / proximity contract");
