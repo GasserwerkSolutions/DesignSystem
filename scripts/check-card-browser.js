@@ -48,8 +48,10 @@ async function main(){
       "Only explicit comparison cards should share a height");
     assert.ok(near(compact.priceShortFooter,compact.priceLongFooter),
       "Comparison actions may align to bottom");
-    assert.ok(compact.headerGap < compact.groupGap,
-      "Related title/label gap should be smaller than inter-card gap");
+    assert.ok(near(compact.headerGap * 2, compact.cardGap),
+      "Label and title should have half the gap used between content groups");
+    assert.ok(compact.cardGap <= compact.groupGap,
+      "Card grouping must not exceed inter-card spacing");
     assert.ok(compact.gridColumns >= 2,"Desktop should render multiple tracks");
 
     await page.evaluate(()=>document.documentElement.setAttribute("data-space","spacious"));
