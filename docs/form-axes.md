@@ -30,8 +30,10 @@ shared tokens, not hardcoded pixels. Breakpoints, content density, legibility,
 and individual components may require opt-in overrides. These values are
 **presets**, not a continuous slider implementation.
 
-For compatibility, `compact` remains an alias of `normal`, and `spacious`
-remains an alias of `wide`. Existing generated sites keep their output.
+For compatibility, the deprecated `compact` option retains its **original**
+12px outer/layout gaps (it is not exactly equivalent to the new `normal`
+baseline). `spacious` remains an exact alias of `wide`. Existing generated
+websites remain stable, especially when pinned to their CSS version.
 New builder controls should show **Normal – Wide** and emit the new values;
 renderer contracts can migrate independently with tests.
 
