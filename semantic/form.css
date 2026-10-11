@@ -34,10 +34,10 @@
   --card-padding: var(--component-padding);
 }
 [data-shape="defined"] {
-  --shape-control: var(--radius-0);
-  --shape-surface: var(--radius-0);
-  --shape-media: var(--radius-0);
-  --shape-pill: var(--radius-0);
+  --shape-control: var(--radius-2);
+  --shape-surface: var(--radius-2);
+  --shape-media: var(--radius-2);
+  --shape-pill: var(--radius-2);
   --btn-radius: var(--shape-control);
   --card-radius: var(--shape-surface);
   --badge-radius: var(--shape-pill);
