@@ -4,7 +4,11 @@
  * Scopes may be applied at document or component-subtree level.
  * The layout gap separates independent groups; the component gap groups
  * related content, generally with an intentional 2:1 hierarchy.
+ * Public-facing spacing vocabulary: normal / wide. Keep compact / spacious
+ * aliases for already generated websites while consumers migrate.
  */
+/* Normal is the readable, everyday website baseline; compact is a legacy alias. */
+[data-space="normal"],
 [data-space="compact"] {
   --space-inline: var(--space-16);
   --space-block: var(--space-16);
@@ -20,6 +24,8 @@
   --btn-py: var(--control-py);
   --card-padding: var(--component-padding);
 }
+/* Wide increases rhythm and whitespace; spacious remains supported. */
+[data-space="wide"],
 [data-space="spacious"] {
   --space-inline: var(--space-24);
   --space-block: var(--space-32);
