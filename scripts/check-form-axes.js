@@ -8,6 +8,15 @@ const semantic = read('semantic/semantic.css');
 for (const [axis, choices] of Object.entries({space:['compact','spacious'],shape:['defined','soft'],weight:['fine','strong']})) {
   for(const value of choices) assert.ok(form.includes(`[data-${axis}="${value}"]`), `${axis}=${value}`);
 }
+// Defined never means a 0px corner: enforce the agreed minimum 2px token.
+const defined = form.split('[data-shape="defined"] {')[1]?.split('}')[0];
+assert.ok(defined, 'missing defined shape block');
+for (const kind of ['control', 'surface', 'media', 'pill']) {
+  assert.ok(
+    defined.includes(`--shape-${kind}: var(--radius-2);`),
+    `defined ${kind} must map to --radius-2`,
+  );
+}
 for (const p of ['main.css','profiles/builder.css']) assert.match(read(p), /semantic\/form\.css/);
 for (const token of ['--layout-gap','--component-gap','--component-padding','--shape-control','--shape-surface','--shape-media','--stroke-default','--stroke-emphasis']) {
   assert.ok(semantic.includes(token), `missing default ${token}`);
