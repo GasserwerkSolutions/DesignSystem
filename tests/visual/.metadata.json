@@ -2,7 +2,7 @@
   "chromiumVersion": "Chrome/149.0.7827.22",
   "platform": "linux",
   "arch": "x64",
-  "nodeVersion": "v22.22.3",
+  "nodeVersion": "v22.23.3",
   "viewport": {
     "width": 1280,
     "height": 900
