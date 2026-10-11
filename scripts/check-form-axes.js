@@ -14,7 +14,7 @@ for (const [name, inline, layout, component] of [
   ['normal', '16', '16', '8'],
   ['wide', '24', '32', '16'],
 ]) {
-  const marker = `[data-space="${name}"],`;
+  const marker = `[data-space="${name}"]`;
   const start = form.indexOf(marker);
   assert.ok(start >= 0, `missing primary space selector ${name}`);
   const block = form.slice(form.indexOf('{', start) + 1, form.indexOf('}', start));
@@ -23,6 +23,17 @@ for (const [name, inline, layout, component] of [
   assert.ok(block.includes(`--component-gap: var(--space-${component});`), `${name} internal spacing`);
   assert.equal(Number(layout), 2 * Number(component), `${name} proximity hierarchy`);
 }
+// The deprecated compact preset preserves its prior 12px outer + layout gap.
+// It is deliberately not an alias of normal (16px), to avoid silent layout drift.
+const oldStart = form.indexOf('[data-space="compact"]');
+assert.ok(oldStart >= 0, 'missing legacy compact selector');
+const oldBlock = form.slice(form.indexOf('{', oldStart) + 1, form.indexOf('}', oldStart));
+for (const decl of [
+  '--space-inline: var(--space-12);',
+  '--layout-gap: var(--space-12);',
+  '--component-gap: var(--space-8);',
+]) assert.ok(oldBlock.includes(decl), `legacy compact changed: ${decl}`);
+
 for (const p of ['main.css','profiles/builder.css']) assert.match(read(p), /semantic\/form\.css/);
 for (const token of ['--layout-gap','--component-gap','--component-padding','--shape-control','--shape-surface','--shape-media','--stroke-default','--stroke-emphasis']) {
   assert.ok(semantic.includes(token), `missing default ${token}`);
