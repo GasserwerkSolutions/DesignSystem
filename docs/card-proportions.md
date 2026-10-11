@@ -84,6 +84,26 @@ Comparison mode stretches the slot and its card to a shared row height. Only
 `.card--action-aligned` pushes the action to the bottom; the default
 content-first card keeps its footer next to its content.
 
+## Keyboard focus and visible overflow
+
+The default legacy `.card` currently has `contain: layout paint` for
+render isolation. **Paint containment clips the visual focus outline** of
+edge-aligned descendants even when the link itself still receives focus.
+The Chromium screenshot regression reproduced this with zero magenta
+outline pixels outside the card border.
+
+For opt-in `.card--content-fit` we therefore explicitly use
+`contain: layout` (without `paint`). This keeps the natural height and
+layout isolation while allowing focus rings and other meaningful visual
+affordances to extend beyond the box. It does not silently change
+legacy cards: removing their paint containment requires a separate
+compatibility review.
+
+A cross-engine Chromium/WebKit fixture checks screenshot **pixels** as
+well as DOM focus state, long unbroken words, intrinsic height and
+horizontal overflow. Tests cannot establish accessibility from
+`scrollWidth` alone, nor from `:focus` alone.
+
 ## Quality gates
 
 - Never set a general fixed `height` on a content card.
