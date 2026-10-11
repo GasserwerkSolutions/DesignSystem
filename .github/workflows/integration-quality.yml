@@ -1,0 +1,64 @@
+name: Independent integration quality gates
+
+on:
+  pull_request:
+    paths:
+      - "semantic/form.css"
+      - "semantic/semantic.css"
+      - "base/typography.css"
+      - "components/card.css"
+      - "scripts/check-form-axes.js"
+      - ".github/workflows/integration-quality.yml"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Install browser dependencies
+        run: bash scripts/install-browser-deps.sh
+      - name: Reproduce all generated assets
+        run: npm run build && npm run check:generated
+      - name: Verify form, prose, and card contracts
+        run: |
+          npm run check:form
+          node scripts/check-prose-contract.js
+          node scripts/check-prose-browser.js
+          node scripts/check-card-contract.js
+          node scripts/check-card-browser.js
+      - name: Source and semantic safety checks
+        run: |
+          npm run lint:strict
+          npm run test:lint
+          npm run check:patterns
+          npm run check:profiles
+          npm run check:contrast
+          npm run check:contrast:browser
+      - name: Accessibility and interaction (excluding legacy screenshots)
+        run: |
+          npm run check:a11y
+          npm run check:journeys
+      - name: All remaining full-check gates
+        run: |
+          npm run check:examples
+          npm run measure:check
+          npm run build:site
+          npm run check:site:links
+          npm run check:site:responsive
+          npm run check:site
+          npm run check:package
+      - name: Independent dependency security gate
+        if: ${{ !cancelled() }}
+        run: npm audit --audit-level=high
