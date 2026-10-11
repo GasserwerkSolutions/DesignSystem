@@ -1,14 +1,14 @@
 {
   "version": "0.32.0",
   "bundle": {
-    "raw": 163766,
-    "gzip": 24424,
-    "brotli": 20571
+    "raw": 166375,
+    "gzip": 24818,
+    "brotli": 20880
   },
   "minified": {
-    "raw": 129440,
-    "gzip": 22629,
-    "brotli": 19472
+    "raw": 131688,
+    "gzip": 23014,
+    "brotli": 19768
   },
   "layers": [
     {
@@ -18,8 +18,8 @@
     },
     {
       "label": "semantic",
-      "raw": 20738,
-      "files": 3
+      "raw": 23177,
+      "files": 4
     },
     {
       "label": "themes",
@@ -28,7 +28,7 @@
     },
     {
       "label": "base",
-      "raw": 13489,
+      "raw": 13494,
       "files": 4
     },
     {
@@ -38,7 +38,7 @@
     },
     {
       "label": "components",
-      "raw": 176896,
+      "raw": 177070,
       "files": 57
     }
   ],
@@ -72,16 +72,16 @@
       "raw": 4337
     },
     {
+      "name": "card",
+      "raw": 4134
+    },
+    {
       "name": "otp-input",
       "raw": 4120
     },
     {
       "name": "timeline",
       "raw": 4052
-    },
-    {
-      "name": "card",
-      "raw": 3989
     },
     {
       "name": "spinner",
@@ -113,7 +113,7 @@
     },
     {
       "name": "button",
-      "raw": 3607
+      "raw": 3631
     },
     {
       "name": "modal",
@@ -257,7 +257,7 @@
     },
     {
       "name": "section",
-      "raw": 1627
+      "raw": 1632
     },
     {
       "name": "breadcrumbs",
