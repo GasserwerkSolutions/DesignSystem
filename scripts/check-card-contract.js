@@ -11,7 +11,7 @@ assert.match(card, /\.card-grid--natural\s*\{/);
 assert.match(card, /grid-template-columns:\s*repeat\(auto-fill, minmax\(min\(100%, var\(--card-grid-min, 17rem\)\), 1fr\)\)/);
 assert.match(card, /\.card-grid--natural\s*\{[^}]*align-items:\s*start;/s);
 assert.match(card, /\.card--content-fit\s*\{[^}]*block-size:\s*auto;/s);
-assert.match(card, /\.card--content-fit > \.card__header\s*\{\s*gap:\s*var\(--space-8\);/);
+assert.match(card, /\.card--content-fit > \.card__header\s*\{[^}]*gap:\s*calc\(var\(--component-gap\) \/ 2\);/s);
 assert.match(card, /\.card--fluid-pad\s*\{[^}]*padding:\s*clamp\(var\(--space-16\), 2cqi, var\(--card-padding, var\(--component-padding\)\)\)/s);
 assert.match(card, /\.card-grid--natural\.card-grid--compare\s*\{\s*align-items:\s*stretch;/);
 assert.match(card, /\.card--action-aligned > \.card__footer\s*\{[^}]*margin-block-start:\s*auto;/s);
