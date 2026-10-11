@@ -30,7 +30,7 @@ the bottom edges need not align. This prevents a short card from
 looking half empty. Last-row cards do not grow across the entire grid.
 
 `.card--content-fit` uses Flexbox with meaningful gaps; the header
-uses the small shared space token `--space-8`, while groups of content
+uses half of `--component-gap` (via `calc()`), while groups of content
 use the semantic `--component-gap`. Text margins are reset **only**
 for direct descendants of the designated card header/body wrappers.
 
