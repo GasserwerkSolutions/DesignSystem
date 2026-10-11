@@ -2,15 +2,13 @@
 /**
  * Contract regression on independent browser engines.
  * A Card may contain layout, but must not clip visible keyboard focus.
- * WebKit uses the installed Playwright browser; Chromium uses Puppeteer's
- * already-pinned Chrome for Testing binary (to avoid a redundant download).
+ * Both engines use Playwright-managed binaries installed by CI.
  */
 const assert = require("node:assert/strict");
 const path = require("node:path");
 const { pathToFileURL } = require("node:url");
 const { PNG } = require("pngjs");
 const { chromium, webkit } = require("playwright");
-const puppeteer = require("puppeteer");
 
 const fixture = pathToFileURL(path.resolve(__dirname, "../tests/card-proportions.html")).href;
 
@@ -90,7 +88,6 @@ async function run(name, browserType, options) {
 async function main() {
   await run("Chromium", chromium, {
     headless: true,
-    executablePath: puppeteer.executablePath(),
     args: ["--no-sandbox", "--allow-file-access-from-files"],
   });
   await run("WebKit", webkit, { headless: true });
