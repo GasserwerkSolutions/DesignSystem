@@ -36,6 +36,8 @@ jobs:
         run: npm run check:full
 
       - name: Security audit
+        # Independent gate: a stale visual baseline must not hide vulnerabilities.
+        if: ${{ !cancelled() }}
         run: npm audit --audit-level=high
 
       - name: Verify generated artifacts are committed
