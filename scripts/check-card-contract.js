@@ -15,6 +15,11 @@ const naturalGrid = card.match(/\.card-grid--natural\s*\{([^}]*)\}/s)?.[1] ?? ""
 assert.doesNotMatch(naturalGrid, /container-type:|container:/,
   "Outer grid must not act as the padding measurement container");
 assert.match(card, /\.card--content-fit\s*\{[^}]*block-size:\s*auto;/s);
+assert.match(card, /\.card--content-fit\s*\{[^}]*contain:\s*layout;/s,
+  "Content cards may isolate layout, but must not clip paint or focus rings");
+assert.match(card, /\.card\s*\{[^}]*contain:\s*layout paint;/s,
+  "Legacy card contract stays untouched by opt-in card change");
+assert.ok(fixture.includes('id="edge-action"'), "Keyboard focus paint fixture missing");
 assert.match(card, /\.card--content-fit > \.card__header\s*\{[^}]*gap:\s*calc\(var\(--component-gap\) \/ 2\);/s);
 assert.match(card, /\.card--fluid-pad\s*\{\s*padding:\s*var\(--space-16\);/);
 assert.match(card, /@container card-slot \(min-width: 0px\)\s*\{[\s\S]*?padding:\s*clamp\(var\(--space-16\), 6cqi, var\(--card-padding, var\(--component-padding\)\)\)/);
