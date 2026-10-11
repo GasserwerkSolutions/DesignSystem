@@ -155,6 +155,13 @@
   min-inline-size: 0;
   block-size: auto;
   align-self: start;
+
+  /* Opt-in accessibility fix: global .card uses paint containment, which
+   * clips focus rings from edge-aligned children. Keep layout containment
+   * but allow focus outlines, popovers and visual affordances to paint out.
+   * Existing non-opt-in .card instances remain byte-for-byte unchanged.
+   */
+  contain: layout;
 }
 
 /* In a card, labels and titles form a tighter group than independent blocks. */
