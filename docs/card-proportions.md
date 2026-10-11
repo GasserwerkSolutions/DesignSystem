@@ -15,11 +15,13 @@ exception when users need to compare prices, benefits or equal action rows.
 
 ```html
 <section class="card-grid--natural" aria-label="Leistungen">
-  <article class="card card--content-fit card--fluid-pad">
-    <div class="card__header"><span>Kategorie</span><h3>Leistung</h3></div>
-    <div class="card__body"><p>Kurzbeschreibung mit passender Länge.</p></div>
-    <div class="card__footer"><a href="/leistungen">Mehr erfahren</a></div>
-  </article>
+  <div class="card-slot">
+    <article class="card card--content-fit card--fluid-pad">
+      <div class="card__header"><span>Kategorie</span><h3>Leistung</h3></div>
+      <div class="card__body"><p>Kurzbeschreibung mit passender Länge.</p></div>
+      <div class="card__footer"><a href="/leistungen">Mehr erfahren</a></div>
+    </article>
+  </div>
 </section>
 ```
 
@@ -34,27 +36,51 @@ uses half of `--component-gap` (via `calc()`), while groups of content
 use the semantic `--component-gap`. Text margins are reset **only**
 for direct descendants of the designated card header/body wrappers.
 
-`.card--fluid-pad` is optional. Padding is bounded:
-`clamp(var(--space-16), 2cqi, var(--card-padding, var(--component-padding)))`.
-The `cqi` value reads from the nearest inline-size query container:
-`.card-grid--natural` supplies one. This is **not** a content-length
-sensor. It lets more generous layouts breathe while preserving semantic
-Normal/Wide bounds from the spacing contract. It does not add empty
-height to short cards.
+**Containment contract:** `.card-slot { container: card-slot / inline-size; }`
+wraps **one** card; the grid itself is not the cqi reference. The wrapper
+gets its width from the CSS Grid track (or another definite available
+width) and its **height from the card's content**. Never apply
+`container-type: size` to a natural-height card. The container name
+avoids silently picking an unrelated ancestor.
+
+`.card--fluid-pad` is optional and only fluid **inside a named
+`card-slot`**. At 16px root:
+
+```css
+.card--fluid-pad { padding: var(--space-16); } /* safe 16px fallback */
+@container card-slot (min-width: 0px) {
+  .card--fluid-pad {
+    padding: clamp(var(--space-16), 6cqi,
+                   var(--card-padding, var(--component-padding)));
+  }
+}
+```
+
+Because `cqi` on the Card refers to its **ancestor** container, attaching
+`container-type: inline-size` directly to the Card would not let it
+measure its own width for its own padding. On a 300px card slot, 6cqi is
+18px; on 520px, it is 31.2px, both bounded above by the semantic
+`--card-padding`. Without `.card-slot`, padding stays 16px.
+
+Do not add `flex-grow` to normal content. Only comparison rows may
+intentionally distribute spare height. Long unbroken content can wrap
+through `overflow-wrap: anywhere` in named card content groups.
 
 ### Explicit comparison exception
 
 ```html
 <div class="card-grid--natural card-grid--compare">
-  <article class="card card--content-fit card--action-aligned">
-    <div class="card__body"><h3>Basis</h3><p>...</p></div>
-    <div class="card__footer"><button>Wählen</button></div>
-  </article>
+  <div class="card-slot">
+    <article class="card card--content-fit card--action-aligned">
+      <div class="card__body"><h3>Basis</h3><p>...</p></div>
+      <div class="card__footer"><button>Wählen</button></div>
+    </article>
+  </div>
   <!-- More comparable plan cards -->
 </div>
 ```
 
-Comparison mode stretches the cards to a shared row height. Only
+Comparison mode stretches the slot and its card to a shared row height. Only
 `.card--action-aligned` pushes the action to the bottom; the default
 content-first card keeps its footer next to its content.
 
