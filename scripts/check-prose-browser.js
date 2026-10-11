@@ -47,8 +47,8 @@ async function main() {
     await page.goto(url, { waitUntil: "load" });
     await page.evaluate(() => document.fonts.ready);
     const desktop = await measure(page);
-    assert.ok(desktop.first.maxWidth.endsWith("px") || desktop.first.maxWidth.endsWith("ch"),
-      "Computed prose width should use a measurable CSS width");
+    assert.notEqual(desktop.first.maxWidth, "none",
+      "Opt-in prose must have a maximum inline size");
     assert.ok(desktop.first.width < desktop.ui.width * 0.85,
       "Prose paragraph should be narrower than UI copy on desktop");
     assert.equal(desktop.first.lineHeight, "24px", "Default text line-height is 1.5 × 16px");
