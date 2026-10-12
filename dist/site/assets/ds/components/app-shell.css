@@ -214,3 +214,40 @@
     border-block-end: 1px solid var(--color-border);
   }
 }
+/* Ergänzung für dist/site/assets/ds/state/state.css basierend auf deinen Regeln */
+
+/* 1. DER NORMALZUSTAND: Absolute visuelle Stille */
+.ds-card.state-normal {
+  border: 1px solid var(--ds-token-border-subtle, #E2E8F0); /* Aus deiner tokens.json */
+  background: var(--ds-token-bg-surface, #FFFFFF);
+}
+/* Keine aggressiven grünen Ränder, nur ein sanfter, statischer Status-Punkt */
+.ds-card.state-normal .ds-status-dot {
+  background-color: var(--ds-token-color-success, #10B981); /* Ruhiges Emerald-Grün */
+  width: 8px;
+  height: 8px;
+  border-radius: var(--ds-token-radius-full, 50%);
+  display: inline-block;
+  margin-right: var(--ds-token-space-xs, 8px);
+}
+
+/* 2. DER CRITICAL STATE: Wenn echte Systemfehler oder Deadlocks (No-Shows) auftreten */
+.ds-card.state-critical {
+  border: 2px solid var(--ds-token-color-critical, #EF4444); /* Eindeutiges Alarm-Rot */
+  background: var(--ds-token-bg-critical-subtle, #FEF2F2); /* Weicher, roter Hintergrund-Tint */
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.05); /* Verhindert visuelle Härte */
+}
+.ds-card.state-critical .ds-status-dot {
+  background-color: var(--ds-token-color-critical, #EF4444);
+  /* Ein dezentes, langsames Pulsieren signalisiert Handlungsbedarf, ohne Hektik zu erzeugen */
+  animation: ds-animation-pulse 2s infinite ease-in-out;
+}
+
+/* 3. DER INFO/MAGIC MODE: Für deine automatischen Wartelisten-Prozesse */
+.ds-card.state-processing {
+  border: 1px solid var(--ds-token-color-info, #3B82F6); /* Klares, beruhigendes Blau */
+  background: var(--ds-token-bg-info-subtle, #EFF6FF);
+}
+.ds-card.state-processing .ds-status-dot {
+  background-color: var(--ds-token-color-info, #3B82F6);
+}
