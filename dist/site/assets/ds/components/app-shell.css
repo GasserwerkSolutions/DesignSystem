@@ -86,6 +86,85 @@
     "footer  sidebar";
 }
 
+<!-- Eingebettet in deine dist/site/assets/ds/components/app-shell.css Struktur -->
+<div class="ds-app-shell">
+  
+  <!-- DIE MINIMALISTISCHE TOP-BAR (Nutzt dist/site/assets/ds/components/stat.css) -->
+  <header class="ds-topbar u-padding-md u-border-bottom">
+    <div class="ds-stat-group u-display-flex u-gap-lg">
+      <div class="ds-stat-minimal">
+        <span class="ds-stat-label">Heute im Salon:</span>
+        <span class="ds-stat-value u-font-bold">14 Kunden</span>
+      </div>
+      <div class="ds-stat-minimal">
+        <span class="ds-stat-label">Erwarteter Umsatz:</span>
+        <span class="ds-stat-value u-font-bold">CHF 1'200.-</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- DAS RESPONSIVE BENTO-GRID (Basiert auf dist/site/assets/ds/base/layout.css) -->
+  <main class="ds-bento-grid u-grid-3-columns u-padding-lg u-gap-md">
+    
+    <!-- KACHEL 1: SYSTEM & INFRASTRUKTUR (Onlinebuchung / CMS Status) -->
+    <!-- Steuerung über dist/site/assets/ds/state/state.css -->
+    <section class="ds-card ds-card--subtle state-normal" id="card-infrastructure">
+      <div class="ds-card__header u-display-flex u-align-items-center">
+        <!-- Nutzt deinen status-indicator Token aus state.css -->
+        <span class="ds-status-dot"></span>
+        <h3 class="ds-card__title">Onlinebuchung & CMS</h3>
+      </div>
+      <div class="ds-card__content">
+        <p class="u-text-muted u-text-sm">Alle Systeme laufen stabil. Die Synchronisation mit deiner Salon-Webseite ist aktiv.</p>
+      </div>
+    </section>
+
+    <!-- KACHEL 2: LIVE-ANALYTICS (Der monochrome Ruhe-Pol) -->
+    <!-- Nutzt dist/site/assets/ds/components/chart.css & trend.css -->
+    <section class="ds-card ds-card--subtle" id="card-analytics-today">
+      <div class="ds-card__header">
+        <h3 class="ds-card__title">Live-Analytics</h3>
+      </div>
+      <div class="ds-card__content u-display-flex u-direction-column">
+        <div class="ds-stat-huge u-font-size-xl">142 <span class="u-text-sm u-text-muted">Besucher</span></div>
+        <!-- Deine monochrome, flache Sparkline-Komponente aus chart.css -->
+        <div class="ds-chart-sparkline-muted u-margin-top-sm"></div>
+      </div>
+    </section>
+
+    <!-- KACHEL 3: REZEPTION & TERMIN-DYNAMIK (Das operative Herzstück) -->
+    <!-- Die logische Brücke für automatische Wartelisten-Updates & No-Shows -->
+    <section class="ds-card ds-card--subtle state-normal" id="card-salon-activity">
+      <div class="ds-card__header u-display-flex u-align-items-center">
+        <span class="ds-status-dot"></span>
+        <h3 class="ds-card__title">Heute im Salon</h3>
+      </div>
+      <div class="ds-card__content">
+        <div class="ds-list-row-group">
+          <!-- Zustand A & B: Ruhige Logs basierend auf list-row.css -->
+          <div class="ds-list-row ds-list-row--success u-text-sm">
+            <span class="u-icon-magic">✨</span> + 4 Neubuchungen automatisiert eingepflegt
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KACHEL 4: SCHNELLZUGRIFF / AKTIONEN (Nutzt dist/site/assets/ds/components/button.css) -->
+    <section class="ds-card ds-card--subtle" id="card-quick-actions">
+      <div class="ds-card__header">
+        <h3 class="ds-card__title">Schnellzugriff</h3>
+      </div>
+      <div class="ds-card__content u-display-flex u-gap-sm">
+        <!-- Nutzt deine nativen Button-Varianten aus button.css -->
+        <button class="ds-btn ds-btn--primary-outline ds-btn--sm">+ Neuer Termin</button>
+        <button class="ds-btn ds-btn--secondary-flat ds-btn--sm">Kasse öffnen</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+
 .app-shell--right-sidebar > .app-shell__sidebar {
   border-inline-end: none;
   border-inline-start: 1px solid var(--color-border);
