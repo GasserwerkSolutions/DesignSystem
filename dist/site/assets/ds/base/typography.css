@@ -67,6 +67,36 @@ p:last-child {
   margin-bottom: 0;
 }
 
+/**
+ * OPT-IN PROSE RHYTHM
+ * ===================
+ * Only the immediate children of .prose are editorial copy. Never constrain
+ * cards, buttons, navigation labels, or nested UI just because they use <p>.
+ * ch is a typographic width approximation, not an exact character counter.
+ */
+.prose > :where(p, ul, ol, blockquote) {
+  max-inline-size: min(100%, var(--prose-line-max, 65ch));
+}
+
+.prose > p {
+  margin-block: 0 var(--space-24);
+  overflow-wrap: break-word;
+}
+
+.prose > p:last-child {
+  margin-block-end: 0;
+}
+
+/* A heading belongs visually to the following paragraph, not the previous. */
+.prose > :where(h2, h3) {
+  margin-block-start: var(--space-48);
+  margin-block-end: var(--space-12);
+}
+
+.prose > :where(h2, h3):first-child {
+  margin-block-start: 0;
+}
+
 .lead {
   font-size: var(--font-lg);
   line-height: var(--lh-loose);
