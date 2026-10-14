@@ -7,6 +7,10 @@ on:
       - "semantic/semantic.css"
       - "base/typography.css"
       - "components/card.css"
+      - "components/aussage.css"
+      - "main.css"
+      - "package.json"
+      - "scripts/check-aussage-contract.js"
       - "scripts/check-form-axes.js"
       - ".github/workflows/integration-quality.yml"
   push:
@@ -34,6 +38,7 @@ jobs:
       - name: Verify form, prose, and card contracts
         run: |
           npm run check:form
+          npm run check:aussage
           node scripts/check-prose-contract.js
           node scripts/check-prose-browser.js
           node scripts/check-card-contract.js

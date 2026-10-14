@@ -1,14 +1,14 @@
 {
   "version": "0.32.0",
   "bundle": {
-    "raw": 168992,
-    "gzip": 25229,
-    "brotli": 21220
+    "raw": 174996,
+    "gzip": 26162,
+    "brotli": 21996
   },
   "minified": {
-    "raw": 133780,
-    "gzip": 23391,
-    "brotli": 20078
+    "raw": 138571,
+    "gzip": 24238,
+    "brotli": 20806
   },
   "layers": [
     {
@@ -38,11 +38,15 @@
     },
     {
       "label": "components",
-      "raw": 180320,
-      "files": 57
+      "raw": 191581,
+      "files": 58
     }
   ],
   "components": [
+    {
+      "name": "aussage",
+      "raw": 11261
+    },
     {
       "name": "combobox",
       "raw": 9112

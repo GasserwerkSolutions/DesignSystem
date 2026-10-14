@@ -71,6 +71,7 @@
     "ADR-006-exit-path-enforcement.md",
     "ADR-007-reduced-motion-awareness.md",
     "ADR-008-popover-trigger-lookup-hardening.md",
+    "ADR-009-aussage-grammatik.md",
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md"
@@ -108,11 +109,12 @@
     "build:site": "npm run build:site:raw && npm run build:site:assets",
     "build:profiles": "node scripts/build-profiles.js",
     "build": "npm run build:js && npm run build:tokens && npm run build:profiles && npm run build:css",
-    "check": "npm run lint && npm run test:lint && npm run check:contrast && npm run check:patterns && npm run check:form",
-    "check:full": "npm run build && npm run check:form && npm run lint:strict && npm run test:lint && npm run check:patterns && npm run check:profiles && npm run check:contrast && npm run check:contrast:browser && npm run check:rendered && npm run check:examples && npm run measure:check && npm run build:site && npm run check:site:links && npm run check:site:responsive && npm run check:site && npm run check:package",
+    "check": "npm run lint && npm run test:lint && npm run check:contrast && npm run check:patterns && npm run check:form && npm run check:aussage",
+    "check:full": "npm run build && npm run check:form && npm run check:aussage && npm run lint:strict && npm run test:lint && npm run check:patterns && npm run check:profiles && npm run check:contrast && npm run check:contrast:browser && npm run check:rendered && npm run check:examples && npm run measure:check && npm run build:site && npm run check:site:links && npm run check:site:responsive && npm run check:site && npm run check:package",
     "release": "node scripts/release.js",
     "prepublishOnly": "npm run check:full && npm run check:tools",
-    "build:css": "node scripts/measure-size.js"
+    "build:css": "node scripts/measure-size.js",
+    "check:aussage": "node scripts/check-aussage-contract.js"
   },
   "engines": {
     "node": ">=18"
