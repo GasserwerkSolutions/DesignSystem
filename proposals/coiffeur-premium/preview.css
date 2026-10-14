@@ -9,6 +9,7 @@
 body {
   background: #f6f2eb;
 }
+[data-mode="dark"] body { background: #211f1d; }
 .salon-review-toolbar {
   position: sticky;
   inset-block-start: 0;
@@ -181,6 +182,10 @@ body {
 .salon-premium-preview .salon-service .service-card__text { color: var(--salon-muted); line-height: 1.6; }
 .salon-premium-preview .salon-service .service-card__more { color: var(--salon-ink); text-decoration: underline; text-underline-offset: .3rem; }
 
+/* Existing .editorial-split--golden uses "1fr var(--phi)" where --phi is
+ * unitless (1.618), thus invalid grid-template-columns. Reviewer-only
+ * override uses the correct fr unit pending a separate DS component fix. */
+.salon-premium-preview .editorial-split--golden { --editorial-split-ratio: 1fr 1.618fr; }
 /* Story / editorial */
 .salon-premium-preview .salon-story { background: var(--salon-canvas); }
 .salon-premium-preview .salon-media-slot__art--portrait { min-height: 26rem; background:
