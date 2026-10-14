@@ -71,6 +71,7 @@
     "ADR-006-exit-path-enforcement.md",
     "ADR-007-reduced-motion-awareness.md",
     "ADR-008-popover-trigger-lookup-hardening.md",
+    "ADR-009-aussage-grammatik.md",
     "README.md",
     "CHANGELOG.md",
     "CONTRIBUTING.md"
