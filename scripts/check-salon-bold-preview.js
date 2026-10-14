@@ -104,7 +104,16 @@ assert(!/\d+\s*CHF|(?:\d[.,]\d)\s*★/.test(html),"no invented pricing/ratings")
     const checks=[];
     for(const mode of ["dark","light"]){
       await page.select("#mode",mode);
-      await page.waitForFunction(expected=>document.documentElement.getAttribute("data-mode")===expected,{},mode);
+      // A previous screenshot may have modified the cascade. For both modes,
+      // wait until our *bold* opt-in CSS is actually painted, not merely the
+      // new data-mode attribute. Prevent false contrast failures in CI.
+      await page.waitForFunction(expected=>{
+        const footer=document.querySelector(".salon-bold-preview .site-footer");
+        const bottom=document.querySelector(".salon-bold-preview .site-footer__bottom");
+        return document.documentElement.getAttribute("data-mode")===expected &&
+          getComputedStyle(bottom).color==="rgb(232, 232, 219)" &&
+          getComputedStyle(footer).backgroundColor==="rgb(18, 18, 17)";
+      },{timeout:10000},mode);
       await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
       const result=await page.evaluate(()=>window.axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}}));
       const violations=result.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.slice(0,8).map(n=>({target:n.target,summary:n.failureSummary,html:n.html.slice(0,200)}))}));
