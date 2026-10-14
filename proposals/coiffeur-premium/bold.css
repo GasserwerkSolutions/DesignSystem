@@ -104,7 +104,7 @@ body { background: #121211; }
 .salon-bold-preview .salon-header-cta { --btn-bg: var(--bold-neon); padding-inline: 1.3rem; }
 
 /* Static diagonal ticket; no marquee/auto-motion needed for attention. */
-.salon-bold-ribbon {
+.salon-bold-preview .salon-bold-ribbon {
   display: flex; gap: 2rem; justify-content: space-between; align-items: center;
   overflow: hidden; white-space: nowrap; padding: .72rem 4vw;
   background: var(--bold-neon); color: #181813;
@@ -112,7 +112,7 @@ body { background: #121211; }
   letter-spacing: .16em;
   text-transform: uppercase;
 }
-.salon-bold-ribbon span:nth-child(even) { font-size: 1.3rem; }
+.salon-bold-preview .salon-bold-ribbon span:nth-child(even) { font-size: 1.3rem; }
 
 /* Hero as typographic poster: full width ink field + editorial artwork. */
 .salon-bold-preview .salon-hero {
@@ -137,7 +137,7 @@ body { background: #121211; }
   max-inline-size: 49rem;
   gap: clamp(1.2rem,2.1vw,2.2rem);
 }
-.salon-bold-hero-index {
+.salon-bold-preview .salon-bold-hero-index {
   position: absolute;
   inset-block-start: -.65rem;
   inset-inline-end: -4%;
@@ -227,7 +227,7 @@ body { background: #121211; }
   transform: rotate(30deg);
   inset: 8% 15% 5% 47%;
 }
-.salon-media-slot__stamp {
+.salon-bold-preview .salon-media-slot__stamp {
   z-index: 5;
   position: absolute;
   inset-block-end: 13%;
@@ -383,7 +383,7 @@ body { background: #121211; }
 
 /* Accessibility, narrow contexts, adaptive composition */
 @media (max-width: 74rem) {
-  .salon-bold-preview .salon-bold-hero-index { display: none; }
+  .salon-bold-preview .salon-bold-preview .salon-bold-hero-index { display: none; }
   .salon-bold-preview .salon-hero .hero__title { font-size: clamp(3.8rem,8.2vw,8rem); }
 }
 @media (max-width: 48rem) {
@@ -402,9 +402,9 @@ body { background: #121211; }
   .salon-bold-preview .salon-hero .hero__content { max-inline-size: 100%; }
   .salon-bold-preview .salon-media-slot__monogram { font-size: clamp(2.7rem, 12vw, 4rem); }
   .salon-bold-preview .salon-media-slot--hero .salon-media-slot__art { min-height: 23rem; }
-  .salon-bold-preview .salon-media-slot__stamp { width: 7rem; height: 7rem; font-size: .7rem; inset-inline-start: -4%; }
+  .salon-bold-preview .salon-bold-preview .salon-media-slot__stamp { width: 7rem; height: 7rem; font-size: .7rem; inset-inline-start: -4%; }
   .salon-bold-preview .salon-services .section-head__title { font-size: clamp(2.7rem,11vw,4rem); }
-  .salon-bold-ribbon { gap: 1.1rem; }
+  .salon-bold-preview .salon-bold-ribbon { gap: 1.1rem; }
   .salon-bold-preview .salon-cta { --cta-band-shadow: .4rem .4rem 0 #171715; }
 }
 @media (prefers-reduced-motion: reduce) {
