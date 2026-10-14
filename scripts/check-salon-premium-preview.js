@@ -45,6 +45,7 @@ assert(!/\burl\(\s*['"]?https?:/i.test(css), "no remote media/fonts in review");
         return {
           vw:window.innerWidth, documentWidth:document.documentElement.scrollWidth,
           bodyWidth:document.body.scrollWidth, heroCols:computed.gridTemplateColumns,
+          storyCols:getComputedStyle(document.querySelector(".editorial-split")).gridTemplateColumns,
           titleHeight:Math.round(r.height), titleWidth:Math.round(r.width),
           h1Count:document.querySelectorAll("h1").length,
           targets: [...document.querySelectorAll('a[href^="#"]')].every(a => document.getElementById(a.getAttribute("href").slice(1))),
@@ -60,7 +61,9 @@ assert(!/\burl\(\s*['"]?https?:/i.test(css), "no remote media/fonts in review");
       assert(before.documentWidth <= width + 1, "horizontal overflow at " + width + ": " + JSON.stringify(before));
       assert(before.titleWidth > 0 && before.titleHeight > 0, "visible heading");
       if (width === 1440) assert(before.heroCols.trim().split(/\s+/).length >= 2, "split hero should have two columns");
+      if (width === 1440) assert(before.storyCols.trim().split(/\s+/).length >= 2, "golden editorial split must have two valid columns");
       if (width === 320) assert(before.heroCols.trim().split(/\s+/).length === 1, "320px hero must stack");
+      if (width === 320) assert(before.storyCols.trim().split(/\s+/).length === 1, "320px editorial split must stack");
       viewportResults.push(before);
       if (width === 1440 || width === 320) {
         await page.screenshot({path:path.join(proposal, "preview-"+width+"-soft-light.png"), fullPage:true});
