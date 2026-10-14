@@ -1,0 +1,30 @@
+name: DesignSystem source provenance (read-only)
+on:
+  push:
+    branches: [audit/standard-and-consolidation-2026-01]
+  pull_request:
+    paths:
+      - "audit/two-source-inventory-2026-10.json"
+      - "scripts/verify-consolidation-inventory.js"
+      - "scripts/test-consolidation-inventory.js"
+      - "docs/DESIGNSYSTEM-STANDARD-2026-KANDIDAT.md"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-pinned-sources:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/test-consolidation-inventory.js
+      - name: Record provenance checks (no release decision)
+        run: node scripts/verify-consolidation-inventory.js > source-audit.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: designsystem-pinned-source-audit
+          path: source-audit.json
+          if-no-files-found: error
