@@ -70,9 +70,17 @@ assert(!/\burl\(\s*['"]?https?:/i.test(css), "no remote media/fonts in review");
     // and affect the actual CSS layout, without changing component implementation.
     await page.setViewport({width:1280,height:900,deviceScaleFactor:1});
     await page.goto("file://" + path.join(proposal, "preview.html"), {waitUntil:"load"});
+    // Imported CSS can resolve one animation frame after file:// load on CI.
+    // Verify the actual default soft token before comparing the selection.
+    await page.waitForFunction(() =>
+      getComputedStyle(document.querySelector(".hero__media")).borderTopLeftRadius === "24px",
+      {timeout: 10000});
     const initialRadius = await page.$eval(".hero__media", el => getComputedStyle(el).borderTopLeftRadius);
     await page.select("#shape", "defined");
     await page.select("#space", "normal");
+    await page.waitForFunction(() =>
+      getComputedStyle(document.querySelector(".hero__media")).borderTopLeftRadius === "2px",
+      {timeout: 10000});
     const changed = await page.evaluate(() => {
       const html = document.documentElement;
       return {shape:html.getAttribute("data-shape"),space:html.getAttribute("data-space"),
