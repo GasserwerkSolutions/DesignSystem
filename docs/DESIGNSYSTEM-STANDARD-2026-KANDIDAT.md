@@ -48,6 +48,17 @@ Kein direkter `main`-Merge von Konsumenten-CSS, kein Repository-Grosskopieren, k
 
 DTCG 2025.10 ist ein **stabiler Community Group Report**, keine W3C Recommendation. WCAG AA ist ebenfalls kein blosses CSS-Style-Profil; Autoreninhalte, Integrationen und vollständige Seiten bestimmen mit, ob der Endzustand konform ist.
 
+### Reifeprüfung an etablierten DesignSystems (über WCAG hinaus)
+
+Die Qualitätsanforderungen sind zusätzlich mit den aktuellen Primärdokumentationen etablierter DesignSystems abgeglichen, ohne deren konkrete Farb-/Layoutästhetik zu kopieren:
+
+- **Adobe Spectrum:** dokumentiert primitive, semantische und komponentenspezifische Token-Ebenen, Aliase, Plattformadaption und benennungsgetriebene Semantik: https://spectrum.adobe.com/page/design-tokens . Daraus folgt für Gasserwerk: Tokens müssen **Absicht und Geltungsbereich** ausdrücken; nicht jeder hartcodierte Wert verdient einen neuen globalen Token. Component-Slots/States werden mit Tokens *und* semantischem DOM beschrieben.
+- **Adobe Spectrum Komponenten-Checklisten:** verlangen u. a. definierte Varianten/Zustände, Keyboard und Focus, RTL/I18n, Content- und Writing-Guidance sowie dokumentiertes Overflow und Verhalten: https://spectrum.adobe.com/page/button-group/ . Daraus folgt: Eine visuell schöne CSS-Datei ist nicht automatisch eine lieferfertige Komponente.
+- **IBM Carbon:** versieht Komponenten mit einem transparenten Accessibility-Teststatus, unterscheidet erfolgreiche automatisierte Tests und ergänzende manuelle Screenreader-Tests: https://www.carbondesignsystem.com/building-blocks/core/components/overview/accessibility-status . Daraus folgt: Qualitätsclaims tragen **Prüfbreite und Einschränkung**, nicht einfach ein pauschales "WCAG-konform"-Badge.
+- **Gasserwerk-Ergänzung:** wegen der CSS-first-Architektur müssen neben den UI-Spezifikationen insbesondere **Consumer-Profil, tatsächliche CSS-Imports, DOM-Struktur, JS Setup/Cleanup und Asset-/Release-Pins** als eigenständige Qualitätsdimensionen geführt werden.
+
+Diese Beispiele sind Engineering-Benchmarks, **keine** formalen W3C-Anforderungen und keine Erlaubnis, fremde Komponenten oder CSS-Implementierungen zu kopieren.
+
 ## 4. Kanonische Architektur und Importgrenzen
 
 Die bisherige Ordnerstruktur bleibt erste Wahl, um öffentliche Pfade nicht unberechtigt zu brechen:
