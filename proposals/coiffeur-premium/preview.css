@@ -74,6 +74,11 @@ body {
   white-space: normal;
   overflow-wrap: anywhere;
 }
+/* The global premium theme uses charcoal for --color-interactive in both modes.
+ * A transparent ghost link on the dark canvas would have 1.05:1 contrast.
+ * This reviewer-only scoped foreground is tied to the actual canvas text role.
+ * Real DS fix requires a separate component/theme review. */
+.salon-premium-preview .btn--ghost { --btn-fg: var(--salon-ink); }
 .salon-premium-preview .section { --section-py: var(--space-section); }
 .salon-premium-preview .container { --container-max: 1248px; }
 
