@@ -105,6 +105,13 @@ assert(!/\burl\(\s*['"]?https?:/i.test(css), "no remote media/fonts in review");
       const modeResults=[];
       for (const checkedMode of ["dark","light"]) {
         await page.select("#mode",checkedMode);
+        // Chromium may briefly show mixed colors while mode-dependent inherited
+        // values settle. Audit the COMPLETE rendered theme, not mid-transition.
+        await page.waitForFunction((mode)=>{
+          const target=mode==="light"?"rgb(98, 91, 84)":"rgb(214, 202, 192)";
+          return document.documentElement.getAttribute("data-mode")===mode &&
+            getComputedStyle(document.querySelector(".site-footer__bottom")).color===target;
+        },{timeout:10000},checkedMode);
         const result=await page.evaluate(async()=>window.axe.run(document,{
           runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}
         }));
