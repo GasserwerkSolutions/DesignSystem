@@ -27,7 +27,6 @@ body { background: #121211; }
   --salon-muted: var(--bold-muted);
   --salon-accent: #504e20;
   --salon-line: #bcb6ab;
-  --shape-surface: 0.25rem;
   color: var(--bold-ink);
   background: var(--bold-paper);
   font-family: var(--font-sans, system-ui, sans-serif);
@@ -177,7 +176,7 @@ body { background: #121211; }
 .salon-bold-preview .salon-hero-note { color: #bfbfb2; letter-spacing: .02em; max-inline-size: 40ch; }
 .salon-bold-preview .salon-hero .hero__media {
   overflow: visible;
-  border-radius: .3rem;
+  border-radius: var(--shape-media);
   box-shadow: none;
   background: var(--bold-neon);
   min-inline-size: 0;
