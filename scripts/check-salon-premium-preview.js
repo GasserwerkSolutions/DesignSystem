@@ -94,7 +94,7 @@ assert(!/\burl\(\s*['"]?https?:/i.test(css), "no remote media/fonts in review");
       const result=await page.evaluate(async()=>window.axe.run(document,{
         runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}
       }));
-      axe={status:result.violations.length?"FAIL":"PASS_AUTOMATED_ONLY",violations:result.violations.map(v=>({id:v.id,impact:v.impact,count:v.nodes.length}))};
+      axe={status:result.violations.length?"FAIL":"PASS_AUTOMATED_ONLY",violations:result.violations.map(v=>({id:v.id,impact:v.impact,count:v.nodes.length, nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary,html:n.html.slice(0,260)})).slice(0,8)}))};
       assert.equal(result.violations.length,0,"axe violations: "+JSON.stringify(axe.violations));
     } catch(e) {
       if(e.code==="MODULE_NOT_FOUND") {
