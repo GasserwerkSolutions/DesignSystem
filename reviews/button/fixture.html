@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de-CH" data-tone="trust" data-mode="light" data-space="normal" data-shape="defined" data-weight="fine">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Button 01 — isolierte DesignSystem-Vertragsprobe</title>
+  <link rel="stylesheet" href="../../main.css">
+  <style>
+    /* Probe-Bühne: Layout des Prüfberichts, kein Ersatz für .btn-Styles. */
+    .review-stage { max-inline-size: 72rem; margin-inline: auto; padding: 2rem 1rem; }
+    .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem),1fr)); gap: 2rem; }
+    .review-panel { border: 1px solid var(--color-border); padding: 1rem; min-inline-size: 0; }
+    .review-actions { display: flex; align-items: start; gap: 1rem; flex-wrap: wrap; }
+    .review-panel h2 { font-size: 1.25rem; }
+    .review-panel p { margin-block: .75rem; }
+    #long-label-container { max-inline-size: 18rem; border: 1px dashed var(--color-border); }
+  </style>
+</head>
+<body>
+<main class="review-stage">
+  <h1>Button 01: Vertrags- und Variantenmatrix</h1>
+  <p>Nur lokale DS-Quelle, keine produktive Oberfläche. Testet CSS-Formachsen, Native-Semantik und Grenzfälle.</p>
+  <div class="review-grid">
+    <section class="review-panel" id="normal" data-space="normal" data-shape="defined" data-weight="fine">
+      <h2>Normal / Defined / Fein</h2>
+      <div class="review-actions">
+        <button type="button" id="primary" class="btn">Weiter</button>
+        <button type="button" id="secondary" class="btn btn--secondary">Zurück</button>
+        <button type="button" id="ghost" class="btn btn--ghost">Optionen</button>
+      </div>
+      <p><a class="btn" id="cta-link" href="#ziel">Termin ansehen</a></p>
+      <p><button type="button" class="btn btn--sm" id="small">Klein</button>
+      <button type="button" class="btn btn--lg" id="large">Gross</button></p>
+      <p><button type="button" class="btn" id="disabled-native" disabled>Gesperrt</button></p>
+    </section>
+    <section class="review-panel" id="wide" data-space="wide" data-shape="soft" data-weight="strong">
+      <h2>Weit / Soft / Stark</h2>
+      <div class="review-actions">
+        <button type="button" id="wide-primary" class="btn">Weiter</button>
+        <button type="button" class="btn btn--secondary">Zurück</button>
+        <button type="button" class="btn btn--ghost">Optionen</button>
+      </div>
+    </section>
+    <section class="review-panel" id="narrow">
+      <h2>Grenzfall: lange Beschriftung</h2>
+      <div id="long-label-container">
+        <button type="button" class="btn" id="long-label">Jetzt eine besonders ausführliche Beratung für diesen speziellen Anwendungsfall vereinbaren</button>
+      </div>
+      <p>Zu prüfen: kein Verlust durch horizontales Überlaufen bei 320 CSS px und Zoom.</p>
+    </section>
+  </div>
+  <h2 id="ziel">Ziel einer echten Navigation</h2>
+</main>
+</body>
+</html>
