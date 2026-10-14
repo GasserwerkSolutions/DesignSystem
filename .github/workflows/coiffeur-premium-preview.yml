@@ -1,0 +1,36 @@
+name: Coiffeur Premium — read-only preview quality
+on:
+  push:
+    branches: [proposal/coiffeur-premium-quiet-atelier]
+  pull_request:
+    paths:
+      - "proposals/coiffeur-premium/**"
+      - "scripts/check-salon-premium-preview.js"
+
+permissions:
+  contents: read
+
+jobs:
+  preview-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: bash scripts/install-browser-deps.sh
+      - name: Layout, axes, navigation, provenance, accessibility lint
+        run: |
+          set -o pipefail
+          node scripts/check-salon-premium-preview.js | tee salon-preview-report.json.log
+      - name: Review screenshots and report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: salon-premium-review-only
+          path: |
+            proposals/coiffeur-premium/preview-*.png
+            salon-preview-report.json.log
+          if-no-files-found: warn

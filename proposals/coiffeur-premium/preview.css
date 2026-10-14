@@ -1,0 +1,236 @@
+/**
+ * Coiffeur „Quiet Atelier“ — REVIEW-ONLY CSS
+ * Not a production theme, not an additional DesignSystem component writer.
+ * Runs only inside proposals/coiffeur-premium/preview.html.
+ * All selectors are scoped to .salon-premium-preview or the review toolbar.
+ * Brand palette, type accents and art placeholders require owner approval.
+ */
+
+body {
+  background: #f6f2eb;
+}
+[data-mode="dark"] body { background: #211f1d; }
+.salon-review-toolbar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 500;
+  padding: .625rem 1rem;
+  background: #272321;
+  color: #faf5ec;
+  font-family: system-ui, sans-serif;
+  font-size: .8rem;
+  border-block-end: 1px solid #675a4d;
+}
+.salon-review-toolbar__inner {
+  width: min(100%, 78rem);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem 1.5rem;
+}
+.salon-review-toolbar__status { margin-inline-end: auto; font-weight: 700; letter-spacing: .07em; }
+.salon-review-toolbar label { display: inline-flex; align-items: center; gap: .4rem; color: inherit; font-size: inherit; font-weight: 500; margin: 0; }
+.salon-review-toolbar select {
+  background: #f6f2eb;
+  color: #262321;
+  border: 1px solid #c7b6a4;
+  border-radius: .25rem;
+  font-size: 1rem;
+  min-block-size: 2.75rem;
+  padding: .2rem .55rem;
+  width: auto;
+}
+.salon-review-toolbar :focus-visible { outline: 3px solid #efc589; outline-offset: 3px; }
+
+.salon-premium-preview {
+  --salon-canvas: #f6f2eb;
+  --salon-surface: #fffcf7;
+  --salon-stone: #e4dcd0;
+  --salon-ink: #292725;
+  --salon-muted: #625b54;
+  --salon-accent: #806653;
+  --salon-line: #cbc1b5;
+  --salon-dark: #262321;
+  --salon-light: #fff9ef;
+  color: var(--salon-ink);
+  background: var(--salon-canvas);
+}
+[data-mode="dark"] .salon-premium-preview {
+  --salon-canvas: #211f1d;
+  --salon-surface: #292623;
+  --salon-stone: #3c3632;
+  --salon-ink: #f8f0e7;
+  --salon-muted: #d6cac0;
+  --salon-accent: #d0ac86;
+  --salon-line: #73655a;
+  --salon-dark: #171615;
+}
+.salon-premium-preview :where(h1,h2,h3,p) { overflow-wrap: break-word; }
+.salon-premium-preview a:not(.btn):focus-visible { outline: 3px solid var(--salon-accent); outline-offset: 4px; }
+.salon-premium-preview .btn {
+  /* Experiment from button review #25, scoped: no global contract change. */
+  min-block-size: 2.75rem;
+  max-inline-size: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+/* The global premium theme uses charcoal for --color-interactive in both modes.
+ * A transparent ghost link on the dark canvas would have 1.05:1 contrast.
+ * This reviewer-only scoped foreground is tied to the actual canvas text role.
+ * Real DS fix requires a separate component/theme review. */
+.salon-premium-preview .btn--ghost { --btn-fg: var(--salon-ink); }
+.salon-premium-preview .section { --section-py: var(--space-section); }
+.salon-premium-preview .container { --container-max: 1248px; }
+
+/* Header */
+.salon-premium-preview .site-header {
+  background: var(--salon-canvas);
+  border-block-end: 1px solid var(--salon-line);
+  backdrop-filter: none;
+}
+.salon-premium-preview .site-header__inner { min-block-size: 5.25rem; gap: 1rem 2rem; }
+.salon-premium-preview .salon-brand { color: var(--salon-ink); gap: .75rem; text-transform: uppercase; letter-spacing: .13em; font-size: .95rem; }
+.salon-premium-preview .salon-brand > span:first-child {
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--salon-ink);
+  width: 2.9rem;
+  height: 2.9rem;
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: .9rem;
+  letter-spacing: -.08em;
+}
+.salon-premium-preview .salon-brand i { font-family: var(--font-serif, Georgia, serif); font-style: normal; font-weight: 400; }
+.salon-premium-preview .site-header__link { color: var(--salon-ink); text-underline-offset: .4rem; }
+.salon-premium-preview .site-header__link:hover { text-decoration: underline; }
+.salon-premium-preview .salon-header-cta { flex-shrink: 0; }
+
+/* Hero */
+.salon-premium-preview .salon-hero { padding-block: var(--space-64) var(--space-96); background: var(--salon-canvas); }
+.salon-premium-preview .salon-hero .hero__inner { --hero-gap: var(--space-48); }
+.salon-premium-preview .salon-hero .hero__content { gap: var(--space-24); max-inline-size: 41rem; }
+.salon-premium-preview .salon-hero .hero__eyebrow,
+.salon-premium-preview .salon-kicker {
+  color: var(--salon-accent);
+  margin: 0;
+  font-size: .875rem;
+  font-weight: 650;
+  letter-spacing: .16em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.salon-premium-preview .salon-hero .hero__title {
+  color: var(--salon-ink);
+  font-family: var(--heading-font, Georgia, serif);
+  font-size: clamp(2.25rem, 1.15rem + 4.3vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1.10;
+  text-transform: none;
+  letter-spacing: -.024em;
+  text-wrap: balance;
+}
+.salon-premium-preview .salon-hero .hero__lead {
+  color: var(--salon-muted);
+  font-size: clamp(1.05rem, .96rem + .5vw, 1.25rem);
+  line-height: 1.6;
+  max-inline-size: 38ch;
+}
+.salon-premium-preview .salon-hero-note,
+.salon-premium-preview .salon-disclaimer { color: var(--salon-muted); font-size: .85rem; line-height: 1.5; max-inline-size: 58ch; }
+.salon-premium-preview .salon-hero .hero__actions { gap: .85rem; }
+.salon-premium-preview .hero__media { box-shadow: none; border-radius: var(--shape-media); }
+
+/* Copyright-safe media placeholder: no fake staff, no borrowed imagery. */
+.salon-premium-preview .salon-media-slot { position: relative; margin: 0; background: var(--salon-stone); border-radius: var(--shape-media); overflow: hidden; min-inline-size: 0; }
+.salon-premium-preview .salon-media-slot__art { display: grid; place-items: center; position: relative; min-height: 31rem; overflow: hidden;
+  background: radial-gradient(ellipse 50% 65% at 75% 25%, #d9c3a7 0%, transparent 85%),
+    linear-gradient(135deg, #ccc0b0 0%, #bba38e 44%, #9b8471 100%); isolation: isolate; }
+.salon-premium-preview .salon-media-slot__art::before { content: ""; position: absolute; width: 56%; height: 85%; border-radius: 50% 50% 35% 35%;
+  background: linear-gradient(130deg, #443a35, #9f7863 62%, #6a4d42); transform: rotate(-12deg) translate(17%, 13%); filter: blur(.7px); opacity: .8; }
+.salon-premium-preview .salon-media-slot__art::after { content: ""; position: absolute; inset: 6%; border: 1px solid rgba(255,255,255,.35); pointer-events: none; }
+.salon-premium-preview .salon-media-slot__monogram { position: absolute; inset-inline-start: 8%; inset-block-start: 12%;
+  color: #fcf7ed; font-family: var(--font-serif, Georgia, serif); font-size: clamp(2rem, 4vw, 4rem); line-height: 1.03; z-index: 2; opacity: .85; }
+.salon-premium-preview .salon-media-slot__curve { position: absolute; display: block; z-index: 1; border: 1px solid #e8dfd2; border-radius: 50%; inset: 15% 12% 19% 42%; }
+.salon-premium-preview .salon-media-slot__caption { padding: .7rem 1rem; background: var(--salon-stone); color: var(--salon-ink); font-size: .77rem; letter-spacing: .01em; }
+
+/* Service cards */
+.salon-premium-preview .salon-services { background: var(--salon-surface); }
+.salon-premium-preview .salon-section-intro { --section-head-mb: var(--space-48); }
+.salon-premium-preview .section-head__eyebrow { color: var(--salon-accent); }
+.salon-premium-preview .section-head__title,
+.salon-premium-preview .salon-story-copy h2,
+.salon-premium-preview .salon-proof-review h2 {
+  color: var(--salon-ink);
+  font-family: var(--heading-font, Georgia, serif);
+  font-size: clamp(1.9rem, 1.45rem + 1.7vw, 3rem);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -.015em;
+}
+.salon-premium-preview .section-head__lead { color: var(--salon-muted); line-height: 1.6; }
+.salon-premium-preview .salon-service {
+  --service-card-bg: var(--salon-surface);
+  --service-card-border: 1px solid var(--salon-line);
+  --service-card-shadow: none;
+  --service-card-radius: var(--shape-surface);
+  gap: var(--space-20);
+  min-inline-size: 0;
+}
+.salon-premium-preview .salon-service__number { color: var(--salon-accent); font-size: .8rem; letter-spacing: .12em; }
+.salon-premium-preview .salon-service .service-card__title { font-family: var(--heading-font, Georgia, serif); font-size: 1.5rem; color: var(--salon-ink); font-weight: 500; }
+.salon-premium-preview .salon-service .service-card__text { color: var(--salon-muted); line-height: 1.6; }
+.salon-premium-preview .salon-service .service-card__more { color: var(--salon-ink); text-decoration: underline; text-underline-offset: .3rem; }
+
+/* Existing .editorial-split--golden uses "1fr var(--phi)" where --phi is
+ * unitless (1.618), thus invalid grid-template-columns. Reviewer-only
+ * override uses the correct fr unit pending a separate DS component fix. */
+.salon-premium-preview .editorial-split--golden { --editorial-split-ratio: 1fr 1.618fr; }
+/* Story / editorial */
+.salon-premium-preview .salon-story { background: var(--salon-canvas); }
+.salon-premium-preview .salon-media-slot__art--portrait { min-height: 26rem; background:
+  radial-gradient(ellipse at 30% 80%, #ac9282 2%, transparent 50%), linear-gradient(145deg, #d5c6b3, #a98c77); }
+.salon-premium-preview .salon-media-slot__art--portrait::before { width: 55%; height: 80%; background: linear-gradient(150deg, #5c4b44, #ab8068); border-radius: 48% 40% 45% 30%; }
+.salon-premium-preview .salon-media-slot__art--portrait > span { z-index: 2; color: #fffaf1; font: 500 clamp(2rem, 4vw, 3.4rem)/1.03 Georgia, serif;
+  inset-inline-start: 8%; inset-block-start: 12%; position: absolute; }
+.salon-premium-preview .salon-story-copy { gap: var(--space-24); }
+.salon-premium-preview .salon-story-copy > p:not(.salon-kicker) { color: var(--salon-muted); font-size: 1.05rem; line-height: 1.65; margin: 0; }
+.salon-premium-preview .salon-story-copy .btn { justify-self: start; }
+
+/* Evidence and end-state */
+.salon-premium-preview .salon-proof-review { background: var(--salon-surface); }
+.salon-premium-preview .salon-proof-review__box { max-inline-size: 58rem; margin-inline: auto; text-align: center; border-block: 1px solid var(--salon-line); padding-block: var(--space-40); }
+.salon-premium-preview .salon-proof-review__box > * + * { margin-block-start: 1rem; }
+.salon-premium-preview .salon-proof-review__box p:last-child { color: var(--salon-muted); line-height: 1.6; margin-inline: auto; }
+.salon-premium-preview .salon-end { background: var(--salon-canvas); }
+.salon-premium-preview .salon-cta { --cta-band-bg: #262321; --cta-band-fg: #fff9ef; --cta-band-border: none; --cta-band-shadow: none;
+  --cta-band-padding: clamp(2rem, 5vw, 4.5rem); border-radius: var(--shape-surface); gap: var(--space-24); }
+.salon-premium-preview .salon-cta .salon-kicker { color: #dec1a2; }
+.salon-premium-preview .salon-cta .cta-band__title { font-size: clamp(2rem, 1.4rem + 2.1vw, 3.25rem); max-inline-size: 22ch; line-height: 1.16; }
+.salon-premium-preview .salon-cta .cta-band__text { max-inline-size: 55ch; color: #eee1d5; }
+.salon-premium-preview .salon-pending { display: inline-block; border: 1px dashed #bfa78f; border-radius: .35rem;
+  color: #f9e8d7; padding: .8rem 1rem; font-size: .88rem; line-height: 1.5; }
+.salon-premium-preview .site-footer { background: var(--salon-canvas); border-color: var(--salon-line); }
+.salon-premium-preview .site-footer__bottom { color: var(--salon-muted); border-color: var(--salon-line); }
+
+/* Narrow viewports: space without cramming essential controls above the fold. */
+@media (max-width: 48rem) {
+  .salon-premium-preview .section { --section-py: var(--space-48); }
+  .salon-premium-preview .salon-hero { padding-block: var(--space-48); }
+  .salon-premium-preview .salon-media-slot__art { min-height: 24rem; }
+  .salon-premium-preview .site-header__inner { padding-block: var(--space-12); }
+  .salon-premium-preview .site-header__nav { border-color: var(--salon-line); }
+}
+@media (max-width: 26.25rem) {
+  .salon-premium-preview .salon-hero .hero__actions .btn { inline-size: 100%; }
+  .salon-premium-preview .salon-media-slot__art { min-height: 18rem; }
+  .salon-review-toolbar__status { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .salon-premium-preview *, .salon-premium-preview *::before, .salon-premium-preview *::after { scroll-behavior: auto !important; }
+}
+@media (forced-colors: active) {
+  .salon-premium-preview .salon-media-slot { border: 1px solid CanvasText; }
+  .salon-premium-preview .salon-media-slot__art { background: Canvas; }
+  .salon-premium-preview .salon-media-slot__caption { border-block-start: 1px solid CanvasText; }
+}
