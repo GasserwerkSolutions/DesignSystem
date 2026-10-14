@@ -78,6 +78,22 @@ const close = (actual, expected, label) =>
     longLabelProtrusion:Math.max(0,Math.round(b.right-p.right))};
   });
   await page.screenshot({path:path.join(root,"reviews","button","button-review-mobile.png"),fullPage:true});
+  // NON-PRODUCTION A/B: temporarily overlay candidate rules to measure
+  // whether wrapping plus a 44px floor addresses the two observed risks.
+  // This style exists only inside Chromium, not in components/button.css.
+  await page.addStyleTag({content:
+    ".btn { white-space: normal; overflow-wrap: anywhere; max-inline-size: 100%; min-inline-size: 0; min-block-size: 2.75rem; }"});
+  const candidate=await page.evaluate(()=>{
+    const el=id=>document.getElementById(id).getBoundingClientRect();
+    const long=el("long-label"),container=el("long-label-container");
+    return {viewport:window.innerWidth,documentWidth:document.documentElement.scrollWidth,
+      longLabelWidth:Math.round(long.width),containerWidth:Math.round(container.width),
+      longLabelProtrusion:Math.max(0,Math.round(long.right-container.right)),
+      normalButtonHeight:Math.round(el("primary").height*100)/100,
+      smallButtonHeight:Math.round(el("small").height*100)/100,
+      longLabelHeight:Math.round(long.height*100)/100};
+  });
+  await page.screenshot({path:path.join(root,"reviews","button","button-review-mobile-experiment.png"),fullPage:true});
   // Observational: long-label overflow is intentionally a reviewer decision,
   // NOT silently called accessible or automatically hidden.
   const report={status:"SOURCE_AND_CORE_BROWSER_CHECKS_PASS_WITH_PENDING_REVIEW",
@@ -85,7 +101,7 @@ const close = (actual, expected, label) =>
      branch:"review/button-01-source-and-browser-contract",
      tested:"Chromium; canonical main.css; normal/wide, defined/soft, fine/strong, native keyboard, disabled, link",
      normal:inspect.normal,wide:inspect.wide,small:inspect.small,large:inspect.large,
-     focus,narrow,needsReview:{
+     focus,narrow,candidateExperiment:{"description":"browser-only wrapping and 44px floor, NOT a production change","observed":candidate},needsReview:{
       longLabelOverflow:narrow.longLabelProtrusion>0 || narrow.documentWidth>narrow.viewport,
       wcagTargetAt24:true,
       projectTouchTarget44:inspect.normal.height>=44 && inspect.small.height>=44,
