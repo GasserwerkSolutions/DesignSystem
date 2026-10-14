@@ -1,0 +1,2810 @@
+{
+  "schemaVersion": "two-source-consolidation-inventory/1",
+  "status": "SOURCE_SNAPSHOT_NOT_APPROVAL",
+  "publication": "BLOCKED",
+  "sources": {
+    "canonical": {
+      "repo": "GasserwerkSolutions/DesignSystem",
+      "ref": "acb1dc6036947b6a7b6f27d2b9dc35dd4c75f900",
+      "prefix": ""
+    },
+    "monorepo": {
+      "repo": "GasserwerkSolutions/gasserwerk",
+      "ref": "0767375a42e6ab5e5220b3da660ec4617fc83a97",
+      "prefix": "packages/design-system/"
+    }
+  },
+  "scope": "Tracked files excluding dist/; Git blob SHA-1 verifies byte identity, not runtime or normative compatibility",
+  "counts": {
+    "IDENTICAL": 108,
+    "DIVERGED": 50,
+    "ONLY_MONOREPO": 25,
+    "ONLY_CANONICAL": 27
+  },
+  "entries": [
+    {
+      "path": ".github/dependabot.yml",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "f5b2e09fc7a78caa3b93d1722b2b4d2518996272",
+        "bytes": 442
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": ".github/workflows/card-proportions.yml",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "3ce6ed25cc3754da24a66512c00660f6447bca49",
+        "bytes": 1074
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": ".github/workflows/deploy-site.yml",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "01b43194f2b76aabb49db4aafb0a5bb87c71089c",
+        "bytes": 1236
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": ".github/workflows/integration-quality.yml",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "10b3d508b0be02b34b4ed10e223a131e4d377028",
+        "bytes": 1910
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "group": "other",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "b48d61a92c0234456702422f96be32ff3c79fc78",
+        "bytes": 2028
+      },
+      "monorepo": {
+        "gitBlobSha": "126b1a549e41782cec301ccd7d2e998f78a417bc",
+        "bytes": 1525
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": ".github/workflows/prose-contract.yml",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "c8e6d20fa7ebd737c442c6f4009535e4fcb3901d",
+        "bytes": 850
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": ".github/workflows/spacing-contract.yml",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "40319739c4609c01266df2be7569f163b4706e76",
+        "bytes": 553
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": ".github/workflows/update-visual-baselines.yml",
+      "group": "other",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "08b17604dcaace7789dc8d43ee1e380b39654ebb",
+        "bytes": 1006
+      },
+      "monorepo": {
+        "gitBlobSha": "a955f041959b8d3b66d13e83b253c8be10245600",
+        "bytes": 1211
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": ".gitignore",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "c66516f290c8611243c5f4a52f0fd1b65fd2ee42",
+        "bytes": 271
+      },
+      "monorepo": {
+        "gitBlobSha": "c66516f290c8611243c5f4a52f0fd1b65fd2ee42",
+        "bytes": 271
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "ADR-001-container-max-inheritance.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "c4b34868b067ef2e4e630f663dbfc5f3e6c11946",
+        "bytes": 2736
+      },
+      "monorepo": {
+        "gitBlobSha": "c4b34868b067ef2e4e630f663dbfc5f3e6c11946",
+        "bytes": 2736
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "ADR-002-modern-css-architecture.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "b7b19df21bbdaeff80359e3d05c978c28beb770f",
+        "bytes": 5774
+      },
+      "monorepo": {
+        "gitBlobSha": "b7b19df21bbdaeff80359e3d05c978c28beb770f",
+        "bytes": 5774
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "ADR-003-status-color-sand-filter.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "3a2fabcfb4293daf3c3c5c68e1dfd281b07976ef",
+        "bytes": 6782
+      },
+      "monorepo": {
+        "gitBlobSha": "3a2fabcfb4293daf3c3c5c68e1dfd281b07976ef",
+        "bytes": 6782
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "ADR-004-palette-chroma-filter.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "1ffe8158e81071f04b6c0ba87cbbf3f9b35d993f",
+        "bytes": 7410
+      },
+      "monorepo": {
+        "gitBlobSha": "1ffe8158e81071f04b6c0ba87cbbf3f9b35d993f",
+        "bytes": 7410
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "ADR-005-bounce-only-as-explicit-opt-in.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "369437851531989038886d50859121c0c8031c77",
+        "bytes": 6648
+      },
+      "monorepo": {
+        "gitBlobSha": "369437851531989038886d50859121c0c8031c77",
+        "bytes": 6648
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "ADR-006-exit-path-enforcement.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "01e6bd3ba6c6389447f60cfd83f60243d4c7bf7d",
+        "bytes": 8079
+      },
+      "monorepo": {
+        "gitBlobSha": "01e6bd3ba6c6389447f60cfd83f60243d4c7bf7d",
+        "bytes": 8079
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "ADR-007-reduced-motion-awareness.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "4d46092b4a4dfbc60b5bc8a523196795a4199b97",
+        "bytes": 8830
+      },
+      "monorepo": {
+        "gitBlobSha": "4d46092b4a4dfbc60b5bc8a523196795a4199b97",
+        "bytes": 8830
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "ADR-008-popover-trigger-lookup-hardening.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "6ea9ab9333ea43d75ed903ce9039eff42c43bc21",
+        "bytes": 1782
+      },
+      "monorepo": {
+        "gitBlobSha": "6ea9ab9333ea43d75ed903ce9039eff42c43bc21",
+        "bytes": 1782
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "group": "other",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "fc86b6efd877f920d55f6434b2fadd16884b6f3a",
+        "bytes": 123671
+      },
+      "monorepo": {
+        "gitBlobSha": "786ad5abadf0b30a123c5eb0f8ac442d35b2079b",
+        "bytes": 122235
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "CLAUDE.md",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "c52019c501e492022a3bb0d9a72fdee7e1361938",
+        "bytes": 2163
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "group": "other",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "49dbf6575d8919abb5d7b5354979a3146816d1d5",
+        "bytes": 3899
+      },
+      "monorepo": {
+        "gitBlobSha": "98e4222a1749e0e73e5e8ba215cae38e89439b65",
+        "bytes": 3331
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "LICENSE",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "93b13b6e4ee7d5858d6de066b26aa34f2939a275",
+        "bytes": 1077
+      },
+      "monorepo": {
+        "gitBlobSha": "93b13b6e4ee7d5858d6de066b26aa34f2939a275",
+        "bytes": 1077
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "README.md",
+      "group": "other",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "32122c91a4edf759ae11eea5df61a7065031558d",
+        "bytes": 7572
+      },
+      "monorepo": {
+        "gitBlobSha": "98ef77a54ab12a2c3cd52844311711230deb40cf",
+        "bytes": 7502
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "SECURITY.md",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "a3a7b1c13b9560c34deb7b222dfd0c476b4b5562",
+        "bytes": 556
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "base/layout.css",
+      "group": "base",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "622d7cedb3609333c35a94f713b406aa2dc8a296",
+        "bytes": 4455
+      },
+      "monorepo": {
+        "gitBlobSha": "12f7eadfb37235e76028f7404207289105db428f",
+        "bytes": 4450
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "base/print.css",
+      "group": "base",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "7e96b7a70f7cbfdf74410df69e3804c587a67000",
+        "bytes": 1866
+      },
+      "monorepo": {
+        "gitBlobSha": "7e96b7a70f7cbfdf74410df69e3804c587a67000",
+        "bytes": 1866
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "base/reset.css",
+      "group": "base",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "a3bc8c1c853ed983826cc7c4a630e05f853de46a",
+        "bytes": 3230
+      },
+      "monorepo": {
+        "gitBlobSha": "4beb5632c92d3c02ad1c2c592dc870d2d3641a25",
+        "bytes": 3597
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "base/typography.css",
+      "group": "base",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "fdcd63995d01ecc3ef923ea3d70616802c84106c",
+        "bytes": 4711
+      },
+      "monorepo": {
+        "gitBlobSha": "f78afc82df0fffa9033b42638ec5ca2fa92c40e1",
+        "bytes": 3878
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/accordion.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "85d6d8ec858d1cb4868530b93e700e29b81cb509",
+        "bytes": 3091
+      },
+      "monorepo": {
+        "gitBlobSha": "85d6d8ec858d1cb4868530b93e700e29b81cb509",
+        "bytes": 3091
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/alert.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "4180f00e4f5f15dcdf7b074bd9431e30cdf4724b",
+        "bytes": 4919
+      },
+      "monorepo": {
+        "gitBlobSha": "4180f00e4f5f15dcdf7b074bd9431e30cdf4724b",
+        "bytes": 4919
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/app-shell.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "1273dc30bded0a9c835e667361d419d4aae62ba3",
+        "bytes": 3777
+      },
+      "monorepo": {
+        "gitBlobSha": "1273dc30bded0a9c835e667361d419d4aae62ba3",
+        "bytes": 3777
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/avatar-stack.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "67433bcd30c176be7fd241671c40c129a90c7503",
+        "bytes": 2540
+      },
+      "monorepo": {
+        "gitBlobSha": "67433bcd30c176be7fd241671c40c129a90c7503",
+        "bytes": 2540
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/avatar.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "b80cad152d11d6efdcb427b1e0e3595620adb32b",
+        "bytes": 2238
+      },
+      "monorepo": {
+        "gitBlobSha": "ee3bf8718ec301aae69faf457b335da5ecf1aa2c",
+        "bytes": 2687
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/back-to-top.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "ee6283561401cdc5222a5b1792c588d3e8022d8c",
+        "bytes": 3003
+      },
+      "monorepo": {
+        "gitBlobSha": "ee6283561401cdc5222a5b1792c588d3e8022d8c",
+        "bytes": 3003
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/badge.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "b6303297b119d8523c80ac6f8935bdf38b330172",
+        "bytes": 2531
+      },
+      "monorepo": {
+        "gitBlobSha": "b6303297b119d8523c80ac6f8935bdf38b330172",
+        "bytes": 2531
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/banner.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "f87ba70c8be7c1a95778bc1a225af36d873d018e",
+        "bytes": 2098
+      },
+      "monorepo": {
+        "gitBlobSha": "f87ba70c8be7c1a95778bc1a225af36d873d018e",
+        "bytes": 2098
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/breadcrumbs.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "62c86b455342d32a3c064f2a6ba130dfa7627eaa",
+        "bytes": 1518
+      },
+      "monorepo": {
+        "gitBlobSha": "62c86b455342d32a3c064f2a6ba130dfa7627eaa",
+        "bytes": 1518
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/button.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "c140616af0c3a6af272735ed40c300b540cd7211",
+        "bytes": 3631
+      },
+      "monorepo": {
+        "gitBlobSha": "3d239739203366f273764b22d282f547849e26c2",
+        "bytes": 3607
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/calendar.css",
+      "group": "components",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "caebe82b08e1ec5acb22417483eba09eee6ee8d0",
+        "bytes": 8795
+      },
+      "disposition": "GENERIFY_OR_KEEP_PRIVATE_REVIEW"
+    },
+    {
+      "path": "components/callout.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "a8fc2bda9cbf9cf79234a19a54e656f747afb719",
+        "bytes": 2710
+      },
+      "monorepo": {
+        "gitBlobSha": "4d9a7b8da7995c9e178f51981aaf245eb15433fa",
+        "bytes": 2941
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/card.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "510aefdc64bd229ef9395b58246160737785db26",
+        "bytes": 7384
+      },
+      "monorepo": {
+        "gitBlobSha": "78ede41c1f98c0ac23abf4348fe2909777104a91",
+        "bytes": 3989
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/chart.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "ed3ac2469336ef4213917c033cf1fc1652cb9077",
+        "bytes": 3769
+      },
+      "monorepo": {
+        "gitBlobSha": "fc87fa2195af4701b202d015139fc9bc126d5022",
+        "bytes": 3968
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/checkbox.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "23ce2b6ff32156bd89d49483b38639aac491c74a",
+        "bytes": 3249
+      },
+      "monorepo": {
+        "gitBlobSha": "23ce2b6ff32156bd89d49483b38639aac491c74a",
+        "bytes": 3249
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/chevron.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "749e2c525c0e78d6f1b3ceb7b58a0a04cbd354b7",
+        "bytes": 1974
+      },
+      "monorepo": {
+        "gitBlobSha": "749e2c525c0e78d6f1b3ceb7b58a0a04cbd354b7",
+        "bytes": 1974
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/code-block.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "de6a23ec1ba68a784990e1446894354cdadcc65a",
+        "bytes": 2610
+      },
+      "monorepo": {
+        "gitBlobSha": "d0e4b7463481511305daac74c3b5edc65953f014",
+        "bytes": 3323
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/combobox.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "c94492a7cd86488223d3024aacabb8fc55f8f5aa",
+        "bytes": 9112
+      },
+      "monorepo": {
+        "gitBlobSha": "49e37bf19ba672091f156075f872801fe477996e",
+        "bytes": 9353
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/command-palette.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "f3ea4ba8c4ed69573f62c3bcd90f8d4166f6c7c5",
+        "bytes": 5484
+      },
+      "monorepo": {
+        "gitBlobSha": "f3ea4ba8c4ed69573f62c3bcd90f8d4166f6c7c5",
+        "bytes": 5484
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/copy-button.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "acc2ab46b9293654025dfe5ffdc9f6a009d15227",
+        "bytes": 3220
+      },
+      "monorepo": {
+        "gitBlobSha": "acc2ab46b9293654025dfe5ffdc9f6a009d15227",
+        "bytes": 3220
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/date-input.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "8cd7d55baa3a8c6e01f8f463bcd78b7bb04383cd",
+        "bytes": 3029
+      },
+      "monorepo": {
+        "gitBlobSha": "8cd7d55baa3a8c6e01f8f463bcd78b7bb04383cd",
+        "bytes": 3029
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/divider.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "4ad0f1300a3a3f9c9824efc7fcc4cdfd321e5fe3",
+        "bytes": 1653
+      },
+      "monorepo": {
+        "gitBlobSha": "4ad0f1300a3a3f9c9824efc7fcc4cdfd321e5fe3",
+        "bytes": 1653
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/drawer.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "ae1cbac064ad29aa376deee166505dfb5a292432",
+        "bytes": 3114
+      },
+      "monorepo": {
+        "gitBlobSha": "ae1cbac064ad29aa376deee166505dfb5a292432",
+        "bytes": 3114
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/empty-state.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "bd1b6a67dc2ec3772f96af7ffe2642853348daf5",
+        "bytes": 2426
+      },
+      "monorepo": {
+        "gitBlobSha": "bd1b6a67dc2ec3772f96af7ffe2642853348daf5",
+        "bytes": 2426
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/field.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "f27a7d51e5988cb892b31abd630146d9a1167e4d",
+        "bytes": 2439
+      },
+      "monorepo": {
+        "gitBlobSha": "f27a7d51e5988cb892b31abd630146d9a1167e4d",
+        "bytes": 2439
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/file-upload.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "9ea26471a2def3ed3ffd1cf3347a151d8aecf1c0",
+        "bytes": 5495
+      },
+      "monorepo": {
+        "gitBlobSha": "9ea26471a2def3ed3ffd1cf3347a151d8aecf1c0",
+        "bytes": 5495
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/funnel.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "85b03143aa2dc680d08dd0e254cf959d5d2bf75a",
+        "bytes": 2626
+      },
+      "monorepo": {
+        "gitBlobSha": "85b03143aa2dc680d08dd0e254cf959d5d2bf75a",
+        "bytes": 2626
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/hover-card.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "8ae94ed03deb39bcc3def8d6a9997853fa5642dc",
+        "bytes": 3739
+      },
+      "monorepo": {
+        "gitBlobSha": "8ae94ed03deb39bcc3def8d6a9997853fa5642dc",
+        "bytes": 3739
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/kbd.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "9e75b5e81e2ce26c396cc4c0595c1f20adc66cb8",
+        "bytes": 1948
+      },
+      "monorepo": {
+        "gitBlobSha": "9e75b5e81e2ce26c396cc4c0595c1f20adc66cb8",
+        "bytes": 1948
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/list-row.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "94387b2e155a9dd2f5f4cc39b7f289832e8913c1",
+        "bytes": 4966
+      },
+      "monorepo": {
+        "gitBlobSha": "94387b2e155a9dd2f5f4cc39b7f289832e8913c1",
+        "bytes": 4966
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/modal.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "dce88844738875730dd9a0bf6be9e65ae70a99f0",
+        "bytes": 3497
+      },
+      "monorepo": {
+        "gitBlobSha": "dce88844738875730dd9a0bf6be9e65ae70a99f0",
+        "bytes": 3497
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/nav.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "0b98292917df191a7d8809cf4491743630a25276",
+        "bytes": 3268
+      },
+      "monorepo": {
+        "gitBlobSha": "73d647233eda5c97b37186e87e34d810fbf10a18",
+        "bytes": 3495
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/otp-input.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "8998f629d9b0875df4dbee763f19080fa0cf4a35",
+        "bytes": 4120
+      },
+      "monorepo": {
+        "gitBlobSha": "55a3fa9b97da7036b47a529cc1c72f7ef65c143c",
+        "bytes": 3582
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/pagination.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "9daf5d850f7ef4f7aa6a9d01276693616208638e",
+        "bytes": 1877
+      },
+      "monorepo": {
+        "gitBlobSha": "9daf5d850f7ef4f7aa6a9d01276693616208638e",
+        "bytes": 1877
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/panel-list.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "a1ddcc58998186f0174fc57fb5fd9181ab1e6566",
+        "bytes": 1759
+      },
+      "monorepo": {
+        "gitBlobSha": "d89e2576a70beeca73d5d93733d18b16511c391a",
+        "bytes": 2049
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/popover.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "4659124975457fb3d9f909583497e6cb22269a9e",
+        "bytes": 5864
+      },
+      "monorepo": {
+        "gitBlobSha": "fcd9275eb0a6040219e0b1afcd33479e02727e6d",
+        "bytes": 6097
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/progress.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "81c438efb17cf96991a359e99a5637aa09870ba3",
+        "bytes": 2006
+      },
+      "monorepo": {
+        "gitBlobSha": "81c438efb17cf96991a359e99a5637aa09870ba3",
+        "bytes": 2006
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/range.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "2851735b02206a9db2efe0c85c684ae666f34ab0",
+        "bytes": 2396
+      },
+      "monorepo": {
+        "gitBlobSha": "2851735b02206a9db2efe0c85c684ae666f34ab0",
+        "bytes": 2396
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/scroll-spy.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "f60168a249453c259341be69fb074b7d4f4acb20",
+        "bytes": 3156
+      },
+      "monorepo": {
+        "gitBlobSha": "f60168a249453c259341be69fb074b7d4f4acb20",
+        "bytes": 3156
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/search.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "28714454b82d3cf9d72a1372615ecfa11fb4d193",
+        "bytes": 1447
+      },
+      "monorepo": {
+        "gitBlobSha": "28714454b82d3cf9d72a1372615ecfa11fb4d193",
+        "bytes": 1447
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/section.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "867f1bdb12807c92c0afdf5420705da57a3051e7",
+        "bytes": 1632
+      },
+      "monorepo": {
+        "gitBlobSha": "d89bd06d8ed90a85df906257b8b57128d2faf542",
+        "bytes": 1627
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/segmented.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "f005c1280af616294ff0de6e12afd5c9bed7bcc4",
+        "bytes": 3197
+      },
+      "monorepo": {
+        "gitBlobSha": "f005c1280af616294ff0de6e12afd5c9bed7bcc4",
+        "bytes": 3197
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/select.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "7f98078bcd0a706bf1e8bbbbd5d89289da253d04",
+        "bytes": 4337
+      },
+      "monorepo": {
+        "gitBlobSha": "7f98078bcd0a706bf1e8bbbbd5d89289da253d04",
+        "bytes": 4337
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/skeleton.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "ef30808272dcefa76670f5b77fdf97c22c031c53",
+        "bytes": 1753
+      },
+      "monorepo": {
+        "gitBlobSha": "ef30808272dcefa76670f5b77fdf97c22c031c53",
+        "bytes": 1753
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/slider.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "1be0ac34426f826b5c6113ddb808f99dbbbdfb27",
+        "bytes": 2863
+      },
+      "monorepo": {
+        "gitBlobSha": "1be0ac34426f826b5c6113ddb808f99dbbbdfb27",
+        "bytes": 2863
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/spinner.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "f313a82786720ef8d007fdec3030c5c434bec553",
+        "bytes": 3969
+      },
+      "monorepo": {
+        "gitBlobSha": "2346453f15a5a7119963eee99a0e016ae0c33f24",
+        "bytes": 3970
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/stat.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "737a81be96f289ae7fae9a0d6876704335727e90",
+        "bytes": 2243
+      },
+      "monorepo": {
+        "gitBlobSha": "0a10a96d6a3ec535dc7fa7d926c7331a4bbba884",
+        "bytes": 17603
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/steps.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "94b92352e4fcc1ed0691268bfd35e49177e0d528",
+        "bytes": 2304
+      },
+      "monorepo": {
+        "gitBlobSha": "94b92352e4fcc1ed0691268bfd35e49177e0d528",
+        "bytes": 2304
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/switch.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "fe5a129e62fb70f3b2711cc6893aa0c42b54eda5",
+        "bytes": 3423
+      },
+      "monorepo": {
+        "gitBlobSha": "fe5a129e62fb70f3b2711cc6893aa0c42b54eda5",
+        "bytes": 3423
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/table.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "1ac42ff1930fba00b48ed1cb36e9809b7c08c712",
+        "bytes": 1749
+      },
+      "monorepo": {
+        "gitBlobSha": "1ac42ff1930fba00b48ed1cb36e9809b7c08c712",
+        "bytes": 1749
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/tabs.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "707b8bb31b9a9b230482dc08ea047c0629d992c9",
+        "bytes": 2303
+      },
+      "monorepo": {
+        "gitBlobSha": "707b8bb31b9a9b230482dc08ea047c0629d992c9",
+        "bytes": 2303
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/tag.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "994923062c0031c34565800b8f4f5a9b774f34a3",
+        "bytes": 3758
+      },
+      "monorepo": {
+        "gitBlobSha": "994923062c0031c34565800b8f4f5a9b774f34a3",
+        "bytes": 3758
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/theme-toggle.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "625d80030682146f11916c15b2ebe71c6b28bdca",
+        "bytes": 3761
+      },
+      "monorepo": {
+        "gitBlobSha": "625d80030682146f11916c15b2ebe71c6b28bdca",
+        "bytes": 3761
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/timeline.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "63f81986dc2e1e8be87cfb060633000e6bf734c0",
+        "bytes": 4052
+      },
+      "monorepo": {
+        "gitBlobSha": "63f81986dc2e1e8be87cfb060633000e6bf734c0",
+        "bytes": 4052
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/toast.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "e40b9a0a1d3cf326854ab05017e262991ee3bb01",
+        "bytes": 2715
+      },
+      "monorepo": {
+        "gitBlobSha": "e40b9a0a1d3cf326854ab05017e262991ee3bb01",
+        "bytes": 2715
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/tooltip.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "1e761f13ae7b27177f791fa604c7c97aac7b67e2",
+        "bytes": 1774
+      },
+      "monorepo": {
+        "gitBlobSha": "1e761f13ae7b27177f791fa604c7c97aac7b67e2",
+        "bytes": 1774
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "components/tree.css",
+      "group": "components",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "e8b0f04a47314e6e1c0aa590d5d5dece173c7c5c",
+        "bytes": 3787
+      },
+      "monorepo": {
+        "gitBlobSha": "299b3c1323d8b3801ac42e190bec0828853a98af",
+        "bytes": 4055
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "components/trend.css",
+      "group": "components",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "595a2c9d6acc2c24decb4f93f3e6a6ff7b543589",
+        "bytes": 1017
+      },
+      "monorepo": {
+        "gitBlobSha": "595a2c9d6acc2c24decb4f93f3e6a6ff7b543589",
+        "bytes": 1017
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "dark.css",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "47c0a6c77dc673e305d81fb6d9e263ae3b8e80d2",
+        "bytes": 2713
+      },
+      "monorepo": {
+        "gitBlobSha": "47c0a6c77dc673e305d81fb6d9e263ae3b8e80d2",
+        "bytes": 2713
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "docs/card-proportions.md",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "cf5148f35a647b9258586e432dcc83c0f3fb5257",
+        "bytes": 5485
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "docs/form-axes.md",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "6ba17f44b1ba72a452b880dcf7f5023071e494eb",
+        "bytes": 2573
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "docs/prose-typography.md",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "f8d067dbb72b35d8295ee6476a8ad24221dd82f4",
+        "bytes": 2494
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "docs/quality-review-checklist.md",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "927e42742ba51985ccef8fdd70917ba023dd38fb",
+        "bytes": 4170
+      },
+      "monorepo": {
+        "gitBlobSha": "927e42742ba51985ccef8fdd70917ba023dd38fb",
+        "bytes": 4170
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "docs/tailwind-v4-theme.reference.css",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "b3fb5a64555ecb98694a6353718c66db6e3e405d",
+        "bytes": 11727
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/abnahme/stat-slots-dark.png",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "bc8915ae67875212636b993198e93fa5413034e5",
+        "bytes": 45858
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/abnahme/stat-slots.png",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "4cff7161563740661136673468dfb17654831514",
+        "bytes": 52562
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-abo.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "9e4ae41cf7a28a488304714eee53fd6a0aa31e72",
+        "bytes": 10513
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-analytics.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "5fa5757a355359dd05c14121b4a75edad95430aa",
+        "bytes": 24810
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-angebot.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "8f16bb33123b6b71cdd54bda5e5ae733e1676d9a",
+        "bytes": 13282
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-bookings.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "8042dbb7882eea4cf89c00b88a4423f936104cc3",
+        "bytes": 21643
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-einstellungen.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "322c4f028d90eae2592031381b5a7d28af1aeb19",
+        "bytes": 11897
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-gasserwerk-analytics.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "dcb66ec25dc9ebda2ac3935cb0996db95888bf76",
+        "bytes": 26164
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-gasserwerk.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "9eb1ca074bdaff8f911b14826a03cd97e553356f",
+        "bytes": 18245
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-kalender.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "59df7b53569143118cadb21aee27e7a2605be4b3",
+        "bytes": 17195
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-kunden.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "cebab00dcc49faf8be780f19ab3b536a8aca1c6f",
+        "bytes": 13521
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-nachrichten.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "5155d48307362702a54d730f8cd83bdb5ffd2ea9",
+        "bytes": 10097
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-onboarding.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "ea8c56b9cbcf192aad413e84fd1c5ffcb33a6975",
+        "bytes": 6324
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-ops.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "f33dc0379179a7f8d6f37fbb4c554b5ad10228c2",
+        "bytes": 18084
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-team.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "da42c99acfe84a0d05330024c2e97fea640a3381",
+        "bytes": 9756
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dashboard-website.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "ea1902c8338a4e1e3a25d63711f75eca8dd9afa3",
+        "bytes": 14004
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/demo-gallery.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "271dbc37ea1fa85167d6a42658419c84fd740911",
+        "bytes": 16363
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/dentist-landing.html",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "a5cd6b0fbd5f5dbcc047b8c44a54140f24a0cbcb",
+        "bytes": 13690
+      },
+      "monorepo": {
+        "gitBlobSha": "a5cd6b0fbd5f5dbcc047b8c44a54140f24a0cbcb",
+        "bytes": 13690
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "examples/local-service.html",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "876f5f5b67c4a3010d72d0ba4f93a31f15ac636c",
+        "bytes": 9095
+      },
+      "monorepo": {
+        "gitBlobSha": "876f5f5b67c4a3010d72d0ba4f93a31f15ac636c",
+        "bytes": 9095
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "examples/musikraum-home.html",
+      "group": "other",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "0279f257c929a6b59bf0fc1e9a5f24693a74d24f",
+        "bytes": 6365
+      },
+      "monorepo": {
+        "gitBlobSha": "60100eb3dffa7a457478447d667f80eb997b9486",
+        "bytes": 4938
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/musikraum-klangabende.html",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "f2c15bdc08ec9eb69945c1e27c5b53d5ee715c32",
+        "bytes": 20647
+      },
+      "monorepo": {
+        "gitBlobSha": "f2c15bdc08ec9eb69945c1e27c5b53d5ee715c32",
+        "bytes": 20647
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "examples/onepager-musikraum.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "69a1502446c8f0618feebaa488e5384c33359a65",
+        "bytes": 13827
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "examples/onepager-saas.html",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "aee584f8c3ebd5b13703afffca2f52f839f11a71",
+        "bytes": 17479
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "index.html",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "a26e16495c01d2670dde98fc558b04f8db438fa8",
+        "bytes": 59458
+      },
+      "monorepo": {
+        "gitBlobSha": "a26e16495c01d2670dde98fc558b04f8db438fa8",
+        "bytes": 59458
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "js/anchor-popover.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "6e15bd99633ec9df9102de91e693096e50337cd9",
+        "bytes": 2324
+      },
+      "monorepo": {
+        "gitBlobSha": "2747a58178302b46563a59f2c24bd1985790751a",
+        "bytes": 1714
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/index.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "1d6520170c12d1104075f6e0c7ed71dd606e9620",
+        "bytes": 2281
+      },
+      "monorepo": {
+        "gitBlobSha": "24fd798b7ff504efcbc176420ce4ab8c61026532",
+        "bytes": 2088
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/lifecycle.ts",
+      "group": "js",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "1c88b2ead3d3740c7d6a3eff66530a4d0392073a",
+        "bytes": 408
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "js/setup-combobox.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "73877499171c27389bc7b3b154cae411266d5140",
+        "bytes": 4681
+      },
+      "monorepo": {
+        "gitBlobSha": "4c0d64e4c3e04f41b66c0972a23eeffb87c23b7c",
+        "bytes": 3739
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/setup-copy-button.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "2d4ba609eefbb1b49fecabb726161b957cc4b74e",
+        "bytes": 1820
+      },
+      "monorepo": {
+        "gitBlobSha": "729a4eb6c3cbabe108d981e18dd62eddfd4547c4",
+        "bytes": 1082
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/setup-dismiss.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "53006ad55f442cba7aad14339b2c7f346b8bbb2a",
+        "bytes": 1421
+      },
+      "monorepo": {
+        "gitBlobSha": "0522e94738e6a87c07b4aaeefa50cd28e81c83db",
+        "bytes": 850
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/setup-file-upload.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "837492dfc4bd8d2f40e5bb720d2208ea2ae9acea",
+        "bytes": 2405
+      },
+      "monorepo": {
+        "gitBlobSha": "a3c988a6857635e1b896f116d74f40768da5ca1a",
+        "bytes": 1848
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/setup-otp-input.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "43eb28bb6e97cb7e5b7b9069ab4f08c90b624b8b",
+        "bytes": 1860
+      },
+      "monorepo": {
+        "gitBlobSha": "923684ea1f72ee998019b754ed6098ad675495c4",
+        "bytes": 1687
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/setup-popover.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "0d425173fc644e3601ef686c471dc75b7bc5ba97",
+        "bytes": 1323
+      },
+      "monorepo": {
+        "gitBlobSha": "2b43aa33e391c94e2209a3b7c18f4547a7ad26c0",
+        "bytes": 928
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/setup-slider.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "27cadd40078fd7759f30e1e49105c357425980c1",
+        "bytes": 2317
+      },
+      "monorepo": {
+        "gitBlobSha": "68db1bdd919bb08546c3b41c26830dbe4a94e148",
+        "bytes": 1901
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "js/setup-theme-toggle.ts",
+      "group": "js",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "945a2c65fc2da06573b913fa2fa8575f1e2a302a",
+        "bytes": 2702
+      },
+      "monorepo": {
+        "gitBlobSha": "225600bb12643a5d12e9bc93e9215f22b5dda139",
+        "bytes": 2271
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "main.css",
+      "group": "other",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "7a0bab4ee3bf93d42c6e437987d9210663fdb688",
+        "bytes": 4223
+      },
+      "monorepo": {
+        "gitBlobSha": "9ef15f1bfcf53c03765814a442788c914aec1205",
+        "bytes": 4284
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "manifest/builder-profile.json",
+      "group": "manifest",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "dbe004f0ac6db64f18f0cdecba9a8ece8f9d5eb5",
+        "bytes": 2728
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "manifest/builder-profile.schema.json",
+      "group": "manifest",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "5494ca715b5f6689f01008d325620af406a33434",
+        "bytes": 2755
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "package-lock.json",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "707de6f54e8e9533609b37b8c5c0fe4070c8a102",
+        "bytes": 33244
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "package.json",
+      "group": "other",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "7370669aae46ac252ada88eb7eec1cf1de4c0bbb",
+        "bytes": 5759
+      },
+      "monorepo": {
+        "gitBlobSha": "a00531bdd98f130518857dc9e661d5f72f84ff44",
+        "bytes": 4714
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "patterns/README.md",
+      "group": "patterns",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "8a0f2b8cd0c478c6108f67ae615e7f9659b5f8f9",
+        "bytes": 4996
+      },
+      "monorepo": {
+        "gitBlobSha": "8a0f2b8cd0c478c6108f67ae615e7f9659b5f8f9",
+        "bytes": 4996
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "patterns/contact-section.css",
+      "group": "patterns",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "c81f9bc56762c7014411652650d8ed9097f6c732",
+        "bytes": 869
+      },
+      "monorepo": {
+        "gitBlobSha": "c81f9bc56762c7014411652650d8ed9097f6c732",
+        "bytes": 869
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "patterns/cta-band.css",
+      "group": "patterns",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "1f143a0467da5ae4643b7e9dcce70a86bd864170",
+        "bytes": 1369
+      },
+      "monorepo": {
+        "gitBlobSha": "1f143a0467da5ae4643b7e9dcce70a86bd864170",
+        "bytes": 1369
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "patterns/editorial-split.css",
+      "group": "patterns",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "582d15f7ced94b4c0d729aca740c25a39ec63315",
+        "bytes": 1167
+      },
+      "monorepo": {
+        "gitBlobSha": "21567aca0331153df9d4c5049a9c0d7738a16625",
+        "bytes": 1136
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "patterns/faq-section.css",
+      "group": "patterns",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "4d033192f27dcf71a47f4d1c7d47760eea5720de",
+        "bytes": 225
+      },
+      "monorepo": {
+        "gitBlobSha": "4d033192f27dcf71a47f4d1c7d47760eea5720de",
+        "bytes": 225
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "patterns/hero.css",
+      "group": "patterns",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "ebbf49e3ce759a3162053deb3c4d4e9362b826e3",
+        "bytes": 2171
+      },
+      "monorepo": {
+        "gitBlobSha": "31408c3fc399ee1ca68b0271c6f5f36e5ef037e1",
+        "bytes": 2090
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "patterns/section-head.css",
+      "group": "patterns",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "174c799a50c970560a006e0f88d52b84700322a4",
+        "bytes": 1490
+      },
+      "monorepo": {
+        "gitBlobSha": "174c799a50c970560a006e0f88d52b84700322a4",
+        "bytes": 1490
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "patterns/service-grid.css",
+      "group": "patterns",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "eecf136a04986a21c0b967e96a79a334b74e3b15",
+        "bytes": 1959
+      },
+      "monorepo": {
+        "gitBlobSha": "b62d4e384708e09277ae5feda9d43ac7858e6764",
+        "bytes": 1902
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "patterns/site-footer.css",
+      "group": "patterns",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "fd56f5d908c045626da1037e1324c6de28f6e381",
+        "bytes": 1139
+      },
+      "monorepo": {
+        "gitBlobSha": "fd56f5d908c045626da1037e1324c6de28f6e381",
+        "bytes": 1139
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "patterns/site-header.css",
+      "group": "patterns",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "d2eb6c8f9189144f7d5d78df05b7adad62b803c8",
+        "bytes": 1942
+      },
+      "monorepo": {
+        "gitBlobSha": "2a8417116f683248e4e87c2eee754bb55a446357",
+        "bytes": 1211
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "patterns/sticky-action.css",
+      "group": "patterns",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "564d74d03f84033d6fdb24d00f692d4ca00c4236",
+        "bytes": 811
+      },
+      "monorepo": {
+        "gitBlobSha": "d322bb9af4d7b183e6eb0abb56d3629a8d5dac2c",
+        "bytes": 840
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "patterns/trustbar.css",
+      "group": "patterns",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "1c64e342a7732f865eb9e001a16284d259c0b852",
+        "bytes": 873
+      },
+      "monorepo": {
+        "gitBlobSha": "1c64e342a7732f865eb9e001a16284d259c0b852",
+        "bytes": 873
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "patterns/website.css",
+      "group": "patterns",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "04290a2aa064123a83f485709b9057d17a570784",
+        "bytes": 512
+      },
+      "monorepo": {
+        "gitBlobSha": "04290a2aa064123a83f485709b9057d17a570784",
+        "bytes": 512
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "profiles/builder.css",
+      "group": "profiles",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "b2779d09c749709adbc073c13d3c99ccecf52519",
+        "bytes": 1352
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/_oklch.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "ae3fdf706ef3e2b8021f2fc8a4a9f99ba053fbb9",
+        "bytes": 5919
+      },
+      "monorepo": {
+        "gitBlobSha": "ae3fdf706ef3e2b8021f2fc8a4a9f99ba053fbb9",
+        "bytes": 5919
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/audit-system.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "5c7c1dbebad029838dc2fc866b8029518221e740",
+        "bytes": 7766
+      },
+      "monorepo": {
+        "gitBlobSha": "5c7c1dbebad029838dc2fc866b8029518221e740",
+        "bytes": 7766
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/build-js.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "7f32ca7d4b05316eebbb4b45f7f8783dec38702c",
+        "bytes": 2341
+      },
+      "monorepo": {
+        "gitBlobSha": "7f32ca7d4b05316eebbb4b45f7f8783dec38702c",
+        "bytes": 2341
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/build-profiles.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "db0620687bec7e7e36bc943154107bf68e53426e",
+        "bytes": 1606
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/build-site.js",
+      "group": "scripts",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "77b1cb004703c2b2d9cfa0dd87b38f6d0c12f993",
+        "bytes": 122779
+      },
+      "monorepo": {
+        "gitBlobSha": "fd7d5dbb809b4503c94cf763b7efc794c0ca7fee",
+        "bytes": 122193
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "scripts/check-a11y.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "8fb1e3759125575e2e7a304cb3696ec48fc3d806",
+        "bytes": 9657
+      },
+      "monorepo": {
+        "gitBlobSha": "8fb1e3759125575e2e7a304cb3696ec48fc3d806",
+        "bytes": 9657
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-card-browser.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "944439af8a715a0fc1ca4cdf907595c562e700f6",
+        "bytes": 5935
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-card-contract.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "612e262a42d3842c48ba597e96c2f7ee0fbba6c2",
+        "bytes": 2449
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-card-cross-browser.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "15a450e40efbe406be451f098ae5313a862aa7b9",
+        "bytes": 4159
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-contrast-browser.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "81a8370047957f1ba0c560774eed7f0208befeca",
+        "bytes": 9311
+      },
+      "monorepo": {
+        "gitBlobSha": "81a8370047957f1ba0c560774eed7f0208befeca",
+        "bytes": 9311
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-contrast.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "4450b4a6806635c4b2f044e2e642daab960b15de",
+        "bytes": 23312
+      },
+      "monorepo": {
+        "gitBlobSha": "4450b4a6806635c4b2f044e2e642daab960b15de",
+        "bytes": 23312
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-examples.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "21bbc4dd1303394b41af48d87a19f986068baaee",
+        "bytes": 2897
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-form-axes.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "4251a7c3afcf1091465730bf59b0999579525608",
+        "bytes": 3095
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-generated.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "ff5576e8a89ba3a45bf4f2bc77b8039b9e65a9d6",
+        "bytes": 623
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-journeys.js",
+      "group": "scripts",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "2b8dc86aa44acf8ec1029dc12ba29f008963e60f",
+        "bytes": 13064
+      },
+      "monorepo": {
+        "gitBlobSha": "142cba76f9fc5040579d15a12ee8a329476ff640",
+        "bytes": 12004
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "scripts/check-package.js",
+      "group": "scripts",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "5f4d3e90f33f40d10117228875338b47ac2567b3",
+        "bytes": 4494
+      },
+      "monorepo": {
+        "gitBlobSha": "484dbf2c094491acc52637f2958033f4754ee734",
+        "bytes": 3561
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "scripts/check-patterns.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "cf9dc91212bd742bbd44f9875eee85fd580229f2",
+        "bytes": 5107
+      },
+      "monorepo": {
+        "gitBlobSha": "cf9dc91212bd742bbd44f9875eee85fd580229f2",
+        "bytes": 5107
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-profiles.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "df619e533dc7f6209efa67e8e0311681637b49c2",
+        "bytes": 3038
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-prose-browser.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "c0b16f40f92df26706782a7ca86f77f54ef3ef1c",
+        "bytes": 2974
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-prose-contract.js",
+      "group": "scripts",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "7a0c070bd59b7f8cd9fb7b02e7822ea888efb884",
+        "bytes": 1386
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-rendered.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "3bd0315a44b567c64d91fe23448a55277458c49f",
+        "bytes": 2936
+      },
+      "monorepo": {
+        "gitBlobSha": "3bd0315a44b567c64d91fe23448a55277458c49f",
+        "bytes": 2936
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-site-links.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "ccaf4f609b895890f919f0623acc43d6fa52aa35",
+        "bytes": 4529
+      },
+      "monorepo": {
+        "gitBlobSha": "ccaf4f609b895890f919f0623acc43d6fa52aa35",
+        "bytes": 4529
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-site-responsive.js",
+      "group": "scripts",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "54b4ead8a7fc6619666bc34a73a123ce0c40d403",
+        "bytes": 5521
+      },
+      "monorepo": {
+        "gitBlobSha": "b90d8abff10e3375463640a9d6f4bc0cf8832fe2",
+        "bytes": 4529
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "scripts/check-site.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "c5f624bbc6e3f2585b8a195e896f63bb4332894e",
+        "bytes": 34851
+      },
+      "monorepo": {
+        "gitBlobSha": "c5f624bbc6e3f2585b8a195e896f63bb4332894e",
+        "bytes": 34851
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/check-visual.js",
+      "group": "scripts",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "bad6c29267dd332045b6d25298ebeb0c4f6803f1",
+        "bytes": 19752
+      },
+      "monorepo": {
+        "gitBlobSha": "3a3b881d011fdccd0303b15300b399837e577640",
+        "bytes": 18578
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "scripts/export-tokens.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "f43b5a9a33acf7dba8ca8f09f82a4400df151631",
+        "bytes": 3779
+      },
+      "monorepo": {
+        "gitBlobSha": "f43b5a9a33acf7dba8ca8f09f82a4400df151631",
+        "bytes": 3779
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/fix-site-assets.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "7b26d88655da62bc61cbd51e1448a459ca4385fc",
+        "bytes": 3815
+      },
+      "monorepo": {
+        "gitBlobSha": "7b26d88655da62bc61cbd51e1448a459ca4385fc",
+        "bytes": 3815
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/generate-types.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "a0521c79ccdefaf3df19555ac5dc2f337b4f12b7",
+        "bytes": 3110
+      },
+      "monorepo": {
+        "gitBlobSha": "a0521c79ccdefaf3df19555ac5dc2f337b4f12b7",
+        "bytes": 3110
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/install-browser-deps.sh",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "cf16b4a4809ccd2238b35ce6c900b39f2a4956be",
+        "bytes": 1000
+      },
+      "monorepo": {
+        "gitBlobSha": "cf16b4a4809ccd2238b35ce6c900b39f2a4956be",
+        "bytes": 1000
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/lint-themes.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "70c03287015fb5e66a2e192672b2b89035f54210",
+        "bytes": 20393
+      },
+      "monorepo": {
+        "gitBlobSha": "70c03287015fb5e66a2e192672b2b89035f54210",
+        "bytes": 20393
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/measure-size.js",
+      "group": "scripts",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "82cd43bdf1a042e136fbd895f9ed0a06d6c50b45",
+        "bytes": 7361
+      },
+      "monorepo": {
+        "gitBlobSha": "4be33eab779789ef0760ad429fce381489014e02",
+        "bytes": 8677
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "scripts/perf-measure.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "fbc8c53f0e44b846d52e40bf79ed2983a07c7163",
+        "bytes": 8382
+      },
+      "monorepo": {
+        "gitBlobSha": "fbc8c53f0e44b846d52e40bf79ed2983a07c7163",
+        "bytes": 8382
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/release.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "89ba8700c4db824186c4aac3a7394f4fe47d3344",
+        "bytes": 5989
+      },
+      "monorepo": {
+        "gitBlobSha": "89ba8700c4db824186c4aac3a7394f4fe47d3344",
+        "bytes": 5989
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "scripts/test-lint.js",
+      "group": "scripts",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "46aa01aa8bcb6d48f699fa031c46132f55fce6bb",
+        "bytes": 14652
+      },
+      "monorepo": {
+        "gitBlobSha": "46aa01aa8bcb6d48f699fa031c46132f55fce6bb",
+        "bytes": 14652
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "semantic/dark.css",
+      "group": "semantic",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "37e12757309f57396f9935932b33843e54e46665",
+        "bytes": 2919
+      },
+      "monorepo": {
+        "gitBlobSha": "37e12757309f57396f9935932b33843e54e46665",
+        "bytes": 2919
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "semantic/density.css",
+      "group": "semantic",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "3d4099e1fe5217453894e113a71ee8cfaf526949",
+        "bytes": 1690
+      },
+      "monorepo": {
+        "gitBlobSha": "3d4099e1fe5217453894e113a71ee8cfaf526949",
+        "bytes": 1690
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "semantic/form.css",
+      "group": "semantic",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "f6628db259ae3cbd69896d9658b17cbe75f05229",
+        "bytes": 2967
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "semantic/semantic.css",
+      "group": "semantic",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "c86a5ee643963135de03bbb39d4b3625ec282aad",
+        "bytes": 16736
+      },
+      "monorepo": {
+        "gitBlobSha": "5acd27cd1a5da3196a0a8458f581fe30ef5ec6f8",
+        "bytes": 17705
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "state/state.css",
+      "group": "state",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "2d39dc7495586d980407fcc9c5085a972a87f1a8",
+        "bytes": 4389
+      },
+      "monorepo": {
+        "gitBlobSha": "2d39dc7495586d980407fcc9c5085a972a87f1a8",
+        "bytes": 4389
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/card-proportions.html",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "93db0e365375a0126c9c07d7f831a33b75ab50e6",
+        "bytes": 4714
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "tests/prose-rhythm.html",
+      "group": "other",
+      "relation": "ONLY_CANONICAL",
+      "canonical": {
+        "gitBlobSha": "3fe106482fb564f066eca5cf4cbd3655b27f2e34",
+        "bytes": 1497
+      },
+      "monorepo": null,
+      "disposition": "PRESERVE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/.metadata.json",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "75dfb1bb5cd0960f03c5a00c0343bab9ce703474",
+        "bytes": 174
+      },
+      "monorepo": {
+        "gitBlobSha": "75dfb1bb5cd0960f03c5a00c0343bab9ce703474",
+        "bytes": 174
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/industrial-dark.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "c8306dae03c2eefa5be73dd16cb96650b7bc7900",
+        "bytes": 1508407
+      },
+      "monorepo": {
+        "gitBlobSha": "c8306dae03c2eefa5be73dd16cb96650b7bc7900",
+        "bytes": 1508407
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/industrial-light.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "c094ae3643193153c13158680d1d5a9a38d4c52e",
+        "bytes": 1478527
+      },
+      "monorepo": {
+        "gitBlobSha": "c094ae3643193153c13158680d1d5a9a38d4c52e",
+        "bytes": 1478527
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/minimal-dark.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "4369d17abfe5275f5488004d48763858b8b40adb",
+        "bytes": 1534833
+      },
+      "monorepo": {
+        "gitBlobSha": "4369d17abfe5275f5488004d48763858b8b40adb",
+        "bytes": 1534833
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/minimal-light.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "33e03326b44b2f519c48ba5d716683a783d86e92",
+        "bytes": 1486424
+      },
+      "monorepo": {
+        "gitBlobSha": "33e03326b44b2f519c48ba5d716683a783d86e92",
+        "bytes": 1486424
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/modern-dark.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "8f88767ca5f1a65b8fc1b4a26fee4ddb3b762112",
+        "bytes": 1514115
+      },
+      "monorepo": {
+        "gitBlobSha": "8f88767ca5f1a65b8fc1b4a26fee4ddb3b762112",
+        "bytes": 1514115
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/modern-light.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "bdd38285b00d75348ab414f3222be4a6265422df",
+        "bytes": 1479784
+      },
+      "monorepo": {
+        "gitBlobSha": "bdd38285b00d75348ab414f3222be4a6265422df",
+        "bytes": 1479784
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/playful-dark.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "560a320a9d77148b3b97f619d80458b425cf9f92",
+        "bytes": 1537535
+      },
+      "monorepo": {
+        "gitBlobSha": "560a320a9d77148b3b97f619d80458b425cf9f92",
+        "bytes": 1537535
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/playful-light.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "24a2be8a25f103e80962f35f3fd8ee973f74c52e",
+        "bytes": 1500762
+      },
+      "monorepo": {
+        "gitBlobSha": "24a2be8a25f103e80962f35f3fd8ee973f74c52e",
+        "bytes": 1500762
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/premium-dark.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "12ffbb8c428bfd55ae4726124d4a04fe4db501d6",
+        "bytes": 1679402
+      },
+      "monorepo": {
+        "gitBlobSha": "12ffbb8c428bfd55ae4726124d4a04fe4db501d6",
+        "bytes": 1679402
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/premium-light.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "59199f9a9184481372b126b00257f317451603e6",
+        "bytes": 1644040
+      },
+      "monorepo": {
+        "gitBlobSha": "59199f9a9184481372b126b00257f317451603e6",
+        "bytes": 1644040
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/trust-dark.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "1a6d6d1c5ffc8e6eff8a44678b863d7eb52c9ea9",
+        "bytes": 1564189
+      },
+      "monorepo": {
+        "gitBlobSha": "1a6d6d1c5ffc8e6eff8a44678b863d7eb52c9ea9",
+        "bytes": 1564189
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tests/visual/trust-light.png",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "57b8c901c20df564a62b03a33a042dcf909c49bf",
+        "bytes": 1512602
+      },
+      "monorepo": {
+        "gitBlobSha": "57b8c901c20df564a62b03a33a042dcf909c49bf",
+        "bytes": 1512602
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "theme.css",
+      "group": "other",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "7aa6c380f7e4eeb7e26c9ade7f32d034bfb43cd2",
+        "bytes": 2041
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "themes/industrial.css",
+      "group": "themes",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "b19b2509e2be37ccc71408aa1c021090bc8c28ee",
+        "bytes": 2034
+      },
+      "monorepo": {
+        "gitBlobSha": "b19b2509e2be37ccc71408aa1c021090bc8c28ee",
+        "bytes": 2034
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "themes/minimal.css",
+      "group": "themes",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "afa2e7f5f42ad14edd29ddbb8d2a3d4fafcf89c9",
+        "bytes": 2801
+      },
+      "monorepo": {
+        "gitBlobSha": "afa2e7f5f42ad14edd29ddbb8d2a3d4fafcf89c9",
+        "bytes": 2801
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "themes/modern.css",
+      "group": "themes",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "0238858853927ceee5e5e8ae40965c00e423c704",
+        "bytes": 1728
+      },
+      "monorepo": {
+        "gitBlobSha": "0238858853927ceee5e5e8ae40965c00e423c704",
+        "bytes": 1728
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "themes/musikraum.css",
+      "group": "themes",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "98888b7449d64a66c0aa5370ed40d019d641e45a",
+        "bytes": 6740
+      },
+      "monorepo": {
+        "gitBlobSha": "b1529ad5b71f4c6a6491991396decf839cbf6c41",
+        "bytes": 6715
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "themes/playful.css",
+      "group": "themes",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "f171658a2542cd4226f1171a3709521b0afb9735",
+        "bytes": 1653
+      },
+      "monorepo": {
+        "gitBlobSha": "f171658a2542cd4226f1171a3709521b0afb9735",
+        "bytes": 1653
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "themes/premium.css",
+      "group": "themes",
+      "relation": "DIVERGED",
+      "canonical": {
+        "gitBlobSha": "bb3d09070a5fdbe96948824110b7d71d42687880",
+        "bytes": 2703
+      },
+      "monorepo": {
+        "gitBlobSha": "4d56763cf81fb3b04d4aca5ad17962785248fcfb",
+        "bytes": 2430
+      },
+      "disposition": "REVIEW_REQUIRED"
+    },
+    {
+      "path": "themes/studio.css",
+      "group": "themes",
+      "relation": "ONLY_MONOREPO",
+      "canonical": null,
+      "monorepo": {
+        "gitBlobSha": "8c32e0cb8a8e6b23290e4bf8455f73d7d9698668",
+        "bytes": 16982
+      },
+      "disposition": "PRODUCT_PRIVATE_REVIEW"
+    },
+    {
+      "path": "themes/trust.css",
+      "group": "themes",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "9709d9ae6b15288c2783f66c23e4760137a893f2",
+        "bytes": 1709
+      },
+      "monorepo": {
+        "gitBlobSha": "9709d9ae6b15288c2783f66c23e4760137a893f2",
+        "bytes": 1709
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tokens/tokens.css",
+      "group": "tokens",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "904d26d4cb169bff5caa741d0821a8344970699c",
+        "bytes": 9578
+      },
+      "monorepo": {
+        "gitBlobSha": "904d26d4cb169bff5caa741d0821a8344970699c",
+        "bytes": 9578
+      },
+      "disposition": "REUSE_CANONICAL"
+    },
+    {
+      "path": "tsconfig.json",
+      "group": "other",
+      "relation": "IDENTICAL",
+      "canonical": {
+        "gitBlobSha": "223d9dd071ff47390a8be3f9719b86004245ae8f",
+        "bytes": 538
+      },
+      "monorepo": {
+        "gitBlobSha": "223d9dd071ff47390a8be3f9719b86004245ae8f",
+        "bytes": 538
+      },
+      "disposition": "REUSE_CANONICAL"
+    }
+  ]
+}
