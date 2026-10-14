@@ -87,18 +87,25 @@ assert(!/\burl\(\s*['"]?https?:/i.test(css), "no remote media/fonts in review");
     await page.screenshot({path:path.join(proposal, "preview-1280-defined-dark.png"),fullPage:true});
 
     // axe is useful but not a complete human accessibility audit.
-    let axe = {status:"UNKNOWN",violations:[]};
+    let axe = {status:"UNKNOWN",modes:[]};
     try {
       const axePath=require.resolve("axe-core/axe.min.js");
       await page.addScriptTag({path:axePath});
-      const result=await page.evaluate(async()=>window.axe.run(document,{
-        runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}
-      }));
-      axe={status:result.violations.length?"FAIL":"PASS_AUTOMATED_ONLY",violations:result.violations.map(v=>({id:v.id,impact:v.impact,count:v.nodes.length, nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary,html:n.html.slice(0,260)})).slice(0,8)}))};
-      assert.equal(result.violations.length,0,"axe violations: "+JSON.stringify(axe.violations));
+      const modeResults=[];
+      for (const checkedMode of ["dark","light"]) {
+        await page.select("#mode",checkedMode);
+        const result=await page.evaluate(async()=>window.axe.run(document,{
+          runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}
+        }));
+        const violations=result.violations.map(v=>({id:v.id,impact:v.impact,count:v.nodes.length,
+          nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary,html:n.html.slice(0,260)})).slice(0,8)}));
+        modeResults.push({mode:checkedMode,status:violations.length?"FAIL":"PASS_AUTOMATED_ONLY",violations});
+        assert.equal(violations.length,0,checkedMode+" axe violations: "+JSON.stringify(violations));
+      }
+      axe={status:"PASS_AUTOMATED_ONLY",modes:modeResults};
     } catch(e) {
       if(e.code==="MODULE_NOT_FOUND") {
-        axe={status:"NOT_INSTALLED",violations:[]};
+        axe={status:"NOT_INSTALLED",modes:[]};
       } else throw e;
     }
     const report={
