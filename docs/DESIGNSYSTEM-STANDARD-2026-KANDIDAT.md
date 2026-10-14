@@ -101,6 +101,17 @@ Eine Komponente darf erst als **PUBLIC_SUPPORTED** geführt werden, wenn all die
 
 Es besteht **kein** Automatismus, dass alle Kombinationen aller Zustände pixelgenau sein müssen; die kombinatorische Matrix wird mit paarweiser Abdeckung und gezielten harten Risikofällen konstruiert. Kontrast, Focus, Lesbarkeit und Funktion sind für kritische Kombinationen systematisch zu prüfen.
 
+### Forschungsregister: Startseite UND komplexe Interaktion
+
+Das ergänzende Erkenntnismaterial wird bewusst nach Kontext getrennt:
+
+- [Erste Landingpage-Auswertung](../research/2026-10-14-homepage-landingpage-video-evidence.md) — sieben CRO-/Content-/Hero-Hypothesen.
+- [Vier weitere Videoanalysen mit Gegenbelegen](../research/2026-10-14-cross-video-ux-pattern-evidence.md) — Startseitenverständlichkeit, authentische Proof-/Medienbehandlung, responsive Cards, Filter/Resultcounts, Visuelles Feedback und Motion.
+
+**Keine direkte Normableitung:** Video-„Hacks“, pauschale Fold-/Scroll-Regeln, Farbpsychologie, starre CTA-Zahlen oder ungesicherte Conversion-Zuwächse dürfen nicht als Components-Gate ausgegeben werden. Unabhängige UX-Forschung (NN/g/Baymard) und formelle Accessibility-Standards gehen vor; Kontextunterschiede bleiben sichtbar. Für jede Forschungs-Hypothese ist der zuständige Besitzer (DS/Studio/Content/Consumer), eine Widerlegungsprobe und die Evidenzstufe festzuhalten, bevor daraus Testcode oder eine öffentliche Variante entsteht.
+
+**Konsequenz:** In der ersten Komponentenwelle sind Hero, Card, Button/Feedback, Filter/Range, Trust/Proof und Medien als gemeinsame **DOM/State/Slot-Abnahmekandidaten** zu prüfen – nicht automatisch als zusätzliche CSS-Dateien zu implementieren. Der bestehende Basisstandard (inkl. WCAG 2.2 AA) wird dadurch nicht abgeschwächt.
+
 ## 6. Prüf- und Freigabegates (Vorschlag, noch nicht implementiert)
 
 | Gate | Exakter PASS-Beweis | Negativfall |
