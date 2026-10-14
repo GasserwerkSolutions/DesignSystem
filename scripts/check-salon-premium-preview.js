@@ -98,33 +98,41 @@ assert(!/\burl\(\s*['"]?https?:/i.test(css), "no remote media/fonts in review");
     await page.screenshot({path:path.join(proposal, "preview-1280-defined-dark.png"),fullPage:true});
 
     // axe is useful but not a complete human accessibility audit.
+    // Audit light/dark in separate documents. Running axe on a document
+    // immediately after changing data-mode can mix inherited text colors from
+    // the previous mode with newly painted backgrounds in Chromium's axe scan.
+    // This is a test reliability fix, not a CSS/design change.
     let axe = {status:"UNKNOWN",modes:[]};
     try {
       const axePath=require.resolve("axe-core/axe.min.js");
-      await page.addScriptTag({path:axePath});
       const modeResults=[];
       for (const checkedMode of ["dark","light"]) {
-        await page.select("#mode",checkedMode);
-        // Chromium may briefly show mixed colors while mode-dependent inherited
-        // values settle. Audit the COMPLETE rendered theme, not mid-transition.
-        await page.waitForFunction((mode)=>{
-          const target=mode==="light"?"rgb(98, 91, 84)":"rgb(214, 202, 192)";
-          return document.documentElement.getAttribute("data-mode")===mode &&
-            getComputedStyle(document.querySelector(".site-footer__bottom")).color===target;
-        },{timeout:10000},checkedMode);
-        const result=await page.evaluate(async()=>window.axe.run(document,{
-          runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}
-        }));
-        const violations=result.violations.map(v=>({id:v.id,impact:v.impact,count:v.nodes.length,
-          nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary,html:n.html.slice(0,260)})).slice(0,8)}));
-        modeResults.push({mode:checkedMode,status:violations.length?"FAIL":"PASS_AUTOMATED_ONLY",violations});
-        assert.equal(violations.length,0,checkedMode+" axe violations: "+JSON.stringify(violations));
+        const auditPage=await browser.newPage();
+        try {
+          await auditPage.setViewport({width:1280,height:900,deviceScaleFactor:1});
+          await auditPage.emulateMediaFeatures([{name:"prefers-reduced-motion",value:"reduce"}]);
+          await auditPage.goto("file://" + path.join(proposal, "preview.html"), {waitUntil:"load"});
+          await auditPage.evaluate(mode=>document.documentElement.setAttribute("data-mode",mode),checkedMode);
+          await auditPage.evaluate(()=>document.fonts.ready);
+          await auditPage.waitForFunction((mode)=>{
+            const target=mode==="light"?"rgb(98, 91, 84)":"rgb(214, 202, 192)";
+            return document.documentElement.getAttribute("data-mode")===mode &&
+              getComputedStyle(document.querySelector(".site-footer__bottom")).color===target;
+          },{timeout:10000},checkedMode);
+          await auditPage.addScriptTag({path:axePath});
+          const result=await auditPage.evaluate(async()=>window.axe.run(document,{
+            runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}
+          }));
+          const violations=result.violations.map(v=>({id:v.id,impact:v.impact,count:v.nodes.length,
+            nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary,html:n.html.slice(0,260)})).slice(0,8)}));
+          modeResults.push({mode:checkedMode,status:violations.length?"FAIL":"PASS_AUTOMATED_ONLY",violations});
+          assert.equal(violations.length,0,checkedMode+" axe violations: "+JSON.stringify(violations));
+        } finally {await auditPage.close();}
       }
       axe={status:"PASS_AUTOMATED_ONLY",modes:modeResults};
     } catch(e) {
-      if(e.code==="MODULE_NOT_FOUND") {
-        axe={status:"NOT_INSTALLED",modes:[]};
-      } else throw e;
+      if(e.code==="MODULE_NOT_FOUND") axe={status:"NOT_INSTALLED",modes:[]};
+      else throw e;
     }
     const report={
       status:"REVIEW_ONLY_BROWSER_CHECK_PASSED",
