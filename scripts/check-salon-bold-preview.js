@@ -100,25 +100,31 @@ assert(!/\d+\s*CHF|(?:\d[.,]\d)\s*★/.test(html),"no invented pricing/ratings")
     await darkScreenshotOnly.evaluate(node=>node.remove());
 
     const axePath = require.resolve("axe-core/axe.min.js");
-    await page.addScriptTag({path:axePath});
     const checks=[];
+    // axe-core can preserve CSS color caches across successive mode changes
+    // on the SAME document, mixing previous text color and next background.
+    // Use independent documents instead of treating a blended frame as a fail.
     for(const mode of ["dark","light"]){
-      await page.select("#mode",mode);
-      // A previous screenshot may have modified the cascade. For both modes,
-      // wait until our *bold* opt-in CSS is actually painted, not merely the
-      // new data-mode attribute. Prevent false contrast failures in CI.
-      await page.waitForFunction(expected=>{
-        const footer=document.querySelector(".salon-bold-preview .site-footer");
-        const bottom=document.querySelector(".salon-bold-preview .site-footer__bottom");
-        return document.documentElement.getAttribute("data-mode")===expected &&
-          getComputedStyle(bottom).color==="rgb(232, 232, 219)" &&
-          getComputedStyle(footer).backgroundColor==="rgb(18, 18, 17)";
-      },{timeout:10000},mode);
-      await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
-      const result=await page.evaluate(()=>window.axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}}));
-      const violations=result.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.slice(0,8).map(n=>({target:n.target,summary:n.failureSummary,html:n.html.slice(0,200)}))}));
-      checks.push({mode,violationCount:violations.length,violations});
-      assert.equal(violations.length,0,mode+" axe issues: "+JSON.stringify(violations));
+      const checkPage=await browser.newPage();
+      try {
+        await checkPage.setViewport({width:1280,height:900,deviceScaleFactor:1});
+        await checkPage.emulateMediaFeatures([{name:"prefers-reduced-motion",value:"reduce"}]);
+        await checkPage.goto("file://"+path.join(dir,"preview-bold.html"),{waitUntil:"load"});
+        await checkPage.evaluate(nextMode=>document.documentElement.setAttribute("data-mode",nextMode),mode);
+        await checkPage.evaluate(()=>document.fonts.ready);
+        await checkPage.waitForFunction(nextMode=>{
+          const footer=document.querySelector(".salon-bold-preview .site-footer");
+          const bottom=document.querySelector(".salon-bold-preview .site-footer__bottom");
+          return document.documentElement.getAttribute("data-mode")===nextMode &&
+            getComputedStyle(bottom).color==="rgb(232, 232, 219)" &&
+            getComputedStyle(footer).backgroundColor==="rgb(18, 18, 17)";
+        },{timeout:12000},mode);
+        await checkPage.addScriptTag({path:axePath});
+        const result=await checkPage.evaluate(()=>window.axe.run(document,{runOnly:{type:"tag",values:["wcag2a","wcag2aa","wcag21a","wcag21aa","wcag22aa"]}}));
+        const violations=result.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.slice(0,8).map(n=>({target:n.target,summary:n.failureSummary,html:n.html.slice(0,200)}))}));
+        checks.push({mode,violationCount:violations.length,violations});
+        assert.equal(violations.length,0,mode+" axe issues: "+JSON.stringify(violations));
+      } finally {await checkPage.close();}
     }
 
     console.log(JSON.stringify({
