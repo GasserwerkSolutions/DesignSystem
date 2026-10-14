@@ -25,6 +25,10 @@ jobs:
         run: |
           set -o pipefail
           node scripts/check-salon-premium-preview.js | tee salon-preview-report.json.log
+      - name: Bold editorial B — reflow, typography and accessibility
+        run: |
+          set -o pipefail
+          node scripts/check-salon-bold-preview.js | tee salon-bold-report.json.log
       - name: Review screenshots and report
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
@@ -32,5 +36,7 @@ jobs:
           name: salon-premium-review-only
           path: |
             proposals/coiffeur-premium/preview-*.png
+            proposals/coiffeur-premium/bold-*.png
             salon-preview-report.json.log
+            salon-bold-report.json.log
           if-no-files-found: warn
