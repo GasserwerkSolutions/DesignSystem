@@ -80,8 +80,9 @@ assert(!/\d+\s*CHF|(?:\d[.,]\d)\s*★/.test(html),"no invented pricing/ratings")
       results.push(measure);
       if(width===1440||width===320||width===390) {
         // Screenshots show the WEBSITE, not the floating reviewer controls.
-        await page.addStyleTag({content:".salon-review-toolbar{display:none !important;}"});
+        const screenshotOnly = await page.addStyleTag({content:".salon-review-toolbar{display:none !important;}"});
         await page.screenshot({path:path.join(dir,"bold-"+width+"-light.png"),fullPage:true});
+        await screenshotOnly.evaluate(node=>node.remove());
       }
     }
 
@@ -94,8 +95,9 @@ assert(!/\d+\s*CHF|(?:\d[.,]\d)\s*★/.test(html),"no invented pricing/ratings")
     assert.equal(await page.$eval("html",el=>el.getAttribute("data-shape")),"defined");
     assert.equal(await page.$eval("html",el=>el.getAttribute("data-space")),"normal");
     assert.equal(await page.$eval("html",el=>el.getAttribute("data-mode")),"dark");
-    await page.addStyleTag({content:".salon-review-toolbar{display:none !important;}"});
+    const darkScreenshotOnly = await page.addStyleTag({content:".salon-review-toolbar{display:none !important;}"});
     await page.screenshot({path:path.join(dir,"bold-1280-dark-defined.png"),fullPage:true});
+    await darkScreenshotOnly.evaluate(node=>node.remove());
 
     const axePath = require.resolve("axe-core/axe.min.js");
     await page.addScriptTag({path:axePath});
