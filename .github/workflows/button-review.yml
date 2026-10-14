@@ -1,0 +1,32 @@
+name: Button 01 review browser evidence
+on:
+  push:
+    branches: [review/button-01-source-and-browser-contract]
+  pull_request:
+    paths:
+      - "reviews/button/**"
+      - "scripts/check-button-review.js"
+
+permissions:
+  contents: read
+
+jobs:
+  button-chromium:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: bash scripts/install-browser-deps.sh
+      - name: Button 01 native DOM and form-axes browser probe
+        run: node scripts/check-button-review.js
+      - name: Upload review screenshots
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: button-01-screenshots
+          path: reviews/button/button-review-*.png
+          if-no-files-found: warn
