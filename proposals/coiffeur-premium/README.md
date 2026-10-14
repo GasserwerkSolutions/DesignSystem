@@ -4,19 +4,11 @@
 
 **Wichtig:** Dies ist **kein** neues Theme in der veröffentlichten DS-Bibliothek, keine Veröffentlichung und kein Ersatz für Salon-/SAFE-Fachdaten. Alle Formulierungen im visuellen Preview sind DEMO-Texte, keine Aussagen über einen existierenden Salon. Fotografien, Preisen, Standort, Team, Öffnungszeiten und Buchungslinks dürfen nur aus autorisierter Quelle kommen.
 
-## 0. Kundenfeedback: Eine bewusst mutigere Alternative B (2026-10-14)
+## Aktueller Arbeitsmodus: Copy vor visueller Überarbeitung
 
-Die ursprüngliche Richtung **Quiet Atelier / A** wurde als zu langweilig und ohne Blickfang bewertet. Deshalb existiert ab jetzt eine **eigene, streng opt-in** zweite Gestaltungsvariante **Bold Editorial / B**:
+**Entscheid 2026-10-14:** Die experimentelle Variante „Bold Editorial“ wurde zurückgenommen. Diese Version („Quiet Atelier“) dient nur als **visuelle Ausgangslage**. Zuerst müssen emotionaler Hero-Titel und fachlich konkreter Subtext formuliert, verglichen und vom Owner freigegeben werden; erst danach wird die Gestaltung an die Botschaft angepasst.
 
-- `preview.html` + `preview.css`: A — ruhig, warm, editorial, klassischer Premium-Auftritt.
-- `preview-bold.html` + `bold.css`: B — ein grosser schwarzer Hero, Plakat-Typografie mit aktiver Zweifarbhierarchie, leuchtendes Chartreuse, Koralle, aus dem Raster gedrehter gestalterischer Medienplatz, starkes Kontrast-Rhythmuswechselspiel und bewusst ungleiche Service-Card-Flächen.
-- Beide laden die **gleichen** kanonischen CSS-Patterns; nur die rein präsentationsseitige Variantenbehandlung unterscheidet sich. Weder `main.css`, globale Tokens, Produkt-/Salonwerte noch echte Buchungsdaten werden geändert.
-- Statt „mehr Deko“ sollen **erkennbare Editorial-Schwerpunkte** entstehen: Hero-Titel → Bildkomposition → eine primäre Aktion; danach plakative Abschnittstitel, rhythmisch versetzte Serviceflächen, kontrastreicher Statement-Block und ein kräftiger Schluss.
-- Starkes Neon ist hier ein *Vorschlag*, keine universelle Premium-Regel und kein genereller Beauty-Farbtoken. Die Gestaltungsentscheidung benötigt einen echten Owner-Vergleich gegen A; die spätere Markenidentität kann eine andere Akzentfarbe wählen.
-- Texte wie „Mehr Mut. Mehr Haar.“ und „No Ordinary Hair.“ sind ausschliesslich **ungeprüfte Demo-Copy**; sie behaupten keine Leistungsqualität eines realen Salons. Ein echter Hero braucht verifiziertes Bildmaterial und die passenden Medien-/Consent-Verträge.
-- **Qualität bei Mut:** Keine Textkollision, keine abgeschnittenen Labels, keine horizontalen Layoutverluste bei 320/390/768/1024/1440 px; Hero/Story wechseln ab Containerbreite, Native Buttons/Links bleiben zugänglich. `axe-core` soll im Browser WCAG-2.2-Tags in Light und Dark abdecken, ohne dadurch vollständige Konformität zu behaupten. Tests leben separat unter `scripts/check-salon-bold-preview.js`.
-
-**Gemeinsame Entscheidungsfragen:** (1) Ist die Typografie hochwertig statt bloss laut? (2) Braucht Coiffeur-Premium neben ruhigem Luxus eine Fashion-/Avantgarde-Kategorie? (3) Welche Bildart/Portraitrechte sind vorhanden? (4) Welche leuchtende Markenfarbe darf Studio frei entscheiden? (5) Ist die Mobile-Hierarchie mit realen Namen und langen de-CH-Labels attraktiv?
+Der Textentwurf und seine offenen Copy-Entscheidungen sind in [HERO-COPY-01.md](./HERO-COPY-01.md) dokumentiert. Demo-Text der Browser-Vorschau ist noch **nicht** ersetzt: Die Texte bleiben bis zur Freigabe Kandidaten.
 
 ## 1. Gestalterische Richtung
 
