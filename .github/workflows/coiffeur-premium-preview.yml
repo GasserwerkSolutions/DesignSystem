@@ -22,7 +22,9 @@ jobs:
       - run: npm ci
       - run: bash scripts/install-browser-deps.sh
       - name: Layout, axes, navigation, provenance, accessibility lint
-        run: node scripts/check-salon-premium-preview.js | tee salon-preview-report.json.log
+        run: |
+          set -o pipefail
+          node scripts/check-salon-premium-preview.js | tee salon-preview-report.json.log
       - name: Review screenshots and report
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
