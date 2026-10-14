@@ -27,7 +27,7 @@ jobs:
           import subprocess
           actual = set(subprocess.check_output(
             ["git","status","--porcelain","--untracked-files=all","--","dist"],
-            text=True).strip().splitlines())
+            text=True).splitlines())
           files = set()
           for line in actual:
             if not line:
