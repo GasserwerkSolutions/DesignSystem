@@ -164,6 +164,7 @@ export type TokenName =
   | "--motion-fast"
   | "--motion-fastest"
   | "--motion-feedback"
+  | "--motion-hover-intent"
   | "--motion-slow"
   | "--motion-slower"
   | "--motion-transition"
@@ -174,6 +175,7 @@ export type TokenName =
   | "--nav-hover-bg"
   | "--nav-text"
   | "--phi"
+  | "--phi-fr"
   | "--playful-100"
   | "--playful-200"
   | "--playful-300"
@@ -437,6 +439,7 @@ export type DurationToken =
   | "--motion-fast"
   | "--motion-fastest"
   | "--motion-feedback"
+  | "--motion-hover-intent"
   | "--motion-slow"
   | "--motion-slower"
   | "--motion-transition";
