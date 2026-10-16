@@ -64,13 +64,13 @@ semantic-Layer, Themes overriden, Components consumen mit `var(--token, fallback
 
 | Script | Was wird geprüft |
 |---|---|
-| `lint` | Theme-Contract (5 checks) |
-| `test:lint` | Lint-Regression-Tests (21 cases) |
+| `lint` | Theme-Contract + Component-Hygiene (7 checks) |
+| `test:lint` | Lint-Regression-Tests (31 cases) |
 | `check:contrast` | 1008 WCAG-AA Paare |
 | `check:a11y` | axe-core lint |
 | `check:visual` | 12 VRT baselines |
 | `check:journeys` | Puppeteer user flows |
-| `check:site` | 50 site asserts (smoke + interactions) |
+| `check:site` | 59 site asserts (smoke + interactions + CLEAR-Guarantees) |
 | `check:package` | files-list ∈ @imports + exports-map vs tarball |
 | `measure:check` | Bundle-Budget |
 
