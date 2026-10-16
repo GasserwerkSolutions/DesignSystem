@@ -1,5 +1,112 @@
 # Changelog
 
+## [1.0.0] — API-Lock
+
+Erster stabiler Release. Ab hier ist die Public API gelockt — Breaking
+Changes gehen in 2.0.0, nicht in 1.x. Patches und additive Erweiterungen
+bleiben kompatibel.
+
+### Was die 1.0.0-API garantiert
+
+**CSS-Layer-Reihenfolge** (festgeschrieben in `main.css`):
+```
+reset → tokens → semantic → themes → mode → base → state → components
+```
+Konsumenten dürfen sich auf diese Order verlassen für cascade-Vorhersagen.
+
+**Tone-Switching** via `[data-tone~="trust|playful|premium|industrial|modern|minimal"]`.
+Sechs Themes als Public-API-Set; Theme-Tokens dürfen nur
+`[data-tone~="X"]`-Selektoren verwenden (Lint Check 1 enforced).
+
+**Mode-Switching** via `[data-mode="light|dark"]` + `color-scheme`-
+Inheritance + `light-dark()`-Resolution. Nested Scopes behalten ihren
+Mode (Lint Check 3 enforced).
+
+**Component-Contract-API**: Jede Komponente dokumentiert ihre `Required`
+und `Optional` CSS-Custom-Properties im JSDoc-Header. Diese
+Component-Tokens (`--btn-*`, `--card-*`, etc.) sind Public API und
+können von Konsumenten pro `[data-tone]` oder lokal übersteuert werden.
+
+**Public Token-Scales** (dokumentiert in Foundations):
+- Palette-Shades: `--trust-50/-500/-900`, `--playful-*`, `--premium-*`,
+  `--industrial-*`, `--modern-*`, `--minimal-*`, `--gray-50/-900`
+- Semantic-Colors: `--color-*` (mode-aware via light-dark())
+- Status-Colors: `--color-{info,success,warning,error}` +
+  `--status-*-{bg,fg,border}` (sand-filtered, ADR-003)
+- Spacing: `--space-2/-4/.../-128` (4px-Grid)
+- Radius: `--radius-{sm,md,lg,xl,2xl,full}` + raw `--radius-*px`
+- Typography: `--font-{serif,sans,mono}`, `--font-{xs,sm,base,lg,xl}`,
+  `--fw-{300,400,500,600,700}`, `--lh-{tight,normal,loose}`
+- Motion: `--motion-{feedback,transition,entrance,emphasis,hover-intent}`,
+  `--motion-{fastest,fast,base,slow,slower}`
+- Easing: `--ease-{in,out,in-out,smooth,bounce}`
+- Chart-Palette: `--chart-1 .. -8` (Okabe-Ito, inline-style-usage)
+- Proportion: `--phi` (unitless) + `--phi-fr` (fr-mirror)
+- Z-Index: `--z-{hide,base,dropdown,sticky,fixed,modal,popover,toast,tooltip}`
+- Container-Query-Breakpoints: `--cq-bp-{sm,md,lg,xl}` (reference-only,
+  @container akzeptiert kein var())
+
+**Design-Konstitution** (CLEAR-4-Prinzipien, verankert in ADR-003 bis
+ADR-007, enforced durch 7 Lint-Checks + Browser-Self-Tests):
+
+- **P1 — Vorhersehbarkeit vor Überraschung** (ADR-005): Bewegung ist
+  linear und gedämpft; `--ease-bounce` nur via explizites
+  `--motion-emphasis`-Opt-In. Lint Check 6 verhindert bounce in
+  Default-Motion-Slots.
+- **P2 — Kein Zustand ohne Ausgang** (ADR-006): `.empty-state` ohne
+  CTA und `.alert--danger` ohne Action zeigen sichtbare Hints via
+  `:has()`. `runExitPathEnforcement()` self-test im Browser.
+- **P3 — Reizdichte ist Ressource** (ADR-004): Tone-Paletten chroma-
+  gefiltert via `oklch(from <hex> l calc(c * 0.7) h)` für sanftere
+  Hues ohne Hue-Shift.
+- **P4 — Statusfarben warnen ohne alarmieren** (ADR-003): Status-Fg
+  sand-gefiltert via `color-mix(... 78%, var(--color-text-primary))`.
+- **P5 — Nutzer behält Kontrolle** (ADR-007): Two-Layer-Garantie —
+  Lint Check 7 prüft Bewusstsein (reduced-motion-Marker pro Component),
+  `runReducedMotionTruth()` prüft Wahrheit (computed animation-duration
+  im Browser).
+
+**Pipeline-Garantien** (müssen grün sein für jeden Release):
+- `lint` — 7 Theme-Contract + Component-Hygiene-Checks
+- `test:lint` — 31 Lint-Regression-Fixtures
+- `check:contrast` — 1008 WCAG-AA Paare (OKLCH-Parser-driven)
+- `check:visual` — 12 VRT-Baselines (pixel-identisch)
+- `check:journeys` — 6 Puppeteer-User-Flows
+- `check:site` — 59 Site-Asserts (smoke + interactions + CLEAR-Guarantees)
+- `check:package` — exports-map vs tarball + 72 @imports
+- `measure:check` — Bundle-Budgets (<100% strict)
+
+**ADR-Historie als Design-Record**:
+- ADR-001 — Container-Max-Inheritance
+- ADR-002 — Modern-CSS-Architektur (light-dark, @starting-style, @property)
+- ADR-003 — Status-Farben Sand-Filter (CLEAR 4 P4)
+- ADR-004 — Tone-Paletten Chroma-Filter (CLEAR 4 P3)
+- ADR-005 — Bounce nur als explizites Opt-In (CLEAR 4 P1)
+- ADR-006 — Exit-Path-Enforcement via :has() (CLEAR 4 P2)
+- ADR-007 — Reduced-Motion-Bewusstsein als Two-Layer-Garantie (CLEAR 4 P5)
+
+### Nicht-Public (interne Details, dürfen in 1.x ändern)
+
+- Private Component-Tokens mit `--_`-Prefix (z.B. `--_btn-bg-hover`)
+- Scripts in `scripts/` (Build-/Check-Tooling)
+- Interne Semantic-Aliases (z.B. `--duration-medium` als Alias auf
+  `--motion-base`)
+- Dist-Artefakte (bundled durch Build, nicht source-contract)
+
+### Was in 1.0.0 explizit NICHT dabei ist
+
+- Keine CLEAR-4-Constitution.md als Repo-Datei (lebendige Doku lebt in
+  den ADRs, nicht in einer Meta-Datei)
+- Kein JS-Framework-Binding (CSS-only Library — React/Vue/etc. nutzen
+  die Klassen und Tokens direkt)
+- Keine JavaScript-Dependency (die wenigen JS-Companions in `dist/js/`
+  sind optional für interaktive Patterns)
+
+### Migrations-Hinweis für Konsumenten < 1.0
+
+Von v0.3x direkt auf 1.0.0 ohne weitere Breaking Changes — die 0.x-
+Historie war die Foundation, 1.0.0 lockt die bestehende API ein.
+
 ## [0.32.0] — Kontrollrunde: 2 Konsistenz-Fixes
 
 Systematischer Cross-cutting-Audit nach v0.27-v0.31.1 (CLEAR-4-Etappen).

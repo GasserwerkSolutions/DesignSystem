@@ -1,5 +1,7 @@
 # Design System
 
+**v1.0.0 — API gelockt.** Breaking Changes gehen in 2.0.0.
+
 Contract-based Multi-Tone CSS Design System.
 **6 Tones × 2 Modes × 3 Densities × Container-Queries** = 4 orthogonale Achsen.
 **54 Components**, **WCAG-AA validiert**, **17.5 KB gzip**.
@@ -278,7 +280,7 @@ open dist/site/index.html
 - [ADR-005 — Bounce nur als explizites Opt-In (CLEAR 4 Prinzip 1)](./ADR-005-bounce-only-as-explicit-opt-in.md)
 - [ADR-006 — Exit-Path-Enforcement via `:has()` (CLEAR 4 Prinzip 2)](./ADR-006-exit-path-enforcement.md)
 - [ADR-007 — Reduced-Motion-Bewusstsein als Two-Layer-Garantie (CLEAR 4 Prinzip 5)](./ADR-007-reduced-motion-awareness.md)
-- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis v0.31
+- [CHANGELOG](./CHANGELOG.md) — vollständige Etappen-Historie v0.3 bis 1.0.0
 
 ---
 
