@@ -1,5 +1,79 @@
 # Changelog
 
+## [0.32.0] — Kontrollrunde: 2 Konsistenz-Fixes
+
+Systematischer Cross-cutting-Audit nach v0.27-v0.31.1 (CLEAR-4-Etappen).
+Ergebnis: System ist nach den 5 Etappen weitgehend sauber. 5 Findings
+total, davon 2 MITTEL und 3 NIEDRIG. Nur die MITTEL-Findings sind
+gefixt — die NIEDRIG-Findings (dead `--_offset`, print.css grey hex,
+`--cq-bp-*` reference-only tokens) sind dokumentiert aber ohne Fix
+belassen, weil die Kosten des Fixes über dem Nutzen liegen.
+
+### Fix 1 — hover-card: 300ms-Fallback bekommt eigenen Semantic-Token
+
+`components/hover-card.css` hatte einen hardcoded `300ms`-Fallback für
+den `--hover-card-delay`. 300ms passt in keinen `--motion-*`-Token der
+Scale (fast=150, base=250, slow=350) — weil hover-reveal-delay
+semantisch keine Transition-Duration ist, sondern eine reine
+**Intent-Verzögerung** (filtert accidental hovers).
+
+Neuer Semantic-Token in `semantic/semantic.css`:
+```css
+--motion-hover-intent: 300ms;  /* reine Verzögerung, keine Bewegung */
+```
+
+Mit eigenem Kommentar warum er nicht Teil der motion-shorthand-Scale
+ist (die Bewegungs-Dauern + Easing bündelt).
+
+### Fix 2 — state.css: hardcoded error-rgba → color-mix
+
+`state/state.css:59` hatte für invalid-input-focus-rings:
+```css
+box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+```
+
+220,38,38 ist `#dc2626` ist `--color-error-signal`. Hardcoded → folgte
+Theme-Overrides nicht; wenn ein Theme die Error-Farbe anders setzt,
+blieb der Focus-Ring in der alten Farbe.
+
+Fix:
+```css
+box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-error) 10%, transparent);
+```
+
+Konsistent zum Pattern aus `--color-error` sand-filter (ADR-003) und
+nutzt oklch-Mix für perceptually-uniforme Transparenz.
+
+### Was NICHT gefixt wurde (bewusst)
+
+- **`components/popover.css --_offset`**: dead private token, 1 Zeile.
+  Ohne klaren Positionierungs-Pfad in der Component unklar ob entfernen
+  oder einbinden — gelassen für wenn Positionierungs-Arbeit ansteht.
+- **`--cq-bp-sm/md/lg/xl`**: existieren aber `@container` queries
+  akzeptieren kein `var()`. Reference-Dokumentation ist wertvoll genug
+  um sie zu behalten; Entfernen würde die 480/640/800/1024-Baseline
+  verlieren die Autoren consistent treffen sollten.
+- **`base/print.css #ccc, #555`**: Print-spezifische Greys, akzeptable
+  Nicht-Theme-Awareness.
+
+### Audit-Report (nicht persistiert als Datei)
+
+- **C.1 Dead Tokens**: 57 Kandidaten, 55 sind Public API (Palette-
+  Shades, Spacing-Scale, Border/Radius-Scale, z-Index, Okabe-Ito
+  Chart-Palette, Semantic-Color-Variants). 2 echte Verdachtsfälle.
+- **C.2 Dead Classes**: 66 Kandidaten, 0 echte dead (alle sind BEM-
+  Elemente, Layout-Primitives, JS-dynamic state, oder Modifier-
+  Varianten als Public API).
+- **C.3 Hardcoded Values**: 3 Findings, 2 gefixt. Weniger als erwartet
+  weil token-driven CSS schon strikt eingehalten wird.
+- **C.4 Layer-Inversions**: 0 Findings. Nach dem v0.31.0-Spinner-Fix
+  (!important-Layer-Order-Inversion) sind alle reduced-motion-
+  Overrides sauber: entweder `transition: none` / `animation: none`
+  (shorthand "none" wirkt gegen jedes Duration-Override) oder explizit
+  `!important`.
+
+Pipeline grün: lint, test:lint (31/31), build:site.
+
 ## [0.31.1] — Golden-Ratio-Element: 4-Bug-Sweep
 
 Follow-up zu v0.31.0: Audit des Goldener-Schnitt-Elements auf der

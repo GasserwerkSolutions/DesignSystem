@@ -286,6 +286,12 @@
      opt-in pro Component, niemals als Default einer Component. */
   --motion-emphasis:   350ms var(--ease-bounce);      /* Confirmation, "ta-da" — opt-in */
 
+  /* Intent-Delay: Wartezeit vor Reveal, um accidental hovers zu filtern.
+     Semantisch nicht transition-duration (keine Animation), sondern
+     reine Verzögerung. Hover-Cards nutzen das; nicht Teil der motion-*
+     scale weil dort nur Bewegungs-Dauern leben. */
+  --motion-hover-intent: 300ms;
+
   /* ========================================
      SEMANTIC BORDERS
      ======================================== */

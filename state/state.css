@@ -56,7 +56,7 @@ select:disabled {
 input:invalid:focus,
 textarea:invalid:focus {
   border-color: var(--color-error);
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-error) 10%, transparent);
 }
 
 /* ==========================================================
