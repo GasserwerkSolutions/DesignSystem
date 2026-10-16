@@ -1,5 +1,74 @@
 # Changelog
 
+## [0.31.1] — Golden-Ratio-Element: 4-Bug-Sweep
+
+Follow-up zu v0.31.0: Audit des Goldener-Schnitt-Elements auf der
+Foundation-Page hat vier Bugs aufgedeckt, alle in einem Sweep gefixt.
+
+### Bug 1: Proportion-Swatch war nicht visuell
+
+`.foundation-swatch--proportion` zeigte nur die Zahl "1.618" als
+Mono-Text. Alle anderen Foundation-Tokens haben visuelle Demonstrationen
+(Color = Farbquadrat, Spacing = Breiten-Bar, Radius = border-radius-
+Quadrat, Shadow = Shadow-Quadrat). Proportion war der einzige Token-Typ
+ohne visuelle Repräsentation seines Werts.
+
+**Fix**: `.foundation-swatch__ratio` ist jetzt ein Rechteck mit
+`aspect-ratio: var(--phi) / 1`, `width: 100%` der Visual-Column,
+`max-height: 120px` für Portrait-Extreme. Zeigt den goldenen Schnitt
+als Form, nicht als Zahl.
+
+### Bug 2: Swatch-Wert war build-time hardcoded, nicht live-synced
+
+Der ursprüngliche Swatch-Text `<span>1.618</span>` war zur Build-Zeit
+im HTML eingebrannt. Live-Edit von `--phi` auf z.B. 3.0 änderte den
+`.foundation-token__value`-Text ✓, ließ aber den Swatch-Text stale auf
+"1.618" ✗. Inkonsistenz innerhalb derselben Karte.
+
+**Fix**: Durch Bug-1-Lösung automatisch erledigt — `aspect-ratio:
+var(--phi) / 1` reagiert via CSS-Variable live, kein stale Text mehr.
+
+### Bug 3: `.split--golden`, `.card--split` ignorierten `--phi` Live-Edit
+
+`.split--golden`, `.split--golden-reverse` und `.card--split` nutzten
+hardcoded `1.618fr` statt des Tokens. Live-Edit von `--phi` änderte
+`.aspect-golden` (das `var(--phi)` nutzt), aber NICHT die split-Klassen.
+
+Erster Fix-Versuch `calc(var(--phi) * 1fr)` scheiterte an einer
+Chrome-Limitation: calc() mit fr-units in `grid-template-columns` wird
+nicht computed (Column kollabiert auf single-track). Verifiziert in
+Puppeteer-Probe.
+
+**Fix (Workaround via Mirror-Token)**: Neues `--phi-fr: 1.618fr`
+als static fr-Variante. Live-Edit-JS parst den `--phi`-Wert als Zahl
+und propagiert zu `--phi-fr`. Split-/Card-Klassen nutzen jetzt
+`var(--phi-fr)`. End-to-end verifiziert: `--phi: 3` → `--phi-fr: 3fr`
+→ `.card--split` wird 1:3.
+
+### Bug 4: `--phi-short` + `--phi-long` waren tot
+
+`grep -rn phi-short` fand nur die Token-Deklaration in tokens.css —
+nirgendwo verwendet. Dead tokens entfernt.
+
+### Files
+
+- `tokens/tokens.css` — dead tokens entfernt, `--phi-fr` dazu
+- `base/layout.css` — split-Klassen auf `var(--phi-fr)`
+- `components/card.css` — `.card--split` auf `var(--phi-fr)`
+- `scripts/build-site.js` —
+  - Proportion-Swatch als visuelles Rechteck (aspect-ratio-driven)
+  - `--phi-fr` als component-internal (nicht in Foundations gelistet)
+  - Live-Edit-JS: `--phi` edit propagiert zu `--phi-fr`
+- `tests/visual/*.png` — Baselines regeneriert (Foundation-Page kürzer
+  um 2 Zeilen durch dead tokens, visuelles Rechteck statt Text)
+
+### Pipeline
+
+lint, test:lint (31/31), contrast (1008), journeys (6/6), site
+(container-queries + exit-path + reduced-motion — alle grün).
+Visual-Baselines updated. Measure + Package wurden nicht erneut
+gelaufen (keine source-size-änderungen).
+
 ## [0.31.0] — Reduced-Motion-Bewusstsein als Two-Layer-Garantie (CLEAR 4 Prinzip 5)
 
 Fünfte konkrete Umsetzung der Nervensystem-Verfassung. Der letzte

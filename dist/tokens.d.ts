@@ -174,8 +174,6 @@ export type TokenName =
   | "--nav-hover-bg"
   | "--nav-text"
   | "--phi"
-  | "--phi-long"
-  | "--phi-short"
   | "--playful-100"
   | "--playful-200"
   | "--playful-300"

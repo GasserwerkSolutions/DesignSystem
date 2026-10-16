@@ -446,7 +446,9 @@
   .foundation-swatch--font { font-family: inherit; font-size: var(--font-lg); }
   .foundation-swatch--lh { font-size: var(--font-xs); color: var(--color-text-secondary); text-align: center; padding: var(--space-4); }
   .foundation-swatch--ls { font-size: var(--font-xs); font-family: var(--font-mono); }
-  .foundation-swatch--proportion, .foundation-swatch--easing, .foundation-swatch--raw { font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-secondary); padding: var(--space-4) var(--space-8); }
+  .foundation-swatch--easing, .foundation-swatch--raw { font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-secondary); padding: var(--space-4) var(--space-8); }
+  .foundation-swatch--proportion { padding: 0; align-items: center; }
+  .foundation-swatch__ratio { display: block; width: 100%; aspect-ratio: 1 / 1; max-height: 120px; background: var(--color-interactive); border-radius: var(--radius-sm); }
   .foundation-swatch--duration { width: 48px; height: 48px; position: relative; }
   .foundation-swatch__dot { display: block; width: 12px; height: 12px; background: var(--color-interactive); border-radius: 50%; animation: foundation-pulse infinite ease-in-out; }
   @keyframes foundation-pulse {

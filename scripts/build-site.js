@@ -399,6 +399,10 @@ function parseTokenFile(filePath) {
  */
 function tokenKind(token) {
   const n = token.name;
+  /* Derived-Mirror-Token: --phi-fr spiegelt --phi als fr-Variante (Chrome
+     calc()-Limitation bei grid-template-columns). Nicht separat anzeigen. */
+  if (n === "--phi-fr") return "component-internal";
+
   /* Component-internal tokens — werden auf der jeweiligen Component-Page
      unter Token-Contract gezeigt, NICHT in Foundations doppelt. */
   if (
@@ -1074,7 +1078,10 @@ function renderTokenSwatch(token) {
     case "letter-spacing":
       return `<span class="foundation-swatch foundation-swatch--ls" style="letter-spacing:var(${token.name});">LETTER-SPACING</span>`;
     case "proportion":
-      return `<span class="foundation-swatch foundation-swatch--proportion">${value}</span>`;
+      /* Visuelles Rechteck mit aspect-ratio = Token-Wert. Live-Edit greift
+         automatisch via var(). Textdarstellung des Werts bleibt im
+         .foundation-token__value-Span (ebenfalls live-synced). */
+      return `<span class="foundation-swatch foundation-swatch--proportion" aria-hidden="true"><span class="foundation-swatch__ratio" style="aspect-ratio:var(${token.name}) / 1;"></span></span>`;
     case "duration":
       return `<span class="foundation-swatch foundation-swatch--duration"><span class="foundation-swatch__dot" style="animation-duration:var(${token.name});"></span></span>`;
     case "easing":
@@ -2194,7 +2201,9 @@ const SITE_CSS = `/* Site-Overlay — eigene Layout/Doc-Komponenten, baut aufs D
   .foundation-swatch--font { font-family: inherit; font-size: var(--font-lg); }
   .foundation-swatch--lh { font-size: var(--font-xs); color: var(--color-text-secondary); text-align: center; padding: var(--space-4); }
   .foundation-swatch--ls { font-size: var(--font-xs); font-family: var(--font-mono); }
-  .foundation-swatch--proportion, .foundation-swatch--easing, .foundation-swatch--raw { font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-secondary); padding: var(--space-4) var(--space-8); }
+  .foundation-swatch--easing, .foundation-swatch--raw { font-family: var(--font-mono); font-size: var(--font-xs); color: var(--color-text-secondary); padding: var(--space-4) var(--space-8); }
+  .foundation-swatch--proportion { padding: 0; align-items: center; }
+  .foundation-swatch__ratio { display: block; width: 100%; aspect-ratio: 1 / 1; max-height: 120px; background: var(--color-interactive); border-radius: var(--radius-sm); }
   .foundation-swatch--duration { width: 48px; height: 48px; position: relative; }
   .foundation-swatch__dot { display: block; width: 12px; height: 12px; background: var(--color-interactive); border-radius: 50%; animation: foundation-pulse infinite ease-in-out; }
   @keyframes foundation-pulse {
@@ -2412,6 +2421,15 @@ const SITE_JS = `/* Site-Runtime — axis-switchers, sidebar-search, URL-state, 
       const valueEl = item.querySelector(".foundation-token__value");
       if (valueEl && valueEl.tagName === "SPAN") valueEl.textContent = value;
     }
+    /* Derived-Token-Sync: --phi (unitless) treibt --phi-fr (fr-mirror)
+       weil calc(var(--phi) * 1fr) in Chrome bei grid-template-columns
+       nicht computed wird. Siehe tokens.css. */
+    if (name === "--phi") {
+      const n = parseFloat(value);
+      if (Number.isFinite(n) && n > 0) {
+        root.style.setProperty("--phi-fr", n + "fr");
+      }
+    }
   }
 
   function setTokenValue(name, value) {
@@ -2424,6 +2442,7 @@ const SITE_JS = `/* Site-Runtime — axis-switchers, sidebar-search, URL-state, 
     editedTokens.delete(name);
     const item = document.querySelector(\`[data-token-name="\${name}"]\`);
     if (item) item.classList.remove("foundation-token--edited");
+    if (name === "--phi") root.style.removeProperty("--phi-fr");
     syncUrl();
   }
 

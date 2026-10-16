@@ -185,10 +185,15 @@
      Ergänzt den 4px-Grid (für UI-Controls), ersetzt ihn nicht — Buttons
      und Inputs bleiben auf der Spacing-Skala, Layout-Splits können
      wahlweise auf φ aufbauen. Siehe .split--golden und .aspect-golden
-     in base/layout.css. */
-  --phi:           1.618;   /* (1 + √5) / 2 */
-  --phi-short:     38.2%;   /* 1 / (1 + φ) — kurzer Teil */
-  --phi-long:      61.8%;   /* φ / (1 + φ) — langer Teil */
+     in base/layout.css.
+
+     --phi ist unitless (für aspect-ratio und andere number-contexts).
+     --phi-fr ist die fr-Variante (für grid-template-columns, wo
+     calc(var(--phi) * 1fr) in Chrome aktuell nicht computed wird).
+     Live-Edit synchronisiert beide: --phi editieren propagiert
+     automatisch zu --phi-fr. */
+  --phi:           1.618;    /* (1 + √5) / 2 — unitless */
+  --phi-fr:        1.618fr;  /* fr-mirror für grid-template-columns */
 
   /* ========================================
      BORDERS & RADIUS

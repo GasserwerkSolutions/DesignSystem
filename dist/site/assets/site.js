@@ -123,6 +123,15 @@
       const valueEl = item.querySelector(".foundation-token__value");
       if (valueEl && valueEl.tagName === "SPAN") valueEl.textContent = value;
     }
+    /* Derived-Token-Sync: --phi (unitless) treibt --phi-fr (fr-mirror)
+       weil calc(var(--phi) * 1fr) in Chrome bei grid-template-columns
+       nicht computed wird. Siehe tokens.css. */
+    if (name === "--phi") {
+      const n = parseFloat(value);
+      if (Number.isFinite(n) && n > 0) {
+        root.style.setProperty("--phi-fr", n + "fr");
+      }
+    }
   }
 
   function setTokenValue(name, value) {
@@ -135,6 +144,7 @@
     editedTokens.delete(name);
     const item = document.querySelector(`[data-token-name="${name}"]`);
     if (item) item.classList.remove("foundation-token--edited");
+    if (name === "--phi") root.style.removeProperty("--phi-fr");
     syncUrl();
   }
 

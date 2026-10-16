@@ -139,9 +139,11 @@
 
 /* Goldener Schnitt: kurzer Teil links (1), langer rechts (φ).
    Klassisches Editorial-Verhältnis — Sidebar-Note + Body, oder
-   Lead-Paragraph + Hero-Image. */
-.split--golden         { --split-ratio: 1fr 1.618fr; }
-.split--golden-reverse { --split-ratio: 1.618fr 1fr; }
+   Lead-Paragraph + Hero-Image. Nutzt --phi-fr damit Live-Edit greift
+   (calc(var(--phi) * 1fr) ist in Chrome bei grid-template-columns
+   nicht computed — fr-Mirror-Token siehe tokens.css). */
+.split--golden         { --split-ratio: 1fr var(--phi-fr); }
+.split--golden-reverse { --split-ratio: var(--phi-fr) 1fr; }
 
 @media (max-width: 768px) {
   .split {

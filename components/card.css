@@ -109,7 +109,7 @@
 
 @container (min-width: 600px) {
   .card--split {
-    grid-template-columns: var(--card-split-ratio, 1fr 1.618fr);
+    grid-template-columns: var(--card-split-ratio, 1fr var(--phi-fr));
     align-items: stretch;
   }
   .card--split > .card__lead { padding: var(--card-padding, var(--space-24)) 0 var(--card-padding, var(--space-24)) var(--card-padding, var(--space-24)); }
