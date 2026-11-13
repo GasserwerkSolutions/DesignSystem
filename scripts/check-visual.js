@@ -531,7 +531,9 @@ async function main() {
   console.log(
     `Visual-Check: ${okCount} ok · ${createdCount} created · ${skippedCount} host-skipped · ${failCount} fail`
   );
-  if (hostMismatch && REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST) process.exit(1);
+  // Ein Update schreibt Baselines und Metadaten für DIESEN Host neu; der
+  // alte Host-Vermerk ist dann kein Fehler mehr.
+  if (hostMismatch && REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST && !UPDATE) process.exit(1);
   if (failCount > 0) process.exit(1);
 }
 

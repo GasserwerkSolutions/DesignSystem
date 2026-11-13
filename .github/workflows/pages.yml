@@ -48,6 +48,8 @@ jobs:
         with:
           name: visual-baseline-candidate-${{ github.run_id }}
           path: tests/visual
+          # .metadata.json records the rendering host and belongs to the set.
+          include-hidden-files: true
           if-no-files-found: error
 
       - name: Security audit
