@@ -191,7 +191,19 @@ async function captureCombination(page, tone, mode) {
     )
   ));
 
+  // Diagnose: Überschriftengrösse und Viewport vor und nach der Aufnahme.
+  // Zwei Läufe auf demselben Host lieferten denselben Tone einmal mit h1 48px
+  // und einmal mit ~32px (clamp-Minimum); das hier zeigt, ob das Layout oder
+  // erst die Vollseiten-Aufnahme kippt.
+  const probe = () => page.evaluate(() => {
+    const h1 = document.querySelector("h1");
+    return [h1 ? getComputedStyle(h1).fontSize : "-", innerWidth, document.documentElement.clientWidth,
+      Math.round(visualViewport ? visualViewport.width : -1), document.fonts.status, document.fonts.size].join("/");
+  });
+  const before = await probe();
   const buf = await page.screenshot({ fullPage: true, type: "png" });
+  const after = await probe();
+  console.log(`  [diag]  ${tone}-${mode}  vorher ${before}  nachher ${after}`);
   return pngFromBuffer(buf);
 }
 
