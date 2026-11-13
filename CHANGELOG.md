@@ -28,8 +28,9 @@
 - Theme-Toggle: Labels aus `<html lang>` (de/fr/it/en), `data-label-light` /
   `data-label-dark` oder `options.labels`; `THEME_INIT_SNIPPET` für den
   `<head>` verhindert das Aufblitzen des falschen Modus.
-- Drei neue Journeys (10 total) decken Combobox-A11Y/Formularwert,
-  Popover-Viewport-Verhalten und Theme-Toggle-Labels ab.
+- Vier neue Journeys (11 total) decken Combobox-A11Y/Formularwert,
+  Popover-Viewport-Verhalten, selector-sensitive Popover-IDs und
+  Theme-Toggle-Labels ab.
 
 ### Offen
 
