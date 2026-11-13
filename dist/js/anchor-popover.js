@@ -24,6 +24,23 @@
  * `position-anchor` werden von dieser Utility nicht positioniert.
  */
 const cleanups = new WeakMap();
+/**
+ * Findet den nativen Popover-Trigger ohne ungeprüfte ID-Interpolation.
+ * CMS-generierte IDs dürfen selector-sensitive Zeichen enthalten; ein
+ * ungültiger Selector darf das Öffnen des Popovers nicht abbrechen.
+ */
+export function findPopoverTrigger(panel) {
+    if (!panel.id)
+        return null;
+    const doc = panel.ownerDocument;
+    const escape = doc.defaultView?.CSS?.escape;
+    if (typeof escape === "function") {
+        return doc.querySelector(`[popovertarget="${escape(panel.id)}"]`);
+    }
+    // Fallback für ältere DOM-Implementierungen ohne CSS.escape().
+    return [...doc.querySelectorAll("[popovertarget]")]
+        .find((candidate) => candidate.getAttribute("popovertarget") === panel.id) ?? null;
+}
 function usesCssAnchor(panel, view) {
     const value = view.getComputedStyle(panel).getPropertyValue("position-anchor").trim();
     // Initialwert ist je nach Browser-Version `auto`, `normal` oder `none` —
@@ -37,10 +54,9 @@ export function anchorPopoverByTrigger(panel, options = {}) {
     const { matchWidth = false, offset = 4, margin = 8, onToggle } = options;
     const doc = panel.ownerDocument;
     const view = doc.defaultView;
-    const findTrigger = () => doc.querySelector(`[popovertarget="${panel.id}"]`);
     /** Positioniert das Panel. `measured` = Panel ist gerendert und messbar. */
     const place = (measured) => {
-        const trigger = findTrigger();
+        const trigger = findPopoverTrigger(panel);
         if (!trigger || !view)
             return;
         if (usesCssAnchor(panel, view))

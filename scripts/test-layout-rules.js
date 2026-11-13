@@ -54,6 +54,17 @@ test("visibleRegion: 4:3 im 16:9-Rahmen zeigt 75 % der Höhe", () => {
   assert.ok(Math.abs(v.y - 0.25 * 0.41) < 1e-9);
 });
 
+test("ungültige CMS-Bildgeometrie wird abgewiesen statt als geschützt zu gelten", () => {
+  assert.throws(() => R.parseProtect("1.2 0.1 0.2 0.2"), /ausserhalb des Bilds/);
+  assert.throws(() => R.parseProtect("0.1 0.1 0 0.2"), /ausserhalb des Bilds/);
+  assert.throws(
+    () => R.fitImage({ w: 1280, h: 960 }, 4 / 3, [{ x: -0.1, y: 0, w: 0.5, h: 0.5 }]),
+    /ausserhalb des Bilds/
+  );
+  assert.throws(() => R.visibleRegion({ w: 0, h: 960 }, 4 / 3), /positive Zahlen/);
+  assert.throws(() => R.visibleRegion({ w: 1280, h: 960 }, 4 / 3, { x: 1.2, y: 0.5 }), /zwischen 0 und 1/);
+});
+
 test("planGallery füllt das Raster für jede Bildzahl lückenlos", () => {
   const expected = { 0: ["none", 0], 1: ["none", 1], 2: ["fit", 2], 3: ["fit", 3], 4: ["default", 4], 5: ["lead", 5],
     6: ["lead", 5], 7: ["lead", 5], 8: ["default", 8], 9: ["lead", 9], 10: ["lead", 9], 11: ["lead", 9],

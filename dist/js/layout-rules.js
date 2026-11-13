@@ -24,6 +24,22 @@ export const IMAGE_RATIOS = {
 };
 const EPS = 0.01;
 const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+function assertUnitRect(rect, label = "geschützter Bereich") {
+    const { x, y, w, h } = rect;
+    if (![x, y, w, h].every(Number.isFinite))
+        throw new Error(`${label} enthält keine endlichen Zahlen.`);
+    if (x < 0 || y < 0 || w <= 0 || h <= 0 || x + w > 1 || y + h > 1) {
+        throw new Error(`${label} liegt ausserhalb des Bilds (erwartet: x/y ≥ 0, w/h > 0, x+w/y+h ≤ 1).`);
+    }
+}
+function assertImageGeometry(natural, ratio, focus) {
+    if (![natural.w, natural.h, ratio].every(Number.isFinite) || natural.w <= 0 || natural.h <= 0 || ratio <= 0) {
+        throw new Error("Bildbreite, Bildhöhe und Rahmenverhältnis müssen endliche positive Zahlen sein.");
+    }
+    if (![focus.x, focus.y].every(Number.isFinite) || focus.x < 0 || focus.x > 1 || focus.y < 0 || focus.y > 1) {
+        throw new Error("Fokuskoordinaten müssen zwischen 0 und 1 liegen.");
+    }
+}
 /** "0.08 0.16 0.87 0.5; …" (data-protect) → Rechtecke. */
 export function parseProtect(spec) {
     if (!spec)
@@ -32,7 +48,9 @@ export function parseProtect(spec) {
         const [x, y, w, h] = part.split(/\s+/).map(Number);
         if (![x, y, w, h].every(Number.isFinite))
             throw new Error(`data-protect ungültig: «${part}»`);
-        return { x, y, w, h };
+        const rect = { x, y, w, h };
+        assertUnitRect(rect, `data-protect «${part}»`);
+        return rect;
     });
 }
 /**
@@ -41,6 +59,7 @@ export function parseProtect(spec) {
  * (object-position)?
  */
 export function visibleRegion(natural, ratio, focus = { x: 0.5, y: 0.5 }) {
+    assertImageGeometry(natural, ratio, focus);
     const imageRatio = natural.w / natural.h;
     if (imageRatio > ratio) {
         const w = ratio / imageRatio; // seitlich beschnitten
@@ -65,6 +84,7 @@ function boundingBox(rects) {
 }
 /** Fokus, der den geschützten Bereich im Rahmen zentriert, soweit der Beschnitt es zulässt. */
 export function focusFor(natural, ratio, protect) {
+    protect.forEach((rect) => assertUnitRect(rect));
     if (protect.length === 0)
         return { x: 0.5, y: 0.5 };
     const box = boundingBox(protect);
@@ -78,6 +98,8 @@ export function focusFor(natural, ratio, protect) {
  * weicht erst dann auf `contain` aus.
  */
 export function fitImage(natural, ratio, protect = [], preferred) {
+    assertImageGeometry(natural, ratio, preferred ?? { x: 0.5, y: 0.5 });
+    protect.forEach((rect) => assertUnitRect(rect));
     if (protect.length === 0) {
         return { fit: "cover", focus: preferred ?? { x: 0.5, y: 0.5 }, keepsProtected: true, reason: "Kein geschützter Bereich angegeben; Beschnitt nicht geprüft." };
     }
@@ -92,6 +114,7 @@ export function fitImage(natural, ratio, protect = [], preferred) {
 }
 /** Das Raster-Format, das den geschützten Bereich hält und am wenigsten vom Bild wegschneidet. */
 export function bestRatio(natural, protect = [], candidates = ["wide", "classic", "photo", "square", "portrait"]) {
+    protect.forEach((rect) => assertUnitRect(rect));
     let best = null;
     for (const name of candidates) {
         const ratio = IMAGE_RATIOS[name];

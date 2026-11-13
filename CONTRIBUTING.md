@@ -70,7 +70,7 @@ semantic-Layer, Themes overriden, Components consumen mit `var(--token, fallback
 | `test:lint` | Lint-Regression-Tests (21 cases) |
 | `check:contrast` | 1728 WCAG-AA Paare (Tones aus `main.css`) |
 | `check:a11y` | axe-core lint |
-| `check:visual` | 16 VRT baselines (Tones aus `main.css`) |
+| `check:visual` | 18 VRT baselines (Tones + Earth-Grain-Beispiel) |
 | `check:journeys` | Puppeteer user flows |
 | `check:rendered` | axe + VRT + Journeys parallel |
 | `check:examples` | Beispielseiten bei 320–1280 px inkl. Assets/Overflow |

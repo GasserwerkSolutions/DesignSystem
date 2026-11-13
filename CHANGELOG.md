@@ -28,8 +28,9 @@
 - Theme-Toggle: Labels aus `<html lang>` (de/fr/it/en), `data-label-light` /
   `data-label-dark` oder `options.labels`; `THEME_INIT_SNIPPET` für den
   `<head>` verhindert das Aufblitzen des falschen Modus.
-- Drei neue Journeys (10 total) decken Combobox-A11Y/Formularwert,
-  Popover-Viewport-Verhalten und Theme-Toggle-Labels ab.
+- Fünf neue Journeys (12 total) decken Combobox-A11Y/Formularwert,
+  Popover-Viewport-Verhalten, selector-sensitive Popover-IDs,
+  Theme-Toggle-Labels und die Galerie-Lightbox ab.
 
 ### Neu: Tone `earth` und Papierkörnung
 
@@ -43,11 +44,8 @@
   Textfarbe und damit in Light und Dark gleich stark.
 - `check:visual` schlägt in der CI fehl, wenn eine Baseline fehlt, statt
   sie stillschweigend anzulegen.
-
-### Offen
-
-- `tests/visual/musikraum-{light,dark}.png` müssen über den Workflow
-  «Update Visual Baselines» auf dem CI-Host erzeugt und committet werden.
+- Zwei gezielte VRT-Cases rendern die Papierkörnung auf der vollständigen
+  Holzbau-Projektseite in Light und Dark (18 Baselines total).
 
 ## [0.32.0] — Builder-Profil, Release-Integrität und gerenderte Qualitätsgates
 

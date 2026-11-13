@@ -199,6 +199,51 @@ async function journeyGalleryLightbox(page) {
   }
 }
 
+async function journeyPopoverSelectorSensitiveId(page) {
+  await reload(page);
+
+  const state = await page.evaluate(async () => {
+    const id = 'team:"dr\\meyer';
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.textContent = "Team öffnen";
+    trigger.setAttribute("popovertarget", id);
+
+    const panel = document.createElement("div");
+    panel.id = id;
+    panel.className = "popover";
+    panel.setAttribute("popover", "");
+    panel.textContent = "Team";
+    document.body.append(trigger, panel);
+
+    let error = "";
+    const cleanup = DS.setupPopover(panel);
+    try {
+      trigger.click();
+      await new Promise((r) => setTimeout(r, 150));
+    } catch (err) {
+      error = String(err);
+    }
+
+    const result = {
+      error,
+      open: panel.matches(":popover-open"),
+      expanded: trigger.getAttribute("aria-expanded"),
+      positioned: panel.style.top !== "" && panel.style.left !== "",
+    };
+    if (panel.matches(":popover-open")) panel.hidePopover();
+    cleanup();
+    trigger.remove();
+    panel.remove();
+    return result;
+  });
+
+  assert(!state.error, `selector-sensitive id should not throw, got '${state.error}'`);
+  assert(state.open, "popover with selector-sensitive id should open");
+  assert(state.expanded === "true", "aria-expanded should sync for selector-sensitive id");
+  assert(state.positioned, "popover with selector-sensitive id should be positioned");
+}
+
 async function journeyComboboxA11yAndFormValue(page) {
   await reload(page);
 
@@ -528,6 +573,7 @@ async function main() {
     await journey("Combobox: label click → focus → open → filter → select", journeyComboboxLabelToSelection, page);
     await journey("Popover: trigger click → open → Esc → close", journeyPopoverOpenClose, page);
     await journey("Gallery: lightbox opens, pages by keyboard, returns focus", journeyGalleryLightbox, page);
+    await journey("Popover: selector-sensitive CMS id stays functional", journeyPopoverSelectorSensitiveId, page);
     await journey("Combobox: aria-activedescendant, form value and change event", journeyComboboxA11yAndFormValue, page);
     await journey("Popover: flips and clamps to stay inside the viewport", journeyPopoverStaysInViewport, page);
     await journey("Theme-Toggle: labels by lang/attribute/options + head snippet", journeyThemeToggleLabels, page);

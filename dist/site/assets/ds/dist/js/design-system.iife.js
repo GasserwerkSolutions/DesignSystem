@@ -95,6 +95,15 @@ var DS = (() => {
 
   // js/anchor-popover.ts
   var cleanups2 = /* @__PURE__ */ new WeakMap();
+  function findPopoverTrigger(panel) {
+    if (!panel.id) return null;
+    const doc = panel.ownerDocument;
+    const escape = doc.defaultView?.CSS?.escape;
+    if (typeof escape === "function") {
+      return doc.querySelector(`[popovertarget="${escape(panel.id)}"]`);
+    }
+    return [...doc.querySelectorAll("[popovertarget]")].find((candidate) => candidate.getAttribute("popovertarget") === panel.id) ?? null;
+  }
   function usesCssAnchor(panel, view) {
     const value = view.getComputedStyle(panel).getPropertyValue("position-anchor").trim();
     return value.startsWith("--");
@@ -105,9 +114,8 @@ var DS = (() => {
     const { matchWidth = false, offset = 4, margin = 8, onToggle } = options;
     const doc = panel.ownerDocument;
     const view = doc.defaultView;
-    const findTrigger = () => doc.querySelector(`[popovertarget="${panel.id}"]`);
     const place = (measured) => {
-      const trigger = findTrigger();
+      const trigger = findPopoverTrigger(panel);
       if (!trigger || !view) return;
       if (usesCssAnchor(panel, view)) return;
       const r = trigger.getBoundingClientRect();
@@ -193,9 +201,7 @@ var DS = (() => {
     if (existing) return existing;
     const releaseAnchor = anchorPopoverByTrigger(panel, {
       onToggle: (e) => {
-        const trigger = panel.ownerDocument.querySelector(
-          `[popovertarget="${panel.id}"]`
-        );
+        const trigger = findPopoverTrigger(panel);
         if (trigger) {
           trigger.setAttribute(
             "aria-expanded",
@@ -696,15 +702,33 @@ var DS = (() => {
   };
   var EPS = 0.01;
   var clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+  function assertUnitRect(rect, label = "gesch\xFCtzter Bereich") {
+    const { x, y, w, h } = rect;
+    if (![x, y, w, h].every(Number.isFinite)) throw new Error(`${label} enth\xE4lt keine endlichen Zahlen.`);
+    if (x < 0 || y < 0 || w <= 0 || h <= 0 || x + w > 1 || y + h > 1) {
+      throw new Error(`${label} liegt ausserhalb des Bilds (erwartet: x/y \u2265 0, w/h > 0, x+w/y+h \u2264 1).`);
+    }
+  }
+  function assertImageGeometry(natural, ratio, focus) {
+    if (![natural.w, natural.h, ratio].every(Number.isFinite) || natural.w <= 0 || natural.h <= 0 || ratio <= 0) {
+      throw new Error("Bildbreite, Bildh\xF6he und Rahmenverh\xE4ltnis m\xFCssen endliche positive Zahlen sein.");
+    }
+    if (![focus.x, focus.y].every(Number.isFinite) || focus.x < 0 || focus.x > 1 || focus.y < 0 || focus.y > 1) {
+      throw new Error("Fokuskoordinaten m\xFCssen zwischen 0 und 1 liegen.");
+    }
+  }
   function parseProtect(spec) {
     if (!spec) return [];
     return spec.split(";").map((part) => part.trim()).filter(Boolean).map((part) => {
       const [x, y, w, h] = part.split(/\s+/).map(Number);
       if (![x, y, w, h].every(Number.isFinite)) throw new Error(`data-protect ung\xFCltig: \xAB${part}\xBB`);
-      return { x, y, w, h };
+      const rect = { x, y, w, h };
+      assertUnitRect(rect, `data-protect \xAB${part}\xBB`);
+      return rect;
     });
   }
   function visibleRegion(natural, ratio, focus = { x: 0.5, y: 0.5 }) {
+    assertImageGeometry(natural, ratio, focus);
     const imageRatio = natural.w / natural.h;
     if (imageRatio > ratio) {
       const w = ratio / imageRatio;
@@ -727,6 +751,7 @@ var DS = (() => {
     return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }
   function focusFor(natural, ratio, protect) {
+    protect.forEach((rect) => assertUnitRect(rect));
     if (protect.length === 0) return { x: 0.5, y: 0.5 };
     const box = boundingBox(protect);
     const vis = visibleRegion(natural, ratio, { x: 0, y: 0 });
@@ -734,6 +759,8 @@ var DS = (() => {
     return { x: along(box.x + box.w / 2, vis.w), y: along(box.y + box.h / 2, vis.h) };
   }
   function fitImage(natural, ratio, protect = [], preferred) {
+    assertImageGeometry(natural, ratio, preferred ?? { x: 0.5, y: 0.5 });
+    protect.forEach((rect) => assertUnitRect(rect));
     if (protect.length === 0) {
       return { fit: "cover", focus: preferred ?? { x: 0.5, y: 0.5 }, keepsProtected: true, reason: "Kein gesch\xFCtzter Bereich angegeben; Beschnitt nicht gepr\xFCft." };
     }
@@ -747,6 +774,7 @@ var DS = (() => {
     return { fit: "contain", focus: { x: 0.5, y: 0.5 }, keepsProtected: true, reason: "Kein Ausschnitt in diesem Format h\xE4lt den gesch\xFCtzten Bereich; Bild wird ganz gezeigt." };
   }
   function bestRatio(natural, protect = [], candidates = ["wide", "classic", "photo", "square", "portrait"]) {
+    protect.forEach((rect) => assertUnitRect(rect));
     let best = null;
     for (const name of candidates) {
       const ratio = IMAGE_RATIOS[name];
