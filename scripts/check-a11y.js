@@ -11,7 +11,7 @@
  *   - Strukturelle Violations (Labels, Roles, ARIA-Attributes, Heading-Order)
  *     sind tone-agnostic → 1 Lauf reicht (default trust/light).
  *   - Color-Contrast wird von axe nur als Sanity-Cross-Check genommen — unsere
- *     check-contrast.js (1344 Paare über Cascade-Simulation) ist die
+ *     check-contrast.js (1728 Paare über Cascade-Simulation) ist die
  *     primäre Wahrheit für Farbe.
  *   - Popovers / Comboboxes werden VOR axe-Lauf geöffnet, damit ihre Inhalte
  *     im DOM sichtbar sind.

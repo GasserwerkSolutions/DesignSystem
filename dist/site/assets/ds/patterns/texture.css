@@ -1,0 +1,50 @@
+@layer patterns {
+  /**
+   * Texture — feine Papierkörnung für Flächen
+   *
+   * Nimmt glatten Farbflächen die Härte. Die Körnung ist eine eigene Ebene
+   * HINTER dem Inhalt der Fläche (Text und Bilder bleiben unberührt) und
+   * wird in der Textfarbe gezeichnet: dunkle Sprenkel auf Papier, helle auf
+   * dunklen Flächen. Sie passt sich damit Tone und Mode von selbst an.
+   * (Ein Mischmodus auf dem Hintergrund tut das nicht: was auf Papier fein
+   * wirkt, wird auf dunklen Flächen grob.)
+   *
+   * CONTRACT (optional):
+   *   --texture-grain-opacity  Stärke (default 0.05)
+   *   --texture-grain-color    Farbe der Sprenkel (default Textfarbe)
+   *
+   * Struktur:
+   *   <body class="texture-grain">…</body>
+   *   <section class="section hero hero--dark texture-grain">…</section>
+   *
+   * Die Körnung ist Teil des Element-Hintergrunds und liegt dadurch stabil
+   * hinter Text und Bildern. Im Druck und bei erhöhtem Kontrast ist sie aus.
+   */
+
+  .texture-grain {
+    --_grain-source: var(--texture-grain-color, var(--color-text-primary));
+    --_grain-color: color-mix(in srgb, var(--_grain-source) 5%, transparent);
+    --_grain-color: rgb(from var(--_grain-source) r g b / var(--texture-grain-opacity, 0.05));
+    background-image:
+      radial-gradient(circle at 31% 37%, var(--_grain-color) 0 0.55px, transparent 0.8px),
+      radial-gradient(circle at 67% 23%, var(--_grain-color) 0 0.6px, transparent 0.85px),
+      radial-gradient(circle at 43% 71%, var(--_grain-color) 0 0.65px, transparent 0.9px),
+      radial-gradient(circle at 79% 59%, var(--_grain-color) 0 0.55px, transparent 0.8px),
+      radial-gradient(circle at 19% 83%, var(--_grain-color) 0 0.7px, transparent 0.95px),
+      radial-gradient(circle at 53% 47%, var(--_grain-color) 0 0.6px, transparent 0.85px),
+      radial-gradient(circle at 89% 13%, var(--_grain-color) 0 0.55px, transparent 0.8px),
+      radial-gradient(circle at 11% 61%, var(--_grain-color) 0 0.65px, transparent 0.9px);
+    background-position:
+      0 0, 5px 7px, 11px 3px, 17px 13px,
+      23px 19px, 29px 5px, 7px 31px, 37px 11px;
+    background-size:
+      7px 11px, 13px 17px, 19px 23px, 29px 31px,
+      37px 41px, 43px 47px, 53px 59px, 61px 67px;
+  }
+
+  @media (prefers-contrast: more), print {
+    .texture-grain {
+      background-image: none;
+    }
+  }
+}

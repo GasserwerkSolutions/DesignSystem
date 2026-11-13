@@ -403,6 +403,24 @@
         "default": "Bild füllt den Rahmen (cover)",
         "contain": "Bild ganz im Rahmen, für Panoramen und Hochformate"
       }
+    },
+    {
+      "id": "texture",
+      "css": "patterns/texture.css",
+      "root": ".texture-grain",
+      "slots": {},
+      "aufgabe": "Glatten Farbflächen eine feine Papierkörnung geben",
+      "geeignet": "Seitenhintergrund und einfarbige Abschnittsflächen",
+      "unzulaessig": "Flächen mit eigenem Hintergrundbild oder Verlauf; über Fotos",
+      "rules": [
+        {
+          "id": "texture-once-per-surface",
+          "selector": ".texture-grain",
+          "count": ".texture-grain .texture-grain .texture-grain",
+          "min": 0,
+          "max": 0
+        }
+      ]
     }
   ],
   "textLimits": [

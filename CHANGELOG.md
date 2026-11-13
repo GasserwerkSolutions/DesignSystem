@@ -32,6 +32,22 @@
   Popover-Viewport-Verhalten, selector-sensitive Popover-IDs,
   Theme-Toggle-Labels und die Galerie-Lightbox ab.
 
+### Neu: Tone `earth` und Papierkörnung
+
+- **`themes/earth.css`**: Handwerks-Tone aus der Palette «Earth» des
+  Prototyps «Clear 4 Enhanced» (helles Papier, dunkle Tinte, Sandakzent,
+  in der Tintenfarbe getönte Schatten). Sekundär- und Muted-Text sind
+  gegenüber dem Prototyp abgedunkelt, damit sie auf den Papierflächen AA
+  erreichen. 1728 statt 1344 WCAG-AA-Paare, alle erfüllt.
+- **`patterns/texture.css`** (Projekt-Pack): `.texture-grain` legt eine
+  feine Körnung hinter den Inhalt einer Fläche, gezeichnet in der
+  Textfarbe und damit in Light und Dark gleich stark. Die Körnung besteht
+  aus deterministischen CSS-Gradienten und bleibt dadurch VRT-pixelstabil.
+- `check:visual` schlägt in der CI fehl, wenn eine Baseline fehlt, statt
+  sie stillschweigend anzulegen.
+- Zwei gezielte VRT-Cases rendern den Einstiegs-Viewport der echten
+  Holzbau-Projektseite mit Papierkörnung in Light und Dark (18 Baselines total).
+
 ## [0.32.0] — Builder-Profil, Release-Integrität und gerenderte Qualitätsgates
 
 Diese Version macht das Design System reproduzierbar im Gasserwerk Builder

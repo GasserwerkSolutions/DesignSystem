@@ -12,7 +12,7 @@
  * "Sieht das gerendert noch aus wie erwartet?"
  *
  * Strategie:
- *   - Pro Tone × Mode 1 Baseline (12 PNGs total)
+ *   - Pro Tone × Mode 1 Baseline plus gezielte Pattern-/Beispiel-Cases
  *   - Sub-Pixel-Anti-Aliasing toleriert via pixelmatch threshold 0.1
  *   - maxDiffPixelRatio: 0.005 (= 0.5% des Bildes darf abweichen,
  *     z.B. für Animations-Mid-State oder Font-Hinting-Drift)
@@ -49,6 +49,21 @@ const ONLY_LABELS = ONLY_ARG
 
 const { TONES } = require("./_tones");
 const MODES = ["light", "dark"];
+const VISUAL_CASES = [
+  ...TONES.flatMap((tone) => MODES.map((mode) => ({
+    label: `${tone}-${mode}`,
+    tone,
+    mode,
+    entry: "index.html",
+  }))),
+  ...MODES.map((mode) => ({
+    label: `earth-grain-${mode}`,
+    tone: "earth",
+    mode,
+    entry: "examples/holzbau-projekt.html",
+    capture: "viewport",
+  })),
+];
 
 const VIEWPORT = { width: 1280, height: 900 };
 const METADATA_FILE = path.join(ROOT, "tests", "visual", ".metadata.json");
@@ -139,12 +154,12 @@ function compareHostInfo(baseline, current) {
 /** Kombinationen, deren Aufnahme sich auch nach drei Versuchen nicht stabilisiert hat. */
 const unstableCaptures = [];
 
-async function captureCombination(page, tone, mode) {
+async function captureCombination(page, { label, tone, mode, entry, capture = "full" }) {
   // networkidle0 ist notwendig: domcontentloaded führt zu Dimension-Drift
   // (Page noch nicht voll gerendert wenn screenshot läuft, Font-Fallback-
   // Layout-Shifts produzieren unterschiedliche Höhen zwischen Runs).
   // Verifiziert in v0.6.6-Experimenten — Trade-off Zeit vs Determinismus.
-  await page.goto("file://" + path.resolve(ROOT, "index.html"), {
+  await page.goto("file://" + path.resolve(ROOT, entry), {
     waitUntil: "networkidle0",
   });
   // Persistente Demo-Auswahl aus früheren Iterationen löschen.
@@ -232,13 +247,13 @@ async function captureCombination(page, tone, mode) {
   // sticky und fixed ihre reale Bedeutung.
   const client = await page.createCDPSession();
   const shoot = async () => {
-    const metrics = await client.send("Page.getLayoutMetrics");
-    const width = Math.ceil(metrics.cssContentSize.width);
-    const height = Math.ceil(metrics.cssContentSize.height);
+    const metrics = capture === "full" ? await client.send("Page.getLayoutMetrics") : null;
+    const width = metrics ? Math.ceil(metrics.cssContentSize.width) : VIEWPORT.width;
+    const height = metrics ? Math.ceil(metrics.cssContentSize.height) : VIEWPORT.height;
     const shot = await client.send("Page.captureScreenshot", {
       format: "png",
       fromSurface: true,
-      captureBeyondViewport: true,
+      captureBeyondViewport: capture === "full",
       clip: { x: 0, y: 0, width, height, scale: 1 },
     });
     return Buffer.from(shot.data, "base64");
@@ -248,8 +263,8 @@ async function captureCombination(page, tone, mode) {
   for (let attempt = 1; attempt <= 3; attempt++) {
     const again = await shoot();
     if (Buffer.compare(buf, again) === 0) break;
-    console.log(`  [instabil] ${tone}-${mode}: Aufnahme ${attempt} weicht von der vorherigen ab`);
-    if (attempt === 3) unstableCaptures.push(`${tone}-${mode}`);
+    console.log(`  [instabil] ${label}: Aufnahme ${attempt} weicht von der vorherigen ab`);
+    if (attempt === 3) unstableCaptures.push(label);
     buf = again;
   }
   await client.detach();
@@ -514,67 +529,65 @@ async function main() {
     const page = await browser.newPage();
     await setupPage(page);
 
-    for (const tone of TONES) {
-      for (const mode of MODES) {
-        const label = `${tone}-${mode}`;
-        if (ONLY_LABELS && !ONLY_LABELS.has(label)) continue;
-        const baselineFile = path.join(VISUAL_DIR, `${label}.png`);
-        const baselineExists = fs.existsSync(baselineFile);
+    for (const visualCase of VISUAL_CASES) {
+      const { label } = visualCase;
+      if (ONLY_LABELS && !ONLY_LABELS.has(label)) continue;
+      const baselineFile = path.join(VISUAL_DIR, `${label}.png`);
+      const baselineExists = fs.existsSync(baselineFile);
 
-        const actual = await captureCombination(page, tone, mode);
+      const actual = await captureCombination(page, visualCase);
 
-        if (!baselineExists || UPDATE || CREATE && !baselineExists) {
-          writePng(baselineFile, actual);
-          console.log(`  [new]   ${label}  (${actual.width}×${actual.height})`);
-          createdCount++;
-          continue;
-        }
+      if (!baselineExists || UPDATE || CREATE && !baselineExists) {
+        writePng(baselineFile, actual);
+        console.log(`  [new]   ${label}  (${actual.width}×${actual.height})`);
+        createdCount++;
+        continue;
+      }
 
-        if (CREATE) {
-          // Baseline existiert + nur --create → skip Vergleich
-          console.log(`  [skip]  ${label}  (baseline existiert, --create only)`);
-          continue;
-        }
+      if (CREATE) {
+        // Baseline existiert + nur --create → skip Vergleich
+        console.log(`  [skip]  ${label}  (baseline existiert, --create only)`);
+        continue;
+      }
 
-        if (hostMismatch && !FORCE_CROSS_HOST) {
-          console.log(`  [skip]  ${label}  (anderer Baseline-Host)`);
-          skippedCount++;
-          continue;
-        }
+      if (hostMismatch && !FORCE_CROSS_HOST) {
+        console.log(`  [skip]  ${label}  (anderer Baseline-Host)`);
+        skippedCount++;
+        continue;
+      }
 
-        const baseline = readBaselineFile(baselineFile);
-        const result = diffImages(baseline, actual);
+      const baseline = readBaselineFile(baselineFile);
+      const result = diffImages(baseline, actual);
 
-        if (result.dimensionsMismatch) {
-          const { baseline: b, actual: a } = result;
-          console.error(
-            `  [fail]  ${label}  dimensions: baseline ${b.w}×${b.h} ≠ actual ${a.w}×${a.h}`
-          );
-          // Diff-Image kann nicht erzeugt werden — schreibe actual als
-          // "actual.png" daneben, damit ein Vergleich möglich bleibt.
-          writePng(path.join(DIFF_DIR, `${label}.actual.png`), actual);
-          failCount++;
-          continue;
-        }
+      if (result.dimensionsMismatch) {
+        const { baseline: b, actual: a } = result;
+        console.error(
+          `  [fail]  ${label}  dimensions: baseline ${b.w}×${b.h} ≠ actual ${a.w}×${a.h}`
+        );
+        // Diff-Image kann nicht erzeugt werden — schreibe actual als
+        // "actual.png" daneben, damit ein Vergleich möglich bleibt.
+        writePng(path.join(DIFF_DIR, `${label}.actual.png`), actual);
+        failCount++;
+        continue;
+      }
 
-        const ratio = result.diffPixels / result.totalPixels;
-        if (result.diffPixels > MAX_DIFF_PIXELS) {
-          writePng(path.join(DIFF_DIR, `${label}.diff.png`), result.diff);
-          writePng(path.join(DIFF_DIR, `${label}.actual.png`), actual);
-          console.error(
-            `  [fail]  ${label}  ${result.diffPixels} px diff ` +
-            `(${(ratio * 100).toFixed(3)}%, > ${MAX_DIFF_PIXELS} max)`
-          );
-          failCount++;
-        } else if (result.diffPixels > 0) {
-          console.log(
-            `  [ok]    ${label}  ${result.diffPixels} px diff within ${MAX_DIFF_PIXELS} max`
-          );
-          okCount++;
-        } else {
-          console.log(`  [ok]    ${label}  pixel-identical`);
-          okCount++;
-        }
+      const ratio = result.diffPixels / result.totalPixels;
+      if (result.diffPixels > MAX_DIFF_PIXELS) {
+        writePng(path.join(DIFF_DIR, `${label}.diff.png`), result.diff);
+        writePng(path.join(DIFF_DIR, `${label}.actual.png`), actual);
+        console.error(
+          `  [fail]  ${label}  ${result.diffPixels} px diff ` +
+          `(${(ratio * 100).toFixed(3)}%, > ${MAX_DIFF_PIXELS} max)`
+        );
+        failCount++;
+      } else if (result.diffPixels > 0) {
+        console.log(
+          `  [ok]    ${label}  ${result.diffPixels} px diff within ${MAX_DIFF_PIXELS} max`
+        );
+        okCount++;
+      } else {
+        console.log(`  [ok]    ${label}  pixel-identical`);
+        okCount++;
       }
     }
 
@@ -595,6 +608,12 @@ async function main() {
   // Ein Update schreibt Baselines und Metadaten für DIESEN Host neu; der
   // alte Host-Vermerk ist dann kein Fehler mehr.
   if (hostMismatch && REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST && !UPDATE) process.exit(1);
+  // In der CI ist eine fehlende Baseline ein Fehler: sonst wird ein neuer
+  // Tone bei jedem Lauf neu angelegt und nie verglichen.
+  if (createdCount > 0 && process.env.CI && !UPDATE) {
+    console.error(`${createdCount} Baseline(s) fehlen. Kandidaten liegen als Artefakt am Lauf; sichten und committen.`);
+    process.exit(1);
+  }
   if (unstableCaptures.length > 0) {
     console.error(`Instabile Aufnahmen (nicht als Baseline brauchbar): ${unstableCaptures.join(", ")}`);
     process.exit(1);
