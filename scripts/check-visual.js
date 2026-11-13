@@ -197,6 +197,25 @@ async function captureCombination(page, { label, tone, mode, entry }) {
     `,
   });
 
+  // Lazy-Load-Bilder werden bei einer CDP-Aufnahme ausserhalb des sichtbaren
+  // Viewports nicht zwingend vor dem ersten Screenshot dekodiert. Wenn ein
+  // Bild zwischen zwei Stabilitätsaufnahmen fertig wird, unterscheiden sich
+  // die Pixel trotz identischem DOM. Für VRT alle Bilder bewusst laden und
+  // dekodieren, bevor Fonts und Layout final settled werden.
+  await page.evaluate(async () => {
+    const images = Array.from(document.images);
+    images.forEach((image) => { image.loading = "eager"; });
+    await Promise.all(images.map(async (image) => {
+      if (!image.complete) {
+        await new Promise((resolve) => {
+          image.addEventListener("load", resolve, { once: true });
+          image.addEventListener("error", resolve, { once: true });
+        });
+      }
+      try { await image.decode(); } catch {}
+    }));
+  });
+
   // Auf Font-Loading warten — `document.fonts.ready` resolved wenn alle
   // @font-face geladen sind (oder mit Fallbacks gefüllt). Determinismus.
   await page.evaluate(() => document.fonts.ready);
