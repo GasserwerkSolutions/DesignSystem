@@ -136,6 +136,9 @@ function compareHostInfo(baseline, current) {
   return drifts;
 }
 
+/** Kombinationen, deren Aufnahme sich auch nach drei Versuchen nicht stabilisiert hat. */
+const unstableCaptures = [];
+
 async function captureCombination(page, tone, mode) {
   // networkidle0 ist notwendig: domcontentloaded führt zu Dimension-Drift
   // (Page noch nicht voll gerendert wenn screenshot läuft, Font-Fallback-
@@ -170,6 +173,13 @@ async function captureCombination(page, tone, mode) {
         transition-duration: 0.001ms !important;
         transition-delay: 0s !important;
       }
+      /* Keine Scrollbar und kein reservierter Gutter: sonst hängt vw davon
+         ab, ob Chrome die Scrollbar-Breite gerade abzieht (1265 oder 1280),
+         und Überschriften mit clamp(… vw …) kippen um Zehntelpixel. */
+      html {
+        scrollbar-width: none !important;
+        scrollbar-gutter: auto !important;
+      }
     `,
   });
 
@@ -191,19 +201,36 @@ async function captureCombination(page, tone, mode) {
     )
   ));
 
-  // Diagnose: Überschriftengrösse und Viewport vor und nach der Aufnahme.
-  // Zwei Läufe auf demselben Host lieferten denselben Tone einmal mit h1 48px
-  // und einmal mit ~32px (clamp-Minimum); das hier zeigt, ob das Layout oder
-  // erst die Vollseiten-Aufnahme kippt.
-  const probe = () => page.evaluate(() => {
-    const h1 = document.querySelector("h1");
-    return [h1 ? getComputedStyle(h1).fontSize : "-", innerWidth, document.documentElement.clientWidth,
-      Math.round(visualViewport ? visualViewport.width : -1), document.fonts.status, document.fonts.size].join("/");
-  });
-  const before = await probe();
-  const buf = await page.screenshot({ fullPage: true, type: "png" });
-  const after = await probe();
-  console.log(`  [diag]  ${tone}-${mode}  vorher ${before}  nachher ${after}`);
+  // Aufnahme der ganzen Seite ohne Grössenwechsel während der Aufnahme.
+  //
+  // Überschriften nutzen clamp() mit vw. `fullPage: true` ändert den Viewport
+  // WÄHREND der Aufnahme (oder rastert über ihn hinaus); dabei löste Chrome
+  // vw uneinheitlich auf. Lokal kippte h1 zwischen 41.8px und 42px (mit und
+  // ohne Scrollbar-Gutter), auf dem CI-Host bis aufs clamp-Minimum (~32px
+  // statt 48px), obwohl getComputedStyle vor und nach der Aufnahme 48px
+  // meldete. Deshalb: Viewport selbst auf die Seitenhöhe setzen, Layout
+  // setzen lassen, dann nur den Viewport aufnehmen.
+  const settle = () => page.evaluate(() => new Promise((r) =>
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 50)))));
+  let height = 0;
+  for (let i = 0; i < 4; i++) {
+    const next = await page.evaluate(() => document.documentElement.scrollHeight);
+    if (next === height) break;
+    height = next;
+    await page.setViewport({ ...VIEWPORT, height });
+    await settle();
+  }
+  const shoot = () => page.screenshot({ captureBeyondViewport: false, type: "png" });
+  let buf = await shoot();
+  // Selbstkontrolle: zwei Aufnahmen desselben Zustands müssen identisch sein.
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const again = await shoot();
+    if (Buffer.compare(buf, again) === 0) break;
+    console.log(`  [instabil] ${tone}-${mode}: Aufnahme ${attempt} weicht von der vorherigen ab`);
+    if (attempt === 3) unstableCaptures.push(`${tone}-${mode}`);
+    buf = again;
+  }
+  await page.setViewport(VIEWPORT);
   return pngFromBuffer(buf);
 }
 
@@ -546,6 +573,10 @@ async function main() {
   // Ein Update schreibt Baselines und Metadaten für DIESEN Host neu; der
   // alte Host-Vermerk ist dann kein Fehler mehr.
   if (hostMismatch && REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST && !UPDATE) process.exit(1);
+  if (unstableCaptures.length > 0) {
+    console.error(`Instabile Aufnahmen (nicht als Baseline brauchbar): ${unstableCaptures.join(", ")}`);
+    process.exit(1);
+  }
   if (failCount > 0) process.exit(1);
 }
 
