@@ -241,3 +241,11 @@ validatePage([{ pattern: "hero", headingLevel: 1 }, { pattern: "gallery", headin
 Die Seitenrezepte stehen unter `seiten` im Manifest. `npm run test:layout`
 prüft die Funktionen an Massen aus echtem Material; `check:project-pack`
 prüft die Abschnittsfolge jeder Beispielseite mit derselben `validatePage`.
+
+### Papierkörnung
+
+`.texture-grain` (im Projekt-Pack) legt eine feine Körnung hinter den Inhalt
+einer Fläche. Sie wird in der Textfarbe gezeichnet und wirkt deshalb in jedem
+Tone und in Light wie Dark gleich stark. Stärke über
+`--texture-grain-opacity` (Standard 0.05). Die Holzbau-Beispiele nutzen sie
+zusammen mit dem Tone `earth`.

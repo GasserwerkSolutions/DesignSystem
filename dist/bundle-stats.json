@@ -1,14 +1,14 @@
 {
   "version": "0.32.0",
   "bundle": {
-    "raw": 169187,
-    "gzip": 25241,
-    "brotli": 21225
+    "raw": 172540,
+    "gzip": 25696,
+    "brotli": 21629
   },
   "minified": {
-    "raw": 133965,
-    "gzip": 23405,
-    "brotli": 20086
+    "raw": 136944,
+    "gzip": 23856,
+    "brotli": 20506
   },
   "layers": [
     {
@@ -23,8 +23,8 @@
     },
     {
       "label": "themes",
-      "raw": 19837,
-      "files": 7
+      "raw": 24164,
+      "files": 8
     },
     {
       "label": "base",

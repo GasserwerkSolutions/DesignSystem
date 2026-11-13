@@ -31,6 +31,19 @@
 - Drei neue Journeys (10 total) decken Combobox-A11Y/Formularwert,
   Popover-Viewport-Verhalten und Theme-Toggle-Labels ab.
 
+### Neu: Tone `earth` und Papierkörnung
+
+- **`themes/earth.css`**: Handwerks-Tone aus der Palette «Earth» des
+  Prototyps «Clear 4 Enhanced» (helles Papier, dunkle Tinte, Sandakzent,
+  in der Tintenfarbe getönte Schatten). Sekundär- und Muted-Text sind
+  gegenüber dem Prototyp abgedunkelt, damit sie auf den Papierflächen AA
+  erreichen. 1728 statt 1344 WCAG-AA-Paare, alle erfüllt.
+- **`patterns/texture.css`** (Projekt-Pack): `.texture-grain` legt eine
+  feine Körnung hinter den Inhalt einer Fläche, gezeichnet in der
+  Textfarbe und damit in Light und Dark gleich stark.
+- `check:visual` schlägt in der CI fehl, wenn eine Baseline fehlt, statt
+  sie stillschweigend anzulegen.
+
 ### Offen
 
 - `tests/visual/musikraum-{light,dark}.png` müssen über den Workflow

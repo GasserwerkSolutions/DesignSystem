@@ -148,17 +148,18 @@ IIFE-Variante für `file://` ohne Build-Step:
 
 | Achse | Werte | Wie | Beispiel |
 |---|---|---|---|
-| **Tone** | trust, playful, premium, industrial, modern, minimal, musikraum | `<html data-tone="trust">` | Brand-Identität |
+| **Tone** | trust, playful, premium, industrial, modern, minimal, musikraum, earth | `<html data-tone="trust">` | Brand-Identität |
 | **Mode** | light, dark, auto | `<html data-mode="dark">` | Light/Dark/System |
 | **Density** | comfortable, compact, spacious | `<html data-density="compact">` | Touch vs Desktop |
 | **Container** | inline-size queries | `<div class="cq">…</div>` | Component reagiert auf Container, nicht Viewport |
 
 Achsen sind **orthogonal** — jede Kombination funktioniert (über 100 Modi
-× Tones validiert, 1344 WCAG-AA-Paare im static-Contrast-Check). Die Tone-Liste
+× Tones validiert, 1728 WCAG-AA-Paare im static-Contrast-Check). Die Tone-Liste
 aller Gates wird aus den Theme-Imports in `main.css` gelesen — ein neuer Tone
 läuft automatisch durch Kontrast- und Visual-Checks.
 
 `musikraum` ist ein Marken-Tone (warme Papier- und Holzflächen, Serif-Headlines).
+`earth` ist der Handwerks-Tone (helles Papier, dunkle Tinte, Sandakzent, serifenlos), gedacht für Holzbau- und Projektseiten.
 Token-Quelle und Seitenaufbau bleiben beim konsumierenden Projekt; das System
 liefert nur die Theme-Tokens. Beispiel: `examples/`.
 
@@ -275,9 +276,9 @@ nutzen für tone-spezifische Mode-Variants.
 ```bash
 npm run lint:strict          # Theme-Contract inkl. destruktiver Mode-Tokens
 npm run test:lint            # Lint regression tests (21 cases)
-npm run check:contrast       # 1344 WCAG-AA Paare (7×4×kritisch + nested)
+npm run check:contrast       # 1728 WCAG-AA Paare (8×4×kritisch + nested)
 npm run check:a11y           # axe-core lint + self-test mutations
-npm run check:visual         # VRT — 14 baselines + 3 sensitivity-suite
+npm run check:visual         # VRT — 16 baselines + 3 sensitivity-suite
 npm run check:journeys       # Puppeteer user flows (10 journeys)
 npm run check:rendered       # axe + VRT + Journeys parallel
 npm run check:examples       # 4 Beispiele × 5 Viewports, Assets + Overflow
@@ -300,4 +301,4 @@ npm run check:full           # Alles, blocking gate vor publish
 - **23.9 KB** gzipped (Vollprofil)
 - **9.5 KB** gzipped (kuratiertes Builder-Profil)
 - **7 Tones × 2 Modes × 3 Densities × Container-Queries**
-- **1344** WCAG-AA-Paare verifiziert
+- **1728** WCAG-AA-Paare verifiziert

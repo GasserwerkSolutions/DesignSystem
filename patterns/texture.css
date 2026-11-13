@@ -1,0 +1,48 @@
+@layer patterns {
+  /**
+   * Texture — feine Papierkörnung für Flächen
+   *
+   * Nimmt glatten Farbflächen die Härte. Die Körnung ist eine eigene Ebene
+   * HINTER dem Inhalt der Fläche (Text und Bilder bleiben unberührt) und
+   * wird in der Textfarbe gezeichnet: dunkle Sprenkel auf Papier, helle auf
+   * dunklen Flächen. Sie passt sich damit Tone und Mode von selbst an.
+   * (Ein Mischmodus auf dem Hintergrund tut das nicht: was auf Papier fein
+   * wirkt, wird auf dunklen Flächen grob.)
+   *
+   * CONTRACT (optional):
+   *   --texture-grain-opacity  Stärke (default 0.05)
+   *   --texture-grain-size     Kachelgrösse (default 220px)
+   *   --texture-grain-color    Farbe der Sprenkel (default Textfarbe)
+   *
+   * Struktur:
+   *   <body class="texture-grain">…</body>
+   *   <section class="section hero hero--dark texture-grain">…</section>
+   *
+   * Das Element wird zum Stacking-Kontext (isolation). Im Druck und bei
+   * erhöhtem Kontrast ist die Körnung aus.
+   */
+
+  .texture-grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .texture-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--texture-grain-color, var(--color-text-primary));
+    opacity: var(--texture-grain-opacity, 0.05);
+    --_grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.2 0 0 0 -0.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    -webkit-mask: var(--_grain) 0 0 / var(--texture-grain-size, 220px) repeat;
+    mask: var(--_grain) 0 0 / var(--texture-grain-size, 220px) repeat;
+  }
+
+  @media (prefers-contrast: more), print {
+    .texture-grain::before {
+      content: none;
+    }
+  }
+}

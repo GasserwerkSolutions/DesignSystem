@@ -573,6 +573,12 @@ async function main() {
   // Ein Update schreibt Baselines und Metadaten für DIESEN Host neu; der
   // alte Host-Vermerk ist dann kein Fehler mehr.
   if (hostMismatch && REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST && !UPDATE) process.exit(1);
+  // In der CI ist eine fehlende Baseline ein Fehler: sonst wird ein neuer
+  // Tone bei jedem Lauf neu angelegt und nie verglichen.
+  if (createdCount > 0 && process.env.CI && !UPDATE) {
+    console.error(`${createdCount} Baseline(s) fehlen. Kandidaten liegen als Artefakt am Lauf; sichten und committen.`);
+    process.exit(1);
+  }
   if (unstableCaptures.length > 0) {
     console.error(`Instabile Aufnahmen (nicht als Baseline brauchbar): ${unstableCaptures.join(", ")}`);
     process.exit(1);

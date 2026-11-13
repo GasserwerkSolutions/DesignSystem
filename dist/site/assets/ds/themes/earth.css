@@ -1,0 +1,107 @@
+/**
+ * Theme: EARTH
+ * ============
+ * Tone: Warmes Papier, dunkle Tinte, Sand als Akzent. Ruhig und handwerklich.
+ * Primär für: Holzbau, Schreinerei, Handwerk mit Referenzbildern.
+ *
+ * Herkunft: Palette «Earth» aus dem Prototyp «Clear 4 Enhanced». Übernommen
+ * sind Papierflächen, Tintenfarbe, Sandakzent und die in der Tintenfarbe
+ * getönten Schatten. Angepasst sind die Textabstufungen: Sekundär- und
+ * Muted-Text des Prototyps (#7f6b52, #9d8a72) erreichen auf den Papierflächen
+ * kein AA und sind hier dunkler.
+ *
+ * Setzt nur Token-Werte. Keine Selektoren für Components.
+ */
+
+[data-tone~="earth"] {
+  /* Palette */
+  --earth-paper:       #f5f2ec;
+  --earth-paper-soft:  #ede6db;
+  --earth-paper-light: #faf8f4;
+  --earth-ink:         #33291c;
+  --earth-ink-soft:    #64533d;
+  --earth-clay:        #6f5c43;
+  --earth-sand:        #c1a878;
+  --earth-sand-soft:   #d9c49e;
+  --earth-night:       #1e1a15;
+  --earth-night-soft:  #2b251d;
+
+  /* Page colors */
+  --color-bg:           light-dark(var(--earth-paper), var(--earth-night));
+  --color-bg-secondary: light-dark(var(--earth-paper-light), #17130f);
+  --color-bg-tertiary:  light-dark(var(--earth-paper-soft), var(--earth-night-soft));
+  --color-bg-inverse:   light-dark(#2a2116, #f0e9dc);
+
+  --color-surface:        light-dark(var(--earth-paper-light), var(--earth-night-soft));
+  --color-surface-subtle: light-dark(var(--earth-paper-soft), #241f18);
+  --color-surface-hover:  light-dark(#e6dece, #362f25);
+
+  --color-text-primary:   light-dark(var(--earth-ink), #f0e9dc);
+  --color-text-secondary: light-dark(var(--earth-ink-soft), #cdbfa8);
+  --color-text-tertiary:  light-dark(var(--earth-clay), #b3a48c);
+  --color-text-muted:     light-dark(var(--earth-clay), #b3a48c);
+  --color-text-on-dark:   #f0e9dc;
+
+  --color-border:       light-dark(#d8cfbf, #4a4136);
+  --color-border-light: light-dark(#e6dfd2, #3a3329);
+  --color-border-dark:  light-dark(var(--earth-sand), #7d6c52);
+
+  /* Interactive — Tinte auf Papier, Sand auf Nacht */
+  --color-interactive:       light-dark(var(--earth-ink), var(--earth-sand-soft));
+  --color-interactive-light: light-dark(#e4dccd, #3a3329);
+  --color-interactive-dark:  light-dark(#231b11, #e8d9ba);
+  --color-on-interactive:    light-dark(var(--earth-paper-light), var(--earth-night));
+  --color-focus:             light-dark(var(--earth-ink), var(--earth-sand-soft));
+  --color-focus-ring:        light-dark(var(--earth-sand), #7d6c52);
+
+  /* Typography — serifenlos, kräftig, eng gesetzt */
+  --heading-font:        var(--font-sans);
+  --heading-weight:      700;
+  --heading-line-height: 1.12;
+  --h1-letter:           -0.03em;
+  --body-line-height:    1.6;
+
+  /* Button */
+  --btn-bg:           var(--color-interactive);
+  --btn-bg-hover:     var(--color-interactive-dark);
+  --btn-fg:           var(--color-on-interactive);
+  --btn-border:       transparent;
+  --btn-radius:       var(--radius-8);
+  --btn-weight:       600;
+  --btn-hover-motion: translateY(-1px);
+
+  /* Card — Schatten in der Tintenfarbe statt neutralem Schwarz */
+  --card-bg:              light-dark(var(--earth-paper-light), var(--earth-night-soft));
+  --card-border:          1px solid var(--color-border);
+  --card-radius:          var(--radius-12);
+  --card-shadow:          0 2px 12px rgb(51 41 28 / 0.06);
+  --card-hover-transform: translateY(-2px);
+  --card-hover-shadow:    0 8px 24px rgb(51 41 28 / 0.11);
+
+  /* Badge */
+  --badge-radius:    var(--radius-full);
+  --badge-letter:    0.03em;
+  --badge-transform: uppercase;
+  --badge-weight:    600;
+
+  /* Inputs */
+  --input-focus-border: var(--color-interactive);
+  --input-focus-ring:   var(--color-focus-ring);
+
+  /* Website patterns */
+  --site-header-bg:     color-mix(in oklch, var(--color-bg-secondary) 88%, transparent);
+  --site-header-border: 1px solid var(--color-border);
+
+  --hero-eyebrow-fg:    var(--color-text-tertiary);
+  --hero-media-radius:  var(--radius-12);
+  --media-radius:       var(--radius-12);
+
+  --cta-band-bg:     light-dark(var(--earth-paper-soft), var(--earth-night-soft));
+  --cta-band-fg:     var(--color-text-primary);
+  --cta-band-border: 1px solid var(--color-border);
+  --cta-band-radius: var(--radius-12);
+  --cta-band-shadow: var(--card-shadow);
+
+  --site-footer-bg: light-dark(#2a2116, #17130f);
+  --site-footer-fg: #d9cfbd;
+}
