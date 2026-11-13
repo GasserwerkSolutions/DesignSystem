@@ -25,7 +25,7 @@ catch (e) {
   process.exit(2);
 }
 
-const TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
+const { TONES } = require("./_tones");
 const MODES = ["light", "dark"];
 
 const PAIRS = [
@@ -167,7 +167,11 @@ async function main() {
 
     for (const tone of TONES) {
       for (const mode of MODES) {
-        await page.click(`[data-set-tone="${tone}"]`);
+        // Tone programmatisch setzen (wie check-visual): Marken-Tones wie
+        // `musikraum` haben keinen Topbar-Button in der Demo.
+        await page.evaluate((t) => {
+          document.documentElement.setAttribute("data-tone", t);
+        }, tone);
         const cur = await page.evaluate(() =>
           document.documentElement.getAttribute("data-mode")
         );

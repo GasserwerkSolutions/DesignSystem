@@ -1,14 +1,14 @@
 {
   "version": "0.32.0",
   "bundle": {
-    "raw": 168992,
-    "gzip": 25229,
-    "brotli": 21220
+    "raw": 169187,
+    "gzip": 25241,
+    "brotli": 21225
   },
   "minified": {
-    "raw": 133780,
-    "gzip": 23391,
-    "brotli": 20078
+    "raw": 133965,
+    "gzip": 23405,
+    "brotli": 20086
   },
   "layers": [
     {
@@ -23,7 +23,7 @@
     },
     {
       "label": "themes",
-      "raw": 19368,
+      "raw": 19837,
       "files": 7
     },
     {
@@ -38,14 +38,14 @@
     },
     {
       "label": "components",
-      "raw": 180320,
+      "raw": 180775,
       "files": 57
     }
   ],
   "components": [
     {
       "name": "combobox",
-      "raw": 9112
+      "raw": 9567
     },
     {
       "name": "card",

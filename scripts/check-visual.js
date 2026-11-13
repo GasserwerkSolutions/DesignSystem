@@ -47,7 +47,7 @@ const ONLY_LABELS = ONLY_ARG
   ? new Set(ONLY_ARG.slice("--only=".length).split(",").filter(Boolean))
   : null;
 
-const TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
+const { TONES } = require("./_tones");
 const MODES = ["light", "dark"];
 
 const VIEWPORT = { width: 1280, height: 900 };

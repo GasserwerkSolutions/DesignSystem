@@ -154,6 +154,164 @@ async function journeyPopoverOpenClose(page) {
   assert(closed, "hidePopover() should close popover");
 }
 
+async function journeyComboboxA11yAndFormValue(page) {
+  await reload(page);
+
+  const state = await page.evaluate(async () => {
+    const root = document.getElementById("cb-service");
+    const trigger = document.getElementById("cb-service-trigger");
+    const panel = document.getElementById("cb-service-panel");
+    const search = panel.querySelector(".combobox__search-input");
+    const field = root.querySelector("input.combobox__input");
+    const events = [];
+    root.addEventListener("combobox:change", (e) => events.push(e.detail));
+    let fieldChanges = 0;
+    field.addEventListener("change", () => fieldChanges++);
+
+    trigger.click();
+    await new Promise((r) => setTimeout(r, 200));
+    const selected = panel.querySelector('.combobox__option[aria-selected="true"]');
+    const onOpen = search.getAttribute("aria-activedescendant");
+    const startsOnSelected = !!selected && onOpen === selected.id;
+
+    // ArrowDown → nächste Option (Bart-Trim) aktiv und per id gemeldet.
+    search.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+    const activeEl = panel.querySelector(".combobox__option--active");
+    const activeMatches =
+      !!activeEl &&
+      search.getAttribute("aria-activedescendant") === activeEl.id &&
+      trigger.getAttribute("aria-activedescendant") === activeEl.id;
+    const ids = [...panel.querySelectorAll(".combobox__option")].map((o) => o.id);
+
+    search.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+    await new Promise((r) => setTimeout(r, 200));
+
+    return {
+      startsOnSelected,
+      activeMatches,
+      idsUnique: ids.every(Boolean) && new Set(ids).size === ids.length,
+      fieldValue: field.value,
+      fieldChanges,
+      events: events.map((d) => ({ value: d.value, label: d.label })),
+      clearedAfterClose: !search.hasAttribute("aria-activedescendant"),
+      open: panel.matches(":popover-open"),
+    };
+  });
+
+  assert(state.idsUnique, "every option should get a unique id");
+  assert(state.startsOnSelected, "open should activate the selected option via aria-activedescendant");
+  assert(state.activeMatches, "aria-activedescendant on search + trigger should follow the active option");
+  assert(!state.open, "Enter should select and close");
+  assert(state.fieldValue === "bart-trim", `hidden input should take data-value, got '${state.fieldValue}'`);
+  assert(state.fieldChanges === 1, `hidden input should fire change once, got ${state.fieldChanges}`);
+  assert(
+    state.events.length === 1 && state.events[0].value === "bart-trim" && state.events[0].label === "Bart-Trim",
+    `combobox:change should carry value + label, got ${JSON.stringify(state.events)}`
+  );
+  assert(state.clearedAfterClose, "aria-activedescendant should be cleared after close");
+}
+
+async function journeyPopoverStaysInViewport(page) {
+  await reload(page);
+
+  // Trigger in die rechte untere Ecke eines schmalen Viewports zwingen:
+  // ohne Clamp/Flip läge das Panel rechts und unten ausserhalb.
+  await page.setViewport({ width: 360, height: 640 });
+  try {
+    const rect = await page.evaluate(async () => {
+      const trigger = document.querySelector('[popovertarget="demo-menu"]');
+      // An <body> hängen: Vorfahren mit container-type wären sonst der
+      // Containing Block für position:fixed.
+      const home = trigger.parentNode;
+      const next = trigger.nextSibling;
+      document.body.append(trigger);
+      trigger.style.cssText = "position:fixed;right:4px;bottom:4px;z-index:9999";
+      trigger.click();
+      await new Promise((r) => setTimeout(r, 250));
+      const panel = document.getElementById("demo-menu");
+      const r = panel.getBoundingClientRect();
+      const t = trigger.getBoundingClientRect();
+      const out = {
+        open: panel.matches(":popover-open"),
+        left: r.left, right: r.right, top: r.top, bottom: r.bottom,
+        triggerTop: t.top,
+        vw: document.documentElement.clientWidth,
+        vh: document.documentElement.clientHeight,
+        placement: panel.dataset.placement,
+      };
+      panel.hidePopover();
+      trigger.style.cssText = "";
+      home.insertBefore(trigger, next);
+      return out;
+    });
+    assert(rect.open, "popover should open");
+    assert(rect.left >= 0 && rect.right <= rect.vw, `panel should stay inside viewport horizontally (${rect.left}–${rect.right} of ${rect.vw})`);
+    assert(rect.top >= 0 && rect.bottom <= rect.vh, `panel should stay inside viewport vertically (${rect.top}–${rect.bottom} of ${rect.vh})`);
+    assert(rect.placement === "top", `panel should flip above the trigger, got '${rect.placement}'`);
+    assert(rect.bottom <= rect.triggerTop, "flipped panel should sit above the trigger");
+  } finally {
+    await page.setViewport({ width: 1400, height: 900 });
+  }
+}
+
+async function journeyThemeToggleLabels(page) {
+  await reload(page);
+
+  const state = await page.evaluate(async () => {
+    const make = (attrs = {}) => {
+      const btn = document.createElement("button");
+      btn.setAttribute("data-theme-toggle", "");
+      for (const [k, v] of Object.entries(attrs)) btn.setAttribute(k, v);
+      return btn;
+    };
+    const html = document.documentElement;
+    const prevLang = html.lang;
+    html.setAttribute("data-mode", "light");
+
+    const host = document.createElement("div");
+    const byLang = make();
+    const byAttr = make({ "data-label-dark": "Nachtansicht" });
+    host.append(byLang, byAttr);
+    document.body.append(host);
+
+    html.lang = "fr-CH";
+    const cleanupFr = DS.setupThemeToggle(host);
+    const fr = byLang.getAttribute("aria-label");
+    const attr = byAttr.getAttribute("aria-label");
+    cleanupFr();
+
+    html.lang = "de-CH";
+    const cleanupOpt = DS.setupThemeToggle(host, { labels: { toDark: "Dunkel" } });
+    const opt = byLang.getAttribute("aria-label");
+    byLang.click();
+    // View-Transition wendet den Wechsel asynchron an.
+    await new Promise((r) => setTimeout(r, 400));
+    const afterClick = { mode: html.getAttribute("data-mode"), label: byLang.getAttribute("aria-label") };
+    cleanupOpt();
+
+    host.remove();
+    html.lang = prevLang;
+    html.setAttribute("data-mode", "light");
+    try { localStorage.clear(); } catch {}
+
+    // Head-Snippet: wendet gespeicherten Modus ohne setup an.
+    try { localStorage.setItem("ds-mode", "dark"); } catch {}
+    new Function(DS.THEME_INIT_SNIPPET)();
+    const snippetMode = html.getAttribute("data-mode");
+    html.setAttribute("data-mode", "light");
+    try { localStorage.clear(); } catch {}
+
+    return { fr, attr, opt, afterClick, snippetMode };
+  });
+
+  assert(state.fr === "Passer en mode sombre", `lang=fr should give a French label, got '${state.fr}'`);
+  assert(state.attr === "Nachtansicht", `data-label-dark should win, got '${state.attr}'`);
+  assert(state.opt === "Dunkel", `options.labels should override the language default, got '${state.opt}'`);
+  assert(state.afterClick.mode === "dark", "click should switch to dark");
+  assert(state.afterClick.label === "Auf Light Mode wechseln", `label should follow mode, got '${state.afterClick.label}'`);
+  assert(state.snippetMode === "dark", "THEME_INIT_SNIPPET should apply the stored mode");
+}
+
 async function journeyAlertDismiss(page) {
   await reload(page);
 
@@ -318,6 +476,9 @@ async function main() {
 
     await journey("Combobox: label click → focus → open → filter → select", journeyComboboxLabelToSelection, page);
     await journey("Popover: trigger click → open → Esc → close", journeyPopoverOpenClose, page);
+    await journey("Combobox: aria-activedescendant, form value and change event", journeyComboboxA11yAndFormValue, page);
+    await journey("Popover: flips and clamps to stay inside the viewport", journeyPopoverStaysInViewport, page);
+    await journey("Theme-Toggle: labels by lang/attribute/options + head snippet", journeyThemeToggleLabels, page);
     await journey("Alert: data-dismiss removes element", journeyAlertDismiss, page);
     await journey("Slider: input event syncs output + --range-fill-pct", journeySliderSync, page);
     await journey("File-Upload: drag-counter handles nested dragenter/leave", journeyFileUploadDragCounter, page);

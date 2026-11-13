@@ -24,7 +24,7 @@
 .stack {
   display: flex;
   flex-direction: column;
-  gap: var(--stack-gap, var(--space-12));
+  gap: var(--stack-gap, var(--component-gap));
   align-items: var(--stack-align, stretch);
 }
 
@@ -41,7 +41,7 @@
 .cluster {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--cluster-gap, var(--space-12));
+  gap: var(--cluster-gap, var(--component-gap));
   align-items:     var(--cluster-align,   center);
   justify-content: var(--cluster-justify, flex-start);
 }
@@ -76,25 +76,25 @@
 
 .grid {
   display: grid;
-  gap: var(--space-block);
+  gap: var(--layout-gap);
 }
 
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-block);
+  gap: var(--layout-gap);
 }
 
 .grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-block);
+  gap: var(--layout-gap);
 }
 
 .grid-4 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-block);
+  gap: var(--layout-gap);
 }
 
 @media (max-width: 1024px) {
@@ -133,7 +133,7 @@
 .split {
   display: grid;
   grid-template-columns: var(--split-ratio, 1fr 1fr);
-  gap: var(--split-gap, var(--space-block));
+  gap: var(--split-gap, var(--layout-gap));
   align-items: var(--split-align, start);
 }
 

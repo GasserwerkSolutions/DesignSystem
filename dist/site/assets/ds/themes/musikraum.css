@@ -12,7 +12,7 @@
 [data-tone~="musikraum"] {
   /* Brand palette — aus dem Musikraum-Klangsystem abgeleitet */
   --musikraum-ink:         #2f2b25;
-  --musikraum-muted:       #6c645b;
+  --musikraum-muted:       #675f56;
   --musikraum-paper:       #f1d9ad;
   --musikraum-paper-soft:  #e6c48d;
   --musikraum-surface:     #fff3dd;
@@ -45,6 +45,13 @@
   --color-border:       light-dark(var(--musikraum-border), #5f574d);
   --color-border-light: light-dark(#e3c993, #4f493f);
   --color-border-dark:  light-dark(var(--musikraum-gold), #8a7560);
+
+  /* Status — Titel-Kontrast auf Papier/Holz
+     Die warmen, mittelhellen Musikraum-Flächen lassen der Default-Mischung
+     (60 % Signal) zu wenig Luminanz-Abstand: Warning hell 4.44:1, Danger
+     dunkel 4.40:1. 45 % Signal hält den Farbcharakter und erfüllt AA. */
+  --status-warning-fg: color-mix(in oklch, var(--color-warning) 45%, var(--color-text-primary));
+  --status-danger-fg:  color-mix(in oklch, var(--color-error)   45%, var(--color-text-primary));
 
   /* Interactive */
   --color-interactive:       light-dark(var(--musikraum-accent), #9fb9b7);
