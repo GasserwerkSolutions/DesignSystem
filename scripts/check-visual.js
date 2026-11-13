@@ -61,6 +61,7 @@ const VISUAL_CASES = [
     tone: "earth",
     mode,
     entry: "examples/holzbau-projekt.html",
+    capture: "viewport",
   })),
 ];
 
@@ -153,7 +154,7 @@ function compareHostInfo(baseline, current) {
 /** Kombinationen, deren Aufnahme sich auch nach drei Versuchen nicht stabilisiert hat. */
 const unstableCaptures = [];
 
-async function captureCombination(page, { label, tone, mode, entry }) {
+async function captureCombination(page, { label, tone, mode, entry, capture = "full" }) {
   // networkidle0 ist notwendig: domcontentloaded führt zu Dimension-Drift
   // (Page noch nicht voll gerendert wenn screenshot läuft, Font-Fallback-
   // Layout-Shifts produzieren unterschiedliche Höhen zwischen Runs).
@@ -246,13 +247,13 @@ async function captureCombination(page, { label, tone, mode, entry }) {
   // sticky und fixed ihre reale Bedeutung.
   const client = await page.createCDPSession();
   const shoot = async () => {
-    const metrics = await client.send("Page.getLayoutMetrics");
-    const width = Math.ceil(metrics.cssContentSize.width);
-    const height = Math.ceil(metrics.cssContentSize.height);
+    const metrics = capture === "full" ? await client.send("Page.getLayoutMetrics") : null;
+    const width = metrics ? Math.ceil(metrics.cssContentSize.width) : VIEWPORT.width;
+    const height = metrics ? Math.ceil(metrics.cssContentSize.height) : VIEWPORT.height;
     const shot = await client.send("Page.captureScreenshot", {
       format: "png",
       fromSurface: true,
-      captureBeyondViewport: true,
+      captureBeyondViewport: capture === "full",
       clip: { x: 0, y: 0, width, height, scale: 1 },
     });
     return Buffer.from(shot.data, "base64");
