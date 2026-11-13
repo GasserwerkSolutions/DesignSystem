@@ -18,6 +18,17 @@ async function inspect(browser, file, width) {
   });
   await page.goto(`file://${file}`, { waitUntil: "load" });
   await new Promise((resolve) => setTimeout(resolve, 120));
+  // Layout im Ruhezustand messen: einmalige, zeitgesteuerte Animationen
+  // (z.B. .hero-settle, 1.04 → 1) abwarten. Scroll-gesteuerte Animationen
+  // hängen nicht an der Dokument-Zeitachse und bleiben unberührt.
+  await page.evaluate(() => Promise.race([
+    Promise.allSettled(
+      document.getAnimations()
+        .filter((a) => a.timeline === document.timeline && Number.isFinite(a.effect?.getComputedTiming().endTime))
+        .map((a) => a.finished)
+    ),
+    new Promise((resolve) => setTimeout(resolve, 4000)),
+  ]));
   const layout = await page.evaluate(() => {
     const doc = document.documentElement;
     const overflow = Math.max(doc.scrollWidth, document.body.scrollWidth) - doc.clientWidth;
