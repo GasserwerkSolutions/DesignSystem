@@ -6,7 +6,7 @@
  * Diese Setup-Funktion fügt das Trigger-Anchoring hinzu (anchor-popover
  * Utility) plus syncs aria-expanded auf dem Trigger-Button.
  */
-import { anchorPopoverByTrigger } from "./anchor-popover.js";
+import { anchorPopoverByTrigger, findPopoverTrigger } from "./anchor-popover.js";
 import { combineCleanups } from "./lifecycle.js";
 const cleanups = new WeakMap();
 export function setupPopover(panel) {
@@ -15,7 +15,7 @@ export function setupPopover(panel) {
         return existing;
     const releaseAnchor = anchorPopoverByTrigger(panel, {
         onToggle: (e) => {
-            const trigger = panel.ownerDocument.querySelector(`[popovertarget="${panel.id}"]`);
+            const trigger = findPopoverTrigger(panel);
             if (trigger) {
                 trigger.setAttribute("aria-expanded", e.newState === "open" ? "true" : "false");
             }

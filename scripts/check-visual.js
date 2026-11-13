@@ -201,26 +201,29 @@ async function captureCombination(page, tone, mode) {
     )
   ));
 
-  // Aufnahme der ganzen Seite ohne Grössenwechsel während der Aufnahme.
+  // Aufnahme der ganzen Seite ohne Grössenwechsel des Layout-Viewports.
   //
   // Überschriften nutzen clamp() mit vw. `fullPage: true` ändert den Viewport
   // WÄHREND der Aufnahme (oder rastert über ihn hinaus); dabei löste Chrome
   // vw uneinheitlich auf. Lokal kippte h1 zwischen 41.8px und 42px (mit und
   // ohne Scrollbar-Gutter), auf dem CI-Host bis aufs clamp-Minimum (~32px
   // statt 48px), obwohl getComputedStyle vor und nach der Aufnahme 48px
-  // meldete. Deshalb: Viewport selbst auf die Seitenhöhe setzen, Layout
-  // setzen lassen, dann nur den Viewport aufnehmen.
-  const settle = () => page.evaluate(() => new Promise((r) =>
-    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(r, 50)))));
-  let height = 0;
-  for (let i = 0; i < 4; i++) {
-    const next = await page.evaluate(() => document.documentElement.scrollHeight);
-    if (next === height) break;
-    height = next;
-    await page.setViewport({ ...VIEWPORT, height });
-    await settle();
-  }
-  const shoot = () => page.screenshot({ captureBeyondViewport: false, type: "png" });
+  // meldete. Über CDP wird die vollständige Content-Fläche aufgenommen,
+  // während der Layout-Viewport 1280×900 bleibt. Damit behalten vh/svh/dvh,
+  // sticky und fixed ihre reale Bedeutung.
+  const client = await page.createCDPSession();
+  const shoot = async () => {
+    const metrics = await client.send("Page.getLayoutMetrics");
+    const width = Math.ceil(metrics.cssContentSize.width);
+    const height = Math.ceil(metrics.cssContentSize.height);
+    const shot = await client.send("Page.captureScreenshot", {
+      format: "png",
+      fromSurface: true,
+      captureBeyondViewport: true,
+      clip: { x: 0, y: 0, width, height, scale: 1 },
+    });
+    return Buffer.from(shot.data, "base64");
+  };
   let buf = await shoot();
   // Selbstkontrolle: zwei Aufnahmen desselben Zustands müssen identisch sein.
   for (let attempt = 1; attempt <= 3; attempt++) {
@@ -230,7 +233,7 @@ async function captureCombination(page, tone, mode) {
     if (attempt === 3) unstableCaptures.push(`${tone}-${mode}`);
     buf = again;
   }
-  await page.setViewport(VIEWPORT);
+  await client.detach();
   return pngFromBuffer(buf);
 }
 

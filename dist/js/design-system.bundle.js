@@ -38,6 +38,15 @@ function setupDismissers(root = document) {
 
 // js/anchor-popover.ts
 var cleanups2 = /* @__PURE__ */ new WeakMap();
+function findPopoverTrigger(panel) {
+  if (!panel.id) return null;
+  const doc = panel.ownerDocument;
+  const escape = doc.defaultView?.CSS?.escape;
+  if (typeof escape === "function") {
+    return doc.querySelector(`[popovertarget="${escape(panel.id)}"]`);
+  }
+  return [...doc.querySelectorAll("[popovertarget]")].find((candidate) => candidate.getAttribute("popovertarget") === panel.id) ?? null;
+}
 function usesCssAnchor(panel, view) {
   const value = view.getComputedStyle(panel).getPropertyValue("position-anchor").trim();
   return value.startsWith("--");
@@ -48,9 +57,8 @@ function anchorPopoverByTrigger(panel, options = {}) {
   const { matchWidth = false, offset = 4, margin = 8, onToggle } = options;
   const doc = panel.ownerDocument;
   const view = doc.defaultView;
-  const findTrigger = () => doc.querySelector(`[popovertarget="${panel.id}"]`);
   const place = (measured) => {
-    const trigger = findTrigger();
+    const trigger = findPopoverTrigger(panel);
     if (!trigger || !view) return;
     if (usesCssAnchor(panel, view)) return;
     const r = trigger.getBoundingClientRect();
@@ -136,9 +144,7 @@ function setupPopover(panel) {
   if (existing) return existing;
   const releaseAnchor = anchorPopoverByTrigger(panel, {
     onToggle: (e) => {
-      const trigger = panel.ownerDocument.querySelector(
-        `[popovertarget="${panel.id}"]`
-      );
+      const trigger = findPopoverTrigger(panel);
       if (trigger) {
         trigger.setAttribute(
           "aria-expanded",

@@ -37,4 +37,10 @@ export interface AnchorOptions {
     onToggle?: (event: ToggleEvent) => void;
 }
 import { type Cleanup } from "./lifecycle.js";
+/**
+ * Findet den nativen Popover-Trigger ohne ungeprüfte ID-Interpolation.
+ * CMS-generierte IDs dürfen selector-sensitive Zeichen enthalten; ein
+ * ungültiger Selector darf das Öffnen des Popovers nicht abbrechen.
+ */
+export declare function findPopoverTrigger(panel: HTMLElement): HTMLElement | null;
 export declare function anchorPopoverByTrigger(panel: HTMLElement, options?: AnchorOptions): Cleanup;
