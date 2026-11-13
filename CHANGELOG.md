@@ -45,8 +45,8 @@
   aus deterministischen CSS-Gradienten und bleibt dadurch VRT-pixelstabil.
 - `check:visual` schlägt in der CI fehl, wenn eine Baseline fehlt, statt
   sie stillschweigend anzulegen.
-- Zwei gezielte VRT-Cases rendern die Papierkörnung auf der vollständigen
-  Holzbau-Projektseite in Light und Dark (18 Baselines total).
+- Zwei gezielte VRT-Cases rendern den Einstiegs-Viewport der echten
+  Holzbau-Projektseite mit Papierkörnung in Light und Dark (18 Baselines total).
 
 ## [0.32.0] — Builder-Profil, Release-Integrität und gerenderte Qualitätsgates
 
