@@ -38,32 +38,91 @@ function setupDismissers(root = document) {
 
 // js/anchor-popover.ts
 var cleanups2 = /* @__PURE__ */ new WeakMap();
+function usesCssAnchor(panel, view) {
+  const value = view.getComputedStyle(panel).getPropertyValue("position-anchor").trim();
+  return value.startsWith("--");
+}
 function anchorPopoverByTrigger(panel, options = {}) {
   const existing = cleanups2.get(panel);
   if (existing) return existing;
-  const { matchWidth = false, offset = 4, onToggle } = options;
-  const handleToggle = (rawEvent) => {
+  const { matchWidth = false, offset = 4, margin = 8, onToggle } = options;
+  const doc = panel.ownerDocument;
+  const view = doc.defaultView;
+  const findTrigger = () => doc.querySelector(`[popovertarget="${panel.id}"]`);
+  const place = (measured) => {
+    const trigger = findTrigger();
+    if (!trigger || !view) return;
+    if (usesCssAnchor(panel, view)) return;
+    const r = trigger.getBoundingClientRect();
+    if (matchWidth) panel.style.minWidth = `${r.width}px`;
+    const vw = doc.documentElement.clientWidth;
+    const vh = doc.documentElement.clientHeight;
+    const pw = measured ? panel.offsetWidth : 0;
+    const ph = measured ? panel.offsetHeight : 0;
+    const rtl = view.getComputedStyle(trigger).direction === "rtl";
+    let left = rtl ? r.right - pw : r.left;
+    const maxLeft = Math.max(margin, vw - pw - margin);
+    left = Math.min(Math.max(left, margin), maxLeft);
+    let top = r.bottom + offset;
+    let placement = "bottom";
+    if (measured && top + ph > vh - margin) {
+      const above = r.top - offset - ph;
+      if (above >= margin) {
+        top = above;
+        placement = "top";
+      } else {
+        top = Math.max(margin, vh - ph - margin);
+      }
+    }
+    panel.style.top = `${Math.round(top)}px`;
+    panel.style.left = `${Math.round(left)}px`;
+    panel.dataset.placement = placement;
+  };
+  let stopTracking = null;
+  const startTracking = () => {
+    if (stopTracking || !view) return;
+    let frame = 0;
+    const schedule = () => {
+      if (frame) return;
+      frame = view.requestAnimationFrame(() => {
+        frame = 0;
+        place(true);
+      });
+    };
+    view.addEventListener("scroll", schedule, { capture: true, passive: true });
+    view.addEventListener("resize", schedule, { passive: true });
+    stopTracking = () => {
+      view.removeEventListener("scroll", schedule, { capture: true });
+      view.removeEventListener("resize", schedule);
+      if (frame) view.cancelAnimationFrame(frame);
+      stopTracking = null;
+    };
+  };
+  const handleBeforeToggle = (rawEvent) => {
     const e = rawEvent;
     if (onToggle) onToggle(e);
-    if (e.newState !== "open") return;
-    const trigger = panel.ownerDocument.querySelector(
-      `[popovertarget="${panel.id}"]`
-    );
-    if (!trigger) return;
-    const r = trigger.getBoundingClientRect();
-    panel.style.top = `${r.bottom + offset}px`;
-    panel.style.left = `${r.left}px`;
-    if (matchWidth) panel.style.minWidth = `${r.width}px`;
+    if (e.newState === "open") place(false);
+    else stopTracking?.();
   };
-  panel.addEventListener("beforetoggle", handleToggle);
+  const handleToggle = (rawEvent) => {
+    const e = rawEvent;
+    if (e.newState !== "open") return;
+    place(true);
+    startTracking();
+  };
+  panel.addEventListener("beforetoggle", handleBeforeToggle);
+  panel.addEventListener("toggle", handleToggle);
   let active = true;
   const cleanup = () => {
     if (!active) return;
     active = false;
-    panel.removeEventListener("beforetoggle", handleToggle);
+    panel.removeEventListener("beforetoggle", handleBeforeToggle);
+    panel.removeEventListener("toggle", handleToggle);
+    stopTracking?.();
     panel.style.removeProperty("top");
     panel.style.removeProperty("left");
     panel.style.removeProperty("min-width");
+    delete panel.dataset.placement;
     cleanups2.delete(panel);
   };
   cleanups2.set(panel, cleanup);
@@ -101,6 +160,7 @@ function setupPopovers(root = document) {
 
 // js/setup-combobox.ts
 var cleanups4 = /* @__PURE__ */ new WeakMap();
+var uid = 0;
 function hidePopover(panel) {
   const popover = panel;
   popover.hidePopover?.();
@@ -115,21 +175,51 @@ function setupCombobox(combobox) {
   const signal = controller.signal;
   const search = panel.querySelector(".combobox__search-input");
   const value = trigger.querySelector(".combobox__value");
+  const field = combobox.querySelector("input.combobox__input");
+  const idBase = panel.id || combobox.id || `combobox-${++uid}`;
+  const generatedIds = [];
+  panel.querySelectorAll(".combobox__option").forEach((opt, i) => {
+    if (opt.id) return;
+    opt.id = `${idBase}-opt-${i}`;
+    generatedIds.push(opt);
+  });
+  const optionLabel = (opt) => {
+    const label = opt.querySelector(".combobox__option-label");
+    return (label?.textContent ?? opt.textContent ?? "").trim();
+  };
+  if (field && field.value === "") {
+    const preselected = panel.querySelector('.combobox__option[aria-selected="true"]');
+    if (preselected) field.value = preselected.dataset.value ?? optionLabel(preselected);
+  }
   const visibleOptions = () => panel.querySelectorAll(".combobox__option:not([hidden])");
   let active = -1;
   const setActive = (idx) => {
     const opts = visibleOptions();
     opts.forEach((el, j) => el.classList.toggle("combobox__option--active", j === idx));
-    if (idx >= 0 && opts[idx]) opts[idx].scrollIntoView({ block: "nearest" });
-    active = idx;
+    const current = idx >= 0 ? opts[idx] : void 0;
+    if (current) current.scrollIntoView({ block: "nearest" });
+    for (const owner of [search, trigger]) {
+      if (!owner) continue;
+      if (current) owner.setAttribute("aria-activedescendant", current.id);
+      else owner.removeAttribute("aria-activedescendant");
+    }
+    active = current ? idx : -1;
   };
   const select = (opt) => {
     panel.querySelectorAll(".combobox__option").forEach((o) => o.setAttribute("aria-selected", "false"));
     opt.setAttribute("aria-selected", "true");
-    if (value) {
-      const label = opt.querySelector(".combobox__option-label");
-      value.textContent = (label?.textContent ?? opt.textContent ?? "").trim();
+    const label = optionLabel(opt);
+    const nextValue = opt.dataset.value ?? label;
+    if (value) value.textContent = label;
+    if (field && field.value !== nextValue) {
+      field.value = nextValue;
+      field.dispatchEvent(new Event("input", { bubbles: true }));
+      field.dispatchEvent(new Event("change", { bubbles: true }));
     }
+    combobox.dispatchEvent(new CustomEvent("combobox:change", {
+      bubbles: true,
+      detail: { value: nextValue, label, option: opt }
+    }));
     hidePopover(panel);
   };
   const releaseAnchor = anchorPopoverByTrigger(panel, {
@@ -139,8 +229,12 @@ function setupCombobox(combobox) {
         "aria-expanded",
         e.newState === "open" ? "true" : "false"
       );
-      if (e.newState !== "open") return;
-      setActive(-1);
+      if (e.newState !== "open") {
+        setActive(-1);
+        return;
+      }
+      const opts = [...visibleOptions()];
+      setActive(opts.findIndex((o) => o.getAttribute("aria-selected") === "true"));
       panel.ownerDocument.defaultView?.requestAnimationFrame(() => search?.focus());
     }
   });
@@ -156,6 +250,12 @@ function setupCombobox(combobox) {
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActive(Math.max(active - 1, 0));
+    } else if (e.key === "Home" && opts.length > 0 && e.target !== search) {
+      e.preventDefault();
+      setActive(0);
+    } else if (e.key === "End" && opts.length > 0 && e.target !== search) {
+      e.preventDefault();
+      setActive(opts.length - 1);
     } else if (e.key === "Enter" && active >= 0) {
       e.preventDefault();
       select(opts[active]);
@@ -177,6 +277,9 @@ function setupCombobox(combobox) {
     releaseAnchor();
     trigger.setAttribute("aria-expanded", "false");
     panel.querySelectorAll(".combobox__option--active").forEach((option) => option.classList.remove("combobox__option--active"));
+    search?.removeAttribute("aria-activedescendant");
+    trigger.removeAttribute("aria-activedescendant");
+    generatedIds.forEach((option) => option.removeAttribute("id"));
     cleanups4.delete(combobox);
   };
   cleanups4.set(combobox, cleanup);
@@ -361,7 +464,15 @@ function setupOtpInput(root = document) {
 
 // js/setup-theme-toggle.ts
 var STORAGE_KEY = "ds-mode";
+var THEME_INIT_SNIPPET = `try{var m=localStorage.getItem("${STORAGE_KEY}");if(m==="light"||m==="dark")document.documentElement.setAttribute("data-mode",m)}catch(e){}`;
+var LABELS = {
+  de: { toLight: "Auf Light Mode wechseln", toDark: "Auf Dark Mode wechseln" },
+  fr: { toLight: "Passer en mode clair", toDark: "Passer en mode sombre" },
+  it: { toLight: "Passa alla modalit\xE0 chiara", toDark: "Passa alla modalit\xE0 scura" },
+  en: { toLight: "Switch to light mode", toDark: "Switch to dark mode" }
+};
 var cleanups9 = /* @__PURE__ */ new WeakMap();
+var buttonLabels = /* @__PURE__ */ new WeakMap();
 function getStoredMode() {
   try {
     const value = localStorage.getItem(STORAGE_KEY);
@@ -370,23 +481,32 @@ function getStoredMode() {
     return null;
   }
 }
-function getCurrentMode() {
-  const explicit = document.documentElement.getAttribute("data-mode");
+function getCurrentMode(doc) {
+  const explicit = doc.documentElement.getAttribute("data-mode");
   if (explicit === "light" || explicit === "dark") return explicit;
-  return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  const view = doc.defaultView;
+  return view?.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+function resolveLabels(btn) {
+  const lang = (btn.closest("[lang]")?.lang ?? "").toLowerCase().split("-")[0];
+  const base = LABELS[lang] ?? LABELS.de;
+  const custom = buttonLabels.get(btn) ?? {};
+  return {
+    toLight: btn.dataset.labelLight ?? custom.toLight ?? base.toLight,
+    toDark: btn.dataset.labelDark ?? custom.toDark ?? base.toDark
+  };
 }
 function syncButtonLabel(btn, mode) {
-  btn.setAttribute(
-    "aria-label",
-    mode === "dark" ? "Auf Light Mode wechseln" : "Auf Dark Mode wechseln"
-  );
+  const labels = resolveLabels(btn);
+  btn.setAttribute("aria-label", mode === "dark" ? labels.toLight : labels.toDark);
 }
 function setupButton2(btn) {
   const existing = cleanups9.get(btn);
   if (existing) return existing;
-  const html = btn.ownerDocument.documentElement;
+  const doc = btn.ownerDocument;
+  const html = doc.documentElement;
   const handleClick = () => {
-    const current = getCurrentMode();
+    const current = getCurrentMode(doc);
     const next = current === "dark" ? "light" : "dark";
     const apply = () => {
       html.setAttribute("data-mode", next);
@@ -394,30 +514,33 @@ function setupButton2(btn) {
         localStorage.setItem(STORAGE_KEY, next);
       } catch {
       }
-      btn.ownerDocument.querySelectorAll("[data-theme-toggle]").forEach((button) => syncButtonLabel(button, next));
+      doc.querySelectorAll("[data-theme-toggle]").forEach((button) => syncButtonLabel(button, next));
     };
-    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const docWithVT = btn.ownerDocument;
+    const reducedMotion = doc.defaultView?.matchMedia("(prefers-reduced-motion: reduce)").matches ?? false;
+    const docWithVT = doc;
     if (docWithVT.startViewTransition && !reducedMotion) docWithVT.startViewTransition(apply);
     else apply();
   };
   btn.addEventListener("click", handleClick);
   const cleanup = () => {
     btn.removeEventListener("click", handleClick);
+    buttonLabels.delete(btn);
     cleanups9.delete(btn);
   };
   cleanups9.set(btn, cleanup);
   return cleanup;
 }
-function setupThemeToggle(root = document) {
-  const html = document.documentElement;
+function setupThemeToggle(root = document, options = {}) {
+  const doc = root instanceof Document ? root : root.ownerDocument ?? document;
+  const html = doc.documentElement;
   const storedMode = getStoredMode();
   if (storedMode && html.getAttribute("data-mode") !== storedMode) {
     html.setAttribute("data-mode", storedMode);
   }
   const buttons = root.querySelectorAll("[data-theme-toggle]");
   buttons.forEach((btn) => {
-    syncButtonLabel(btn, getCurrentMode());
+    if (options.labels) buttonLabels.set(btn, options.labels);
+    syncButtonLabel(btn, getCurrentMode(doc));
   });
   return combineCleanups([...buttons].map(setupButton2));
 }
@@ -677,6 +800,7 @@ function setupAll(root = document) {
 export {
   IMAGE_RATIOS,
   SECTION_WEIGHT,
+  THEME_INIT_SNIPPET,
   anchorPopoverByTrigger,
   bestRatio,
   combineCleanups,

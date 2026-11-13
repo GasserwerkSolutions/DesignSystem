@@ -1,5 +1,41 @@
 # Changelog
 
+## [Unreleased]
+
+### Behoben
+
+- **`musikraum` lief an den Kontrast- und Visual-Gates vorbei.** Die Tone-Listen
+  in `check-contrast.js`, `check-contrast-browser.js` und `check-visual.js`
+  waren auf sechs Tones hart kodiert. Neu liest `scripts/_tones.js` die
+  Theme-Imports aus `main.css`; eine nicht importierte Datei in `themes/`
+  bricht den Check ab. 1344 statt 1008 WCAG-AA-Paare.
+- **Drei AA-Verletzungen in `musikraum`**, die dadurch sichtbar wurden:
+  Sekundärtext hell 4.23 → 4.56 (`--musikraum-muted` `#6c645b` → `#675f56`),
+  Warning-Titel hell 4.44 → 5.34 und Danger-Titel dunkel 4.40 → 5.13
+  (`--status-*-fg` im Theme mit 45 % statt 60 % Signalanteil).
+- **Popover/Combobox liefen aus dem Viewport.** `anchorPopoverByTrigger`
+  flippt nach oben, begrenzt horizontal, führt bei Scroll/Resize nach und
+  setzt `data-placement`. RTL-Trigger werden rechtsbündig verankert.
+- **Combobox meldete die aktive Option nicht an Screenreader.** Neu
+  `aria-activedescendant` auf Search-Input und Trigger, automatische
+  Option-ids, Start auf der gewählten Option, Home/End ohne Search-Input.
+
+### Neu
+
+- Combobox-Formularwert: optionales `input.combobox__input` plus
+  `combobox:change`-Event mit `{ value, label, option }`. Eine vorausgewählte
+  Option initialisiert das Feld beim Setup (ohne Events).
+- Theme-Toggle: Labels aus `<html lang>` (de/fr/it/en), `data-label-light` /
+  `data-label-dark` oder `options.labels`; `THEME_INIT_SNIPPET` für den
+  `<head>` verhindert das Aufblitzen des falschen Modus.
+- Drei neue Journeys (10 total) decken Combobox-A11Y/Formularwert,
+  Popover-Viewport-Verhalten und Theme-Toggle-Labels ab.
+
+### Offen
+
+- `tests/visual/musikraum-{light,dark}.png` müssen über den Workflow
+  «Update Visual Baselines» auf dem CI-Host erzeugt und committet werden.
+
 ## [0.32.0] — Builder-Profil, Release-Integrität und gerenderte Qualitätsgates
 
 Diese Version macht das Design System reproduzierbar im Gasserwerk Builder

@@ -45,6 +45,7 @@
  *       <span class="combobox__value" id="cb-1-value">Service wählen …</span>
  *       <span class="chevron" aria-hidden="true"></span>
  *     </button>
+ *     <input type="hidden" class="combobox__input" name="service">
  *     <div class="combobox__panel" id="cb-1-panel" popover>
  *       <div class="combobox__search">
  *         <input type="text" class="combobox__search-input"
@@ -53,12 +54,19 @@
  *                aria-controls="cb-1-list">
  *       </div>
  *       <ul class="combobox__listbox" id="cb-1-list" role="listbox" aria-labelledby="cb-1-label">
- *         <li class="combobox__option" role="option" aria-selected="false" tabindex="-1">
+ *         <li class="combobox__option" role="option" aria-selected="false" tabindex="-1"
+ *             data-value="damen-haarschnitt">
  *           Damen-Haarschnitt
  *         </li>
  *       </ul>
  *     </div>
  *   </div>
+ *
+ * Formular-Integration (optional, via setupCombobox):
+ *   `input.combobox__input` bekommt beim Auswählen `data-value` der Option
+ *   (Fallback: Label) und feuert `input` + `change`. Der Root feuert
+ *   zusätzlich `combobox:change` mit detail { value, label, option }.
+ *   Die aktive Option wird per aria-activedescendant gemeldet.
  *
  * JS-Snippet (Konsument kopiert ins eigene Setup) — Keyboard, Selection,
  * Filter, Panel-Anchoring. WAI-ARIA-Combobox-Pattern 1.2:

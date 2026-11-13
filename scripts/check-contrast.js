@@ -41,7 +41,7 @@ const PAIRS = [
   { fg: "--color-text-primary",   bg: "--status-danger-bg",   threshold: 4.5, label: "status-danger: body-on-bg" },
 ];
 
-const TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
+const { TONES } = require("./_tones");
 const MODES = ["light", "dark", "auto-light", "auto-dark"];
 
 function modeContext(mode) {

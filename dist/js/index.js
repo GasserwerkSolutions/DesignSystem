@@ -18,7 +18,7 @@ export { setupFileUpload, setupFileUploads } from "./setup-file-upload.js";
 export { setupSlider, setupSliders } from "./setup-slider.js";
 export { setupCopyButton } from "./setup-copy-button.js";
 export { setupOtpInput } from "./setup-otp-input.js";
-export { setupThemeToggle } from "./setup-theme-toggle.js";
+export { setupThemeToggle, THEME_INIT_SNIPPET, } from "./setup-theme-toggle.js";
 export { setupGallery, setupGalleries } from "./setup-gallery.js";
 export { IMAGE_RATIOS, SECTION_WEIGHT, parseProtect, visibleRegion, lostShare, focusFor, fitImage, bestRatio, planGallery, planHero, stageLabels, validatePage, } from "./layout-rules.js";
 export { anchorPopoverByTrigger } from "./anchor-popover.js";

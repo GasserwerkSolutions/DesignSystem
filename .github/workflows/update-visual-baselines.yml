@@ -41,4 +41,5 @@ jobs:
         with:
           name: visual-baseline-candidate-${{ github.run_id }}
           path: tests/visual
+          include-hidden-files: true
           if-no-files-found: error
