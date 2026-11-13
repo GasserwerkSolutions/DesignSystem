@@ -1,0 +1,527 @@
+{
+  "schemaVersion": 1,
+  "id": "project",
+  "label": "Projektseiten-Pack (Bildführung, Referenzen, Projektseiten)",
+  "entry": "patterns/project.css",
+  "requires": [
+    "main.css",
+    "patterns/website.css"
+  ],
+  "javascript": {
+    "gallery": "setupGallery",
+    "layoutRules": "js/layout-rules (planGallery, fitImage, bestRatio, planHero, stageLabels, validatePage)"
+  },
+  "grundsatz": "Jedes Muster hat einen Inhaltsvertrag: geeignete Aufgabe, Grenzen und ein Verhalten für schmale Ansichten. Eine zweite Person soll anhand des Inhalts entscheiden können, welches Muster passt.",
+  "imageRatios": {
+    "pano": "21/9",
+    "wide": "16/9",
+    "classic": "3/2",
+    "photo": "4/3",
+    "square": "1/1",
+    "portrait": "3/4"
+  },
+  "bildaufgaben": {
+    "orientierung": "Zeigt Ort, Umfang oder räumlichen Zusammenhang",
+    "erklaerung": "Macht einen Arbeitsschritt oder Zusammenhang verständlich",
+    "beleg": "Zeigt ein konkret besprochenes, sichtbares Merkmal",
+    "atmosphaere": "Vermittelt Nutzung, Materialwirkung oder Stimmung"
+  },
+  "verwendung": {
+    "beschreibung": "Aufnahme, Verwendung und Muster sind getrennte Objekte. Ausschnitt, Legende und Alt-Text gehören zur Verwendung, nicht zur Datei: dieselbe Aufnahme kann als Teaser und als Detail verschieden beschnitten und beschriftet sein.",
+    "felder": {
+      "aufnahme": {
+        "typ": "id",
+        "pflicht": true,
+        "hinweis": "Verweis auf das Original; Freigabestatus muss «öffentlich freigegeben» sein"
+      },
+      "aufgabe": {
+        "typ": "enum",
+        "werte": [
+          "orientierung",
+          "erklaerung",
+          "beleg",
+          "atmosphaere"
+        ],
+        "pflicht": true
+      },
+      "legende": {
+        "typ": "text",
+        "maxChars": 140,
+        "hinweis": "Sichtbar für alle; benennt, worauf man achten soll, und den Bauzustand"
+      },
+      "alt": {
+        "typ": "text",
+        "pflicht": true,
+        "hinweis": "Pro Verwendung verfasst; leer nur bei bewusst dekorativem Einsatz"
+      },
+      "fokus": {
+        "typ": "x y",
+        "bereich": "0–1",
+        "html": "style=\"--media-focus: X% Y%\"",
+        "hinweis": "Erste Positionierung des Beschnitts, keine Freigabe"
+      },
+      "geschuetzt": {
+        "typ": "liste von x y w h",
+        "bereich": "0–1",
+        "html": "data-protect=\"x y w h; …\"",
+        "hinweis": "Muss in jeder Ansicht sichtbar bleiben; wird von check:examples nachgerechnet"
+      },
+      "ausweichregel": {
+        "typ": "enum",
+        "werte": [
+          "contain",
+          "natural",
+          "anderes-motiv"
+        ],
+        "hinweis": "Greift, wenn kein Raster-Format den geschützten Bereich hält"
+      }
+    }
+  },
+  "patterns": [
+    {
+      "id": "media",
+      "css": "patterns/media.css",
+      "root": ".media",
+      "slots": {
+        "image": {
+          "required": true,
+          "alt": true,
+          "intrinsicSize": true
+        },
+        "caption": {
+          "maxChars": 140
+        },
+        "label": {
+          "maxChars": 16
+        }
+      },
+      "rules": [
+        {
+          "id": "media-one-image",
+          "selector": ".media__frame",
+          "count": "img",
+          "min": 1,
+          "max": 1
+        }
+      ],
+      "aufgabe": "Ein Bild mit Legende im festen Format",
+      "geeignet": "Freigegebene Aufnahme, deren geschützter Bereich im gewählten Format sichtbar bleibt",
+      "unzulaessig": "Aufnahme, deren Aussage der Beschnitt zerstört (dann --contain oder --natural)",
+      "schmal": "Rahmenformat bleibt; hält der geschützte Bereich nicht, greift die Ausweichregel"
+    },
+    {
+      "id": "hero-stage",
+      "css": "patterns/hero-stage.css",
+      "root": ".hero--stage, .hero--head",
+      "slots": {
+        "eyebrow": {
+          "maxChars": 40
+        },
+        "title": {
+          "required": true,
+          "maxChars": 60
+        },
+        "lead": {
+          "maxChars": 180
+        },
+        "image": {
+          "minWidth": {
+            "stage": 1920,
+            "head": 1280
+          },
+          "note": "Querformat; frontale Ansicht bevorzugt; geschützter Bereich Pflicht"
+        }
+      },
+      "rules": [
+        {
+          "id": "hero-one-title",
+          "selector": ".hero--stage, .hero--head",
+          "count": ".hero__title",
+          "min": 1,
+          "max": 1
+        },
+        {
+          "id": "hero-max-one-image",
+          "selector": ".hero--stage, .hero--head",
+          "count": ".hero__backdrop img",
+          "min": 0,
+          "max": 1
+        }
+      ],
+      "aufgabe": "Projekt oder Leistung benennen und im Zusammenhang zeigen",
+      "geeignet": "--head: Titel als echter Text auf eigener Fläche, darunter eine Gesamtansicht. Standard.",
+      "unzulaessig": "--stage (Text auf dem Foto) ohne Begründung und ohne Kontrastprüfung am schlechtesten Textbereich aller Bildvarianten",
+      "schmal": "Bild oben im eigenen Format (kein Beschnitt), Text darunter"
+    },
+    {
+      "id": "project-facts",
+      "css": "patterns/project-facts.css",
+      "root": ".project-facts",
+      "slots": {
+        "item": {
+          "term": {
+            "maxChars": 18
+          },
+          "value": {
+            "maxChars": 24
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "facts-count",
+          "selector": ".project-facts",
+          "count": ".project-facts__item",
+          "min": 3,
+          "max": 5
+        }
+      ],
+      "aufgabe": "Drei bis fünf bestätigte Eckdaten auf einen Blick",
+      "geeignet": "Vom Betrieb bestätigte Angaben mit kurzem Wert",
+      "unzulaessig": "Fliesstext, Schätzungen, Angaben ohne Bestätigung"
+    },
+    {
+      "id": "spec",
+      "css": "patterns/spec-list.css",
+      "root": ".spec",
+      "needsContainer": true,
+      "slots": {
+        "group": {
+          "title": {
+            "maxChars": 32
+          }
+        },
+        "row": {
+          "term": {
+            "maxChars": 20
+          },
+          "value": {
+            "maxChars": 80
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "spec-groups",
+          "selector": ".spec",
+          "count": ".spec__group",
+          "min": 2,
+          "max": 6
+        },
+        {
+          "id": "spec-rows",
+          "selector": ".spec__group",
+          "count": ".spec__row",
+          "min": 2,
+          "max": 5
+        }
+      ],
+      "aufgabe": "In Worten sagen, was gebaut ist",
+      "geeignet": "Bestätigte Angaben pro Bauteil",
+      "unzulaessig": "Schlussfolgerungen, die das Bild nicht trägt (Tragfähigkeit, Dichtheit, Normgerechtigkeit) ohne fachliche Grundlage"
+    },
+    {
+      "id": "legend-figure",
+      "css": "patterns/legend-figure.css",
+      "root": ".legend-figure",
+      "needsContainer": true,
+      "slots": {
+        "mark": {
+          "x": "percent",
+          "y": "percent"
+        },
+        "item": {
+          "title": {
+            "maxChars": 32
+          },
+          "text": {
+            "maxChars": 90
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "legend-marks",
+          "selector": ".legend-figure",
+          "count": ".legend-figure__mark",
+          "min": 2,
+          "max": 6
+        },
+        {
+          "id": "legend-marks-match-list",
+          "selector": ".legend-figure",
+          "count": ".legend-figure__mark",
+          "equals": ".legend-figure__list > li"
+        }
+      ],
+      "aufgabe": "Eine Stelle im Ganzen einordnen und benennen",
+      "geeignet": "Übersichts- oder Teilansicht mit zwei bis sechs klar sichtbaren Merkmalen",
+      "unzulaessig": "Marken auf Stellen, die bei der Zielgrösse nicht erkennbar sind"
+    },
+    {
+      "id": "gallery",
+      "css": "patterns/gallery.css",
+      "root": ".gallery",
+      "slots": {
+        "item": {
+          "image": {
+            "alt": true,
+            "intrinsicSize": true
+          },
+          "caption": {
+            "maxChars": 80
+          }
+        }
+      },
+      "variants": {
+        "default": "4 bis 12 Bilder, ideal Vielfache von 4",
+        "lead": "5, 9 oder 13 Bilder (4n + 1)",
+        "fit": "2 bis 3 Bilder"
+      },
+      "rules": [
+        {
+          "id": "gallery-default",
+          "selector": ".gallery:not(.gallery--lead):not(.gallery--fit)",
+          "count": ".gallery__item",
+          "min": 4,
+          "max": 12
+        },
+        {
+          "id": "gallery-lead",
+          "selector": ".gallery--lead",
+          "count": ".gallery__item",
+          "min": 5,
+          "max": 13,
+          "modulo": [
+            4,
+            1
+          ]
+        },
+        {
+          "id": "gallery-fit",
+          "selector": ".gallery--fit",
+          "count": ".gallery__item",
+          "min": 2,
+          "max": 3
+        },
+        {
+          "id": "gallery-needs-lightbox",
+          "selector": "body:has([data-gallery])",
+          "count": "dialog.lightbox",
+          "min": 1,
+          "max": 1
+        }
+      ],
+      "aufgabe": "Mehrere zusätzliche Aspekte auffindbar machen",
+      "geeignet": "Bilder mit je eigenem Zusatzbeitrag; der Kernbeleg steht ausserhalb der Galerie",
+      "unzulaessig": "Fast gleiche Ansichten ohne Zusatzinformation; wesentliche Projektinformation nur in der Lightbox"
+    },
+    {
+      "id": "project-stages",
+      "css": "patterns/project-stages.css",
+      "root": ".project-stages",
+      "needsContainer": true,
+      "slots": {
+        "stadium": {
+          "label": {
+            "required": true,
+            "maxChars": 24,
+            "hinweis": "Bauzustand benennen"
+          },
+          "legende": {
+            "hinweis": "Standpunkt nennen; Abweichung ausdrücklich sagen"
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "project-stages-pair",
+          "selector": ".project-stages",
+          "count": ".media",
+          "min": 2,
+          "max": 2
+        },
+        {
+          "id": "project-stages-labels",
+          "selector": ".project-stages",
+          "count": ".media__label",
+          "min": 2,
+          "max": 2
+        }
+      ],
+      "aufgabe": "Ausgangslage und Ergebnis unterscheiden",
+      "geeignet": "Zwei benannte Bauzustände, Standpunkt in der Legende",
+      "unzulaessig": "«Vorher/Nachher» bei unterschiedlichem Standpunkt; zwei Blickwinkel desselben Zustands"
+    },
+    {
+      "id": "reference-grid",
+      "css": "patterns/reference-grid.css",
+      "root": ".reference-grid",
+      "slots": {
+        "card": {
+          "title": {
+            "required": true,
+            "maxChars": 60
+          },
+          "meta": {
+            "maxItems": 3,
+            "itemMaxChars": 28
+          },
+          "image": {
+            "alt": true,
+            "intrinsicSize": true
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "reference-count",
+          "selector": ".reference-grid",
+          "count": ".reference-card",
+          "min": 3,
+          "max": 24
+        },
+        {
+          "id": "reference-meta",
+          "selector": ".reference-card__meta",
+          "count": "span",
+          "min": 1,
+          "max": 3
+        },
+        {
+          "id": "reference-title",
+          "selector": ".reference-card",
+          "count": ".reference-card__title",
+          "min": 1,
+          "max": 1
+        }
+      ],
+      "aufgabe": "Projekte auffindbar machen und einordnen",
+      "geeignet": "Je Projekt ein Vertreterbild, dessen geschützter Bereich im Kartenformat hält",
+      "unzulaessig": "Vertreterbild, das im Kartenformat nur noch Nebensachen zeigt",
+      "variants": {
+        "default": "Bild füllt den Rahmen (cover)",
+        "contain": "Bild ganz im Rahmen, für Panoramen und Hochformate"
+      }
+    }
+  ],
+  "textLimits": [
+    {
+      "selector": ".hero--stage .hero__title, .hero--head .hero__title",
+      "maxChars": 60
+    },
+    {
+      "selector": ".project-facts__item > dd",
+      "maxChars": 24
+    },
+    {
+      "selector": ".reference-card__title",
+      "maxChars": 60
+    },
+    {
+      "selector": ".reference-card__meta > span",
+      "maxChars": 28
+    },
+    {
+      "selector": ".media__caption",
+      "maxChars": 140
+    },
+    {
+      "selector": ".spec__row > dd",
+      "maxChars": 80
+    },
+    {
+      "selector": ".media__label",
+      "maxChars": 24
+    }
+  ],
+  "seiten": {
+    "hinweis": "Rezepte je Seitentyp: Reihenfolge und zulässige Muster. Das CMS füllt Slots; Varianten wählt js/layout-rules aus dem Inhalt. validatePage prüft die Folge.",
+    "projekt": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(bild)"
+      },
+      {
+        "pattern": "project-facts",
+        "pflicht": false,
+        "bedingung": "mindestens 3 bestätigte Eckdaten"
+      },
+      {
+        "pattern": "project-stages",
+        "pflicht": false,
+        "bedingung": "zwei Bauzustände mit Bild; Marken über stageLabels(gleicherStandpunkt)"
+      },
+      {
+        "pattern": "legend-figure",
+        "pflicht": false,
+        "bedingung": "ein Bild mit 2–6 benennbaren Merkmalen"
+      },
+      {
+        "pattern": "spec",
+        "pflicht": false,
+        "bedingung": "mindestens 2 Bauteile mit je 2 bestätigten Angaben"
+      },
+      {
+        "pattern": "gallery",
+        "pflicht": false,
+        "variante": "planGallery(anzahl)",
+        "wiederholbar": true,
+        "bedingung": "jede weitere Galerie braucht eine eigene Überschrift"
+      },
+      {
+        "pattern": "cta-band",
+        "pflicht": true
+      }
+    ],
+    "leistung": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(bild)"
+      },
+      {
+        "pattern": "project-facts",
+        "pflicht": false
+      },
+      {
+        "pattern": "gallery",
+        "pflicht": false,
+        "variante": "planGallery(anzahl)",
+        "bedingung": "alle Bilder vom selben Leitprojekt"
+      },
+      {
+        "pattern": "cta-band",
+        "pflicht": true
+      }
+    ],
+    "referenzen": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(null)"
+      },
+      {
+        "pattern": "reference-grid",
+        "pflicht": true,
+        "wiederholbar": true,
+        "variante": "fitImage(mass, 4/3, geschuetzt) je Karte",
+        "bedingung": "mindestens 3 Karten je Raster"
+      },
+      {
+        "pattern": "cta-band",
+        "pflicht": true
+      }
+    ],
+    "abfolge": {
+      "einstieg": "erster Abschnitt ist der Kopf",
+      "ein-kopf": "genau ein Kopf",
+      "ein-seitentitel": "genau ein h1",
+      "ueberschriften": "keine übersprungene Ebene",
+      "rhythmus": "höchstens 3 bildschwere Abschnitte in Folge",
+      "galerien": "zwei Galerien nacheinander nur mit eigener Überschrift",
+      "naechster-schritt": "die Seite endet mit cta-band oder contact-section"
+    }
+  }
+}

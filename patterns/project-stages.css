@@ -1,0 +1,34 @@
+@layer patterns {
+  /**
+   * Project Stages — zwei Projektstadien nebeneinander
+   *
+   * Zeigt Ausgangslage und Ergebnis als zwei benannte Zustände. Jedes Bild
+   * trägt eine Textmarke mit dem Bauzustand; die Legende nennt den
+   * Standpunkt.
+   *
+   * Einsatzbedingung: «Vorher»/«Nachher» nur, wenn beide Aufnahmen denselben
+   * Standpunkt haben. Sonst die Zustände benennen («Bestand», «Nach der
+   * Sanierung») und in der Legende sagen, dass der Standpunkt abweicht.
+   * Bewusst kein Schieberegler: er behauptet Deckungsgleichheit.
+   *
+   * Struktur (Vorfahre mit .cq nötig):
+   *   <div class="project-stages">
+   *     <figure class="media">
+   *       <div class="media__frame"><img …><span class="media__label">Bestand</span></div>
+   *       <figcaption class="media__caption">Vor Baubeginn, Traufseite.</figcaption>
+   *     </figure>
+   *     <figure class="media">…</figure>
+   *   </div>
+   */
+
+  .project-stages {
+    display: grid;
+    gap: var(--project-stages-gap, var(--space-16));
+  }
+
+  @container (min-width: 640px) {
+    .project-stages {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

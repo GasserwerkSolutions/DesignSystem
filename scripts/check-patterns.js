@@ -14,7 +14,10 @@ const path = require("node:path");
 
 const ROOT = path.resolve(__dirname, "..");
 const PATTERN_DIR = path.join(ROOT, "patterns");
-const AGGREGATOR = path.join(PATTERN_DIR, "website.css");
+// Packs: website.css ist Teil von main.css und des Builder-Profils;
+// project.css ist opt-in (Bildführung und Projektseiten). Jedes Modul
+// gehört zu genau einem Pack.
+const PACKS = ["website.css", "project.css"];
 const PACKAGE_JSON = path.join(ROOT, "package.json");
 
 const FORBIDDEN_SELECTOR_PATTERNS = [
@@ -64,43 +67,51 @@ function extractAggregatorImports(source) {
 
 function checkAggregator() {
   let errors = 0;
-  if (!fs.existsSync(AGGREGATOR)) return fail("[patterns] missing patterns/website.css");
+  const imported = new Set();
 
-  const source = read(AGGREGATOR);
-  const imports = extractAggregatorImports(source);
-
-  if (!source.includes("@layer patterns;")) {
-    console.error("[patterns] website.css must declare @layer patterns;");
-    errors++;
-  }
-
-  if (imports.length === 0) {
-    console.error("[patterns] website.css imports no pattern modules.");
-    errors++;
-  }
-
-  for (const rel of imports) {
-    const file = path.join(PATTERN_DIR, rel);
+  for (const pack of PACKS) {
+    const file = path.join(PATTERN_DIR, pack);
     if (!fs.existsSync(file)) {
-      console.error(`[patterns] website.css imports missing module: ${rel}`);
-      errors++;
+      errors += fail(`[patterns] missing patterns/${pack}`);
+      continue;
     }
+    const source = read(file);
+    const imports = extractAggregatorImports(source);
+    let packErrors = 0;
+
+    if (!source.includes("@layer patterns;")) {
+      console.error(`[patterns] ${pack} must declare @layer patterns;`);
+      packErrors++;
+    }
+    if (imports.length === 0) {
+      console.error(`[patterns] ${pack} imports no pattern modules.`);
+      packErrors++;
+    }
+    for (const rel of imports) {
+      if (!fs.existsSync(path.join(PATTERN_DIR, rel))) {
+        console.error(`[patterns] ${pack} imports missing module: ${rel}`);
+        packErrors++;
+      }
+      const name = path.basename(rel);
+      if (imported.has(name)) {
+        console.error(`[patterns] ${name} is imported by more than one pack`);
+        packErrors++;
+      }
+      imported.add(name);
+    }
+    console.log(`  [${packErrors ? "FAIL" : "ok"}] ${pack} imports ${imports.length} module(s)`);
+    errors += packErrors;
   }
 
-  const imported = new Set(imports.map((f) => path.basename(f)));
   const modules = fs
     .readdirSync(PATTERN_DIR)
-    .filter((f) => f.endsWith(".css") && f !== "website.css")
-    .sort();
-
+    .filter((f) => f.endsWith(".css") && !PACKS.includes(f));
   for (const mod of modules) {
     if (!imported.has(mod)) {
-      console.error(`[patterns] module not imported by website.css: ${mod}`);
+      console.error(`[patterns] module not imported by any pack (${PACKS.join(", ")}): ${mod}`);
       errors++;
     }
   }
-
-  console.log(`  [${errors ? "FAIL" : "ok"}] aggregator imports ${imports.length} module(s)`);
   return errors;
 }
 
@@ -108,7 +119,7 @@ function checkModules() {
   let errors = 0;
   const modules = fs
     .readdirSync(PATTERN_DIR)
-    .filter((f) => f.endsWith(".css") && f !== "website.css")
+    .filter((f) => f.endsWith(".css") && !PACKS.includes(f))
     .sort();
 
   for (const mod of modules) {

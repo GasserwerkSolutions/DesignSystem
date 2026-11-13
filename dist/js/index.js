@@ -19,6 +19,8 @@ export { setupSlider, setupSliders } from "./setup-slider.js";
 export { setupCopyButton } from "./setup-copy-button.js";
 export { setupOtpInput } from "./setup-otp-input.js";
 export { setupThemeToggle, THEME_INIT_SNIPPET, } from "./setup-theme-toggle.js";
+export { setupGallery, setupGalleries } from "./setup-gallery.js";
+export { IMAGE_RATIOS, SECTION_WEIGHT, parseProtect, visibleRegion, lostShare, focusFor, fitImage, bestRatio, planGallery, planHero, stageLabels, validatePage, } from "./layout-rules.js";
 export { anchorPopoverByTrigger } from "./anchor-popover.js";
 export { combineCleanups, noopCleanup } from "./lifecycle.js";
 import { setupDismissers } from "./setup-dismiss.js";
@@ -29,6 +31,7 @@ import { setupSliders } from "./setup-slider.js";
 import { setupCopyButton } from "./setup-copy-button.js";
 import { setupOtpInput } from "./setup-otp-input.js";
 import { setupThemeToggle } from "./setup-theme-toggle.js";
+import { setupGalleries } from "./setup-gallery.js";
 import { combineCleanups } from "./lifecycle.js";
 /**
  * Initialisiert alle interactive Components in einem Aufruf.
@@ -44,5 +47,6 @@ export function setupAll(root = document) {
         setupCopyButton(root),
         setupOtpInput(root),
         setupThemeToggle(root),
+        setupGalleries(root),
     ]);
 }

@@ -278,7 +278,7 @@ npm run test:lint            # Lint regression tests (21 cases)
 npm run check:contrast       # 1344 WCAG-AA Paare (7×4×kritisch + nested)
 npm run check:a11y           # axe-core lint + self-test mutations
 npm run check:visual         # VRT — 14 baselines + 3 sensitivity-suite
-npm run check:journeys       # Puppeteer user flows (11 journeys)
+npm run check:journeys       # Puppeteer user flows (12 journeys)
 npm run check:rendered       # axe + VRT + Journeys parallel
 npm run check:examples       # 4 Beispiele × 5 Viewports, Assets + Overflow
 npm run check:profiles       # Builder-Manifest, Hash und Größenbudget

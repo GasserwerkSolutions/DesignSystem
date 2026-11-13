@@ -154,6 +154,51 @@ async function journeyPopoverOpenClose(page) {
   assert(closed, "hidePopover() should close popover");
 }
 
+async function journeyGalleryLightbox(page) {
+  // Eigene Seite: das Projektseiten-Pack lebt in examples/, nicht in der Demo.
+  const p = await page.browser().newPage();
+  try {
+    await p.setViewport({ width: 1280, height: 900 });
+    await p.goto("file://" + path.resolve(ROOT, "examples/holzbau-projekt.html"), { waitUntil: "load" });
+    const state = await p.evaluate(async () => {
+      const wait = () => new Promise((r) => setTimeout(r, 80));
+      const dialog = document.querySelector("dialog.lightbox");
+      const image = dialog.querySelector(".lightbox__image");
+      const caption = dialog.querySelector(".lightbox__caption");
+      // Erste Galerie der Seite; weitere Galerien teilen sich dieselbe Lightbox.
+      const items = [...document.querySelector("[data-gallery]").querySelectorAll("a.gallery__item")];
+      const key = (k) => dialog.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
+
+      items[1].click();
+      await wait();
+      const opened = { open: dialog.open, src: image.src === items[1].href, caption: caption.textContent };
+      key("ArrowRight");
+      const next = image.src === items[2].href;
+      key("End");
+      const last = image.src === items[items.length - 1].href;
+      const nextHiddenAtEnd = dialog.querySelector(".lightbox__nav--next").hidden;
+      key("ArrowRight");
+      const staysAtEnd = image.src === items[items.length - 1].href;
+      dialog.querySelector(".lightbox__close").click();
+      await wait();
+      return {
+        count: items.length, opened, next, last, nextHiddenAtEnd, staysAtEnd,
+        closed: !dialog.open,
+        focusReturned: document.activeElement === items[items.length - 1],
+      };
+    });
+    assert(state.opened.open, "click on a tile should open the lightbox");
+    assert(state.opened.src, "lightbox should show the clicked image");
+    assert(state.opened.caption.includes(`(2/${state.count})`), `caption should carry position, got '${state.opened.caption}'`);
+    assert(state.next, "ArrowRight should show the next image");
+    assert(state.last && state.nextHiddenAtEnd && state.staysAtEnd, "End should jump to the last image and stop there");
+    assert(state.closed, "close button should close the dialog");
+    assert(state.focusReturned, "focus should return to the tile of the last shown image");
+  } finally {
+    await p.close();
+  }
+}
+
 async function journeyPopoverSelectorSensitiveId(page) {
   await reload(page);
 
@@ -527,6 +572,7 @@ async function main() {
 
     await journey("Combobox: label click → focus → open → filter → select", journeyComboboxLabelToSelection, page);
     await journey("Popover: trigger click → open → Esc → close", journeyPopoverOpenClose, page);
+    await journey("Gallery: lightbox opens, pages by keyboard, returns focus", journeyGalleryLightbox, page);
     await journey("Popover: selector-sensitive CMS id stays functional", journeyPopoverSelectorSensitiveId, page);
     await journey("Combobox: aria-activedescendant, form value and change event", journeyComboboxA11yAndFormValue, page);
     await journey("Popover: flips and clamps to stay inside the viewport", journeyPopoverStaysInViewport, page);

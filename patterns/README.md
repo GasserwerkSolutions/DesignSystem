@@ -140,3 +140,104 @@ Keep pattern names industry-neutral:
 - use `sticky-action`, not `emergency-bar`
 - use `editorial-split`, not a project-specific story block name
 - use `trustbar` for compact proof/fact strips across industries
+
+## Projektseiten-Pack (opt-in)
+
+Bildführung und Projektseiten für Betriebe mit Referenzobjekten (Holzbau,
+Handwerk). Nicht Teil von `main.css`, damit Bundle und Builder-Profil
+unverändert bleiben (18.9 KB roh, 5.2 KB gzip):
+
+```css
+@import "@gasserwerksolutions/design-system";
+@import "@gasserwerksolutions/design-system/patterns/project.css";
+```
+
+- `media`: Bildrahmen mit sechs festen Formaten (21/9, 16/9, 3/2, 4/3, 1/1,
+  3/4) und Fokuspunkt `--media-focus`. Kein Inhaltsbild in freier Grösse.
+- `hero--stage` / `hero--head` / `hero--dark`: drei Kopf-Varianten mit einer
+  gemeinsamen Höhe `--hero-stage-h`. Unter 40rem steht das Bild oben im festen
+  Format und der Text darunter, weil ein Querformat im hohen Rahmen bis auf
+  einen Streifen beschnitten würde.
+- `project-facts`: Eckdaten eines Leitprojekts.
+- `spec`: Bauteil-Spezifikation als Begriff/Wert-Zeilen pro Bauteil.
+- `legend-figure`: Bild mit nummerierten Marken und Legende (CSS-Counter).
+- `gallery` + `lightbox`: Raster mit 2 Spalten auf Telefonen und höchstens 4
+  sonst. `gallery--lead` füllt lückenlos bei 5, 9, 13 Bildern, `gallery--fit`
+  ist für 2–3 Bilder. Lightbox über `setupGallery` (in `setupAll` enthalten);
+  ohne JavaScript öffnet der Link das grosse Bild.
+- `project-stages`: zwei benannte Projektstadien nebeneinander mit Textmarke.
+  «Vorher/Nachher» nur bei gleichem Standpunkt; bewusst kein Schieberegler.
+
+`spec`, `legend-figure` und `project-stages` reagieren auf den Container: ein
+Vorfahre braucht `.cq`, nicht das Element selbst.
+
+Beispiele: `examples/holzbau-projekt.html` (viel Inhalt) und
+`examples/holzbau-leistung.html` (wenig Inhalt). Die Bilder dort sind
+Platzhalter; `check:examples` prüft für jedes `<img>` Alt-Text, feste Masse
+und den Sitz im Formatraster.
+
+### Manifest mit Inhaltsgrenzen
+
+`manifest/project-pack.json` beschreibt pro Pattern die Slots und Grenzen:
+wie viele Bilder eine Galerie-Variante verträgt, wie lang ein Titel sein darf,
+welche Bildbreite ein vollflächiger Hero braucht. Ein CMS oder Agent wählt
+damit die passende Variante, ohne das CSS zu lesen.
+
+`npm run check:project-pack` prüft, dass das Manifest alle Module des Packs
+beschreibt und dass jede Regel in mindestens einer Beispielseite greift und
+eingehalten wird.
+
+- `reference-grid`: Übersicht der Referenzobjekte. Eckdaten sind pro Feld
+  optional; fehlt Ort oder Jahr, bleibt keine Lücke.
+  Beispiel: `examples/holzbau-referenzen.html`.
+
+### Geschützte Bildbereiche
+
+Ein Fokuspunkt richtet den Beschnitt aus, sagt aber nicht, was sichtbar
+bleiben muss. `data-protect="x y w h"` am `<img>` (Anteile 0–1 des Originals,
+mehrere Bereiche mit `;`) benennt den Bereich, ohne den die Aussage verloren
+geht. `check:examples` rechnet bei jeder Breite aus Bildmass, Rahmen und
+`object-position` nach, ob der Bereich sichtbar ist. Hält kein Format, greift
+eine Ausweichregel: `media--contain`, `media--natural`,
+`reference-card--contain` oder ein anderes Motiv.
+
+### Robustheit
+
+Für Seiten mit dem Projekt-Pack prüft `check:examples` zusätzlich:
+Textvergrösserung auf 200 % und die WCAG-Textabstände (1.4.12) ohne Überlauf,
+`srcset`-Breitenangaben gegen die wirklichen Pixelmasse, das Einstiegsbild
+nicht `loading="lazy"` und höchstens ein `fetchpriority="high"` pro Seite.
+
+### Layout-Regeln für das CMS
+
+`js/layout-rules` enthält die Layout-Entscheidungen als reine Funktionen ohne
+DOM. Ein CMS füllt Slots und fragt die Funktionen; es erfindet keine
+Gestaltung und liest kein CSS.
+
+```js
+import { planGallery, fitImage, bestRatio, planHero, stageLabels, validatePage }
+  from "@gasserwerksolutions/design-system/js/layout-rules";
+
+planGallery(7);
+// → { variant: "lead", className: "gallery gallery--lead", show: 5, rest: 2 }
+
+fitImage({ w: 1280, h: 615 }, 4 / 3, parseProtect("0.05 0.1 0.9 0.8"));
+// → { fit: "contain", reason: "Kein Ausschnitt in diesem Format hält den geschützten Bereich; …" }
+
+validatePage([{ pattern: "hero", headingLevel: 1 }, { pattern: "gallery", headingLevel: 2 }]);
+// → [{ rule: "naechster-schritt", message: "Die Seite endet ohne nächsten Schritt …" }]
+```
+
+- `fitImage` / `bestRatio`: füllen, Fokus verschieben oder ganz zeigen, je
+  nachdem ob der geschützte Bereich hält. `bestRatio` gibt `null` zurück, wenn
+  kein Raster-Format passt (dann `media--natural`).
+- `planGallery`: Variante und Bildzahl, die das Raster lückenlos füllt.
+- `planHero`: wählt nie Text auf dem Foto; zu kleine Bilder und Hochformate
+  ergeben einen Kopf ohne Bild.
+- `validatePage`: Abschnittsfolge (ein Kopf, ein Seitentitel, keine
+  übersprungene Überschriftenebene, höchstens drei bildschwere Abschnitte in
+  Folge, nächster Schritt am Ende).
+
+Die Seitenrezepte stehen unter `seiten` im Manifest. `npm run test:layout`
+prüft die Funktionen an Massen aus echtem Material; `check:project-pack`
+prüft die Abschnittsfolge jeder Beispielseite mit derselben `validatePage`.

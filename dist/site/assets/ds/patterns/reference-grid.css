@@ -1,0 +1,124 @@
+@layer patterns {
+  /**
+   * Reference Grid — Übersicht der Referenzobjekte
+   *
+   * Karten im festen Bildformat mit Titel und einer Zeile Eckdaten. Die
+   * Eckdaten sind optional pro Feld: fehlt Ort oder Jahr, bleibt keine Lücke
+   * und kein verwaister Trennpunkt.
+   *
+   * CONTRACT (optional):
+   *   --reference-grid-min   Mindestbreite einer Karte (default 17rem)
+   *   --reference-grid-gap
+   *   --reference-card-ratio Bildformat aller Karten (default 4 / 3)
+   *
+   * Struktur:
+   *   <ul class="reference-grid">
+   *     <li>
+   *       <a class="reference-card" href="projekt.html" style="--media-focus: 51% 41%">
+   *         <span class="reference-card__image"><img src="…" alt="…" width height loading="lazy"></span>
+   *         <span class="reference-card__title">Hochstudhaus</span>
+   *         <span class="reference-card__meta"><span>Seeland</span><span>Totalsanierung</span></span>
+   *       </a>
+   *     </li>
+   *   </ul>
+   *
+   * Ausweichregel: `.reference-card--contain` zeigt das Bild ganz im Rahmen
+   * (Panoramen, Hochformate, deren Aussage der Beschnitt zerstören würde).
+   * Geschützte Bereiche per `data-protect` am <img> (siehe media.css).
+   *
+   * Gruppen: mehrere Raster nacheinander, je mit eigener Überschrift
+   * (section-head). Kein Filter-JS nötig.
+   */
+
+  .reference-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--reference-grid-min, 17rem)), 1fr));
+    gap: var(--reference-grid-gap, var(--space-32) var(--space-24));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .reference-grid > li {
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  .reference-grid > li::before {
+    content: none;
+  }
+
+  .reference-card {
+    display: grid;
+    gap: var(--space-8);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .reference-card__image {
+    display: block;
+    aspect-ratio: var(--reference-card-ratio, 4 / 3);
+    overflow: hidden;
+    margin-block-end: var(--space-4);
+    border-radius: var(--media-radius, var(--shape-media));
+    background: var(--color-bg-tertiary);
+  }
+
+  .reference-card__image > img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--media-focus, 50% 50%);
+    transition: transform var(--motion-transition);
+  }
+
+  .reference-card:hover .reference-card__image > img {
+    transform: scale(1.03);
+  }
+
+  .reference-card--contain .reference-card__image > img {
+    object-fit: contain;
+  }
+
+  .reference-card__title {
+    font-family: var(--heading-font);
+    font-size: var(--font-xl);
+    font-weight: var(--heading-weight);
+    line-height: var(--lh-tight);
+    hyphens: auto;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+
+  .reference-card:hover .reference-card__title {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .reference-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-8);
+    color: var(--color-text-secondary);
+    font-size: var(--font-sm);
+  }
+
+  /* Trennpunkt hinter dem Feld: bricht die Zeile um, steht er am Zeilenende
+     statt verwaist am Anfang der nächsten. */
+  .reference-card__meta > span:not(:last-child)::after {
+    content: "·";
+    margin-inline-start: var(--space-8);
+  }
+
+  .reference-card:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: var(--media-radius, var(--shape-media));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reference-card__image > img { transition: none; }
+    .reference-card:hover .reference-card__image > img { transform: none; }
+  }
+}
