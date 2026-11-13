@@ -74,6 +74,12 @@ export function setupCombobox(combobox: HTMLElement): Cleanup {
     const label = opt.querySelector<HTMLElement>(".combobox__option-label");
     return (label?.textContent ?? opt.textContent ?? "").trim();
   };
+  // Vorausgewählte Option in das Formularfeld übernehmen — ohne Events,
+  // weil das kein User-Change ist. Ein serverseitig gesetzter Wert gewinnt.
+  if (field && field.value === "") {
+    const preselected = panel.querySelector<HTMLElement>('.combobox__option[aria-selected="true"]');
+    if (preselected) field.value = preselected.dataset.value ?? optionLabel(preselected);
+  }
   const visibleOptions = (): NodeListOf<HTMLElement> =>
     panel.querySelectorAll<HTMLElement>(".combobox__option:not([hidden])");
   let active = -1;

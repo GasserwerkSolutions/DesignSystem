@@ -230,6 +230,10 @@ var DS = (() => {
       const label = opt.querySelector(".combobox__option-label");
       return (label?.textContent ?? opt.textContent ?? "").trim();
     };
+    if (field && field.value === "") {
+      const preselected = panel.querySelector('.combobox__option[aria-selected="true"]');
+      if (preselected) field.value = preselected.dataset.value ?? optionLabel(preselected);
+    }
     const visibleOptions = () => panel.querySelectorAll(".combobox__option:not([hidden])");
     let active = -1;
     const setActive = (idx) => {

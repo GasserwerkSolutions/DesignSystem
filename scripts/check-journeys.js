@@ -163,6 +163,7 @@ async function journeyComboboxA11yAndFormValue(page) {
     const panel = document.getElementById("cb-service-panel");
     const search = panel.querySelector(".combobox__search-input");
     const field = root.querySelector("input.combobox__input");
+    const initialValue = field.value;
     const events = [];
     root.addEventListener("combobox:change", (e) => events.push(e.detail));
     let fieldChanges = 0;
@@ -187,6 +188,7 @@ async function journeyComboboxA11yAndFormValue(page) {
     await new Promise((r) => setTimeout(r, 200));
 
     return {
+      initialValue,
       startsOnSelected,
       activeMatches,
       idsUnique: ids.every(Boolean) && new Set(ids).size === ids.length,
@@ -198,6 +200,10 @@ async function journeyComboboxA11yAndFormValue(page) {
     };
   });
 
+  assert(
+    state.initialValue === "Färben & Strähnen",
+    `hidden input should start with the preselected option, got '${state.initialValue}'`
+  );
   assert(state.idsUnique, "every option should get a unique id");
   assert(state.startsOnSelected, "open should activate the selected option via aria-activedescendant");
   assert(state.activeMatches, "aria-activedescendant on search + trigger should follow the active option");

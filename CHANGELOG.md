@@ -23,7 +23,8 @@
 ### Neu
 
 - Combobox-Formularwert: optionales `input.combobox__input` plus
-  `combobox:change`-Event mit `{ value, label, option }`.
+  `combobox:change`-Event mit `{ value, label, option }`. Eine vorausgewählte
+  Option initialisiert das Feld beim Setup (ohne Events).
 - Theme-Toggle: Labels aus `<html lang>` (de/fr/it/en), `data-label-light` /
   `data-label-dark` oder `options.labels`; `THEME_INIT_SNIPPET` für den
   `<head>` verhindert das Aufblitzen des falschen Modus.
