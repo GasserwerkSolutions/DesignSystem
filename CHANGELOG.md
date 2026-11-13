@@ -41,7 +41,8 @@
   erreichen. 1728 statt 1344 WCAG-AA-Paare, alle erfüllt.
 - **`patterns/texture.css`** (Projekt-Pack): `.texture-grain` legt eine
   feine Körnung hinter den Inhalt einer Fläche, gezeichnet in der
-  Textfarbe und damit in Light und Dark gleich stark.
+  Textfarbe und damit in Light und Dark gleich stark. Die Körnung besteht
+  aus deterministischen CSS-Gradienten und bleibt dadurch VRT-pixelstabil.
 - `check:visual` schlägt in der CI fehl, wenn eine Baseline fehlt, statt
   sie stillschweigend anzulegen.
 - Zwei gezielte VRT-Cases rendern die Papierkörnung auf der vollständigen
