@@ -7,9 +7,11 @@
   <link rel="stylesheet" href="../main.css">
   <link rel="stylesheet" href="../patterns/website.css">
   <link rel="stylesheet" href="../patterns/project.css">
+  <link rel="stylesheet" href="../patterns/motion.css">
 </head>
 <body class="texture-grain">
-  <header class="site-header site-header--sticky">
+  <div class="scroll-progress"></div>
+  <header class="site-header site-header--sticky site-header--elevate">
     <div class="container site-header__inner">
       <a class="site-header__brand" href="holzbau-leistung.html">Holzbau Beispiel AG</a>
       <nav class="site-header__nav" aria-label="Hauptnavigation">
@@ -30,7 +32,7 @@
         <p class="hero__lead">Wir erhalten, was trägt, und ersetzen, was nicht mehr zu retten ist. Am liebsten mit dem Holz, das schon im Haus war.</p>
       </div>
       <div class="container">
-        <div class="hero__backdrop">
+        <div class="hero__backdrop hero-settle">
           <img src="assets/holzbau/front.svg" alt="Saniertes Bauernhaus frontal vor Nadelwald" width="1280" height="960" fetchpriority="high" data-protect="0.08 0.16 0.87 0.50">
         </div>
       </div>
@@ -38,17 +40,17 @@
 
     <section class="section">
       <div class="container stack stack--lg cq">
-        <div class="section-head">
+        <div class="section-head reveal">
           <p class="section-head__eyebrow">Leitprojekt</p>
           <h2 class="section-head__title">Hochstudhaus, Totalsanierung</h2>
           <p class="section-head__lead">Ein Projekt zeigt die ganze Leistung. Alle Bilder dieser Seite stammen von diesem Haus.</p>
         </div>
-        <dl class="project-facts">
+        <dl class="project-facts reveal">
           <div class="project-facts__item"><dt>Objekt</dt><dd>Bauernhaus, ca. 1860</dd></div>
           <div class="project-facts__item"><dt>Bauzeit</dt><dd>2 Jahre</dd></div>
           <div class="project-facts__item"><dt>Massivholz</dt><dd>85 m³</dd></div>
         </dl>
-        <ul class="gallery gallery--fit" data-gallery>
+        <ul class="gallery gallery--fit reveal-group" data-gallery>
           <li><a class="gallery__item" href="assets/holzbau/bestand-fassade.svg" data-caption="Fassade vor der Sanierung" style="--media-focus: 50% 48%">
             <img src="assets/holzbau/bestand-fassade.svg" alt="Fachwerkfassade im Bestand mit abgeplatzten Gefachen" width="1280" height="960" loading="lazy">
           </a></li>

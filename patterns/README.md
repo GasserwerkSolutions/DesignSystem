@@ -249,3 +249,41 @@ einer Fläche. Sie wird in der Textfarbe gezeichnet und wirkt deshalb in jedem
 Tone und in Light wie Dark gleich stark. Stärke über
 `--texture-grain-opacity` (Standard 0.05). Die Holzbau-Beispiele nutzen sie
 zusammen mit dem Tone `earth`.
+
+## Bewegungs-Pack (opt-in)
+
+```css
+@import "@gasserwerksolutions/design-system/patterns/motion.css";
+```
+
+Zurückhaltende Bewegung für Marketing- und Projektseiten, ganz ohne
+JavaScript. Der Ruhezustand ist immer das fertige Layout: ohne Unterstützung
+im Browser, bei «Bewegung reduzieren» und im Druck bleibt die Seite
+vollständig und unbewegt. `check:patterns` bricht ab, wenn im Pack eine
+Animation ausserhalb von `prefers-reduced-motion: no-preference` steht.
+
+| Klasse | Wirkung | Technik | Unterstützung (Nov. 2026) |
+| --- | --- | --- | --- |
+| `reveal`, `reveal--fade`, `reveal--wipe` | Block blendet ein, während er ins Bild kommt | Scroll-driven Animation, `view()` | Chrome/Edge 115, Safari 26, Firefox 159 |
+| `reveal-group` | Kinder nacheinander | `sibling-index()` im Bereich | Chrome/Edge 138, Safari 26.2, Firefox 154; sonst gleichzeitig |
+| `vt-morph` + `--vt-name` | Bild wandert von der Übersicht in die Detailseite, Seite blendet über | Cross-document View Transition | Chrome/Edge 126, Safari 18.2; Firefox navigiert normal |
+| `scroll-progress` | Linie für den Lesefortschritt | `scroll(root)` | wie `reveal` |
+| `media-zoom` | Bild rückt bei Hover/Fokus näher | Transition auf `scale` | überall |
+| `link-draw` | Unterstreichung zeichnet sich | Keyframes auf `background-size` | überall |
+| `hero-settle` | Hero-Bild kommt beim Laden zur Ruhe | Keyframes auf `scale` | überall |
+| `site-header--elevate` | Klebender Kopf bekommt Schatten beim Scrollen | `scroll(root)` | wie `reveal` |
+
+Regeln für das CMS:
+
+- `--vt-name` aus dem Slug des Projekts bilden (`projekt-<slug>`) und pro
+  Seite nur einmal vergeben. Doppelte Namen lassen den Browser den ganzen
+  Übergang überspringen. In einer Übersicht bekommt jede Karte ihren eigenen
+  Namen, auf der Detailseite nur das Hero-Bild.
+- `reveal` gehört auf einzelne Blöcke (Abschnittskopf, Figur, Faktenliste),
+  `reveal-group` auf Raster und Galerien. Nicht auf das erste Bild der Seite.
+- `media-zoom` und `hero-settle` schneiden das Bild während der Bewegung um
+  bis zu 2% pro Seite an; `data-protect` gilt für den Ruhezustand.
+- Laufbänder (Marquee), Parallax und hochzählende Zahlen sind bewusst nicht
+  enthalten: Laufbänder brauchen nach WCAG 2.2.2 eine Pause-Taste, Parallax
+  verträgt sich nicht mit geschützten Bildbereichen, und per CSS gezählte
+  Zahlen werden von Screenreadern nicht verlässlich gelesen.

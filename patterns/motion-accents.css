@@ -1,0 +1,127 @@
+@layer patterns {
+  /**
+   * Motion Accents — kleine Reaktionen
+   *
+   * Vier Bausteine, die eine Seite lebendig machen, ohne zu zappeln:
+   *
+   *   .media-zoom      Bild rückt beim Überfahren/Fokus leicht näher.
+   *                    Auf dem Bildrahmen oder auf dem Link darum herum.
+   *   .link-draw       Unterstreichung zeichnet sich von links nach rechts.
+   *   .hero-settle     Hero-Bild kommt beim Laden einmal zur Ruhe (1.04 → 1).
+   *   .site-header--elevate   Klebender Kopf bekommt Schatten, sobald
+   *                    gescrollt wird (nur mit .site-header--sticky).
+   *
+   * CONTRACT (optional):
+   *   --media-zoom-scale     Zielgrösse (default 1.04)
+   *   --motion-duration      Dauer der Zeiger-Reaktionen (default 400ms)
+   *   --hero-settle-duration Dauer (default 1200ms)
+   *
+   * Struktur:
+   *   <a class="reference-card media-zoom" href="…"><span class="reference-card__image"><img …></span>…</a>
+   *   <a class="link-draw" href="…">Zum Projekt</a>
+   *   <div class="hero__backdrop hero-settle"><img …></div>
+   *   <header class="site-header site-header--sticky site-header--elevate">…</header>
+   *
+   * Regeln:
+   *   - .media-zoom und .hero-settle schneiden das Bild während der Bewegung
+   *     um bis zu 2% pro Seite an. Geschützte Bildbereiche (data-protect)
+   *     gelten für den Ruhezustand.
+   *   - Zeiger-Reaktionen nur bei echtem Hover (kein Kleben auf Touch).
+   */
+
+  /* Ruhezustand von .link-draw: immer unterstrichen, damit der Link ohne
+     Bewegung und ohne Hover als Link erkennbar bleibt. */
+  .link-draw {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .site-header--elevate::after {
+    content: "";
+    position: absolute;
+    inset: 100% 0 auto;
+    block-size: var(--space-16, 1rem);
+    pointer-events: none;
+    background: linear-gradient(
+      color-mix(in oklch, var(--color-text-primary) 10%, transparent),
+      transparent
+    );
+    opacity: 0;
+  }
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    .media-zoom img {
+      transition: scale var(--motion-duration, 400ms) cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    @media (hover: hover) {
+      .media-zoom:hover img {
+        scale: var(--media-zoom-scale, 1.04);
+      }
+    }
+
+    .media-zoom:focus-visible img,
+    .media-zoom:has(:focus-visible) img {
+      scale: var(--media-zoom-scale, 1.04);
+    }
+
+    /* Bildrahmen schneidet den Zoom ab. */
+    .media-zoom:not(a),
+    a.media-zoom > :has(> img) {
+      overflow: clip;
+    }
+
+    .link-draw {
+      text-decoration-color: transparent;
+      background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+    }
+
+    @media (hover: hover) {
+      .link-draw:hover {
+        animation: link-draw-in var(--motion-duration, 400ms) cubic-bezier(0.2, 0, 0, 1);
+      }
+    }
+
+    @keyframes link-draw-in {
+      from {
+        background-size: 0 1px;
+      }
+    }
+
+    @keyframes hero-settle {
+      from {
+        scale: 1.04;
+      }
+    }
+
+    .hero-settle {
+      overflow: clip;
+    }
+
+    .hero-settle img {
+      animation: hero-settle var(--hero-settle-duration, 1200ms) cubic-bezier(0.2, 0, 0, 1) backwards;
+    }
+
+    @supports (animation-timeline: scroll()) {
+      @keyframes site-header-elevate {
+        to {
+          opacity: 1;
+        }
+      }
+
+      .site-header--elevate::after {
+        animation: site-header-elevate auto linear both;
+        animation-timeline: scroll(root block);
+        animation-range: 0 4rem;
+      }
+    }
+  }
+
+  @media (forced-colors: active) {
+    .link-draw {
+      text-decoration-color: currentColor;
+      background: none;
+    }
+  }
+}

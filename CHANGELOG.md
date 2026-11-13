@@ -22,6 +22,15 @@
 
 ### Neu
 
+- **Bewegungs-Pack `patterns/motion.css` (opt-in, kein JavaScript).**
+  `reveal`/`reveal-group` (Einblenden beim Scrollen, gestaffelt über
+  `sibling-index()`), `vt-morph` (Seitenübergang, Bild wandert von der
+  Referenzkarte in den Projekt-Hero), `scroll-progress`, `media-zoom`,
+  `link-draw`, `hero-settle`, `site-header--elevate`. Ruhezustand ist das
+  fertige Layout; `check:patterns` erzwingt, dass jede Bewegung hinter
+  `prefers-reduced-motion: no-preference` steht. Die drei Holzbau-Beispiele
+  nutzen das Pack.
+
 - Combobox-Formularwert: optionales `input.combobox__input` plus
   `combobox:change`-Event mit `{ value, label, option }`. Eine vorausgewählte
   Option initialisiert das Feld beim Setup (ohne Events).
