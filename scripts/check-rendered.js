@@ -3,16 +3,16 @@
  * Rendered-Check Orchestrator
  * ============================
  *
- * Führt die drei Puppeteer-basierten Checks (a11y, visual, journeys)
- * parallel aus. Jedes Skript läuft in einem eigenen Subprocess mit
- * eigener Chrome-Instanz — damit teilen sie keine State-Verschmutzung
- * untereinander, aber laufen gleichzeitig statt sequentiell.
+ * Führt den pixelgenauen Visual-Check isoliert aus und danach a11y +
+ * journeys parallel. Jedes Skript läuft in einem eigenen Subprocess mit
+ * eigener Chrome-Instanz. Der VRT-Runner teilt dabei keine CPU-/Compositor-
+ * Last mit zwei weiteren Chrome-Instanzen: unter CI-Last konnten sonst
+ * Offscreen-Flächen trotz geladenem DOM unterschiedlich gerastert werden.
  *
- * Zeit-Einsparung: sequentiell (a11y 3s + visual 12s + journeys 5s ≈ 20s)
- * → parallel (max = visual ≈ 12s). Spart ~8s pro check:full-Run.
+ * Zeit-Einsparung gegenüber komplett seriell: a11y und journeys laufen
+ * weiterhin gleichzeitig. VRT-Stabilität hat Vorrang vor maximalem Parallelismus.
  *
- * Memory-Trade-Off: 3 Chrome-Instanzen gleichzeitig (~600MB-1GB peak).
- * Akzeptabel auf Dev-Maschinen + Standard-CI-Runnern (2GB+).
+ * Peak: höchstens 2 Chrome-Instanzen gleichzeitig (a11y + journeys).
  *
  * Stdout/Stderr werden gemultiplext mit Skript-Präfix für Lesbarkeit.
  * Exit-Code: 0 wenn alle grün, 1 wenn mindestens einer rot.
@@ -60,7 +60,7 @@ function runScript({ name, file, tag }) {
 }
 
 async function main() {
-  console.log(`Rendered-Checks (${SERIAL ? "serial" : "parallel"}):`);
+  console.log(`Rendered-Checks (${SERIAL ? "serial" : "VRT isolated, a11y/journeys parallel"}):`);
   console.log("");
 
   const start = Date.now();
@@ -70,12 +70,14 @@ async function main() {
     results = [];
     for (const s of SCRIPTS) results.push(await runScript(s));
   } else {
-    results = await Promise.all(SCRIPTS.map(runScript));
+    const visual = SCRIPTS.find((script) => script.name === "visual");
+    const remaining = SCRIPTS.filter((script) => script.name !== "visual");
+    results = [await runScript(visual), ...await Promise.all(remaining.map(runScript))];
   }
 
   const totalDur = ((Date.now() - start) / 1000).toFixed(1);
   console.log("");
-  console.log(`Total: ${totalDur}s (${SERIAL ? "sequential" : "parallel"})`);
+  console.log(`Total: ${totalDur}s (${SERIAL ? "sequential" : "VRT isolated"})`);
 
   const failed = results.filter((r) => r.code !== 0);
   if (failed.length > 0) {
