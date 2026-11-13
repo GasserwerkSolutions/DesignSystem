@@ -42,6 +42,23 @@ import { type Cleanup } from "./lifecycle.js";
 
 const cleanups = new WeakMap<HTMLElement, Cleanup>();
 
+/**
+ * Findet den nativen Popover-Trigger ohne ungeprüfte ID-Interpolation.
+ * CMS-generierte IDs dürfen selector-sensitive Zeichen enthalten; ein
+ * ungültiger Selector darf das Öffnen des Popovers nicht abbrechen.
+ */
+export function findPopoverTrigger(panel: HTMLElement): HTMLElement | null {
+  if (!panel.id) return null;
+  const doc = panel.ownerDocument;
+  const escape = doc.defaultView?.CSS?.escape;
+  if (typeof escape === "function") {
+    return doc.querySelector<HTMLElement>(`[popovertarget="${escape(panel.id)}"]`);
+  }
+  // Fallback für ältere DOM-Implementierungen ohne CSS.escape().
+  return [...doc.querySelectorAll<HTMLElement>("[popovertarget]")]
+    .find((candidate) => candidate.getAttribute("popovertarget") === panel.id) ?? null;
+}
+
 function usesCssAnchor(panel: HTMLElement, view: Window): boolean {
   const value = view.getComputedStyle(panel).getPropertyValue("position-anchor").trim();
   // Initialwert ist je nach Browser-Version `auto`, `normal` oder `none` —
@@ -59,12 +76,9 @@ export function anchorPopoverByTrigger(
   const doc = panel.ownerDocument;
   const view = doc.defaultView;
 
-  const findTrigger = (): HTMLElement | null =>
-    doc.querySelector<HTMLElement>(`[popovertarget="${panel.id}"]`);
-
   /** Positioniert das Panel. `measured` = Panel ist gerendert und messbar. */
   const place = (measured: boolean): void => {
-    const trigger = findTrigger();
+    const trigger = findPopoverTrigger(panel);
     if (!trigger || !view) return;
     if (usesCssAnchor(panel, view)) return;
 

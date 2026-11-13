@@ -28,13 +28,9 @@
 - Theme-Toggle: Labels aus `<html lang>` (de/fr/it/en), `data-label-light` /
   `data-label-dark` oder `options.labels`; `THEME_INIT_SNIPPET` für den
   `<head>` verhindert das Aufblitzen des falschen Modus.
-- Drei neue Journeys (10 total) decken Combobox-A11Y/Formularwert,
-  Popover-Viewport-Verhalten und Theme-Toggle-Labels ab.
-
-### Offen
-
-- `tests/visual/musikraum-{light,dark}.png` müssen über den Workflow
-  «Update Visual Baselines» auf dem CI-Host erzeugt und committet werden.
+- Fünf neue Journeys (12 total) decken Combobox-A11Y/Formularwert,
+  Popover-Viewport-Verhalten, selector-sensitive Popover-IDs,
+  Theme-Toggle-Labels und die Galerie-Lightbox ab.
 
 ## [0.32.0] — Builder-Profil, Release-Integrität und gerenderte Qualitätsgates
 
