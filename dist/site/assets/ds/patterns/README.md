@@ -175,3 +175,18 @@ Beispiele: `examples/holzbau-projekt.html` (viel Inhalt) und
 `examples/holzbau-leistung.html` (wenig Inhalt). Die Bilder dort sind
 Platzhalter; `check:examples` prüft für jedes `<img>` Alt-Text, feste Masse
 und den Sitz im Formatraster.
+
+### Manifest mit Inhaltsgrenzen
+
+`manifest/project-pack.json` beschreibt pro Pattern die Slots und Grenzen:
+wie viele Bilder eine Galerie-Variante verträgt, wie lang ein Titel sein darf,
+welche Bildbreite ein vollflächiger Hero braucht. Ein CMS oder Agent wählt
+damit die passende Variante, ohne das CSS zu lesen.
+
+`npm run check:project-pack` prüft, dass das Manifest alle Module des Packs
+beschreibt und dass jede Regel in mindestens einer Beispielseite greift und
+eingehalten wird.
+
+- `reference-grid`: Übersicht der Referenzobjekte. Eckdaten sind pro Feld
+  optional; fehlt Ort oder Jahr, bleibt keine Lücke.
+  Beispiel: `examples/holzbau-referenzen.html`.

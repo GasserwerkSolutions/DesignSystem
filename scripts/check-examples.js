@@ -34,7 +34,7 @@ async function inspect(browser, file, width) {
     // muss geladen sein, und Bilder im Projektseiten-Pack sitzen in einem
     // Rahmen des Formatrasters statt in freier Grösse.
     const usesProjectPack = !!document.querySelector('link[href$="patterns/project.css"]');
-    const framed = ".media__frame, .hero__backdrop, .gallery__item, .lightbox__figure";
+    const framed = ".media__frame, .hero__backdrop, .gallery__item, .reference-card__image, .lightbox__figure";
     const images = [...document.querySelectorAll("img")].flatMap((img) => {
       const id = img.getAttribute("src")?.split("/").pop() || "(ohne src)";
       const found = [];

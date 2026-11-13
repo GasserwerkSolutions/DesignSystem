@@ -165,7 +165,8 @@ async function journeyGalleryLightbox(page) {
       const dialog = document.querySelector("dialog.lightbox");
       const image = dialog.querySelector(".lightbox__image");
       const caption = dialog.querySelector(".lightbox__caption");
-      const items = [...document.querySelectorAll("[data-gallery] a.gallery__item")];
+      // Erste Galerie der Seite; weitere Galerien teilen sich dieselbe Lightbox.
+      const items = [...document.querySelector("[data-gallery]").querySelectorAll("a.gallery__item")];
       const key = (k) => dialog.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true }));
 
       items[1].click();

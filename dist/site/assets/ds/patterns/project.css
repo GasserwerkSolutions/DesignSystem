@@ -16,3 +16,4 @@
 @import "./legend-figure.css" layer(patterns);
 @import "./gallery.css" layer(patterns);
 @import "./before-after.css" layer(patterns);
+@import "./reference-grid.css" layer(patterns);
