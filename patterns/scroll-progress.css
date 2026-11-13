@@ -6,7 +6,7 @@
    * Projekt- und Leistungsseiten.
    *
    * CONTRACT (optional):
-   *   --scroll-progress-color   Farbe (default Akzent)
+   *   --scroll-progress-color   Farbe (default --color-interactive)
    *   --scroll-progress-size    Stärke (default 3px)
    *
    * Struktur (leer, rein dekorativ, als erstes Kind von <body>):
@@ -33,7 +33,7 @@
         inset: 0 0 auto;
         z-index: var(--z-toast, 1000);
         block-size: var(--scroll-progress-size, 3px);
-        background: var(--scroll-progress-color, var(--color-accent));
+        background: var(--scroll-progress-color, var(--color-interactive));
         transform-origin: 0 50%;
         pointer-events: none;
         animation: scroll-progress-grow auto linear both;

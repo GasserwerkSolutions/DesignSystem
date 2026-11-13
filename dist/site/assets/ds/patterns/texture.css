@@ -11,7 +11,6 @@
    *
    * CONTRACT (optional):
    *   --texture-grain-opacity  Stärke (default 0.05)
-   *   --texture-grain-size     Kachelgrösse (default 220px)
    *   --texture-grain-color    Farbe der Sprenkel (default Textfarbe)
    *
    * Struktur:
@@ -33,11 +32,23 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: var(--texture-grain-color, var(--color-text-primary));
+    --_grain-color: var(--texture-grain-color, var(--color-text-primary));
+    background-image:
+      radial-gradient(circle at 31% 37%, var(--_grain-color) 0 0.55px, transparent 0.8px),
+      radial-gradient(circle at 67% 23%, var(--_grain-color) 0 0.6px, transparent 0.85px),
+      radial-gradient(circle at 43% 71%, var(--_grain-color) 0 0.65px, transparent 0.9px),
+      radial-gradient(circle at 79% 59%, var(--_grain-color) 0 0.55px, transparent 0.8px),
+      radial-gradient(circle at 19% 83%, var(--_grain-color) 0 0.7px, transparent 0.95px),
+      radial-gradient(circle at 53% 47%, var(--_grain-color) 0 0.6px, transparent 0.85px),
+      radial-gradient(circle at 89% 13%, var(--_grain-color) 0 0.55px, transparent 0.8px),
+      radial-gradient(circle at 11% 61%, var(--_grain-color) 0 0.65px, transparent 0.9px);
+    background-position:
+      0 0, 5px 7px, 11px 3px, 17px 13px,
+      23px 19px, 29px 5px, 7px 31px, 37px 11px;
+    background-size:
+      7px 11px, 13px 17px, 19px 23px, 29px 31px,
+      37px 41px, 43px 47px, 53px 59px, 61px 67px;
     opacity: var(--texture-grain-opacity, 0.05);
-    --_grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.2 0 0 0 -0.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
-    -webkit-mask: var(--_grain) 0 0 / var(--texture-grain-size, 220px) repeat;
-    mask: var(--_grain) 0 0 / var(--texture-grain-size, 220px) repeat;
   }
 
   @media (prefers-contrast: more), print {
