@@ -51,8 +51,10 @@
     inline-size: var(--legend-mark-size, 1.75rem);
     block-size: var(--legend-mark-size, 1.75rem);
     border-radius: 50%;
-    background: var(--legend-mark-bg, var(--color-bg-inverse));
-    color: var(--legend-mark-fg, var(--color-text-on-dark));
+    /* Paar, das mit dem Modus kippt: Textfarbe als Fläche, Seitenfläche als
+       Ziffer. Bleibt in Light und Dark lesbar. */
+    background: var(--legend-mark-bg, var(--color-text-primary));
+    color: var(--legend-mark-fg, var(--color-bg));
     font-size: var(--font-sm);
     font-weight: var(--fw-700);
     line-height: 1;
@@ -64,6 +66,9 @@
     inset-block-start: var(--y, 50%);
     translate: -50% -50%;
     counter-increment: legend-mark;
+    /* Auf dem Foto unabhängig vom Modus: dunkle Marke, helle Ziffer. */
+    background: var(--legend-mark-bg, rgb(0 0 0 / 0.85));
+    color: var(--legend-mark-fg, white);
     /* heller Ring: Marke bleibt auf hellen und dunklen Bildstellen lesbar */
     box-shadow: 0 0 0 2px white, 0 2px 8px rgb(0 0 0 / 0.45);
   }

@@ -144,9 +144,11 @@
     }
   }
 
-  /* --dark: dunkler Kopf */
+  /* --dark: dunkler Kopf — in beiden Modi dunkel. --color-bg-inverse kippt
+     im Dark Mode auf hell, --color-text-on-dark bleibt hell; deshalb dort
+     die dunkle Sekundärfläche statt der Inverse. */
   .hero--dark {
-    --hero-bg: var(--color-bg-inverse);
+    --hero-bg: light-dark(var(--color-bg-inverse), var(--color-bg-secondary));
     --hero-fg: var(--color-text-on-dark);
     --hero-title-fg: var(--color-text-on-dark);
     --hero-lead-fg: color-mix(in oklch, var(--color-text-on-dark) 82%, transparent);
