@@ -88,6 +88,53 @@ import { setupCombobox } from "@gasserwerksolutions/design-system/js/setup-combo
 import { setupThemeToggle } from "@gasserwerksolutions/design-system/js/setup-theme-toggle";
 ```
 
+### Combobox in Formularen
+
+Ein optionales Hidden-Input im Combobox-Root bekommt den gewählten Wert
+(`data-value` der Option, sonst das Label) und feuert `input` + `change`.
+Der Root feuert zusätzlich `combobox:change`:
+
+```html
+<div class="combobox">
+  <button class="combobox__trigger" popovertarget="svc-panel">…</button>
+  <input type="hidden" class="combobox__input" name="service">
+  <div class="combobox__panel" id="svc-panel" popover>…</div>
+</div>
+```
+
+```js
+combobox.addEventListener("combobox:change", (e) => {
+  console.log(e.detail.value, e.detail.label);
+});
+```
+
+### Popover-Positionierung
+
+`setupPopover` und `setupCombobox` halten das Panel im Viewport: Flip nach
+oben, wenn unten kein Platz ist, horizontale Begrenzung auf schmalen Screens,
+Nachführen bei Scroll und Resize. Das Panel trägt `data-placement="top|bottom"`.
+
+### Theme-Toggle ohne Aufblitzen und mehrsprachig
+
+Der gespeicherte Modus greift vor dem ersten Paint, wenn dieses Snippet im
+`<head>` vor dem Stylesheet steht (identisch als `THEME_INIT_SNIPPET`
+exportiert, z.B. für SSR oder CSP-Hashes):
+
+```html
+<script>try{var m=localStorage.getItem("ds-mode");if(m==="light"||m==="dark")document.documentElement.setAttribute("data-mode",m)}catch(e){}</script>
+```
+
+Das `aria-label` folgt `<html lang>` (de, fr, it, en). Eigene Texte per
+Attribut oder Option:
+
+```html
+<button data-theme-toggle data-label-dark="Dunkle Ansicht" data-label-light="Helle Ansicht"></button>
+```
+
+```js
+setupThemeToggle(document, { labels: { toDark: "Dunkel", toLight: "Hell" } });
+```
+
 IIFE-Variante für `file://` ohne Build-Step:
 
 ```html
@@ -107,7 +154,9 @@ IIFE-Variante für `file://` ohne Build-Step:
 | **Container** | inline-size queries | `<div class="cq">…</div>` | Component reagiert auf Container, nicht Viewport |
 
 Achsen sind **orthogonal** — jede Kombination funktioniert (über 100 Modi
-× Tones validiert, 1008 WCAG-AA-Paare im static-Contrast-Check).
+× Tones validiert, 1344 WCAG-AA-Paare im static-Contrast-Check). Die Tone-Liste
+aller Gates wird aus den Theme-Imports in `main.css` gelesen — ein neuer Tone
+läuft automatisch durch Kontrast- und Visual-Checks.
 
 `musikraum` ist ein Marken-Tone (warme Papier- und Holzflächen, Serif-Headlines).
 Token-Quelle und Seitenaufbau bleiben beim konsumierenden Projekt; das System
@@ -226,10 +275,10 @@ nutzen für tone-spezifische Mode-Variants.
 ```bash
 npm run lint:strict          # Theme-Contract inkl. destruktiver Mode-Tokens
 npm run test:lint            # Lint regression tests (21 cases)
-npm run check:contrast       # 1008 WCAG-AA Paare (6×4×kritisch + nested)
+npm run check:contrast       # 1344 WCAG-AA Paare (7×4×kritisch + nested)
 npm run check:a11y           # axe-core lint + self-test mutations
-npm run check:visual         # VRT — 12 baselines + 3 sensitivity-suite
-npm run check:journeys       # Puppeteer user flows (7 journeys)
+npm run check:visual         # VRT — 14 baselines + 3 sensitivity-suite
+npm run check:journeys       # Puppeteer user flows (11 journeys)
 npm run check:rendered       # axe + VRT + Journeys parallel
 npm run check:examples       # 4 Beispiele × 5 Viewports, Assets + Overflow
 npm run check:profiles       # Builder-Manifest, Hash und Größenbudget
@@ -251,4 +300,4 @@ npm run check:full           # Alles, blocking gate vor publish
 - **23.9 KB** gzipped (Vollprofil)
 - **9.5 KB** gzipped (kuratiertes Builder-Profil)
 - **7 Tones × 2 Modes × 3 Densities × Container-Queries**
-- **1008** WCAG-AA-Paare verifiziert
+- **1344** WCAG-AA-Paare verifiziert

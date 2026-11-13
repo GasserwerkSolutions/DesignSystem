@@ -4,24 +4,24 @@
   .service-grid,
   .feature-grid {
     display: grid;
-    gap: var(--service-grid-gap, var(--space-20));
+    gap: var(--service-grid-gap, var(--layout-gap));
   }
 
   .service-card,
   .feature-card {
     display: grid;
-    gap: var(--service-card-gap, var(--space-12));
-    padding: var(--service-card-padding, var(--space-24));
+    gap: var(--service-card-gap, var(--component-gap));
+    padding: var(--service-card-padding, var(--component-padding));
     background: var(--service-card-bg, var(--card-bg, var(--color-surface)));
-    border: var(--service-card-border, 1px solid var(--color-border));
-    border-radius: var(--service-card-radius, var(--radius-lg));
+    border: var(--service-card-border, var(--stroke-default) solid var(--color-border));
+    border-radius: var(--service-card-radius, var(--shape-surface));
     box-shadow: var(--service-card-shadow, var(--elevation-1));
     contain: layout paint;
   }
 
   .service-card--featured,
   .feature-card--featured {
-    --service-card-border: 2px solid var(--color-interactive);
+    --service-card-border: var(--stroke-emphasis) solid var(--color-interactive);
     --service-card-shadow: var(--elevation-3);
   }
 

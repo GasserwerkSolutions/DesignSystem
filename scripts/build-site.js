@@ -650,7 +650,7 @@ function renderMegaMenu(navHref, relRoot, components, isActive) {
           </div>`;
 }
 
-const SITE_TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal", "musikraum"];
+const { TONES: SITE_TONES } = require("./_tones");
 
 function toneSwitcher() {
   const tones = SITE_TONES;

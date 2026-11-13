@@ -2,6 +2,7 @@
 
 @import "./tokens/tokens.css"     layer(tokens);
 @import "./semantic/semantic.css" layer(semantic);
+@import "./semantic/form.css" layer(mode);
 
 @import "./themes/trust.css"      layer(themes);
 @import "./themes/playful.css"    layer(themes);

@@ -47,7 +47,7 @@ const ONLY_LABELS = ONLY_ARG
   ? new Set(ONLY_ARG.slice("--only=".length).split(",").filter(Boolean))
   : null;
 
-const TONES = ["trust", "playful", "premium", "industrial", "modern", "minimal"];
+const { TONES } = require("./_tones");
 const MODES = ["light", "dark"];
 
 const VIEWPORT = { width: 1280, height: 900 };
@@ -136,6 +136,9 @@ function compareHostInfo(baseline, current) {
   return drifts;
 }
 
+/** Kombinationen, deren Aufnahme sich auch nach drei Versuchen nicht stabilisiert hat. */
+const unstableCaptures = [];
+
 async function captureCombination(page, tone, mode) {
   // networkidle0 ist notwendig: domcontentloaded führt zu Dimension-Drift
   // (Page noch nicht voll gerendert wenn screenshot läuft, Font-Fallback-
@@ -170,6 +173,13 @@ async function captureCombination(page, tone, mode) {
         transition-duration: 0.001ms !important;
         transition-delay: 0s !important;
       }
+      /* Keine Scrollbar und kein reservierter Gutter: sonst hängt vw davon
+         ab, ob Chrome die Scrollbar-Breite gerade abzieht (1265 oder 1280),
+         und Überschriften mit clamp(… vw …) kippen um Zehntelpixel. */
+      html {
+        scrollbar-width: none !important;
+        scrollbar-gutter: auto !important;
+      }
     `,
   });
 
@@ -191,7 +201,39 @@ async function captureCombination(page, tone, mode) {
     )
   ));
 
-  const buf = await page.screenshot({ fullPage: true, type: "png" });
+  // Aufnahme der ganzen Seite ohne Grössenwechsel des Layout-Viewports.
+  //
+  // Überschriften nutzen clamp() mit vw. `fullPage: true` ändert den Viewport
+  // WÄHREND der Aufnahme (oder rastert über ihn hinaus); dabei löste Chrome
+  // vw uneinheitlich auf. Lokal kippte h1 zwischen 41.8px und 42px (mit und
+  // ohne Scrollbar-Gutter), auf dem CI-Host bis aufs clamp-Minimum (~32px
+  // statt 48px), obwohl getComputedStyle vor und nach der Aufnahme 48px
+  // meldete. Über CDP wird die vollständige Content-Fläche aufgenommen,
+  // während der Layout-Viewport 1280×900 bleibt. Damit behalten vh/svh/dvh,
+  // sticky und fixed ihre reale Bedeutung.
+  const client = await page.createCDPSession();
+  const shoot = async () => {
+    const metrics = await client.send("Page.getLayoutMetrics");
+    const width = Math.ceil(metrics.cssContentSize.width);
+    const height = Math.ceil(metrics.cssContentSize.height);
+    const shot = await client.send("Page.captureScreenshot", {
+      format: "png",
+      fromSurface: true,
+      captureBeyondViewport: true,
+      clip: { x: 0, y: 0, width, height, scale: 1 },
+    });
+    return Buffer.from(shot.data, "base64");
+  };
+  let buf = await shoot();
+  // Selbstkontrolle: zwei Aufnahmen desselben Zustands müssen identisch sein.
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const again = await shoot();
+    if (Buffer.compare(buf, again) === 0) break;
+    console.log(`  [instabil] ${tone}-${mode}: Aufnahme ${attempt} weicht von der vorherigen ab`);
+    if (attempt === 3) unstableCaptures.push(`${tone}-${mode}`);
+    buf = again;
+  }
+  await client.detach();
   return pngFromBuffer(buf);
 }
 
@@ -531,7 +573,13 @@ async function main() {
   console.log(
     `Visual-Check: ${okCount} ok · ${createdCount} created · ${skippedCount} host-skipped · ${failCount} fail`
   );
-  if (hostMismatch && REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST) process.exit(1);
+  // Ein Update schreibt Baselines und Metadaten für DIESEN Host neu; der
+  // alte Host-Vermerk ist dann kein Fehler mehr.
+  if (hostMismatch && REQUIRE_HOST_MATCH && !FORCE_CROSS_HOST && !UPDATE) process.exit(1);
+  if (unstableCaptures.length > 0) {
+    console.error(`Instabile Aufnahmen (nicht als Baseline brauchbar): ${unstableCaptures.join(", ")}`);
+    process.exit(1);
+  }
   if (failCount > 0) process.exit(1);
 }
 

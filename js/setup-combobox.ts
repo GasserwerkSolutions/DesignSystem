@@ -3,9 +3,19 @@
  * =========================================================
  *
  * WAI-ARIA-Combobox-Pattern 1.2. Volle Keyboard-Navigation
- * (ArrowUp/Down/Enter/Esc), aria-selected-Toggle, optionaler
+ * (ArrowUp/Down/Home/End/Enter/Esc), aria-selected-Toggle, optionaler
  * Search-Filter via data-search-Stichworte, Trigger-Anchoring
  * (shared mit setup-popover).
+ *
+ * Screenreader: Die aktive Option wird per `aria-activedescendant` auf dem
+ * fokussierten Element (Search-Input bzw. Trigger) gemeldet. Optionen ohne
+ * id bekommen automatisch eine.
+ *
+ * Formulare: Ein optionales `<input type="hidden" class="combobox__input"
+ * name="…">` im Combobox-Root bekommt den gewählten Wert (`data-value` der
+ * Option, sonst deren Label) und feuert `input` + `change`. Zusätzlich
+ * feuert der Root ein bubbelndes `combobox:change` mit
+ * `detail: { value, label, option }`.
  *
  * Markup-Erwartung (siehe components/combobox.css Header):
  *   <div class="combobox">
@@ -27,7 +37,14 @@
 import { anchorPopoverByTrigger } from "./anchor-popover.js";
 import { combineCleanups, noopCleanup, type Cleanup } from "./lifecycle.js";
 
+export interface ComboboxChangeDetail {
+  value: string;
+  label: string;
+  option: HTMLElement;
+}
+
 const cleanups = new WeakMap<HTMLElement, Cleanup>();
+let uid = 0;
 
 function hidePopover(panel: HTMLElement): void {
   const popover = panel as HTMLElement & { hidePopover?: () => void };
@@ -45,6 +62,24 @@ export function setupCombobox(combobox: HTMLElement): Cleanup {
 
   const search = panel.querySelector<HTMLInputElement>(".combobox__search-input");
   const value  = trigger.querySelector<HTMLElement>(".combobox__value");
+  const field  = combobox.querySelector<HTMLInputElement>("input.combobox__input");
+  const idBase = panel.id || combobox.id || `combobox-${++uid}`;
+  const generatedIds: HTMLElement[] = [];
+  panel.querySelectorAll<HTMLElement>(".combobox__option").forEach((opt, i) => {
+    if (opt.id) return;
+    opt.id = `${idBase}-opt-${i}`;
+    generatedIds.push(opt);
+  });
+  const optionLabel = (opt: HTMLElement): string => {
+    const label = opt.querySelector<HTMLElement>(".combobox__option-label");
+    return (label?.textContent ?? opt.textContent ?? "").trim();
+  };
+  // Vorausgewählte Option in das Formularfeld übernehmen — ohne Events,
+  // weil das kein User-Change ist. Ein serverseitig gesetzter Wert gewinnt.
+  if (field && field.value === "") {
+    const preselected = panel.querySelector<HTMLElement>('.combobox__option[aria-selected="true"]');
+    if (preselected) field.value = preselected.dataset.value ?? optionLabel(preselected);
+  }
   const visibleOptions = (): NodeListOf<HTMLElement> =>
     panel.querySelectorAll<HTMLElement>(".combobox__option:not([hidden])");
   let active = -1;
@@ -52,18 +87,34 @@ export function setupCombobox(combobox: HTMLElement): Cleanup {
   const setActive = (idx: number): void => {
     const opts = visibleOptions();
     opts.forEach((el, j) => el.classList.toggle("combobox__option--active", j === idx));
-    if (idx >= 0 && opts[idx]) opts[idx].scrollIntoView({ block: "nearest" });
-    active = idx;
+    const current = idx >= 0 ? opts[idx] : undefined;
+    if (current) current.scrollIntoView({ block: "nearest" });
+    // aria-activedescendant gehört auf das Element mit DOM-Focus; der Focus
+    // liegt je nach Markup auf Search-Input oder Trigger → beide synchron.
+    for (const owner of [search, trigger]) {
+      if (!owner) continue;
+      if (current) owner.setAttribute("aria-activedescendant", current.id);
+      else owner.removeAttribute("aria-activedescendant");
+    }
+    active = current ? idx : -1;
   };
 
   const select = (opt: HTMLElement): void => {
     panel.querySelectorAll<HTMLElement>(".combobox__option")
          .forEach((o) => o.setAttribute("aria-selected", "false"));
     opt.setAttribute("aria-selected", "true");
-    if (value) {
-      const label = opt.querySelector<HTMLElement>(".combobox__option-label");
-      value.textContent = (label?.textContent ?? opt.textContent ?? "").trim();
+    const label = optionLabel(opt);
+    const nextValue = opt.dataset.value ?? label;
+    if (value) value.textContent = label;
+    if (field && field.value !== nextValue) {
+      field.value = nextValue;
+      field.dispatchEvent(new Event("input", { bubbles: true }));
+      field.dispatchEvent(new Event("change", { bubbles: true }));
     }
+    combobox.dispatchEvent(new CustomEvent<ComboboxChangeDetail>("combobox:change", {
+      bubbles: true,
+      detail: { value: nextValue, label, option: opt },
+    }));
     hidePopover(panel);
   };
 
@@ -74,8 +125,13 @@ export function setupCombobox(combobox: HTMLElement): Cleanup {
         "aria-expanded",
         e.newState === "open" ? "true" : "false"
       );
-      if (e.newState !== "open") return;
-      setActive(-1);
+      if (e.newState !== "open") {
+        setActive(-1);
+        return;
+      }
+      // Beim Öffnen auf der gewählten Option starten (APG-Empfehlung).
+      const opts = [...visibleOptions()];
+      setActive(opts.findIndex((o) => o.getAttribute("aria-selected") === "true"));
       panel.ownerDocument.defaultView?.requestAnimationFrame(() => search?.focus());
     },
   });
@@ -93,6 +149,12 @@ export function setupCombobox(combobox: HTMLElement): Cleanup {
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setActive(Math.max(active - 1, 0));
+    } else if (e.key === "Home" && opts.length > 0 && e.target !== search) {
+      e.preventDefault();
+      setActive(0);
+    } else if (e.key === "End" && opts.length > 0 && e.target !== search) {
+      e.preventDefault();
+      setActive(opts.length - 1);
     } else if (e.key === "Enter" && active >= 0) {
       e.preventDefault();
       select(opts[active]);
@@ -117,6 +179,9 @@ export function setupCombobox(combobox: HTMLElement): Cleanup {
     trigger.setAttribute("aria-expanded", "false");
     panel.querySelectorAll<HTMLElement>(".combobox__option--active")
       .forEach((option) => option.classList.remove("combobox__option--active"));
+    search?.removeAttribute("aria-activedescendant");
+    trigger.removeAttribute("aria-activedescendant");
+    generatedIds.forEach((option) => option.removeAttribute("id"));
     cleanups.delete(combobox);
   };
   cleanups.set(combobox, cleanup);

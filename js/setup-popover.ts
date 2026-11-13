@@ -7,7 +7,7 @@
  * Utility) plus syncs aria-expanded auf dem Trigger-Button.
  */
 
-import { anchorPopoverByTrigger } from "./anchor-popover.js";
+import { anchorPopoverByTrigger, findPopoverTrigger } from "./anchor-popover.js";
 import { combineCleanups, type Cleanup } from "./lifecycle.js";
 
 const cleanups = new WeakMap<HTMLElement, Cleanup>();
@@ -17,9 +17,7 @@ export function setupPopover(panel: HTMLElement): Cleanup {
   if (existing) return existing;
   const releaseAnchor = anchorPopoverByTrigger(panel, {
     onToggle: (e) => {
-      const trigger = panel.ownerDocument.querySelector<HTMLElement>(
-        `[popovertarget="${panel.id}"]`
-      );
+      const trigger = findPopoverTrigger(panel);
       if (trigger) {
         trigger.setAttribute(
           "aria-expanded",
