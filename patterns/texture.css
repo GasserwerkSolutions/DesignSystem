@@ -17,22 +17,14 @@
    *   <body class="texture-grain">…</body>
    *   <section class="section hero hero--dark texture-grain">…</section>
    *
-   * Das Element wird zum Stacking-Kontext (isolation). Im Druck und bei
-   * erhöhtem Kontrast ist die Körnung aus.
+   * Die Körnung ist Teil des Element-Hintergrunds und liegt dadurch stabil
+   * hinter Text und Bildern. Im Druck und bei erhöhtem Kontrast ist sie aus.
    */
 
   .texture-grain {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .texture-grain::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    --_grain-color: var(--texture-grain-color, var(--color-text-primary));
+    --_grain-source: var(--texture-grain-color, var(--color-text-primary));
+    --_grain-color: color-mix(in srgb, var(--_grain-source) 5%, transparent);
+    --_grain-color: rgb(from var(--_grain-source) r g b / var(--texture-grain-opacity, 0.05));
     background-image:
       radial-gradient(circle at 31% 37%, var(--_grain-color) 0 0.55px, transparent 0.8px),
       radial-gradient(circle at 67% 23%, var(--_grain-color) 0 0.6px, transparent 0.85px),
@@ -48,12 +40,11 @@
     background-size:
       7px 11px, 13px 17px, 19px 23px, 29px 31px,
       37px 41px, 43px 47px, 53px 59px, 61px 67px;
-    opacity: var(--texture-grain-opacity, 0.05);
   }
 
   @media (prefers-contrast: more), print {
-    .texture-grain::before {
-      content: none;
+    .texture-grain {
+      background-image: none;
     }
   }
 }
