@@ -33,13 +33,32 @@ export type RatioName = keyof typeof IMAGE_RATIOS;
 const EPS = 0.01;
 const clamp = (v: number, lo: number, hi: number): number => Math.min(Math.max(v, lo), hi);
 
+function assertUnitRect(rect: Rect, label = "geschützter Bereich"): void {
+  const { x, y, w, h } = rect;
+  if (![x, y, w, h].every(Number.isFinite)) throw new Error(`${label} enthält keine endlichen Zahlen.`);
+  if (x < 0 || y < 0 || w <= 0 || h <= 0 || x + w > 1 || y + h > 1) {
+    throw new Error(`${label} liegt ausserhalb des Bilds (erwartet: x/y ≥ 0, w/h > 0, x+w/y+h ≤ 1).`);
+  }
+}
+
+function assertImageGeometry(natural: Size, ratio: number, focus: Point): void {
+  if (![natural.w, natural.h, ratio].every(Number.isFinite) || natural.w <= 0 || natural.h <= 0 || ratio <= 0) {
+    throw new Error("Bildbreite, Bildhöhe und Rahmenverhältnis müssen endliche positive Zahlen sein.");
+  }
+  if (![focus.x, focus.y].every(Number.isFinite) || focus.x < 0 || focus.x > 1 || focus.y < 0 || focus.y > 1) {
+    throw new Error("Fokuskoordinaten müssen zwischen 0 und 1 liegen.");
+  }
+}
+
 /** "0.08 0.16 0.87 0.5; …" (data-protect) → Rechtecke. */
 export function parseProtect(spec: string | null | undefined): Rect[] {
   if (!spec) return [];
   return spec.split(";").map((part) => part.trim()).filter(Boolean).map((part) => {
     const [x, y, w, h] = part.split(/\s+/).map(Number);
     if (![x, y, w, h].every(Number.isFinite)) throw new Error(`data-protect ungültig: «${part}»`);
-    return { x, y, w, h };
+    const rect = { x, y, w, h };
+    assertUnitRect(rect, `data-protect «${part}»`);
+    return rect;
   });
 }
 
@@ -49,6 +68,7 @@ export function parseProtect(spec: string | null | undefined): Rect[] {
  * (object-position)?
  */
 export function visibleRegion(natural: Size, ratio: number, focus: Point = { x: 0.5, y: 0.5 }): Rect {
+  assertImageGeometry(natural, ratio, focus);
   const imageRatio = natural.w / natural.h;
   if (imageRatio > ratio) {
     const w = ratio / imageRatio;            // seitlich beschnitten
@@ -76,6 +96,7 @@ function boundingBox(rects: Rect[]): Rect {
 
 /** Fokus, der den geschützten Bereich im Rahmen zentriert, soweit der Beschnitt es zulässt. */
 export function focusFor(natural: Size, ratio: number, protect: Rect[]): Point {
+  protect.forEach((rect) => assertUnitRect(rect));
   if (protect.length === 0) return { x: 0.5, y: 0.5 };
   const box = boundingBox(protect);
   const vis = visibleRegion(natural, ratio, { x: 0, y: 0 });
@@ -101,6 +122,8 @@ export interface ImageFit {
  * weicht erst dann auf `contain` aus.
  */
 export function fitImage(natural: Size, ratio: number, protect: Rect[] = [], preferred?: Point): ImageFit {
+  assertImageGeometry(natural, ratio, preferred ?? { x: 0.5, y: 0.5 });
+  protect.forEach((rect) => assertUnitRect(rect));
   if (protect.length === 0) {
     return { fit: "cover", focus: preferred ?? { x: 0.5, y: 0.5 }, keepsProtected: true, reason: "Kein geschützter Bereich angegeben; Beschnitt nicht geprüft." };
   }
@@ -116,6 +139,7 @@ export function fitImage(natural: Size, ratio: number, protect: Rect[] = [], pre
 
 /** Das Raster-Format, das den geschützten Bereich hält und am wenigsten vom Bild wegschneidet. */
 export function bestRatio(natural: Size, protect: Rect[] = [], candidates: RatioName[] = ["wide", "classic", "photo", "square", "portrait"]): RatioName | null {
+  protect.forEach((rect) => assertUnitRect(rect));
   let best: { name: RatioName; kept: number } | null = null;
   for (const name of candidates) {
     const ratio = IMAGE_RATIOS[name];
