@@ -20,6 +20,7 @@ export { setupSlider, setupSliders, type SliderOptions } from "./setup-slider.js
 export { setupCopyButton } from "./setup-copy-button.js";
 export { setupOtpInput } from "./setup-otp-input.js";
 export { setupThemeToggle } from "./setup-theme-toggle.js";
+export { setupGallery, setupGalleries } from "./setup-gallery.js";
 export { anchorPopoverByTrigger, type AnchorOptions } from "./anchor-popover.js";
 export { combineCleanups, noopCleanup, type Cleanup } from "./lifecycle.js";
 
@@ -31,6 +32,7 @@ import { setupSliders } from "./setup-slider.js";
 import { setupCopyButton } from "./setup-copy-button.js";
 import { setupOtpInput } from "./setup-otp-input.js";
 import { setupThemeToggle } from "./setup-theme-toggle.js";
+import { setupGalleries } from "./setup-gallery.js";
 import { combineCleanups, type Cleanup } from "./lifecycle.js";
 
 /**
@@ -47,5 +49,6 @@ export function setupAll(root: ParentNode = document): Cleanup {
     setupCopyButton(root),
     setupOtpInput(root),
     setupThemeToggle(root),
+    setupGalleries(root),
   ]);
 }

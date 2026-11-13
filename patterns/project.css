@@ -1,0 +1,18 @@
+/**
+ * Projektseiten-Pack (opt-in)
+ * ===========================
+ * Bildführung und Projektseiten für Betriebe mit Referenzobjekten
+ * (Holzbau, Handwerk). Nicht Teil von main.css — zusätzlich laden:
+ *
+ *   @import "@gasserwerksolutions/design-system";
+ *   @import "@gasserwerksolutions/design-system/patterns/project.css";
+ */
+@layer patterns;
+
+@import "./media.css" layer(patterns);
+@import "./hero-stage.css" layer(patterns);
+@import "./project-facts.css" layer(patterns);
+@import "./spec-list.css" layer(patterns);
+@import "./legend-figure.css" layer(patterns);
+@import "./gallery.css" layer(patterns);
+@import "./before-after.css" layer(patterns);

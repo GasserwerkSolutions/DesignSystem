@@ -1,0 +1,190 @@
+@layer patterns {
+  /**
+   * Gallery — Bildraster eines Projekts mit Lightbox
+   *
+   * Alle Kacheln haben dasselbe Format (Media-Raster). Jede Kachel ist ein
+   * Link auf das grosse Bild und funktioniert ohne JavaScript; setupGallery
+   * öffnet stattdessen die Lightbox (<dialog>).
+   *
+   * CONTRACT (optional):
+   *   --gallery-min     Mindestbreite einer Kachel (default max(9rem, 22%):
+   *                     2 Spalten auf Telefonen, höchstens 4 sonst)
+   *   --gallery-gap
+   *   --gallery-ratio   Format aller Kacheln (default 4 / 3)
+   *
+   * Struktur:
+   *   <ul class="gallery" data-gallery>
+   *     <li><a class="gallery__item" href="gross.jpg" data-caption="Laube von Süden">
+   *       <img src="klein.jpg" alt="…" width="480" height="360" loading="lazy">
+   *     </a></li>
+   *   </ul>
+   *   <dialog class="lightbox" aria-label="Bildansicht">
+   *     <button class="lightbox__close" type="button" aria-label="Schliessen">×</button>
+   *     <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Vorheriges Bild">‹</button>
+   *     <figure class="lightbox__figure">
+   *       <img class="lightbox__image" alt="">
+   *       <figcaption class="lightbox__caption"></figcaption>
+   *     </figure>
+   *     <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Nächstes Bild">›</button>
+   *   </dialog>
+   *
+   * Modifier: .gallery--fit    für 2–3 Bilder: Kacheln füllen die Zeile
+   *           .gallery--lead   erste Kachel doppelt so gross. Füllt das Raster
+   *           ohne Lücke bei 5, 9, 13 … Bildern (4n + 1), in 2 und in 4 Spalten.
+   */
+
+  .gallery {
+    display: grid;
+    /* 2 Spalten auf Telefonen, höchstens 4 auf breiten Flächen. */
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--gallery-min, max(9rem, 22%))), 1fr));
+    gap: var(--gallery-gap, var(--space-12));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* base/typography.css setzt Aufzählungspunkte und Abstände auf ul li. */
+  .gallery > li {
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  .gallery > li::before {
+    content: none;
+  }
+
+  .gallery__item {
+    display: block;
+    aspect-ratio: var(--gallery-ratio, 4 / 3);
+    overflow: hidden;
+    border-radius: var(--media-radius, var(--shape-media));
+    background: var(--color-bg-tertiary);
+  }
+
+  .gallery__item > img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--media-focus, 50% 50%);
+    transition: transform var(--motion-transition);
+  }
+
+  .gallery__item:hover > img {
+    transform: scale(1.03);
+  }
+
+  .gallery__item:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Wenige Bilder: Kacheln füllen die Zeile statt eine Lücke zu lassen. */
+  .gallery--fit {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--gallery-min, max(9rem, 22%))), 1fr));
+  }
+
+  .gallery--lead > li:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .gallery--lead > li:first-child > .gallery__item {
+    block-size: 100%;
+    aspect-ratio: auto;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    inline-size: 100vw;
+    block-size: 100dvh;
+    max-inline-size: none;
+    max-block-size: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: var(--space-16);
+    border: none;
+    overflow: hidden;
+    background: rgb(0 0 0 / 0.94);
+    color: white;
+  }
+
+  .lightbox[open] {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    /* Feste Zeile: das Bild darf den Dialog nie über die Höhe hinaus dehnen. */
+    grid-template-rows: minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .lightbox::backdrop {
+    background: rgb(0 0 0 / 0.6);
+  }
+
+  .lightbox__figure {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: var(--space-12);
+    block-size: 100%;
+    margin: 0;
+    min-inline-size: 0;
+    min-block-size: 0;
+    justify-items: center;
+    grid-column: 2;
+  }
+
+  .lightbox__image {
+    max-inline-size: 100%;
+    max-block-size: 100%;
+    min-block-size: 0;
+    object-fit: contain;
+    align-self: center;
+  }
+
+  .lightbox__caption {
+    font-size: var(--font-sm);
+    text-align: center;
+    min-block-size: 1.5em;
+  }
+
+  .lightbox__nav--prev { grid-column: 1; grid-row: 1; }
+  .lightbox__nav--next { grid-column: 3; grid-row: 1; }
+
+  .lightbox__nav,
+  .lightbox__close {
+    display: grid;
+    place-items: center;
+    inline-size: 3rem;
+    block-size: 3rem;
+    border: 1px solid rgb(255 255 255 / 0.4);
+    border-radius: 50%;
+    background: rgb(0 0 0 / 0.5);
+    color: white;
+    font-size: var(--font-2xl);
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .lightbox__close {
+    position: absolute;
+    inset-block-start: var(--space-16);
+    inset-inline-end: var(--space-16);
+    z-index: 1;
+  }
+
+  .lightbox__nav:focus-visible,
+  .lightbox__close:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 2px;
+  }
+
+  .lightbox__nav[hidden] {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery__item > img { transition: none; }
+    .gallery__item:hover > img { transform: none; }
+  }
+}

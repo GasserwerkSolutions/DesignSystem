@@ -1,0 +1,155 @@
+@layer patterns {
+  /**
+   * Hero-Varianten für Bildseiten (Ergänzung zu hero.css)
+   *
+   * Eine Website nutzt EINE Hero-Höhe: --hero-stage-h gilt für alle drei
+   * Varianten, damit Köpfe von Seite zu Seite nicht springen.
+   *
+   * .hero--stage   Bild vollflächig, Text unten auf dem Bild (Scrim)
+   * .hero--head    Text oben (Titel links, Lead rechts), grosses Bild darunter
+   * .hero--dark    dunkler Kopf; kombinierbar mit --stage und --head
+   *
+   * CONTRACT (optional):
+   *   --hero-stage-h       Höhe der Bildfläche (default clamp(24rem, 70svh, 44rem))
+   *   --hero-stage-focus   object-position des Bildes
+   *   --hero-stage-scrim   Verlauf über dem Bild
+   *   --hero-stage-fg      Textfarbe auf dem Bild (default weiss)
+   *   --hero-stage-ratio-narrow  Bildformat unter 40rem (default 4 / 3);
+   *                        dort steht das Bild oben und der Text darunter
+   *
+   * Struktur --stage:
+   *   <section class="hero hero--stage">
+   *     <div class="hero__backdrop"><img src="…" alt="…" width height></div>
+   *     <div class="container hero__inner"><div class="hero__content">…</div></div>
+   *   </section>
+   *
+   * Struktur --head:
+   *   <section class="section hero hero--head cq">
+   *     <div class="container hero__inner">
+   *       <div class="hero__content">eyebrow, title</div>
+   *       <p class="hero__lead">…</p>
+   *     </div>
+   *     <div class="container"><div class="hero__backdrop"><img …></div></div>
+   *   </section>
+   */
+
+  .hero__backdrop {
+    overflow: hidden;
+    block-size: var(--hero-stage-h, clamp(24rem, 70svh, 44rem));
+    background: var(--color-bg-tertiary);
+  }
+
+  .hero__backdrop > img,
+  .hero__backdrop > picture > img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--hero-stage-focus, 50% 50%);
+  }
+
+  .hero__backdrop > picture {
+    display: block;
+    block-size: 100%;
+  }
+
+  /* --stage: Bild vollflächig, Text darauf */
+  .hero--stage {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-block-size: var(--hero-stage-h, clamp(24rem, 70svh, 44rem));
+    padding-block: var(--space-48);
+    color: var(--hero-stage-fg, white);
+    isolation: isolate;
+  }
+
+  .hero--stage > .hero__backdrop {
+    position: absolute;
+    inset: 0;
+    block-size: auto;
+    z-index: -1;
+  }
+
+  .hero--stage > .hero__backdrop::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(
+      --hero-stage-scrim,
+      linear-gradient(to top, rgb(0 0 0 / 0.78) 0%, rgb(0 0 0 / 0.45) 38%, rgb(0 0 0 / 0) 72%)
+    );
+  }
+
+  .hero--stage .hero__inner {
+    inline-size: 100%;
+  }
+
+  .hero--stage :where(.hero__eyebrow, .hero__title, .hero__lead) {
+    color: inherit;
+  }
+
+  /* Schmale Screens: Ein Querformat würde im hohen Rahmen bis auf einen
+     Streifen beschnitten und der Text läge auf dem Bauwerk. Deshalb Bild
+     oben im festen Format, Text darunter. */
+  @media (max-width: 40rem) {
+    .hero--stage {
+      display: block;
+      min-block-size: 0;
+      padding-block: 0 var(--space-32);
+      color: var(--hero-fg, var(--color-text-primary));
+    }
+
+    .hero--stage > .hero__backdrop {
+      position: static;
+      aspect-ratio: var(--hero-stage-ratio-narrow, 4 / 3);
+      margin-block-end: var(--space-24);
+    }
+
+    .hero--stage > .hero__backdrop::after {
+      content: none;
+    }
+
+    .hero--head .hero__backdrop {
+      block-size: auto;
+      aspect-ratio: var(--hero-stage-ratio-narrow, 4 / 3);
+    }
+  }
+
+  /* --head: Text oben, Bild darunter */
+  .hero--head {
+    --section-py: var(--hero-py, var(--space-64));
+    /* .section:first-child nimmt das obere Padding weg; ein Kopf mit eigener
+       Fläche braucht es. */
+    padding-block-start: var(--section-py);
+    display: grid;
+    gap: var(--space-48);
+  }
+
+  .hero--head .hero__inner {
+    align-items: end;
+  }
+
+  .hero--head .hero__lead {
+    max-width: 46ch;
+  }
+
+  .hero--head .hero__backdrop {
+    border-radius: var(--hero-media-radius, var(--shape-media));
+  }
+
+  @container (min-width: 800px) {
+    .hero--head .hero__inner {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    }
+  }
+
+  /* --dark: dunkler Kopf */
+  .hero--dark {
+    --hero-bg: var(--color-bg-inverse);
+    --hero-fg: var(--color-text-on-dark);
+    --hero-title-fg: var(--color-text-on-dark);
+    --hero-lead-fg: color-mix(in oklch, var(--color-text-on-dark) 82%, transparent);
+    --hero-eyebrow-fg: color-mix(in oklch, var(--color-text-on-dark) 72%, transparent);
+  }
+}

@@ -33,7 +33,7 @@
 
 .section {
   width: 100%;
-  padding-block: var(--section-py, var(--space-48));
+  padding-block: var(--section-py, var(--space-section));
   background: var(--section-bg, transparent);
   border-block-start: var(--section-divider, none);
   /* Performance: layout/paint Containment. Browser kann jede Section

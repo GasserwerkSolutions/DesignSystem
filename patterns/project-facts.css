@@ -1,0 +1,49 @@
+@layer patterns {
+  /**
+   * Project Facts — Eckdaten eines Leitprojekts
+   *
+   * Kurze Kennzahlenreihe direkt unter dem Hero: Ort, Baujahr, Bauaufgabe,
+   * Holzmenge. Jede Angabe ist ein Begriff/Wert-Paar, keine Fliesstexte.
+   *
+   * CONTRACT (optional): --project-facts-gap, --project-facts-border
+   *
+   * Struktur:
+   *   <dl class="project-facts">
+   *     <div class="project-facts__item"><dt>Ort</dt><dd>Seeland</dd></div>
+   *   </dl>
+   */
+
+  .project-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr));
+    gap: var(--project-facts-gap, var(--space-24));
+    margin: 0;
+    padding-block: var(--space-24);
+    border-block: var(--project-facts-border, var(--stroke-default) solid var(--color-border));
+  }
+
+  .project-facts__item {
+    display: grid;
+    gap: var(--space-4);
+    min-inline-size: 0;
+  }
+
+  .project-facts__item > dt {
+    color: var(--color-text-secondary);
+    font-size: var(--font-xs);
+    font-weight: var(--fw-600);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+
+  .project-facts__item > dd {
+    margin: 0;
+    font-family: var(--heading-font);
+    font-size: var(--font-xl);
+    font-weight: var(--heading-weight);
+    line-height: var(--lh-tight);
+    /* Lange Komposita trennen statt mitten im Wort umbrechen (braucht lang). */
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+}

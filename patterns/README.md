@@ -140,3 +140,38 @@ Keep pattern names industry-neutral:
 - use `sticky-action`, not `emergency-bar`
 - use `editorial-split`, not a project-specific story block name
 - use `trustbar` for compact proof/fact strips across industries
+
+## Projektseiten-Pack (opt-in)
+
+Bildführung und Projektseiten für Betriebe mit Referenzobjekten (Holzbau,
+Handwerk). Nicht Teil von `main.css`, damit Bundle und Builder-Profil
+unverändert bleiben (18.9 KB roh, 5.2 KB gzip):
+
+```css
+@import "@gasserwerksolutions/design-system";
+@import "@gasserwerksolutions/design-system/patterns/project.css";
+```
+
+- `media`: Bildrahmen mit sechs festen Formaten (21/9, 16/9, 3/2, 4/3, 1/1,
+  3/4) und Fokuspunkt `--media-focus`. Kein Inhaltsbild in freier Grösse.
+- `hero--stage` / `hero--head` / `hero--dark`: drei Kopf-Varianten mit einer
+  gemeinsamen Höhe `--hero-stage-h`. Unter 40rem steht das Bild oben im festen
+  Format und der Text darunter, weil ein Querformat im hohen Rahmen bis auf
+  einen Streifen beschnitten würde.
+- `project-facts`: Eckdaten eines Leitprojekts.
+- `spec`: Bauteil-Spezifikation als Begriff/Wert-Zeilen pro Bauteil.
+- `legend-figure`: Bild mit nummerierten Marken und Legende (CSS-Counter).
+- `gallery` + `lightbox`: Raster mit 2 Spalten auf Telefonen und höchstens 4
+  sonst. `gallery--lead` füllt lückenlos bei 5, 9, 13 Bildern, `gallery--fit`
+  ist für 2–3 Bilder. Lightbox über `setupGallery` (in `setupAll` enthalten);
+  ohne JavaScript öffnet der Link das grosse Bild.
+- `before-after`: Vorher/Nachher nebeneinander mit Textmarke. Bewusst kein
+  Schieberegler, weil Baustellenfotos selten deckungsgleich sind.
+
+`spec`, `legend-figure` und `before-after` reagieren auf den Container: ein
+Vorfahre braucht `.cq`, nicht das Element selbst.
+
+Beispiele: `examples/holzbau-projekt.html` (viel Inhalt) und
+`examples/holzbau-leistung.html` (wenig Inhalt). Die Bilder dort sind
+Platzhalter; `check:examples` prüft für jedes `<img>` Alt-Text, feste Masse
+und den Sitz im Formatraster.

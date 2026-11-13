@@ -30,10 +30,26 @@ async function inspect(browser, file, width) {
       })
       .map((element) => `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ""}.${String(element.className || "").split(/\s+/).filter(Boolean).slice(0, 2).join(".")}`)
       .slice(0, 8);
-    return { overflow, clipped };
+    // Bildregeln: jedes <img> braucht alt und feste Masse (kein Layout-Sprung),
+    // muss geladen sein, und Bilder im Projektseiten-Pack sitzen in einem
+    // Rahmen des Formatrasters statt in freier Grösse.
+    const usesProjectPack = !!document.querySelector('link[href$="patterns/project.css"]');
+    const framed = ".media__frame, .hero__backdrop, .gallery__item, .lightbox__figure";
+    const images = [...document.querySelectorAll("img")].flatMap((img) => {
+      const id = img.getAttribute("src")?.split("/").pop() || "(ohne src)";
+      const found = [];
+      if (!img.hasAttribute("alt")) found.push(`img ${id}: alt fehlt`);
+      if (img.closest(".lightbox")) return found;
+      if (!img.getAttribute("width") || !img.getAttribute("height")) found.push(`img ${id}: width/height fehlt`);
+      if (img.complete && img.naturalWidth === 0) found.push(`img ${id}: nicht geladen`);
+      if (usesProjectPack && !img.closest(framed)) found.push(`img ${id}: ausserhalb des Formatrasters`);
+      return found;
+    });
+    return { overflow, clipped, images: [...new Set(images)].slice(0, 12) };
   });
   if (layout.overflow > 2) issues.push(`document overflow ${layout.overflow}px`);
   if (layout.clipped.length) issues.push(`clipped interactive/media: ${layout.clipped.join(", ")}`);
+  issues.push(...layout.images);
   await page.close();
   return issues;
 }

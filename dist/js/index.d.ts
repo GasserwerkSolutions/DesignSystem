@@ -19,6 +19,7 @@ export { setupSlider, setupSliders, type SliderOptions } from "./setup-slider.js
 export { setupCopyButton } from "./setup-copy-button.js";
 export { setupOtpInput } from "./setup-otp-input.js";
 export { setupThemeToggle } from "./setup-theme-toggle.js";
+export { setupGallery, setupGalleries } from "./setup-gallery.js";
 export { anchorPopoverByTrigger, type AnchorOptions } from "./anchor-popover.js";
 export { combineCleanups, noopCleanup, type Cleanup } from "./lifecycle.js";
 import { type Cleanup } from "./lifecycle.js";

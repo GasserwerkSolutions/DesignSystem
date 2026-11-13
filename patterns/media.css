@@ -1,0 +1,84 @@
+@layer patterns {
+  /**
+   * Media Pattern — Bildrahmen mit festem Formatraster
+   *
+   * Jedes Inhaltsbild sitzt in einem Rahmen mit einem von sechs Formaten.
+   * Das Bild füllt den Rahmen (cover); der Fokuspunkt bestimmt den Ausschnitt.
+   * So entstehen keine willkürlichen Bildgrössen, egal was das Original misst.
+   *
+   * CONTRACT (optional):
+   *   --media-ratio    Seitenverhältnis (default 4 / 3)
+   *   --media-focus    object-position, z.B. "40% 31%" (default Mitte)
+   *   --media-radius / --media-bg
+   *
+   * Struktur:
+   *   <figure class="media media--wide" style="--media-focus: 51% 41%">
+   *     <div class="media__frame"><img src="…" alt="…" width="1280" height="960"></div>
+   *     <figcaption class="media__caption">Ansicht von Süden</figcaption>
+   *   </figure>
+   *
+   * Formate: --pano 21/9 · --wide 16/9 · --classic 3/2 · (default) 4/3 ·
+   *          --square 1/1 · --portrait 3/4
+   * Modifier: --contain  Bild ganz zeigen (Pläne, Schnitte) statt beschneiden
+   */
+
+  .media {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  .media__frame {
+    position: relative;
+    aspect-ratio: var(--media-ratio, 4 / 3);
+    overflow: hidden;
+    border-radius: var(--media-radius, var(--shape-media));
+    background: var(--media-bg, var(--color-bg-tertiary));
+  }
+
+  .media__frame > :where(img, video),
+  .media__frame > picture > img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--media-focus, 50% 50%);
+  }
+
+  .media__frame > picture {
+    display: block;
+    block-size: 100%;
+  }
+
+  .media--pano     { --media-ratio: 21 / 9; }
+  .media--wide     { --media-ratio: 16 / 9; }
+  .media--classic  { --media-ratio: 3 / 2; }
+  .media--square   { --media-ratio: 1 / 1; }
+  .media--portrait { --media-ratio: 3 / 4; }
+
+  .media--contain .media__frame > :where(img, video),
+  .media--contain .media__frame > picture > img {
+    object-fit: contain;
+  }
+
+  .media__caption {
+    color: var(--media-caption-fg, var(--color-text-secondary));
+    font-size: var(--font-sm);
+    line-height: var(--lh-normal);
+  }
+
+  .media__label {
+    position: absolute;
+    inset-block-start: var(--space-12);
+    inset-inline-start: var(--space-12);
+    padding: var(--space-4) var(--space-12);
+    border-radius: var(--shape-pill);
+    background: var(--media-label-bg, rgb(0 0 0 / 0.72));
+    color: var(--media-label-fg, white);
+    font-size: var(--font-xs);
+    font-weight: var(--fw-600);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+  }
+}

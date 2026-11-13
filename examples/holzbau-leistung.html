@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="de-CH" data-tone="minimal" data-mode="light" data-density="comfortable" data-shape="defined">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Umbauen und Sanieren — Projektseiten-Pack Example</title>
+  <link rel="stylesheet" href="../main.css">
+  <link rel="stylesheet" href="../patterns/website.css">
+  <link rel="stylesheet" href="../patterns/project.css">
+</head>
+<body>
+  <header class="site-header site-header--sticky">
+    <div class="container site-header__inner">
+      <a class="site-header__brand" href="holzbau-leistung.html">Holzbau Beispiel AG</a>
+      <nav class="site-header__nav" aria-label="Hauptnavigation">
+        <a class="site-header__link" href="holzbau-leistung.html">Umbauen</a>
+        <a class="site-header__link" href="holzbau-projekt.html">Projekt</a>
+        <a class="site-header__link" href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section hero hero--head hero--dark cq" style="--hero-stage-focus: 51% 41%">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="hero__eyebrow">Leistung</p>
+          <h1 class="hero__title">Umbauen und Sanieren</h1>
+        </div>
+        <p class="hero__lead">Wir erhalten, was trägt, und ersetzen, was nicht mehr zu retten ist. Am liebsten mit dem Holz, das schon im Haus war.</p>
+      </div>
+      <div class="container">
+        <div class="hero__backdrop">
+          <img src="assets/holzbau/front.svg" alt="Saniertes Bauernhaus frontal vor Nadelwald" width="1280" height="960" fetchpriority="high">
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container stack stack--lg cq">
+        <div class="section-head">
+          <p class="section-head__eyebrow">Leitprojekt</p>
+          <h2 class="section-head__title">Hochstudhaus, Totalsanierung</h2>
+          <p class="section-head__lead">Ein Projekt zeigt die ganze Leistung. Alle Bilder dieser Seite stammen von diesem Haus.</p>
+        </div>
+        <dl class="project-facts">
+          <div class="project-facts__item"><dt>Objekt</dt><dd>Bauernhaus, ca. 1860</dd></div>
+          <div class="project-facts__item"><dt>Bauzeit</dt><dd>2 Jahre</dd></div>
+          <div class="project-facts__item"><dt>Massivholz</dt><dd>85 m³</dd></div>
+        </dl>
+        <ul class="gallery gallery--fit" data-gallery>
+          <li><a class="gallery__item" href="assets/holzbau/bestand-fassade.svg" data-caption="Fassade vor der Sanierung" style="--media-focus: 50% 48%">
+            <img src="assets/holzbau/bestand-fassade.svg" alt="Fachwerkfassade im Bestand mit abgeplatzten Gefachen" width="1280" height="960" loading="lazy">
+          </a></li>
+          <li><a class="gallery__item" href="assets/holzbau/ecke.svg" data-caption="Fassade nach der Sanierung" style="--media-focus: 43% 42%">
+            <img src="assets/holzbau/ecke.svg" alt="Sanierte Fachwerkfassade über Eck" width="1280" height="960" loading="lazy">
+          </a></li>
+          <li><a class="gallery__item" href="assets/holzbau/bug.svg" data-caption="Neuer Bug aus Altholz" style="--media-focus: 53% 50%">
+            <img src="assets/holzbau/bug.svg" alt="Geschnitzter Bug unter dem Vordach" width="2048" height="1536" loading="lazy">
+          </a></li>
+        </ul>
+        <p><a class="btn btn--secondary" href="holzbau-projekt.html">Ganzes Projekt ansehen</a></p>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="lightbox" aria-label="Bildansicht">
+    <button class="lightbox__close" type="button" aria-label="Schliessen">×</button>
+    <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Vorheriges Bild">‹</button>
+    <figure class="lightbox__figure">
+      <img class="lightbox__image" alt="">
+      <figcaption class="lightbox__caption"></figcaption>
+    </figure>
+    <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Nächstes Bild">›</button>
+  </dialog>
+
+  <footer class="site-footer" id="kontakt">
+    <div class="container site-footer__inner">
+      <div class="site-footer__bottom">
+        <span>Holzbau Beispiel AG · Beispielinhalt</span>
+        <span>Bilder sind Platzhalter. Fachliche Angaben kommen im echten Projekt vom Betrieb.</span>
+      </div>
+    </div>
+  </footer>
+  <script src="../dist/js/design-system.iife.js"></script>
+  <script>DS.setupAll()</script>
+</body>
+</html>
