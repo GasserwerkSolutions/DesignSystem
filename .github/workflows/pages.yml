@@ -35,6 +35,21 @@ jobs:
       - name: Verify source, browser behavior, accessibility and package
         run: npm run check:full
 
+      - name: Render visual baseline candidates
+        # A red visual check should be reviewable from the PR itself, without a
+        # separate manual workflow run: render the current state on this host
+        # and attach it. Nothing is written back to the branch.
+        if: ${{ failure() }}
+        run: node scripts/check-visual.js --update
+
+      - name: Upload visual baseline candidates
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baseline-candidate-${{ github.run_id }}
+          path: tests/visual
+          if-no-files-found: error
+
       - name: Security audit
         # Independent gate: a stale visual baseline must not hide vulnerabilities.
         if: ${{ !cancelled() }}
