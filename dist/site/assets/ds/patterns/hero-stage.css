@@ -2,20 +2,28 @@
   /**
    * Hero-Varianten für Bildseiten (Ergänzung zu hero.css)
    *
-   * Eine Website nutzt EINE Hero-Höhe: --hero-stage-h gilt für alle drei
-   * Varianten, damit Köpfe von Seite zu Seite nicht springen.
+   * Eine Website nutzt EIN Kopfformat: --hero-stage-ratio und --hero-stage-h
+   * gelten für alle Seiten, damit Köpfe von Seite zu Seite nicht springen.
    *
-   * .hero--stage   Bild vollflächig, Text unten auf dem Bild (Scrim)
-   * .hero--head    Text oben (Titel links, Lead rechts), grosses Bild darunter
+   * .hero--head    Text oben (Titel links, Lead rechts), grosses Bild darunter.
+   *                Standard für sachliche Projektseiten: der Titel bleibt
+   *                echter Text auf eigener Fläche.
+   * .hero--stage   Bild vollflächig, Text unten auf dem Bild (Scrim). Nur
+   *                mit Begründung: Text auf Fotos ist störanfällig, der
+   *                Hintergrund ändert sich mit jedem Beschnitt. Kontrast am
+   *                schlechtesten Textbereich aller Bildvarianten prüfen.
    * .hero--dark    dunkler Kopf; kombinierbar mit --stage und --head
    *
    * CONTRACT (optional):
-   *   --hero-stage-h       Höhe der Bildfläche (default clamp(24rem, 70svh, 44rem))
+   *   --hero-stage-h       Höhe der Bildfläche bei --stage, Obergrenze bei
+   *                        --head (default clamp(24rem, 70svh, 44rem))
+   *   --hero-stage-ratio   Bildformat bei --head (default 16 / 9)
    *   --hero-stage-focus   object-position des Bildes
    *   --hero-stage-scrim   Verlauf über dem Bild
    *   --hero-stage-fg      Textfarbe auf dem Bild (default weiss)
-   *   --hero-stage-ratio-narrow  Bildformat unter 40rem (default 4 / 3);
-   *                        dort steht das Bild oben und der Text darunter
+   *   --hero-stage-ratio-narrow  Bildformat unter 40rem (default auto: das
+   *                        Bild behält sein eigenes Format); dort steht das
+   *                        Bild oben und der Text darunter
    *
    * Struktur --stage:
    *   <section class="hero hero--stage">
@@ -91,7 +99,8 @@
 
   /* Schmale Screens: Ein Querformat würde im hohen Rahmen bis auf einen
      Streifen beschnitten und der Text läge auf dem Bauwerk. Deshalb Bild
-     oben im festen Format, Text darunter. */
+     oben und Text darunter. Das Bild wird proportional gezeigt (eigenes
+     Format, kein Beschnitt), damit der Zusammenhang vollständig bleibt. */
   @media (max-width: 40rem) {
     .hero--stage {
       display: block;
@@ -102,8 +111,22 @@
 
     .hero--stage > .hero__backdrop {
       position: static;
-      aspect-ratio: var(--hero-stage-ratio-narrow, 4 / 3);
+      aspect-ratio: var(--hero-stage-ratio-narrow, auto);
       margin-block-end: var(--space-24);
+    }
+
+    .hero--stage > .hero__backdrop,
+    .hero--head .hero__backdrop {
+      block-size: auto;
+    }
+
+    .hero__backdrop > img,
+    .hero__backdrop > picture > img {
+      block-size: auto;
+    }
+
+    .hero__backdrop > picture {
+      block-size: auto;
     }
 
     .hero--stage > .hero__backdrop::after {
@@ -111,8 +134,7 @@
     }
 
     .hero--head .hero__backdrop {
-      block-size: auto;
-      aspect-ratio: var(--hero-stage-ratio-narrow, 4 / 3);
+      aspect-ratio: var(--hero-stage-ratio-narrow, auto);
     }
   }
 
@@ -134,7 +156,16 @@
     max-width: 46ch;
   }
 
+  /* Format statt fester Höhe: bei mittleren Breiten würde eine feste Höhe
+     aus dem Querformat einen fast quadratischen Rahmen machen und das Motiv
+     seitlich beschneiden. Die Höhe ist nur nach oben begrenzt. */
   .hero--head .hero__backdrop {
+    block-size: auto;
+    /* volle Breite festhalten: als Grid-Kind würde der Rahmen sonst schmaler,
+       sobald die Höhenobergrenze greift. */
+    inline-size: 100%;
+    aspect-ratio: var(--hero-stage-ratio, 16 / 9);
+    max-block-size: var(--hero-stage-h, clamp(24rem, 70svh, 44rem));
     border-radius: var(--hero-media-radius, var(--shape-media));
   }
 

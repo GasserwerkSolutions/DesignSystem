@@ -10,6 +10,7 @@
   "javascript": {
     "gallery": "setupGallery"
   },
+  "grundsatz": "Jedes Muster hat einen Inhaltsvertrag: geeignete Aufgabe, Grenzen und ein Verhalten für schmale Ansichten. Eine zweite Person soll anhand des Inhalts entscheiden können, welches Muster passt.",
   "imageRatios": {
     "pano": "21/9",
     "wide": "16/9",
@@ -17,6 +18,63 @@
     "photo": "4/3",
     "square": "1/1",
     "portrait": "3/4"
+  },
+  "bildaufgaben": {
+    "orientierung": "Zeigt Ort, Umfang oder räumlichen Zusammenhang",
+    "erklaerung": "Macht einen Arbeitsschritt oder Zusammenhang verständlich",
+    "beleg": "Zeigt ein konkret besprochenes, sichtbares Merkmal",
+    "atmosphaere": "Vermittelt Nutzung, Materialwirkung oder Stimmung"
+  },
+  "verwendung": {
+    "beschreibung": "Aufnahme, Verwendung und Muster sind getrennte Objekte. Ausschnitt, Legende und Alt-Text gehören zur Verwendung, nicht zur Datei: dieselbe Aufnahme kann als Teaser und als Detail verschieden beschnitten und beschriftet sein.",
+    "felder": {
+      "aufnahme": {
+        "typ": "id",
+        "pflicht": true,
+        "hinweis": "Verweis auf das Original; Freigabestatus muss «öffentlich freigegeben» sein"
+      },
+      "aufgabe": {
+        "typ": "enum",
+        "werte": [
+          "orientierung",
+          "erklaerung",
+          "beleg",
+          "atmosphaere"
+        ],
+        "pflicht": true
+      },
+      "legende": {
+        "typ": "text",
+        "maxChars": 140,
+        "hinweis": "Sichtbar für alle; benennt, worauf man achten soll, und den Bauzustand"
+      },
+      "alt": {
+        "typ": "text",
+        "pflicht": true,
+        "hinweis": "Pro Verwendung verfasst; leer nur bei bewusst dekorativem Einsatz"
+      },
+      "fokus": {
+        "typ": "x y",
+        "bereich": "0–1",
+        "html": "style=\"--media-focus: X% Y%\"",
+        "hinweis": "Erste Positionierung des Beschnitts, keine Freigabe"
+      },
+      "geschuetzt": {
+        "typ": "liste von x y w h",
+        "bereich": "0–1",
+        "html": "data-protect=\"x y w h; …\"",
+        "hinweis": "Muss in jeder Ansicht sichtbar bleiben; wird von check:examples nachgerechnet"
+      },
+      "ausweichregel": {
+        "typ": "enum",
+        "werte": [
+          "contain",
+          "natural",
+          "anderes-motiv"
+        ],
+        "hinweis": "Greift, wenn kein Raster-Format den geschützten Bereich hält"
+      }
+    }
   },
   "patterns": [
     {
@@ -44,7 +102,11 @@
           "min": 1,
           "max": 1
         }
-      ]
+      ],
+      "aufgabe": "Ein Bild mit Legende im festen Format",
+      "geeignet": "Freigegebene Aufnahme, deren geschützter Bereich im gewählten Format sichtbar bleibt",
+      "unzulaessig": "Aufnahme, deren Aussage der Beschnitt zerstört (dann --contain oder --natural)",
+      "schmal": "Rahmenformat bleibt; hält der geschützte Bereich nicht, greift die Ausweichregel"
     },
     {
       "id": "hero-stage",
@@ -66,7 +128,7 @@
             "stage": 1920,
             "head": 1280
           },
-          "note": "Querformat; frontale Ansicht bevorzugt"
+          "note": "Querformat; frontale Ansicht bevorzugt; geschützter Bereich Pflicht"
         }
       },
       "rules": [
@@ -84,7 +146,11 @@
           "min": 0,
           "max": 1
         }
-      ]
+      ],
+      "aufgabe": "Projekt oder Leistung benennen und im Zusammenhang zeigen",
+      "geeignet": "--head: Titel als echter Text auf eigener Fläche, darunter eine Gesamtansicht. Standard.",
+      "unzulaessig": "--stage (Text auf dem Foto) ohne Begründung und ohne Kontrastprüfung am schlechtesten Textbereich aller Bildvarianten",
+      "schmal": "Bild oben im eigenen Format (kein Beschnitt), Text darunter"
     },
     {
       "id": "project-facts",
@@ -108,7 +174,10 @@
           "min": 3,
           "max": 5
         }
-      ]
+      ],
+      "aufgabe": "Drei bis fünf bestätigte Eckdaten auf einen Blick",
+      "geeignet": "Vom Betrieb bestätigte Angaben mit kurzem Wert",
+      "unzulaessig": "Fliesstext, Schätzungen, Angaben ohne Bestätigung"
     },
     {
       "id": "spec",
@@ -145,7 +214,10 @@
           "min": 2,
           "max": 5
         }
-      ]
+      ],
+      "aufgabe": "In Worten sagen, was gebaut ist",
+      "geeignet": "Bestätigte Angaben pro Bauteil",
+      "unzulaessig": "Schlussfolgerungen, die das Bild nicht trägt (Tragfähigkeit, Dichtheit, Normgerechtigkeit) ohne fachliche Grundlage"
     },
     {
       "id": "legend-figure",
@@ -180,7 +252,10 @@
           "count": ".legend-figure__mark",
           "equals": ".legend-figure__list > li"
         }
-      ]
+      ],
+      "aufgabe": "Eine Stelle im Ganzen einordnen und benennen",
+      "geeignet": "Übersichts- oder Teilansicht mit zwei bis sechs klar sichtbaren Merkmalen",
+      "unzulaessig": "Marken auf Stellen, die bei der Zielgrösse nicht erkennbar sind"
     },
     {
       "id": "gallery",
@@ -235,37 +310,47 @@
           "min": 1,
           "max": 1
         }
-      ]
+      ],
+      "aufgabe": "Mehrere zusätzliche Aspekte auffindbar machen",
+      "geeignet": "Bilder mit je eigenem Zusatzbeitrag; der Kernbeleg steht ausserhalb der Galerie",
+      "unzulaessig": "Fast gleiche Ansichten ohne Zusatzinformation; wesentliche Projektinformation nur in der Lightbox"
     },
     {
-      "id": "before-after",
-      "css": "patterns/before-after.css",
-      "root": ".before-after",
+      "id": "project-stages",
+      "css": "patterns/project-stages.css",
+      "root": ".project-stages",
       "needsContainer": true,
       "slots": {
-        "before": {
-          "label": "Vorher"
-        },
-        "after": {
-          "label": "Nachher"
+        "stadium": {
+          "label": {
+            "required": true,
+            "maxChars": 24,
+            "hinweis": "Bauzustand benennen"
+          },
+          "legende": {
+            "hinweis": "Standpunkt nennen; Abweichung ausdrücklich sagen"
+          }
         }
       },
       "rules": [
         {
-          "id": "before-after-pair",
-          "selector": ".before-after",
+          "id": "project-stages-pair",
+          "selector": ".project-stages",
           "count": ".media",
           "min": 2,
           "max": 2
         },
         {
-          "id": "before-after-labels",
-          "selector": ".before-after",
+          "id": "project-stages-labels",
+          "selector": ".project-stages",
           "count": ".media__label",
           "min": 2,
           "max": 2
         }
-      ]
+      ],
+      "aufgabe": "Ausgangslage und Ergebnis unterscheiden",
+      "geeignet": "Zwei benannte Bauzustände, Standpunkt in der Legende",
+      "unzulaessig": "«Vorher/Nachher» bei unterschiedlichem Standpunkt; zwei Blickwinkel desselben Zustands"
     },
     {
       "id": "reference-grid",
@@ -309,7 +394,14 @@
           "min": 1,
           "max": 1
         }
-      ]
+      ],
+      "aufgabe": "Projekte auffindbar machen und einordnen",
+      "geeignet": "Je Projekt ein Vertreterbild, dessen geschützter Bereich im Kartenformat hält",
+      "unzulaessig": "Vertreterbild, das im Kartenformat nur noch Nebensachen zeigt",
+      "variants": {
+        "default": "Bild füllt den Rahmen (cover)",
+        "contain": "Bild ganz im Rahmen, für Panoramen und Hochformate"
+      }
     }
   ],
   "textLimits": [
@@ -336,6 +428,10 @@
     {
       "selector": ".spec__row > dd",
       "maxChars": 80
+    },
+    {
+      "selector": ".media__label",
+      "maxChars": 24
     }
   ]
 }

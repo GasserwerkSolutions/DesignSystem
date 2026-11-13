@@ -15,5 +15,5 @@
 @import "./spec-list.css" layer(patterns);
 @import "./legend-figure.css" layer(patterns);
 @import "./gallery.css" layer(patterns);
-@import "./before-after.css" layer(patterns);
+@import "./project-stages.css" layer(patterns);
 @import "./reference-grid.css" layer(patterns);

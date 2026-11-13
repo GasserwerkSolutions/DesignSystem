@@ -19,7 +19,15 @@
    *
    * Formate: --pano 21/9 · --wide 16/9 · --classic 3/2 · (default) 4/3 ·
    *          --square 1/1 · --portrait 3/4
-   * Modifier: --contain  Bild ganz zeigen (Pläne, Schnitte) statt beschneiden
+   * Modifier: --contain  Bild ganz im Rahmen zeigen (Pläne, Schnitte, Panoramen)
+   *           --natural  kein fester Rahmen: das Bild behält sein eigenes
+   *                      Format. Ausweichregel, wenn kein Raster-Format die
+   *                      Aussage trägt.
+   *
+   * Geschützter Bereich: `data-protect="x y w h"` am <img> (Anteile 0–1 des
+   * Originals, mehrere Bereiche mit `;` getrennt) benennt, was sichtbar
+   * bleiben muss. `check:examples` rechnet für jede Breite nach, ob der
+   * Beschnitt den Bereich hält. Der Fokuspunkt allein ist keine Freigabe.
    */
 
   .media {
@@ -62,10 +70,22 @@
     object-fit: contain;
   }
 
+  .media--natural .media__frame {
+    aspect-ratio: auto;
+  }
+
+  .media--natural .media__frame > :where(img, video),
+  .media--natural .media__frame > picture > img {
+    block-size: auto;
+  }
+
+  /* Legende: nah am Bild (8px), volle Lesegrösse. Sie ist Information,
+     kein Kleingedrucktes. */
   .media__caption {
     color: var(--media-caption-fg, var(--color-text-secondary));
-    font-size: var(--font-sm);
+    font-size: var(--font-base);
     line-height: var(--lh-normal);
+    max-inline-size: 65ch;
   }
 
   .media__label {

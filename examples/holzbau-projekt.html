@@ -21,16 +21,25 @@
   </header>
 
   <main>
-    <section class="hero hero--stage" style="--hero-stage-focus: 51% 41%">
-      <div class="hero__backdrop">
-        <img src="assets/holzbau/front.svg" alt="Saniertes Bauernhaus frontal vor Nadelwald, grosses Walmdach mit Laube" width="1280" height="960" fetchpriority="high">
-      </div>
+    <section class="section hero hero--head cq" style="--hero-stage-focus: 51% 41%">
       <div class="container hero__inner">
         <div class="hero__content">
           <p class="hero__eyebrow">Leitprojekt · Denkmalpflege</p>
           <h1 class="hero__title">Hochstudhaus, von der Bauruine zum Wohnhaus</h1>
-          <p class="hero__lead">Totalsanierung eines Bauernhauses von etwa 1860. Ein grosser Teil des Abbruchholzes wurde gereinigt und wieder eingebaut.</p>
         </div>
+        <p class="hero__lead">Totalsanierung eines Bauernhauses von etwa 1860. Ein grosser Teil des Abbruchholzes wurde gereinigt und wieder eingebaut.</p>
+      </div>
+      <div class="container">
+        <figure class="media media--natural">
+          <div class="hero__backdrop">
+            <picture>
+              <source media="(min-width: 48em)" srcset="assets/holzbau/front-wide.svg 1600w" sizes="(min-width: 82em) 1232px, calc(100vw - 48px)" width="1600" height="900" data-protect="0.07 0.12 0.86 0.72">
+              <img src="assets/holzbau/front.svg" srcset="assets/holzbau/front.svg 1280w" sizes="calc(100vw - 32px)" width="1280" height="960" fetchpriority="high" data-protect="0.08 0.16 0.87 0.50"
+                   alt="Saniertes Bauernhaus frontal vor Nadelwald: grosses Walmdach, Laube und Verglasung in der Mitte.">
+            </picture>
+          </div>
+          <figcaption class="media__caption">Das Haus nach der Sanierung, Ansicht vom Feld.</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -50,20 +59,20 @@
           <p class="section-head__lead">Bis eine neue Bauherrschaft gefunden war, wurde das Haus beinahe zur Ruine. Die Dachfläche war eingesunken, die Laube bemoost.</p>
         </div>
 
-        <div class="before-after">
+        <div class="project-stages">
           <figure class="media" style="--media-focus: 51% 45%">
             <div class="media__frame">
-              <img src="assets/holzbau/bestand-front.svg" alt="Altes Bauernhaus mit schadhaftem, eingesunkenem Walmdach hinter Bauzaun" width="1280" height="960" loading="lazy">
-              <span class="media__label">Vorher</span>
+              <img src="assets/holzbau/bestand-front.svg" alt="Altes Bauernhaus mit schadhaftem, eingesunkenem Walmdach hinter Bauzaun" width="1280" height="960" loading="lazy" data-protect="0.02 0.19 0.96 0.52">
+              <span class="media__label">Bestand</span>
             </div>
-            <figcaption class="media__caption">Bestand vor Baubeginn: Löcher in der Dachfläche, Laube unter eingesunkenem Dachteil.</figcaption>
+            <figcaption class="media__caption">Vor Baubeginn: Löcher in der Dachfläche, die Laube liegt unter dem eingesunkenen Dachteil.</figcaption>
           </figure>
           <figure class="media" style="--media-focus: 51% 41%">
             <div class="media__frame">
               <img src="assets/holzbau/front.svg" alt="Dasselbe Haus nach der Sanierung mit neu gedecktem Walmdach" width="1280" height="960" loading="lazy">
-              <span class="media__label">Nachher</span>
+              <span class="media__label">Nach der Sanierung</span>
             </div>
-            <figcaption class="media__caption">Nach zwei Jahren: Dach neu gedeckt, Laube und Fachwerk wiederhergestellt.</figcaption>
+            <figcaption class="media__caption">Nach zwei Jahren: Dach neu gedeckt, Laube und Fachwerk wiederhergestellt. Aufnahme von einem anderen Standpunkt.</figcaption>
           </figure>
         </div>
       </div>
@@ -78,7 +87,7 @@
         <figure class="legend-figure">
           <div class="legend-figure__image media media--classic" style="--media-focus: 40% 31%">
             <div class="media__frame">
-              <img src="assets/holzbau/laube.svg" alt="Hausecke mit Ziegeldach, Laubenschalung, Fachwerk und Bügen" width="1280" height="960" loading="lazy">
+              <img src="assets/holzbau/laube.svg" alt="Hausecke mit Ziegeldach, Laubenschalung, Fachwerk und Bügen" width="1280" height="960" loading="lazy" data-protect="0 0.05 0.8 0.55">
               <span class="legend-figure__mark" style="--x: 30%; --y: 12%" aria-hidden="true"></span>
               <span class="legend-figure__mark" style="--x: 20%; --y: 34%" aria-hidden="true"></span>
               <span class="legend-figure__mark" style="--x: 52%; --y: 33%" aria-hidden="true"></span>

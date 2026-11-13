@@ -22,6 +22,10 @@
    *     </li>
    *   </ul>
    *
+   * Ausweichregel: `.reference-card--contain` zeigt das Bild ganz im Rahmen
+   * (Panoramen, Hochformate, deren Aussage der Beschnitt zerstören würde).
+   * Geschützte Bereiche per `data-protect` am <img> (siehe media.css).
+   *
    * Gruppen: mehrere Raster nacheinander, je mit eigener Überschrift
    * (section-head). Kein Filter-JS nötig.
    */
@@ -71,6 +75,10 @@
 
   .reference-card:hover .reference-card__image > img {
     transform: scale(1.03);
+  }
+
+  .reference-card--contain .reference-card__image > img {
+    object-fit: contain;
   }
 
   .reference-card__title {

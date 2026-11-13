@@ -165,10 +165,10 @@ unverändert bleiben (18.9 KB roh, 5.2 KB gzip):
   sonst. `gallery--lead` füllt lückenlos bei 5, 9, 13 Bildern, `gallery--fit`
   ist für 2–3 Bilder. Lightbox über `setupGallery` (in `setupAll` enthalten);
   ohne JavaScript öffnet der Link das grosse Bild.
-- `before-after`: Vorher/Nachher nebeneinander mit Textmarke. Bewusst kein
-  Schieberegler, weil Baustellenfotos selten deckungsgleich sind.
+- `project-stages`: zwei benannte Projektstadien nebeneinander mit Textmarke.
+  «Vorher/Nachher» nur bei gleichem Standpunkt; bewusst kein Schieberegler.
 
-`spec`, `legend-figure` und `before-after` reagieren auf den Container: ein
+`spec`, `legend-figure` und `project-stages` reagieren auf den Container: ein
 Vorfahre braucht `.cq`, nicht das Element selbst.
 
 Beispiele: `examples/holzbau-projekt.html` (viel Inhalt) und
@@ -190,3 +190,20 @@ eingehalten wird.
 - `reference-grid`: Übersicht der Referenzobjekte. Eckdaten sind pro Feld
   optional; fehlt Ort oder Jahr, bleibt keine Lücke.
   Beispiel: `examples/holzbau-referenzen.html`.
+
+### Geschützte Bildbereiche
+
+Ein Fokuspunkt richtet den Beschnitt aus, sagt aber nicht, was sichtbar
+bleiben muss. `data-protect="x y w h"` am `<img>` (Anteile 0–1 des Originals,
+mehrere Bereiche mit `;`) benennt den Bereich, ohne den die Aussage verloren
+geht. `check:examples` rechnet bei jeder Breite aus Bildmass, Rahmen und
+`object-position` nach, ob der Bereich sichtbar ist. Hält kein Format, greift
+eine Ausweichregel: `media--contain`, `media--natural`,
+`reference-card--contain` oder ein anderes Motiv.
+
+### Robustheit
+
+Für Seiten mit dem Projekt-Pack prüft `check:examples` zusätzlich:
+Textvergrösserung auf 200 % und die WCAG-Textabstände (1.4.12) ohne Überlauf,
+`srcset`-Breitenangaben gegen die wirklichen Pixelmasse, das Einstiegsbild
+nicht `loading="lazy"` und höchstens ein `fetchpriority="high"` pro Seite.
