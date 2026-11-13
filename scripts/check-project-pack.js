@@ -109,6 +109,49 @@ async function main() {
     await browser.close();
   }
 
+  // 3. Abschnittsfolge jeder Beispielseite gegen validatePage (dieselbe
+  //    Funktion, die das CMS nutzt).
+  const { validatePage } = require("./_layout-rules");
+  const roots = { "hero": ".hero", "project-facts": ".project-facts", "project-stages": ".project-stages", "legend-figure": ".legend-figure",
+    "spec": ".spec", "gallery": ".gallery", "reference-grid": ".reference-grid", "cta-band": ".cta-band", "contact-section": ".contact-section" };
+  const browser2 = await puppeteer.launch({ headless: "new", args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+  try {
+    for (const name of files) {
+      const page = await browser2.newPage();
+      await page.goto(`file://${path.join(EXAMPLES, name)}`, { waitUntil: "load" });
+      const sections = await page.evaluate((roots) => {
+        const rootSelector = Object.values(roots).join(",");
+        const out = [];
+        let pending;
+        // Dokumentreihenfolge: eine Überschrift gehört zum nächsten Muster.
+        for (const el of document.querySelectorAll(`main :is(h1,h2,h3,h4,h5,h6), main :is(${rootSelector})`)) {
+          if (/^H[1-6]$/.test(el.tagName)) {
+            const level = Number(el.tagName[1]);
+            const owner = el.closest(rootSelector);
+            const entry = owner && out.find((o) => o.el === owner);
+            if (entry) { if (entry.headingLevel === undefined) entry.headingLevel = level; }
+            else pending = level;
+            continue;
+          }
+          const pattern = Object.keys(roots).find((id) => el.matches(roots[id]));
+          out.push({ el, pattern, headingLevel: pending });
+          pending = undefined;
+        }
+        return out.map(({ pattern, headingLevel }) => (headingLevel === undefined ? { pattern } : { pattern, headingLevel }));
+      }, roots);
+      await page.close();
+      const pageIssues = validatePage(sections);
+      if (pageIssues.length === 0) console.log(`  [ok]   Abschnittsfolge ${name}: ${sections.map((s) => s.pattern).join(" → ")}`);
+      else {
+        console.error(`  [FAIL] Abschnittsfolge ${name}`);
+        for (const issue of pageIssues) console.error(`         ${issue.rule}: ${issue.message}`);
+        errors += pageIssues.length;
+      }
+    }
+  } finally {
+    await browser2.close();
+  }
+
   const unexercised = ids.filter((id) => !exercised.has(id));
   if (unexercised.length) {
     console.error(`  [FAIL] Regeln ohne Beispiel (nie geprüft): ${unexercised.join(", ")}`);

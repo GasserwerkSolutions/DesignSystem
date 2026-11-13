@@ -21,6 +21,13 @@ export { setupCopyButton } from "./setup-copy-button.js";
 export { setupOtpInput } from "./setup-otp-input.js";
 export { setupThemeToggle } from "./setup-theme-toggle.js";
 export { setupGallery, setupGalleries } from "./setup-gallery.js";
+export {
+  IMAGE_RATIOS, SECTION_WEIGHT,
+  parseProtect, visibleRegion, lostShare, focusFor, fitImage, bestRatio,
+  planGallery, planHero, stageLabels, validatePage,
+  type Rect, type Size, type Point, type RatioName, type ImageFit, type GalleryPlan,
+  type HeroPlan, type SectionSummary, type SectionWeight, type PageIssue,
+} from "./layout-rules.js";
 export { anchorPopoverByTrigger, type AnchorOptions } from "./anchor-popover.js";
 export { combineCleanups, noopCleanup, type Cleanup } from "./lifecycle.js";
 

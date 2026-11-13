@@ -8,7 +8,8 @@
     "patterns/website.css"
   ],
   "javascript": {
-    "gallery": "setupGallery"
+    "gallery": "setupGallery",
+    "layoutRules": "js/layout-rules (planGallery, fitImage, bestRatio, planHero, stageLabels, validatePage)"
   },
   "grundsatz": "Jedes Muster hat einen Inhaltsvertrag: geeignete Aufgabe, Grenzen und ein Verhalten für schmale Ansichten. Eine zweite Person soll anhand des Inhalts entscheiden können, welches Muster passt.",
   "imageRatios": {
@@ -433,5 +434,94 @@
       "selector": ".media__label",
       "maxChars": 24
     }
-  ]
+  ],
+  "seiten": {
+    "hinweis": "Rezepte je Seitentyp: Reihenfolge und zulässige Muster. Das CMS füllt Slots; Varianten wählt js/layout-rules aus dem Inhalt. validatePage prüft die Folge.",
+    "projekt": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(bild)"
+      },
+      {
+        "pattern": "project-facts",
+        "pflicht": false,
+        "bedingung": "mindestens 3 bestätigte Eckdaten"
+      },
+      {
+        "pattern": "project-stages",
+        "pflicht": false,
+        "bedingung": "zwei Bauzustände mit Bild; Marken über stageLabels(gleicherStandpunkt)"
+      },
+      {
+        "pattern": "legend-figure",
+        "pflicht": false,
+        "bedingung": "ein Bild mit 2–6 benennbaren Merkmalen"
+      },
+      {
+        "pattern": "spec",
+        "pflicht": false,
+        "bedingung": "mindestens 2 Bauteile mit je 2 bestätigten Angaben"
+      },
+      {
+        "pattern": "gallery",
+        "pflicht": false,
+        "variante": "planGallery(anzahl)",
+        "wiederholbar": true,
+        "bedingung": "jede weitere Galerie braucht eine eigene Überschrift"
+      },
+      {
+        "pattern": "cta-band",
+        "pflicht": true
+      }
+    ],
+    "leistung": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(bild)"
+      },
+      {
+        "pattern": "project-facts",
+        "pflicht": false
+      },
+      {
+        "pattern": "gallery",
+        "pflicht": false,
+        "variante": "planGallery(anzahl)",
+        "bedingung": "alle Bilder vom selben Leitprojekt"
+      },
+      {
+        "pattern": "cta-band",
+        "pflicht": true
+      }
+    ],
+    "referenzen": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(null)"
+      },
+      {
+        "pattern": "reference-grid",
+        "pflicht": true,
+        "wiederholbar": true,
+        "variante": "fitImage(mass, 4/3, geschuetzt) je Karte",
+        "bedingung": "mindestens 3 Karten je Raster"
+      },
+      {
+        "pattern": "cta-band",
+        "pflicht": true
+      }
+    ],
+    "abfolge": {
+      "einstieg": "erster Abschnitt ist der Kopf",
+      "ein-kopf": "genau ein Kopf",
+      "ein-seitentitel": "genau ein h1",
+      "ueberschriften": "keine übersprungene Ebene",
+      "rhythmus": "höchstens 3 bildschwere Abschnitte in Folge",
+      "galerien": "zwei Galerien nacheinander nur mit eigener Überschrift",
+      "naechster-schritt": "die Seite endet mit cta-band oder contact-section"
+    }
+  }
 }

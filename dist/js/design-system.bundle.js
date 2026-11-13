@@ -505,6 +505,161 @@ function setupGalleries(root = document) {
   return combineCleanups([...root.querySelectorAll("[data-gallery]")].map(setupGallery));
 }
 
+// js/layout-rules.ts
+var IMAGE_RATIOS = {
+  pano: 21 / 9,
+  wide: 16 / 9,
+  classic: 3 / 2,
+  photo: 4 / 3,
+  square: 1,
+  portrait: 3 / 4
+};
+var EPS = 0.01;
+var clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+function parseProtect(spec) {
+  if (!spec) return [];
+  return spec.split(";").map((part) => part.trim()).filter(Boolean).map((part) => {
+    const [x, y, w, h] = part.split(/\s+/).map(Number);
+    if (![x, y, w, h].every(Number.isFinite)) throw new Error(`data-protect ung\xFCltig: \xAB${part}\xBB`);
+    return { x, y, w, h };
+  });
+}
+function visibleRegion(natural, ratio, focus = { x: 0.5, y: 0.5 }) {
+  const imageRatio = natural.w / natural.h;
+  if (imageRatio > ratio) {
+    const w = ratio / imageRatio;
+    return { x: (1 - w) * focus.x, y: 0, w, h: 1 };
+  }
+  const h = imageRatio / ratio;
+  return { x: 0, y: (1 - h) * focus.y, w: 1, h };
+}
+function lostShare(protect, visible) {
+  let lost = 0;
+  for (const p of protect) {
+    lost += Math.max(0, visible.x - p.x) + Math.max(0, p.x + p.w - (visible.x + visible.w));
+    lost += Math.max(0, visible.y - p.y) + Math.max(0, p.y + p.h - (visible.y + visible.h));
+  }
+  return lost;
+}
+function boundingBox(rects) {
+  const x0 = Math.min(...rects.map((r) => r.x)), y0 = Math.min(...rects.map((r) => r.y));
+  const x1 = Math.max(...rects.map((r) => r.x + r.w)), y1 = Math.max(...rects.map((r) => r.y + r.h));
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+function focusFor(natural, ratio, protect) {
+  if (protect.length === 0) return { x: 0.5, y: 0.5 };
+  const box = boundingBox(protect);
+  const vis = visibleRegion(natural, ratio, { x: 0, y: 0 });
+  const along = (center, size) => size >= 1 - EPS ? 0.5 : clamp((center - size / 2) / (1 - size), 0, 1);
+  return { x: along(box.x + box.w / 2, vis.w), y: along(box.y + box.h / 2, vis.h) };
+}
+function fitImage(natural, ratio, protect = [], preferred) {
+  if (protect.length === 0) {
+    return { fit: "cover", focus: preferred ?? { x: 0.5, y: 0.5 }, keepsProtected: true, reason: "Kein gesch\xFCtzter Bereich angegeben; Beschnitt nicht gepr\xFCft." };
+  }
+  if (preferred && lostShare(protect, visibleRegion(natural, ratio, preferred)) <= EPS) {
+    return { fit: "cover", focus: preferred, keepsProtected: true, reason: "Gesch\xFCtzter Bereich bleibt mit dem gew\xE4hlten Fokus sichtbar." };
+  }
+  const best = focusFor(natural, ratio, protect);
+  if (lostShare(protect, visibleRegion(natural, ratio, best)) <= EPS) {
+    return { fit: "cover", focus: best, keepsProtected: true, reason: "Fokus auf den gesch\xFCtzten Bereich verschoben." };
+  }
+  return { fit: "contain", focus: { x: 0.5, y: 0.5 }, keepsProtected: true, reason: "Kein Ausschnitt in diesem Format h\xE4lt den gesch\xFCtzten Bereich; Bild wird ganz gezeigt." };
+}
+function bestRatio(natural, protect = [], candidates = ["wide", "classic", "photo", "square", "portrait"]) {
+  let best = null;
+  for (const name of candidates) {
+    const ratio = IMAGE_RATIOS[name];
+    const focus = focusFor(natural, ratio, protect);
+    const vis = visibleRegion(natural, ratio, focus);
+    if (lostShare(protect, vis) > EPS) continue;
+    const kept = vis.w * vis.h;
+    if (!best || kept > best.kept + EPS) best = { name, kept };
+  }
+  return best ? best.name : null;
+}
+function planGallery(count, options = {}) {
+  const max = options.max ?? 13;
+  const n = Math.min(Math.max(0, Math.floor(count)), max);
+  const rest = (shown) => Math.max(0, Math.floor(count)) - shown;
+  if (n <= 1) return { variant: "none", className: "", show: n, rest: rest(n) };
+  if (n <= 3) return { variant: "fit", className: "gallery gallery--fit", show: n, rest: rest(n) };
+  const lead = n - (n - 1) % 4;
+  const plain = n - n % 4;
+  const useLead = lead > plain || options.preferLead === true && lead >= 5;
+  return useLead && lead >= 5 ? { variant: "lead", className: "gallery gallery--lead", show: lead, rest: rest(lead) } : { variant: "default", className: "gallery", show: plain, rest: rest(plain) };
+}
+function planHero(image, options = {}) {
+  const minWidth = options.minWidth ?? 1280;
+  const ratio = options.ratio ?? IMAGE_RATIOS.wide;
+  if (!image) return { variant: "head-text-only", className: "hero hero--head", reason: "Kein Bild vorhanden." };
+  if (image.natural.w < minWidth) {
+    return { variant: "head-text-only", className: "hero hero--head", reason: `Bild ist ${image.natural.w}px breit, n\xF6tig sind ${minWidth}px f\xFCr ein scharfes Einstiegsbild.` };
+  }
+  if (image.natural.w < image.natural.h) {
+    return { variant: "head-text-only", className: "hero hero--head", reason: "Hochformat tr\xE4gt kein breites Einstiegsbild." };
+  }
+  const fit = fitImage(image.natural, ratio, image.protect ?? []);
+  if (fit.fit === "contain") {
+    return { variant: "head-text-only", className: "hero hero--head", reason: "Der gesch\xFCtzte Bereich h\xE4lt im Kopfformat nicht; Bild als Abschnittsbild im eigenen Format zeigen." };
+  }
+  return { variant: "head", className: "hero hero--head", reason: "Bild tr\xE4gt das Kopfformat." };
+}
+function stageLabels(sameViewpoint, states = ["Bestand", "Nach dem Umbau"]) {
+  return sameViewpoint ? ["Vorher", "Nachher"] : states;
+}
+var SECTION_WEIGHT = {
+  "hero": "gross",
+  "gallery": "gross",
+  "project-stages": "gross",
+  "legend-figure": "gross",
+  "reference-grid": "gross",
+  "editorial-split": "mittel",
+  "service-grid": "mittel",
+  "spec": "ruhig",
+  "project-facts": "ruhig",
+  "faq-section": "ruhig",
+  "trustbar": "ruhig",
+  "section-head": "ruhig",
+  "cta-band": "mittel",
+  "contact-section": "mittel"
+};
+function validatePage(sections, options = {}) {
+  const issues = [];
+  const maxHeavyRun = options.maxHeavyRun ?? 3;
+  const heroes = sections.filter((s) => s.pattern === "hero").length;
+  if (sections.length === 0) return [{ rule: "leer", message: "Die Seite hat keine Abschnitte." }];
+  if (sections[0].pattern !== "hero") issues.push({ rule: "einstieg", message: "Die Seite beginnt nicht mit einem Kopf (hero).", index: 0 });
+  if (heroes > 1) issues.push({ rule: "ein-kopf", message: `${heroes} K\xF6pfe auf einer Seite; es gibt genau einen Einstieg.` });
+  const h1 = sections.filter((s) => s.headingLevel === 1).length;
+  if (h1 !== 1) issues.push({ rule: "ein-seitentitel", message: `${h1} Seitentitel (h1); n\xF6tig ist genau einer.` });
+  let previous = 1;
+  sections.forEach((s, i) => {
+    if (s.headingLevel === void 0) return;
+    if (s.headingLevel > previous + 1) {
+      issues.push({ rule: "ueberschriften", message: `\xDCberschriftenebene springt von h${previous} auf h${s.headingLevel}.`, index: i });
+    }
+    previous = s.headingLevel;
+  });
+  let run = 0;
+  sections.forEach((s, i) => {
+    run = (SECTION_WEIGHT[s.pattern] ?? "mittel") === "gross" ? run + 1 : 0;
+    if (run === maxHeavyRun + 1) {
+      issues.push({ rule: "rhythmus", message: `Mehr als ${maxHeavyRun} bildschwere Abschnitte in Folge; ein ruhiger Abschnitt (Text, Eckdaten, Spezifikation) fehlt.`, index: i });
+    }
+  });
+  for (let i = 1; i < sections.length; i++) {
+    if (sections[i].pattern === "gallery" && sections[i - 1].pattern === "gallery" && sections[i].headingLevel === void 0) {
+      issues.push({ rule: "galerien", message: "Zwei Galerien direkt nacheinander ohne eigene \xDCberschrift; ihr Unterschied ist nicht erkennbar.", index: i });
+    }
+  }
+  const last = sections[sections.length - 1].pattern;
+  if (last !== "cta-band" && last !== "contact-section") {
+    issues.push({ rule: "naechster-schritt", message: "Die Seite endet ohne n\xE4chsten Schritt (cta-band oder contact-section).", index: sections.length - 1 });
+  }
+  return issues;
+}
+
 // js/index.ts
 function setupAll(root = document) {
   return combineCleanups([
@@ -520,9 +675,18 @@ function setupAll(root = document) {
   ]);
 }
 export {
+  IMAGE_RATIOS,
+  SECTION_WEIGHT,
   anchorPopoverByTrigger,
+  bestRatio,
   combineCleanups,
+  fitImage,
+  focusFor,
+  lostShare,
   noopCleanup,
+  parseProtect,
+  planGallery,
+  planHero,
   setupAll,
   setupCombobox,
   setupComboboxes,
@@ -538,5 +702,8 @@ export {
   setupPopovers,
   setupSlider,
   setupSliders,
-  setupThemeToggle
+  setupThemeToggle,
+  stageLabels,
+  validatePage,
+  visibleRegion
 };

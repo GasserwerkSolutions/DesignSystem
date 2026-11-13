@@ -207,3 +207,37 @@ Für Seiten mit dem Projekt-Pack prüft `check:examples` zusätzlich:
 Textvergrösserung auf 200 % und die WCAG-Textabstände (1.4.12) ohne Überlauf,
 `srcset`-Breitenangaben gegen die wirklichen Pixelmasse, das Einstiegsbild
 nicht `loading="lazy"` und höchstens ein `fetchpriority="high"` pro Seite.
+
+### Layout-Regeln für das CMS
+
+`js/layout-rules` enthält die Layout-Entscheidungen als reine Funktionen ohne
+DOM. Ein CMS füllt Slots und fragt die Funktionen; es erfindet keine
+Gestaltung und liest kein CSS.
+
+```js
+import { planGallery, fitImage, bestRatio, planHero, stageLabels, validatePage }
+  from "@gasserwerksolutions/design-system/js/layout-rules";
+
+planGallery(7);
+// → { variant: "lead", className: "gallery gallery--lead", show: 5, rest: 2 }
+
+fitImage({ w: 1280, h: 615 }, 4 / 3, parseProtect("0.05 0.1 0.9 0.8"));
+// → { fit: "contain", reason: "Kein Ausschnitt in diesem Format hält den geschützten Bereich; …" }
+
+validatePage([{ pattern: "hero", headingLevel: 1 }, { pattern: "gallery", headingLevel: 2 }]);
+// → [{ rule: "naechster-schritt", message: "Die Seite endet ohne nächsten Schritt …" }]
+```
+
+- `fitImage` / `bestRatio`: füllen, Fokus verschieben oder ganz zeigen, je
+  nachdem ob der geschützte Bereich hält. `bestRatio` gibt `null` zurück, wenn
+  kein Raster-Format passt (dann `media--natural`).
+- `planGallery`: Variante und Bildzahl, die das Raster lückenlos füllt.
+- `planHero`: wählt nie Text auf dem Foto; zu kleine Bilder und Hochformate
+  ergeben einen Kopf ohne Bild.
+- `validatePage`: Abschnittsfolge (ein Kopf, ein Seitentitel, keine
+  übersprungene Überschriftenebene, höchstens drei bildschwere Abschnitte in
+  Folge, nächster Schritt am Ende).
+
+Die Seitenrezepte stehen unter `seiten` im Manifest. `npm run test:layout`
+prüft die Funktionen an Massen aus echtem Material; `check:project-pack`
+prüft die Abschnittsfolge jeder Beispielseite mit derselben `validatePage`.
