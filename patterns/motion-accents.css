@@ -95,8 +95,11 @@
       }
     }
 
+    /* Beschnitt per clip-path statt overflow: overflow verändert die
+       Grössenberechnung des Bildrahmens (aspect-ratio, Mindestbreite) und
+       liess das Hero-Bild auf schmalen Viewports über den Rand wachsen. */
     .hero-settle {
-      overflow: clip;
+      clip-path: inset(0);
     }
 
     .hero-settle img {
