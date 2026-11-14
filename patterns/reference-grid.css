@@ -16,6 +16,7 @@
    *     <li>
    *       <a class="reference-card" href="projekt.html" style="--media-focus: 51% 41%">
    *         <span class="reference-card__image"><img src="…" alt="…" width height loading="lazy"></span>
+   *         (oder <picture> mit <source> und <img>)
    *         <span class="reference-card__title">Hochstudhaus</span>
    *         <span class="reference-card__meta"><span>Seeland</span><span>Totalsanierung</span></span>
    *       </a>
@@ -64,7 +65,8 @@
     background: var(--color-bg-tertiary);
   }
 
-  .reference-card__image > img {
+  .reference-card__image > img,
+  .reference-card__image > picture > img {
     display: block;
     inline-size: 100%;
     block-size: 100%;
@@ -73,7 +75,14 @@
     transition: transform var(--motion-transition);
   }
 
-  .reference-card:hover .reference-card__image > img {
+  /* <picture> (z. B. WebP mit JPEG-Ersatz) füllt den Rahmen wie bei media. */
+  .reference-card__image > picture {
+    display: block;
+    block-size: 100%;
+  }
+
+  .reference-card:hover .reference-card__image > img,
+  .reference-card:hover .reference-card__image > picture > img {
     transform: scale(1.03);
   }
 
@@ -118,7 +127,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .reference-card__image > img { transition: none; }
-    .reference-card:hover .reference-card__image > img { transform: none; }
+    .reference-card__image > img, .reference-card__image > picture > img { transition: none; }
+    .reference-card:hover .reference-card__image > img,
+    .reference-card:hover .reference-card__image > picture > img { transform: none; }
   }
 }
