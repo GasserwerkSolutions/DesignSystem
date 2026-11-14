@@ -96,6 +96,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .back-to-top { transition: none; animation: none; }
-  .back-to-top.is-visible,
-  @supports (animation-timeline: scroll()) { .back-to-top { opacity: 1; visibility: visible; transform: none; } }
+  /* Ohne Bewegung: sichtbarer Zustand ohne Versatz. Wo die Scroll-Animation
+     den Knopf sonst einblendet (animation: none oben), bleibt er sichtbar. */
+  .back-to-top.is-visible { opacity: 1; visibility: visible; transform: none; }
+  @supports (animation-timeline: scroll()) {
+    .back-to-top { opacity: 1; visibility: visible; transform: none; }
+  }
 }

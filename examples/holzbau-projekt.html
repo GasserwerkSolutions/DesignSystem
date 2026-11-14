@@ -11,10 +11,11 @@
 </head>
 <body class="texture-grain">
   <div class="scroll-progress"></div>
-  <header class="site-header site-header--sticky site-header--elevate">
+  <header class="site-header site-header--menu site-header--sticky site-header--elevate">
     <div class="container site-header__inner">
       <a class="site-header__brand" href="holzbau-leistung.html">Holzbau Beispiel AG</a>
-      <nav class="site-header__nav" aria-label="Hauptnavigation">
+      <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="hauptnavigation">Menü</button>
+      <nav class="site-header__nav" id="hauptnavigation" aria-label="Hauptnavigation">
         <a class="site-header__link" href="holzbau-leistung.html">Umbauen</a>
         <a class="site-header__link" href="holzbau-projekt.html">Projekt</a>
         <a class="site-header__link" href="#kontakt">Kontakt</a>
@@ -23,7 +24,7 @@
   </header>
 
   <main>
-    <section class="section hero hero--head cq" style="--hero-stage-focus: 51% 41%">
+    <section data-hero-group="holzbau" class="section hero hero--head cq" style="--hero-head-min-h: 16rem; --hero-stage-focus: 51% 41%">
       <div class="container hero__inner">
         <div class="hero__content">
           <p class="hero__eyebrow">Leitprojekt · Denkmalpflege</p>
@@ -188,6 +189,9 @@
           </a></li>
           <li><a class="gallery__item" href="assets/holzbau/luftbild.svg" data-caption="Luftbild während des Rückbaus" style="--media-focus: 52% 52%">
             <img src="assets/holzbau/luftbild.svg" alt="Luftaufnahme der offenen Balkenlage" width="1280" height="720" loading="lazy">
+          </a></li>
+          <li data-gallery-rest><a class="gallery__item" href="assets/holzbau/rueckbau.svg" data-caption="Abgebundene Hölzer vor dem Wiedereinbau">
+            <img src="assets/holzbau/rueckbau.svg" alt="Gereinigte Althölzer, gestapelt für den Wiedereinbau" width="1280" height="960" loading="lazy">
           </a></li>
         </ul>
       </div>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de-CH" data-tone="earth" data-mode="light" data-density="comfortable" data-shape="defined">
+<html lang="de-CH" data-stage="entwurf" data-tone="earth" data-mode="light" data-density="comfortable" data-shape="defined">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,11 +10,18 @@
   <link rel="stylesheet" href="../patterns/motion.css">
 </head>
 <body class="texture-grain">
+  <div class="draft-notice" role="note" data-draft-notice>
+    <div class="container draft-notice__inner">
+      <p class="draft-notice__text"><strong>Entwurf.</strong> Diese Seite ist eine Vorschau und nicht freigegeben.</p>
+      <button class="draft-notice__close" type="button">Ausblenden</button>
+    </div>
+  </div>
   <div class="scroll-progress"></div>
-  <header class="site-header site-header--sticky site-header--elevate">
+  <header class="site-header site-header--menu site-header--sticky site-header--elevate">
     <div class="container site-header__inner">
       <a class="site-header__brand" href="holzbau-leistung.html">Holzbau Beispiel AG</a>
-      <nav class="site-header__nav" aria-label="Hauptnavigation">
+      <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="hauptnavigation">Menü</button>
+      <nav class="site-header__nav" id="hauptnavigation" aria-label="Hauptnavigation">
         <a class="site-header__link" href="holzbau-leistung.html">Umbauen</a>
         <a class="site-header__link" href="holzbau-referenzen.html">Referenzen</a>
         <a class="site-header__link" href="holzbau-projekt.html">Projekt</a>
@@ -24,7 +31,7 @@
   </header>
 
   <main>
-    <section class="section hero hero--head cq" style="--hero-stage-focus: 51% 41%">
+    <section data-hero-group="holzbau" class="section hero hero--head cq" style="--hero-stage-focus: 51% 41%">
       <div class="container hero__inner">
         <div class="hero__content">
           <p class="hero__eyebrow">Referenzen</p>
@@ -119,6 +126,7 @@
   </main>
   <footer class="site-footer" id="kontakt">
     <div class="container site-footer__inner">
+      <p class="draft-only">Entwurf, nicht freigegeben</p>
       <div class="site-footer__bottom">
         <span>Holzbau Beispiel AG · Beispielinhalt</span>
         <span>Bilder sind Platzhalter. Fachliche Angaben kommen im echten Projekt vom Betrieb.</span>

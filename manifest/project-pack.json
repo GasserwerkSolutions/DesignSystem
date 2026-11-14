@@ -276,20 +276,21 @@
       "variants": {
         "default": "4 bis 12 Bilder, ideal Vielfache von 4",
         "lead": "5, 9 oder 13 Bilder (4n + 1)",
-        "fit": "2 bis 3 Bilder"
+        "fit": "2 bis 3 Bilder",
+        "rest": "Übrige Bilder als <li data-gallery-rest> in derselben Liste; setupGallery zeigt sie hinter einem Knopf «N weitere Bilder zeigen». Nie still weglassen."
       },
       "rules": [
         {
           "id": "gallery-default",
           "selector": ".gallery:not(.gallery--lead):not(.gallery--fit)",
-          "count": ".gallery__item",
+          "count": ":scope > li:not([data-gallery-rest]) > .gallery__item",
           "min": 4,
           "max": 12
         },
         {
           "id": "gallery-lead",
           "selector": ".gallery--lead",
-          "count": ".gallery__item",
+          "count": ":scope > li:not([data-gallery-rest]) > .gallery__item",
           "min": 5,
           "max": 13,
           "modulo": [
@@ -300,7 +301,7 @@
         {
           "id": "gallery-fit",
           "selector": ".gallery--fit",
-          "count": ".gallery__item",
+          "count": ":scope > li:not([data-gallery-rest]) > .gallery__item",
           "min": 2,
           "max": 3
         },
@@ -421,6 +422,36 @@
           "max": 0
         }
       ]
+    },
+    {
+      "id": "draft-notice",
+      "css": "patterns/draft-notice.css",
+      "root": ".draft-notice",
+      "slots": {
+        "text": {
+          "required": true,
+          "maxChars": 140
+        }
+      },
+      "rules": [
+        {
+          "id": "draft-notice-once",
+          "selector": "body",
+          "count": "[data-draft-notice]",
+          "min": 0,
+          "max": 1
+        },
+        {
+          "id": "draft-notice-stage",
+          "selector": "html:not([data-stage=\"entwurf\"])",
+          "count": "[data-draft-notice]",
+          "min": 0,
+          "max": 0
+        }
+      ],
+      "aufgabe": "Vorschauen und Neubauten vor der Freigabe als Entwurf kennzeichnen: Hinweis oben, Fusszeile, robots noindex",
+      "geeignet": "jede Seite einer Vorschau mit <html data-stage=\"entwurf\">",
+      "unzulaessig": "freigegebene Seiten; als Ersatz für robots.txt oder einen X-Robots-Tag-Header"
     }
   ],
   "textLimits": [

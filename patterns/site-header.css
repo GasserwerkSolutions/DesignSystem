@@ -79,4 +79,77 @@
       inline-size: 100%;
     }
   }
+
+  /* --menu: Navigation hinter einem Menü-Knopf, sobald die Links nicht
+   * mehr in eine Zeile neben die Marke passen.
+   *
+   * Progressive Enhancement: Ohne JavaScript bleibt der Knopf verborgen und
+   * die Navigation bricht wie beim Grundmuster um. setupSiteMenu misst bei
+   * jeder Breitenänderung und setzt data-menu="collapsed" oder "inline";
+   * es gibt keinen festen Breakpoint, viele oder lange Ziele klappen früher.
+   *
+   * CONTRACT (optional):
+   *   --menu-link-min-h   Mindesthöhe der Links im offenen Menü (default 3rem)
+   *
+   * Struktur:
+   *   <header class="site-header site-header--menu">
+   *     <div class="container site-header__inner">
+   *       <a class="site-header__brand" href="/">…</a>
+   *       <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="nav">Menü</button>
+   *       <nav class="site-header__nav" id="nav" aria-label="Hauptnavigation">
+   *         <a class="site-header__link" href="…">…</a> …
+   *       </nav>
+   *       <a class="btn site-header__action" href="tel:…">Anrufen</a>  (optional)
+   *     </div>
+   *   </header>
+   */
+  .site-header__toggle {
+    display: none;
+    align-items: center;
+    min-block-size: 3rem;
+    padding-inline: var(--space-16);
+    border: 2px solid currentColor;
+    border-radius: var(--btn-radius, var(--radius-8));
+    background: transparent;
+    color: var(--color-text-primary);
+    font: inherit;
+    font-weight: var(--fw-600);
+    cursor: pointer;
+  }
+
+  .site-header--menu[data-menu="collapsed"] .site-header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-12);
+  }
+  /* Bedienteile (z. B. ein Anruf-Knopf) bleiben in der Kopfzeile neben dem
+     Menü-Knopf; die Navigation steht immer zuletzt in voller Breite. */
+  .site-header--menu[data-menu="collapsed"] .site-header__inner > .btn { inline-size: auto; }
+  .site-header--menu[data-menu="collapsed"] .site-header__brand { margin-inline-end: auto; }
+  .site-header--menu[data-menu="collapsed"] .site-header__toggle { display: inline-flex; }
+  .site-header--menu[data-menu="collapsed"] .site-header__nav {
+    display: none;
+    order: 1;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding-block-end: var(--space-12);
+  }
+  .site-header--menu[data-menu-open] .site-header__nav { display: flex; }
+  .site-header--menu[data-menu="collapsed"] .site-header__link {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--menu-link-min-h, 3rem);
+    border-block-start: 1px solid var(--color-border-light);
+  }
+  /* inline: Nichts darf schrumpfen oder umbrechen. Sonst weicht der Platzmangel
+     in ein gestauchtes Logo oder einen mehrzeiligen Knopf aus, statt als
+     Überlauf messbar zu werden, und das Menü klappt nie. */
+  .site-header--menu[data-menu="inline"] .site-header__inner > * { flex-shrink: 0; }
+  /* Während setupSiteMenu misst: keine Übergänge, sonst misst es Zwischenstände
+     (.btn hat transition: all). */
+  .site-header--menu[data-menu-measuring] * { transition: none !important; }
+  .site-header--menu[data-menu="inline"] .site-header__nav { flex-wrap: nowrap; }
+  .site-header--menu[data-menu="inline"] :where(.site-header__link, .site-header__inner > .btn) { white-space: nowrap; }
 }

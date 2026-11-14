@@ -75,9 +75,18 @@ export interface GalleryPlan {
     className: string;
     /** So viele Bilder zeigt das Raster lückenlos. */
     show: number;
-    /** Bilder, die nicht ins Raster passen (zweite Galerie oder weglassen). */
+    /**
+     * Bilder, die nicht ins lückenlose Raster passen. Sie werden nie still
+     * weggelassen: Im Markup stehen sie als `<li data-gallery-rest>` in
+     * derselben Galerie; setupGallery blendet sie hinter einen Knopf
+     * (`moreLabel`) aus, die Lightbox blättert trotzdem durch alle.
+     */
     rest: number;
+    /** Beschriftung des Knopfs für die übrigen Bilder, leer wenn rest = 0. */
+    moreLabel: string;
 }
+/** «1 weiteres Bild zeigen», «3 weitere Bilder zeigen». */
+export declare function galleryMoreLabel(rest: number): string;
 /**
  * Galerie-Variante aus der Bildzahl. Das Raster hat 2 Spalten auf Telefonen
  * und 4 sonst; lückenlos füllen es 2–3 Bilder (fit), Vielfache von 4

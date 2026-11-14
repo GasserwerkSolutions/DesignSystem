@@ -26,10 +26,12 @@ export {
   type ThemeToggleLabels,
 } from "./setup-theme-toggle.js";
 export { setupGallery, setupGalleries } from "./setup-gallery.js";
+export { setupSiteMenu, setupSiteMenus } from "./setup-site-menu.js";
+export { setupDraftNotice, setupDraftNotices, type DraftNoticeOptions } from "./setup-draft-notice.js";
 export {
   IMAGE_RATIOS, SECTION_WEIGHT,
   parseProtect, visibleRegion, lostShare, focusFor, fitImage, bestRatio,
-  planGallery, planHero, stageLabels, validatePage,
+  planGallery, galleryMoreLabel, planHero, stageLabels, validatePage,
   type Rect, type Size, type Point, type RatioName, type ImageFit, type GalleryPlan,
   type HeroPlan, type SectionSummary, type SectionWeight, type PageIssue,
 } from "./layout-rules.js";
@@ -45,6 +47,8 @@ import { setupCopyButton } from "./setup-copy-button.js";
 import { setupOtpInput } from "./setup-otp-input.js";
 import { setupThemeToggle } from "./setup-theme-toggle.js";
 import { setupGalleries } from "./setup-gallery.js";
+import { setupSiteMenus } from "./setup-site-menu.js";
+import { setupDraftNotices } from "./setup-draft-notice.js";
 import { combineCleanups, type Cleanup } from "./lifecycle.js";
 
 /**
@@ -62,5 +66,7 @@ export function setupAll(root: ParentNode = document): Cleanup {
     setupOtpInput(root),
     setupThemeToggle(root),
     setupGalleries(root),
+    setupSiteMenus(root),
+    setupDraftNotices(root),
   ]);
 }

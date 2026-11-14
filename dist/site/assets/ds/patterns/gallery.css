@@ -16,7 +16,7 @@
    *   <ul class="gallery" data-gallery>
    *     <li><a class="gallery__item" href="gross.jpg" data-caption="Laube von Süden">
    *       <img src="klein.jpg" alt="…" width="480" height="360" loading="lazy">
-   *     </a></li>
+   *     </a></li>           (statt <img> auch <picture> mit <source> und <img>)
    *   </ul>
    *   <dialog class="lightbox" aria-label="Bildansicht">
    *     <button class="lightbox__close" type="button" aria-label="Schliessen">×</button>
@@ -31,6 +31,12 @@
    * Modifier: .gallery--fit    für 2–3 Bilder: Kacheln füllen die Zeile
    *           .gallery--lead   erste Kachel doppelt so gross. Füllt das Raster
    *           ohne Lücke bei 5, 9, 13 … Bildern (4n + 1), in 2 und in 4 Spalten.
+   *
+   * Übrige Bilder (planGallery().rest): Bilder, die nicht ins lückenlose
+   * Raster passen, stehen als <li data-gallery-rest> in derselben Liste.
+   * Ohne JavaScript sind sie sichtbar. setupGallery blendet sie aus und
+   * setzt danach einen Knopf .gallery__more («3 weitere Bilder zeigen»);
+   * die Lightbox blättert immer durch alle Bilder. Nie still weglassen.
    */
 
   .gallery {
@@ -61,7 +67,8 @@
     background: var(--color-bg-tertiary);
   }
 
-  .gallery__item > img {
+  .gallery__item > img,
+  .gallery__item > picture > img {
     display: block;
     inline-size: 100%;
     block-size: 100%;
@@ -70,7 +77,14 @@
     transition: transform var(--motion-transition);
   }
 
-  .gallery__item:hover > img {
+  /* <picture> (z. B. WebP mit JPEG-Ersatz) füllt den Rahmen wie bei media. */
+  .gallery__item > picture {
+    display: block;
+    block-size: 100%;
+  }
+
+  .gallery__item:hover > img,
+  .gallery__item:hover > picture > img {
     transform: scale(1.03);
   }
 
@@ -184,7 +198,26 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .gallery__item > img { transition: none; }
-    .gallery__item:hover > img { transform: none; }
+    .gallery__item > img, .gallery__item > picture > img { transition: none; }
+    .gallery__item:hover > img, .gallery__item:hover > picture > img { transform: none; }
+  }
+
+  .gallery[data-collapsed] > [data-gallery-rest] {
+    display: none;
+  }
+
+  .gallery__more {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 3rem;
+    margin-block-start: var(--gallery-gap, var(--space-12));
+    padding-inline: var(--space-20);
+    border: 2px solid currentColor;
+    border-radius: var(--btn-radius, var(--radius-8));
+    background: transparent;
+    color: var(--color-text-primary);
+    font: inherit;
+    font-weight: var(--fw-600);
+    cursor: pointer;
   }
 }

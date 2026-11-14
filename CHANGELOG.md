@@ -2,6 +2,46 @@
 
 ## [Unreleased]
 
+### Neu (aus dem Stebler-Neubau)
+
+- **`site-header--menu`: Menü-Knopf ohne festen Breakpoint.** `setupSiteMenu`
+  misst bei jeder Breitenänderung, ob die Links in einer Zeile neben der Marke
+  Platz haben, und setzt `data-menu="inline"` oder `"collapsed"`. Zehn Ziele
+  klappen früher als vier, 200 % Textgrösse klappt von selbst. `aria-expanded`,
+  Escape mit Fokus zurück auf den Knopf, Links im offenen Menü mindestens
+  48 px hoch. Ohne JavaScript bleibt das bisherige Umbrechen. Teil von
+  `website.css`, also auch im Builder-Profil.
+- **`--hero-head-min-h` für gleiche Bildoberkanten.** Mindesthöhe des
+  Textkopfs von `hero--head` ab 800 px Containerbreite. `check:examples`
+  vergleicht die Bildoberkante aller Beispielseiten mit demselben
+  `data-hero-group` und schlägt bei mehr als 2 px Abstand fehl. Die
+  Holzbau-Beispiele lagen vorher 106 px auseinander.
+- **Galerie lässt keine Bilder mehr still weg.** `planGallery` liefert neu
+  `moreLabel`; übrige Bilder stehen als `<li data-gallery-rest>` in der Liste,
+  `setupGallery` blendet sie hinter einen Knopf «N weitere Bilder zeigen»,
+  die Lightbox blättert durch alle. Die Raster-Regeln im Manifest zählen die
+  übrigen Bilder nicht mit.
+- **Entwurfshinweis `patterns/draft-notice.css` (im Projekt-Pack).**
+  `<html data-stage="entwurf">` steuert Hinweis, `.draft-only`-Fusszeile und
+  `robots`-Meta an einer Stelle. «Ausblenden» gilt für die Sitzung,
+  `?entwurf=aus` blendet für Screenshots vorab aus.
+
+### Behoben (beim Umstellen des Stebler-Neubaus gefunden)
+
+- **`back-to-top` bei reduzierter Bewegung:** Eine Selektorliste mit
+  `@supports` darin ist ungültig, Browser verwarfen die ganze Regel.
+- **`gallery` und `reference-card` mit `<picture>`:** Das Bild füllte die
+  Kachel nicht. `hero` und `media` konnten das schon.
+- **`hero--head` bei 200 % Text:** Die implizite `auto`-Spur wuchs auf die
+  Breite des längsten Worts. Jetzt `minmax(0, 1fr)`.
+- **Lightbox:** Tab und Shift+Tab bleiben im Dialog. Chrome sprang nach dem
+  letzten Knopf in die Adressleiste.
+- **`site-header--menu` misst verlässlich:** Im `inline`-Zustand schrumpft und
+  umbricht nichts mehr, der Bedarf wird summiert statt aus `scrollWidth`
+  gelesen, und Übergänge sind während der Messung aus (`.btn` hat
+  `transition: all`). Mit Anruf-Knopf im Kopf steht die Navigation
+  eingeklappt immer zuletzt.
+
 ### Behoben
 
 - **`musikraum` lief an den Kontrast- und Visual-Gates vorbei.** Die Tone-Listen

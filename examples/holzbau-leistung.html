@@ -11,10 +11,11 @@
 </head>
 <body class="texture-grain">
   <div class="scroll-progress"></div>
-  <header class="site-header site-header--sticky site-header--elevate">
+  <header class="site-header site-header--menu site-header--sticky site-header--elevate">
     <div class="container site-header__inner">
       <a class="site-header__brand" href="holzbau-leistung.html">Holzbau Beispiel AG</a>
-      <nav class="site-header__nav" aria-label="Hauptnavigation">
+      <button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="hauptnavigation">Menü</button>
+      <nav class="site-header__nav" id="hauptnavigation" aria-label="Hauptnavigation">
         <a class="site-header__link" href="holzbau-leistung.html">Umbauen</a>
         <a class="site-header__link" href="holzbau-projekt.html">Projekt</a>
         <a class="site-header__link" href="#kontakt">Kontakt</a>
@@ -23,7 +24,7 @@
   </header>
 
   <main>
-    <section class="section hero hero--head hero--dark cq" style="--hero-stage-focus: 51% 41%">
+    <section data-hero-group="holzbau" class="section hero hero--head hero--dark cq" style="--hero-head-min-h: 16rem; --hero-stage-focus: 51% 41%">
       <div class="container hero__inner">
         <div class="hero__content">
           <p class="hero__eyebrow">Leistung</p>

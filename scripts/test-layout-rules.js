@@ -74,7 +74,15 @@ test("planGallery füllt das Raster für jede Bildzahl lückenlos", () => {
     assert.deepEqual([plan.variant, plan.show, plan.rest], [variant, show, Number(n) - show], `n=${n}`);
     if (plan.variant === "lead") assert.equal(plan.show % 4, 1);
     if (plan.variant === "default") assert.equal(plan.show % 4, 0);
+    assert.equal(plan.moreLabel === "", plan.rest === 0, `n=${n}: Knopf genau dann, wenn Bilder übrig sind`);
   }
+});
+
+test("planGallery lässt keine Bilder still weg", () => {
+  assert.equal(R.planGallery(6).moreLabel, "1 weiteres Bild zeigen");
+  assert.equal(R.planGallery(30).moreLabel, "17 weitere Bilder zeigen");
+  assert.equal(R.planGallery(30, { max: Infinity }).show + R.planGallery(30, { max: Infinity }).rest, 30);
+  assert.equal(R.galleryMoreLabel(0), "");
 });
 
 test("planHero wählt nie Text auf dem Foto und verweigert zu kleine Bilder", () => {
