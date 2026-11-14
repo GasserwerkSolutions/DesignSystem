@@ -80,13 +80,18 @@ export function setupSiteMenu(header) {
         frame = view.requestAnimationFrame(measure);
     };
     measure();
-    let lastWidth = header.clientWidth;
+    // Neu messen, wenn sich die Breite oder die Textgrösse ändert. Nur-Text-Zoom
+    // lässt die Breite gleich, ändert aber die Schriftgrösse der Links (und mit
+    // ihr die Kopfhöhe, was den Observer auslöst). Das Öffnen des Menüs ändert
+    // nur die Höhe und löst keine neue Messung aus.
+    const sizeKey = () => `${header.clientWidth}|${view ? view.getComputedStyle(nav).fontSize : ""}`;
+    let lastKey = sizeKey();
     const observer = typeof ResizeObserver === "function"
         ? new ResizeObserver(() => {
-            // Nur auf Breitenänderung reagieren: das offene Menü ändert die Höhe.
-            if (header.clientWidth === lastWidth)
+            const key = sizeKey();
+            if (key === lastKey)
                 return;
-            lastWidth = header.clientWidth;
+            lastKey = key;
             schedule();
         })
         : null;

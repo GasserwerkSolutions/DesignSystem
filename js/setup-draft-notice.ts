@@ -50,8 +50,9 @@ export function setupDraftNotice(notice: HTMLElement, options: DraftNoticeOption
 
   const view = doc.defaultView;
   const off = view ? new URL(view.location.href).searchParams.get(param) === "aus" : false;
+  // Der Adressparameter wirkt auch ohne sessionStorage; Speichern ist nur Zugabe.
   if (off) writeStore(key, "aus");
-  if (readStore(key) === "aus") notice.hidden = true;
+  if (off || readStore(key) === "aus") notice.hidden = true;
 
   const close = notice.querySelector<HTMLButtonElement>(".draft-notice__close");
   close?.addEventListener("click", () => {

@@ -911,10 +911,12 @@ function setupSiteMenu(header) {
     frame = view.requestAnimationFrame(measure);
   };
   measure();
-  let lastWidth = header.clientWidth;
+  const sizeKey = () => `${header.clientWidth}|${view ? view.getComputedStyle(nav).fontSize : ""}`;
+  let lastKey = sizeKey();
   const observer = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
-    if (header.clientWidth === lastWidth) return;
-    lastWidth = header.clientWidth;
+    const key = sizeKey();
+    if (key === lastKey) return;
+    lastKey = key;
     schedule();
   }) : null;
   observer?.observe(header);
@@ -982,7 +984,7 @@ function setupDraftNotice(notice, options = {}) {
   const view = doc.defaultView;
   const off = view ? new URL(view.location.href).searchParams.get(param) === "aus" : false;
   if (off) writeStore(key, "aus");
-  if (readStore(key) === "aus") notice.hidden = true;
+  if (off || readStore(key) === "aus") notice.hidden = true;
   const close = notice.querySelector(".draft-notice__close");
   close?.addEventListener("click", () => {
     writeStore(key, "aus");
