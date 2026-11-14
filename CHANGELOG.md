@@ -26,6 +26,22 @@
   `robots`-Meta an einer Stelle. «Ausblenden» gilt für die Sitzung,
   `?entwurf=aus` blendet für Screenshots vorab aus.
 
+### Behoben (beim Umstellen des Stebler-Neubaus gefunden)
+
+- **`back-to-top` bei reduzierter Bewegung:** Eine Selektorliste mit
+  `@supports` darin ist ungültig, Browser verwarfen die ganze Regel.
+- **`gallery` und `reference-card` mit `<picture>`:** Das Bild füllte die
+  Kachel nicht. `hero` und `media` konnten das schon.
+- **`hero--head` bei 200 % Text:** Die implizite `auto`-Spur wuchs auf die
+  Breite des längsten Worts. Jetzt `minmax(0, 1fr)`.
+- **Lightbox:** Tab und Shift+Tab bleiben im Dialog. Chrome sprang nach dem
+  letzten Knopf in die Adressleiste.
+- **`site-header--menu` misst verlässlich:** Im `inline`-Zustand schrumpft und
+  umbricht nichts mehr, der Bedarf wird summiert statt aus `scrollWidth`
+  gelesen, und Übergänge sind während der Messung aus (`.btn` hat
+  `transition: all`). Mit Anruf-Knopf im Kopf steht die Navigation
+  eingeklappt immer zuletzt.
+
 ### Behoben
 
 - **`musikraum` lief an den Kontrast- und Visual-Gates vorbei.** Die Tone-Listen
