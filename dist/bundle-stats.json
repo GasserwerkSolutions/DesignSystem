@@ -1,14 +1,14 @@
 {
   "version": "0.32.0",
   "bundle": {
-    "raw": 174008,
-    "gzip": 25883,
-    "brotli": 21782
+    "raw": 174231,
+    "gzip": 25896,
+    "brotli": 21793
   },
   "minified": {
-    "raw": 138013,
-    "gzip": 24024,
-    "brotli": 20647
+    "raw": 138154,
+    "gzip": 24036,
+    "brotli": 20607
   },
   "layers": [
     {
@@ -38,7 +38,7 @@
     },
     {
       "label": "components",
-      "raw": 180775,
+      "raw": 180990,
       "files": 57
     }
   ],
@@ -136,6 +136,10 @@
       "raw": 3220
     },
     {
+      "name": "back-to-top",
+      "raw": 3218
+    },
+    {
       "name": "segmented",
       "raw": 3197
     },
@@ -154,10 +158,6 @@
     {
       "name": "date-input",
       "raw": 3029
-    },
-    {
-      "name": "back-to-top",
-      "raw": 3003
     },
     {
       "name": "slider",

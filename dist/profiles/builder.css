@@ -1800,8 +1800,12 @@
         cursor: pointer;
       }
       .site-header--menu[data-menu=collapsed] .site-header__inner {
+        display: flex;
         flex-wrap: wrap;
-        grid-template-columns: minmax(0, 1fr) auto;
+        gap: var(--space-8) var(--space-12);
+      }
+      .site-header--menu[data-menu=collapsed] .site-header__inner > .btn {
+        inline-size: auto;
       }
       .site-header--menu[data-menu=collapsed] .site-header__brand {
         margin-inline-end: auto;
@@ -1811,6 +1815,7 @@
       }
       .site-header--menu[data-menu=collapsed] .site-header__nav {
         display: none;
+        order: 1;
         flex-basis: 100%;
         flex-direction: column;
         align-items: stretch;
