@@ -6,7 +6,7 @@
  * Mit diesem Setup öffnet der Klick stattdessen die Lightbox (<dialog>).
  * Fokusfalle, Escape und Top-Layer kommen vom nativen Dialog.
  *
- * Tastatur: ←/→ blättern, Home/End springen, Esc schliesst. Beim Schliessen
+ * Tastatur: ←/→ blättern, Home/End springen, Esc schliesst, Tab bleibt im Dialog. Beim Schliessen
  * kehrt der Fokus auf die zuletzt gezeigte Kachel zurück.
  *
  * Markup-Erwartung (siehe patterns/gallery.css Header):

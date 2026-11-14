@@ -879,6 +879,20 @@ var DS = (() => {
     dialog.addEventListener("keydown", (e) => {
       if (!owner) return;
       const last = items().length - 1;
+      if (e.key === "Tab") {
+        const stops = [...dialog.querySelectorAll("button")].filter((b) => !b.hidden && b.getClientRects().length > 0);
+        if (stops.length === 0) return;
+        const first = stops[0], last2 = stops[stops.length - 1];
+        const active = doc.activeElement;
+        if (e.shiftKey && (active === first || !dialog.contains(active))) {
+          last2.focus();
+          e.preventDefault();
+        } else if (!e.shiftKey && (active === last2 || !dialog.contains(active))) {
+          first.focus();
+          e.preventDefault();
+        }
+        return;
+      }
       if (e.key === "ArrowLeft") show(index - 1);
       else if (e.key === "ArrowRight") show(index + 1);
       else if (e.key === "Home") show(0);

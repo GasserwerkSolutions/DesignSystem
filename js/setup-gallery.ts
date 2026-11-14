@@ -6,7 +6,7 @@
  * Mit diesem Setup öffnet der Klick stattdessen die Lightbox (<dialog>).
  * Fokusfalle, Escape und Top-Layer kommen vom nativen Dialog.
  *
- * Tastatur: ←/→ blättern, Home/End springen, Esc schliesst. Beim Schliessen
+ * Tastatur: ←/→ blättern, Home/End springen, Esc schliesst, Tab bleibt im Dialog. Beim Schliessen
  * kehrt der Fokus auf die zuletzt gezeigte Kachel zurück.
  *
  * Markup-Erwartung (siehe patterns/gallery.css Header):
@@ -113,6 +113,17 @@ export function setupGallery(gallery: HTMLElement): Cleanup {
   dialog.addEventListener("keydown", (e) => {
     if (!owner) return;
     const last = items().length - 1;
+    // Tab bleibt im Dialog: ohne das springt Chrome nach dem letzten Knopf
+    // in die Adressleiste, und Shift+Tab läuft aus dem ersten heraus.
+    if (e.key === "Tab") {
+      const stops = [...dialog.querySelectorAll<HTMLElement>("button")].filter((b) => !b.hidden && b.getClientRects().length > 0);
+      if (stops.length === 0) return;
+      const first = stops[0], last = stops[stops.length - 1];
+      const active = doc.activeElement;
+      if (e.shiftKey && (active === first || !dialog.contains(active))) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && (active === last || !dialog.contains(active))) { first.focus(); e.preventDefault(); }
+      return;
+    }
     if (e.key === "ArrowLeft") show(index - 1);
     else if (e.key === "ArrowRight") show(index + 1);
     else if (e.key === "Home") show(0);

@@ -151,10 +151,14 @@
     padding-block-start: var(--section-py);
     display: grid;
     gap: var(--space-48);
+    /* Spuren ohne Mindestbreite: ein langes Wort bei 200 % Text darf die
+       Spalte nicht über den Bildschirm hinaus aufweiten. */
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hero--head .hero__inner {
     align-items: end;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hero--head .hero__lead {
