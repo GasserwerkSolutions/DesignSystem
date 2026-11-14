@@ -949,8 +949,15 @@ var DS = (() => {
     const collapsed = () => header.getAttribute("data-menu") === "collapsed";
     const measure = () => {
       const wasOpen = isOpen();
+      header.setAttribute("data-menu-measuring", "");
       header.setAttribute("data-menu", "inline");
-      const overflow = nav.scrollWidth > nav.clientWidth + 1 || inner.scrollWidth > inner.clientWidth + 1;
+      const cs = view ? view.getComputedStyle(inner) : null;
+      const kids = [...inner.children].filter((el) => el.getClientRects().length > 0);
+      const gap = cs ? parseFloat(cs.columnGap) || 0 : 0;
+      const pad = cs ? (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0) : 0;
+      const need = kids.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0) + gap * Math.max(0, kids.length - 1) + pad;
+      const overflow = need > inner.clientWidth + 1;
+      header.removeAttribute("data-menu-measuring");
       const below = brand ? nav.getBoundingClientRect().top >= brand.getBoundingClientRect().bottom - 1 : false;
       if (overflow || below) {
         header.setAttribute("data-menu", "collapsed");
@@ -991,6 +998,7 @@ var DS = (() => {
       view?.cancelAnimationFrame(frame);
       header.removeAttribute("data-menu");
       header.removeAttribute("data-menu-open");
+      header.removeAttribute("data-menu-measuring");
       toggle.setAttribute("aria-expanded", "false");
       cleanups11.delete(header);
     };

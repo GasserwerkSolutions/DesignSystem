@@ -143,5 +143,13 @@
     min-block-size: var(--menu-link-min-h, 3rem);
     border-block-start: 1px solid var(--color-border-light);
   }
+  /* inline: Nichts darf schrumpfen oder umbrechen. Sonst weicht der Platzmangel
+     in ein gestauchtes Logo oder einen mehrzeiligen Knopf aus, statt als
+     Überlauf messbar zu werden, und das Menü klappt nie. */
+  .site-header--menu[data-menu="inline"] .site-header__inner > * { flex-shrink: 0; }
+  /* Während setupSiteMenu misst: keine Übergänge, sonst misst es Zwischenstände
+     (.btn hat transition: all). */
+  .site-header--menu[data-menu-measuring] * { transition: none !important; }
   .site-header--menu[data-menu="inline"] .site-header__nav { flex-wrap: nowrap; }
+  .site-header--menu[data-menu="inline"] :where(.site-header__link, .site-header__inner > .btn) { white-space: nowrap; }
 }
