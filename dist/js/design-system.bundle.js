@@ -1,8 +1,8 @@
 // js/lifecycle.ts
 var noopCleanup = () => {
 };
-function combineCleanups(cleanups11) {
-  const list = [...cleanups11];
+function combineCleanups(cleanups13) {
+  const list = [...cleanups13];
   let active = true;
   return () => {
     if (!active) return;
@@ -551,89 +551,6 @@ function setupThemeToggle(root = document, options = {}) {
   return combineCleanups([...buttons].map(setupButton2));
 }
 
-// js/setup-gallery.ts
-var cleanups10 = /* @__PURE__ */ new WeakMap();
-function setupGallery(gallery) {
-  const existing = cleanups10.get(gallery);
-  if (existing) return existing;
-  const doc = gallery.ownerDocument;
-  const dialog = gallery.dataset.lightbox ? doc.getElementById(gallery.dataset.lightbox) : doc.querySelector("dialog.lightbox");
-  const image = dialog?.querySelector(".lightbox__image");
-  if (!dialog || !image || typeof dialog.showModal !== "function") return noopCleanup;
-  const caption = dialog.querySelector(".lightbox__caption");
-  const prev = dialog.querySelector(".lightbox__nav--prev");
-  const next = dialog.querySelector(".lightbox__nav--next");
-  const close = dialog.querySelector(".lightbox__close");
-  const controller = new AbortController();
-  const signal = controller.signal;
-  const items = () => [...gallery.querySelectorAll("a.gallery__item")];
-  let index = -1;
-  let owner = false;
-  const show = (i) => {
-    const list = items();
-    if (list.length === 0) return;
-    index = Math.min(Math.max(i, 0), list.length - 1);
-    const item = list[index];
-    const thumb = item.querySelector("img");
-    const text = item.dataset.caption ?? thumb?.alt ?? "";
-    image.src = item.href;
-    image.alt = thumb?.alt ?? "";
-    if (caption) {
-      caption.textContent = list.length > 1 ? `${text} (${index + 1}/${list.length})`.trim() : text;
-    }
-    if (prev) prev.hidden = index === 0;
-    if (next) next.hidden = index === list.length - 1;
-  };
-  gallery.addEventListener("click", (e) => {
-    const item = e.target.closest("a.gallery__item");
-    if (!item || !gallery.contains(item)) return;
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
-    e.preventDefault();
-    owner = true;
-    show(items().indexOf(item));
-    if (!dialog.open) dialog.showModal();
-  }, { signal });
-  prev?.addEventListener("click", () => {
-    if (owner) show(index - 1);
-  }, { signal });
-  next?.addEventListener("click", () => {
-    if (owner) show(index + 1);
-  }, { signal });
-  close?.addEventListener("click", () => {
-    if (owner) dialog.close();
-  }, { signal });
-  dialog.addEventListener("keydown", (e) => {
-    if (!owner) return;
-    const last = items().length - 1;
-    if (e.key === "ArrowLeft") show(index - 1);
-    else if (e.key === "ArrowRight") show(index + 1);
-    else if (e.key === "Home") show(0);
-    else if (e.key === "End") show(last);
-    else return;
-    e.preventDefault();
-  }, { signal });
-  dialog.addEventListener("click", (e) => {
-    if (owner && e.target === dialog) dialog.close();
-  }, { signal });
-  dialog.addEventListener("close", () => {
-    if (!owner) return;
-    owner = false;
-    image.removeAttribute("src");
-    items()[index]?.focus();
-  }, { signal });
-  const cleanup = () => {
-    controller.abort();
-    if (owner && dialog.open) dialog.close();
-    owner = false;
-    cleanups10.delete(gallery);
-  };
-  cleanups10.set(gallery, cleanup);
-  return cleanup;
-}
-function setupGalleries(root = document) {
-  return combineCleanups([...root.querySelectorAll("[data-gallery]")].map(setupGallery));
-}
-
 // js/layout-rules.ts
 var IMAGE_RATIOS = {
   pano: 21 / 9,
@@ -729,16 +646,21 @@ function bestRatio(natural, protect = [], candidates = ["wide", "classic", "phot
   }
   return best ? best.name : null;
 }
+function galleryMoreLabel(rest) {
+  if (rest <= 0) return "";
+  return rest === 1 ? "1 weiteres Bild zeigen" : `${rest} weitere Bilder zeigen`;
+}
 function planGallery(count, options = {}) {
+  const total = Math.max(0, Math.floor(count));
   const max = options.max ?? 13;
-  const n = Math.min(Math.max(0, Math.floor(count)), max);
-  const rest = (shown) => Math.max(0, Math.floor(count)) - shown;
-  if (n <= 1) return { variant: "none", className: "", show: n, rest: rest(n) };
-  if (n <= 3) return { variant: "fit", className: "gallery gallery--fit", show: n, rest: rest(n) };
+  const n = Math.min(total, max);
+  const plan = (variant, className, show) => ({ variant, className, show, rest: total - show, moreLabel: galleryMoreLabel(total - show) });
+  if (n <= 1) return plan("none", "", n);
+  if (n <= 3) return plan("fit", "gallery gallery--fit", n);
   const lead = n - (n - 1) % 4;
   const plain = n - n % 4;
   const useLead = lead > plain || options.preferLead === true && lead >= 5;
-  return useLead && lead >= 5 ? { variant: "lead", className: "gallery gallery--lead", show: lead, rest: rest(lead) } : { variant: "default", className: "gallery", show: plain, rest: rest(plain) };
+  return useLead && lead >= 5 ? plan("lead", "gallery gallery--lead", lead) : plan("default", "gallery", plain);
 }
 function planHero(image, options = {}) {
   const minWidth = options.minWidth ?? 1280;
@@ -811,6 +733,253 @@ function validatePage(sections, options = {}) {
   return issues;
 }
 
+// js/setup-gallery.ts
+function setupRest(gallery, signal) {
+  const rest = gallery.querySelectorAll(":scope > [data-gallery-rest]");
+  if (rest.length === 0) return () => {
+  };
+  const doc = gallery.ownerDocument;
+  const button = doc.createElement("button");
+  button.type = "button";
+  button.className = "gallery__more";
+  button.textContent = gallery.dataset.moreLabel ?? galleryMoreLabel(rest.length);
+  gallery.setAttribute("data-collapsed", "");
+  gallery.after(button);
+  button.addEventListener("click", () => {
+    gallery.removeAttribute("data-collapsed");
+    rest[0].querySelector("a, button")?.focus();
+    button.remove();
+  }, { signal });
+  return () => {
+    gallery.removeAttribute("data-collapsed");
+    button.remove();
+  };
+}
+var cleanups10 = /* @__PURE__ */ new WeakMap();
+function setupGallery(gallery) {
+  const existing = cleanups10.get(gallery);
+  if (existing) return existing;
+  const doc = gallery.ownerDocument;
+  const controller = new AbortController();
+  const signal = controller.signal;
+  const undoRest = setupRest(gallery, signal);
+  const dialog = gallery.dataset.lightbox ? doc.getElementById(gallery.dataset.lightbox) : doc.querySelector("dialog.lightbox");
+  const image = dialog?.querySelector(".lightbox__image");
+  if (!dialog || !image || typeof dialog.showModal !== "function") {
+    const restOnly = () => {
+      controller.abort();
+      undoRest();
+      cleanups10.delete(gallery);
+    };
+    cleanups10.set(gallery, restOnly);
+    return restOnly;
+  }
+  const caption = dialog.querySelector(".lightbox__caption");
+  const prev = dialog.querySelector(".lightbox__nav--prev");
+  const next = dialog.querySelector(".lightbox__nav--next");
+  const close = dialog.querySelector(".lightbox__close");
+  const items = () => [...gallery.querySelectorAll("a.gallery__item")];
+  let index = -1;
+  let owner = false;
+  const show = (i) => {
+    const list = items();
+    if (list.length === 0) return;
+    index = Math.min(Math.max(i, 0), list.length - 1);
+    const item = list[index];
+    const thumb = item.querySelector("img");
+    const text = item.dataset.caption ?? thumb?.alt ?? "";
+    image.src = item.href;
+    image.alt = thumb?.alt ?? "";
+    if (caption) {
+      caption.textContent = list.length > 1 ? `${text} (${index + 1}/${list.length})`.trim() : text;
+    }
+    if (prev) prev.hidden = index === 0;
+    if (next) next.hidden = index === list.length - 1;
+  };
+  gallery.addEventListener("click", (e) => {
+    const item = e.target.closest("a.gallery__item");
+    if (!item || !gallery.contains(item)) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    owner = true;
+    show(items().indexOf(item));
+    if (!dialog.open) dialog.showModal();
+  }, { signal });
+  prev?.addEventListener("click", () => {
+    if (owner) show(index - 1);
+  }, { signal });
+  next?.addEventListener("click", () => {
+    if (owner) show(index + 1);
+  }, { signal });
+  close?.addEventListener("click", () => {
+    if (owner) dialog.close();
+  }, { signal });
+  dialog.addEventListener("keydown", (e) => {
+    if (!owner) return;
+    const last = items().length - 1;
+    if (e.key === "ArrowLeft") show(index - 1);
+    else if (e.key === "ArrowRight") show(index + 1);
+    else if (e.key === "Home") show(0);
+    else if (e.key === "End") show(last);
+    else return;
+    e.preventDefault();
+  }, { signal });
+  dialog.addEventListener("click", (e) => {
+    if (owner && e.target === dialog) dialog.close();
+  }, { signal });
+  dialog.addEventListener("close", () => {
+    if (!owner) return;
+    owner = false;
+    image.removeAttribute("src");
+    const shown = items()[index];
+    const more = gallery.nextElementSibling;
+    if (shown?.closest("[data-gallery-rest]") && gallery.hasAttribute("data-collapsed") && more instanceof HTMLElement && more.matches(".gallery__more")) more.focus();
+    else shown?.focus();
+  }, { signal });
+  const cleanup = () => {
+    controller.abort();
+    undoRest();
+    if (owner && dialog.open) dialog.close();
+    owner = false;
+    cleanups10.delete(gallery);
+  };
+  cleanups10.set(gallery, cleanup);
+  return cleanup;
+}
+function setupGalleries(root = document) {
+  return combineCleanups([...root.querySelectorAll("[data-gallery]")].map(setupGallery));
+}
+
+// js/setup-site-menu.ts
+var cleanups11 = /* @__PURE__ */ new WeakMap();
+function setupSiteMenu(header) {
+  const existing = cleanups11.get(header);
+  if (existing) return existing;
+  const toggle = header.querySelector(".site-header__toggle");
+  const navId = toggle?.getAttribute("aria-controls");
+  const nav = navId ? header.ownerDocument.getElementById(navId) : header.querySelector(".site-header__nav");
+  if (!toggle || !nav) return noopCleanup;
+  const controller = new AbortController();
+  const signal = controller.signal;
+  const view = header.ownerDocument.defaultView;
+  const brand = header.querySelector(".site-header__brand");
+  const inner = nav.parentElement ?? header;
+  const setOpen = (open) => {
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) header.setAttribute("data-menu-open", "");
+    else header.removeAttribute("data-menu-open");
+  };
+  const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
+  const collapsed = () => header.getAttribute("data-menu") === "collapsed";
+  const measure = () => {
+    const wasOpen = isOpen();
+    header.setAttribute("data-menu", "inline");
+    const overflow = nav.scrollWidth > nav.clientWidth + 1 || inner.scrollWidth > inner.clientWidth + 1;
+    const below = brand ? nav.getBoundingClientRect().top >= brand.getBoundingClientRect().bottom - 1 : false;
+    if (overflow || below) {
+      header.setAttribute("data-menu", "collapsed");
+      setOpen(wasOpen);
+    } else {
+      setOpen(false);
+    }
+  };
+  let frame = 0;
+  const schedule = () => {
+    if (!view) return measure();
+    view.cancelAnimationFrame(frame);
+    frame = view.requestAnimationFrame(measure);
+  };
+  measure();
+  let lastWidth = header.clientWidth;
+  const observer = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
+    if (header.clientWidth === lastWidth) return;
+    lastWidth = header.clientWidth;
+    schedule();
+  }) : null;
+  observer?.observe(header);
+  header.ownerDocument.fonts?.ready.then(() => {
+    if (!signal.aborted) schedule();
+  });
+  toggle.addEventListener("click", () => setOpen(!isOpen()), { signal });
+  header.ownerDocument.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !isOpen()) return;
+    setOpen(false);
+    toggle.focus();
+  }, { signal });
+  nav.addEventListener("click", (e) => {
+    if (e.target.closest("a") && collapsed()) setOpen(false);
+  }, { signal });
+  const cleanup = () => {
+    controller.abort();
+    observer?.disconnect();
+    view?.cancelAnimationFrame(frame);
+    header.removeAttribute("data-menu");
+    header.removeAttribute("data-menu-open");
+    toggle.setAttribute("aria-expanded", "false");
+    cleanups11.delete(header);
+  };
+  cleanups11.set(header, cleanup);
+  return cleanup;
+}
+function setupSiteMenus(root = document) {
+  return combineCleanups(
+    [...root.querySelectorAll(".site-header--menu")].map(setupSiteMenu)
+  );
+}
+
+// js/setup-draft-notice.ts
+var cleanups12 = /* @__PURE__ */ new WeakMap();
+function readStore(key) {
+  try {
+    return sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+function writeStore(key, value) {
+  try {
+    sessionStorage.setItem(key, value);
+  } catch {
+  }
+}
+function setupDraftNotice(notice, options = {}) {
+  const existing = cleanups12.get(notice);
+  if (existing) return existing;
+  const doc = notice.ownerDocument;
+  if (doc.documentElement.dataset.stage !== "entwurf") return noopCleanup;
+  const key = options.storageKey ?? "ds-draft-notice";
+  const param = options.param ?? "entwurf";
+  const controller = new AbortController();
+  let addedMeta = null;
+  if (!doc.querySelector('meta[name="robots"]')) {
+    addedMeta = doc.createElement("meta");
+    addedMeta.name = "robots";
+    addedMeta.content = "noindex, nofollow";
+    doc.head.append(addedMeta);
+  }
+  const view = doc.defaultView;
+  const off = view ? new URL(view.location.href).searchParams.get(param) === "aus" : false;
+  if (off) writeStore(key, "aus");
+  if (readStore(key) === "aus") notice.hidden = true;
+  const close = notice.querySelector(".draft-notice__close");
+  close?.addEventListener("click", () => {
+    writeStore(key, "aus");
+    notice.hidden = true;
+  }, { signal: controller.signal });
+  const cleanup = () => {
+    controller.abort();
+    addedMeta?.remove();
+    cleanups12.delete(notice);
+  };
+  cleanups12.set(notice, cleanup);
+  return cleanup;
+}
+function setupDraftNotices(root = document, options = {}) {
+  return combineCleanups(
+    [...root.querySelectorAll("[data-draft-notice]")].map((el) => setupDraftNotice(el, options))
+  );
+}
+
 // js/index.ts
 function setupAll(root = document) {
   return combineCleanups([
@@ -822,7 +991,9 @@ function setupAll(root = document) {
     setupCopyButton(root),
     setupOtpInput(root),
     setupThemeToggle(root),
-    setupGalleries(root)
+    setupGalleries(root),
+    setupSiteMenus(root),
+    setupDraftNotices(root)
   ]);
 }
 export {
@@ -834,6 +1005,7 @@ export {
   combineCleanups,
   fitImage,
   focusFor,
+  galleryMoreLabel,
   lostShare,
   noopCleanup,
   parseProtect,
@@ -845,6 +1017,8 @@ export {
   setupCopyButton,
   setupDismisser,
   setupDismissers,
+  setupDraftNotice,
+  setupDraftNotices,
   setupFileUpload,
   setupFileUploads,
   setupGalleries,
@@ -852,6 +1026,8 @@ export {
   setupOtpInput,
   setupPopover,
   setupPopovers,
+  setupSiteMenu,
+  setupSiteMenus,
   setupSlider,
   setupSliders,
   setupThemeToggle,

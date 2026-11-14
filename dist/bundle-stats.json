@@ -1,14 +1,14 @@
 {
   "version": "0.32.0",
   "bundle": {
-    "raw": 172540,
-    "gzip": 25696,
-    "brotli": 21629
+    "raw": 174008,
+    "gzip": 25883,
+    "brotli": 21782
   },
   "minified": {
-    "raw": 136944,
-    "gzip": 23856,
-    "brotli": 20506
+    "raw": 138013,
+    "gzip": 24024,
+    "brotli": 20647
   },
   "layers": [
     {

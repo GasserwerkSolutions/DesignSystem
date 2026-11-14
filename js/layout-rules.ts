@@ -159,8 +159,21 @@ export interface GalleryPlan {
   className: string;
   /** So viele Bilder zeigt das Raster lückenlos. */
   show: number;
-  /** Bilder, die nicht ins Raster passen (zweite Galerie oder weglassen). */
+  /**
+   * Bilder, die nicht ins lückenlose Raster passen. Sie werden nie still
+   * weggelassen: Im Markup stehen sie als `<li data-gallery-rest>` in
+   * derselben Galerie; setupGallery blendet sie hinter einen Knopf
+   * (`moreLabel`) aus, die Lightbox blättert trotzdem durch alle.
+   */
   rest: number;
+  /** Beschriftung des Knopfs für die übrigen Bilder, leer wenn rest = 0. */
+  moreLabel: string;
+}
+
+/** «1 weiteres Bild zeigen», «3 weitere Bilder zeigen». */
+export function galleryMoreLabel(rest: number): string {
+  if (rest <= 0) return "";
+  return rest === 1 ? "1 weiteres Bild zeigen" : `${rest} weitere Bilder zeigen`;
 }
 
 /**
@@ -169,17 +182,19 @@ export interface GalleryPlan {
  * (default) oder 4n + 1 Bilder mit grossem erstem Bild (lead).
  */
 export function planGallery(count: number, options: { max?: number; preferLead?: boolean } = {}): GalleryPlan {
+  const total = Math.max(0, Math.floor(count));
   const max = options.max ?? 13;
-  const n = Math.min(Math.max(0, Math.floor(count)), max);
-  const rest = (shown: number): number => Math.max(0, Math.floor(count)) - shown;
-  if (n <= 1) return { variant: "none", className: "", show: n, rest: rest(n) };
-  if (n <= 3) return { variant: "fit", className: "gallery gallery--fit", show: n, rest: rest(n) };
+  const n = Math.min(total, max);
+  const plan = (variant: GalleryPlan["variant"], className: string, show: number): GalleryPlan =>
+    ({ variant, className, show, rest: total - show, moreLabel: galleryMoreLabel(total - show) });
+  if (n <= 1) return plan("none", "", n);
+  if (n <= 3) return plan("fit", "gallery gallery--fit", n);
   const lead = n - ((n - 1) % 4);            // grösstes 4k + 1 ≤ n
   const plain = n - (n % 4);                 // grösstes 4k ≤ n
   const useLead = lead > plain || (options.preferLead === true && lead >= 5);
   return useLead && lead >= 5
-    ? { variant: "lead", className: "gallery gallery--lead", show: lead, rest: rest(lead) }
-    : { variant: "default", className: "gallery", show: plain, rest: rest(plain) };
+    ? plan("lead", "gallery gallery--lead", lead)
+    : plan("default", "gallery", plain);
 }
 
 export interface HeroPlan {

@@ -128,25 +128,32 @@ export function bestRatio(natural, protect = [], candidates = ["wide", "classic"
     }
     return best ? best.name : null;
 }
+/** «1 weiteres Bild zeigen», «3 weitere Bilder zeigen». */
+export function galleryMoreLabel(rest) {
+    if (rest <= 0)
+        return "";
+    return rest === 1 ? "1 weiteres Bild zeigen" : `${rest} weitere Bilder zeigen`;
+}
 /**
  * Galerie-Variante aus der Bildzahl. Das Raster hat 2 Spalten auf Telefonen
  * und 4 sonst; lückenlos füllen es 2–3 Bilder (fit), Vielfache von 4
  * (default) oder 4n + 1 Bilder mit grossem erstem Bild (lead).
  */
 export function planGallery(count, options = {}) {
+    const total = Math.max(0, Math.floor(count));
     const max = options.max ?? 13;
-    const n = Math.min(Math.max(0, Math.floor(count)), max);
-    const rest = (shown) => Math.max(0, Math.floor(count)) - shown;
+    const n = Math.min(total, max);
+    const plan = (variant, className, show) => ({ variant, className, show, rest: total - show, moreLabel: galleryMoreLabel(total - show) });
     if (n <= 1)
-        return { variant: "none", className: "", show: n, rest: rest(n) };
+        return plan("none", "", n);
     if (n <= 3)
-        return { variant: "fit", className: "gallery gallery--fit", show: n, rest: rest(n) };
+        return plan("fit", "gallery gallery--fit", n);
     const lead = n - ((n - 1) % 4); // grösstes 4k + 1 ≤ n
     const plain = n - (n % 4); // grösstes 4k ≤ n
     const useLead = lead > plain || (options.preferLead === true && lead >= 5);
     return useLead && lead >= 5
-        ? { variant: "lead", className: "gallery gallery--lead", show: lead, rest: rest(lead) }
-        : { variant: "default", className: "gallery", show: plain, rest: rest(plain) };
+        ? plan("lead", "gallery gallery--lead", lead)
+        : plan("default", "gallery", plain);
 }
 /**
  * Kopf einer Seite. Text auf dem Foto (`hero--stage`) wird nie automatisch

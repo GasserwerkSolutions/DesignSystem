@@ -162,8 +162,40 @@ async function inspect(browser, file, width) {
       if (result.cut.length) issues.push(`${label}: Text abgeschnitten in ${[...new Set(result.cut)].join(", ")}`);
     }
   }
+  // Gleiche Bildoberkante: Seiten mit demselben data-hero-group am
+  // .hero--head werden in main() je Breite verglichen.
+  const heroTop = await page.evaluate(() => {
+    const hero = document.querySelector(".hero--head[data-hero-group]");
+    const media = hero?.querySelector(".hero__backdrop");
+    if (!hero || !media) return null;
+    return { group: hero.dataset.heroGroup, top: Math.round(media.getBoundingClientRect().top + scrollY) };
+  });
+  if (heroTop) HERO_TOPS.push({ ...heroTop, width, file: path.basename(file) });
   await page.close();
   return issues;
+}
+
+/** Gesammelte Bildoberkanten aller Seiten mit data-hero-group. */
+const HERO_TOPS = [];
+
+/** Ab dieser Breite steht der Textkopf neben dem Bild (Container ≥ 800px). */
+const HERO_TOP_MIN_WIDTH = 1024;
+
+function compareHeroTops() {
+  const problems = [];
+  const groups = new Map();
+  for (const entry of HERO_TOPS.filter((e) => e.width >= HERO_TOP_MIN_WIDTH)) {
+    const key = `${entry.group} @ ${entry.width}px`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(entry);
+  }
+  for (const [key, list] of groups) {
+    const tops = list.map((e) => e.top);
+    if (Math.max(...tops) - Math.min(...tops) > 2) {
+      problems.push(`Bildoberkante ungleich (${key}): ${list.map((e) => `${e.file} ${e.top}px`).join(", ")}`);
+    }
+  }
+  return problems;
 }
 
 async function main() {
@@ -185,6 +217,14 @@ async function main() {
     }
   } finally {
     await browser.close();
+  }
+  const heroProblems = compareHeroTops();
+  if (heroProblems.length) {
+    console.error("  [FAIL] Bildoberkante gleichartiger Seiten");
+    for (const problem of heroProblems) console.error(`         ${problem}`);
+    failures += heroProblems.length;
+  } else if (HERO_TOPS.length) {
+    console.log(`  [ok]   Bildoberkante gleich in ${new Set(HERO_TOPS.map((e) => e.group)).size} Seitengruppe(n)`);
   }
   if (failures) {
     console.error(`[check-examples] ${failures} issue(s).`);

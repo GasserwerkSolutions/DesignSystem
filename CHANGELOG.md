@@ -2,6 +2,30 @@
 
 ## [Unreleased]
 
+### Neu (aus dem Stebler-Neubau)
+
+- **`site-header--menu`: Menü-Knopf ohne festen Breakpoint.** `setupSiteMenu`
+  misst bei jeder Breitenänderung, ob die Links in einer Zeile neben der Marke
+  Platz haben, und setzt `data-menu="inline"` oder `"collapsed"`. Zehn Ziele
+  klappen früher als vier, 200 % Textgrösse klappt von selbst. `aria-expanded`,
+  Escape mit Fokus zurück auf den Knopf, Links im offenen Menü mindestens
+  48 px hoch. Ohne JavaScript bleibt das bisherige Umbrechen. Teil von
+  `website.css`, also auch im Builder-Profil.
+- **`--hero-head-min-h` für gleiche Bildoberkanten.** Mindesthöhe des
+  Textkopfs von `hero--head` ab 800 px Containerbreite. `check:examples`
+  vergleicht die Bildoberkante aller Beispielseiten mit demselben
+  `data-hero-group` und schlägt bei mehr als 2 px Abstand fehl. Die
+  Holzbau-Beispiele lagen vorher 106 px auseinander.
+- **Galerie lässt keine Bilder mehr still weg.** `planGallery` liefert neu
+  `moreLabel`; übrige Bilder stehen als `<li data-gallery-rest>` in der Liste,
+  `setupGallery` blendet sie hinter einen Knopf «N weitere Bilder zeigen»,
+  die Lightbox blättert durch alle. Die Raster-Regeln im Manifest zählen die
+  übrigen Bilder nicht mit.
+- **Entwurfshinweis `patterns/draft-notice.css` (im Projekt-Pack).**
+  `<html data-stage="entwurf">` steuert Hinweis, `.draft-only`-Fusszeile und
+  `robots`-Meta an einer Stelle. «Ausblenden» gilt für die Sitzung,
+  `?entwurf=aus` blendet für Screenshots vorab aus.
+
 ### Behoben
 
 - **`musikraum` lief an den Kontrast- und Visual-Gates vorbei.** Die Tone-Listen

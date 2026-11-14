@@ -1,0 +1,72 @@
+@layer patterns {
+  /**
+   * Draft Notice — Entwurfshinweis für Vorschauen und Neubauten vor Freigabe
+   *
+   * Eine Seite im Entwurfsstand trägt data-stage="entwurf" am <html>. Dann
+   * gilt dreierlei, an einer Stelle gesteuert:
+   *   1. Der Hinweis .draft-notice ist sichtbar (sonst verborgen).
+   *   2. Fusszeilen mit .draft-only erscheinen («Entwurf, nicht freigegeben»).
+   *   3. setupDraftNotice setzt <meta name="robots" content="noindex, nofollow">,
+   *      falls es fehlt. robots.txt und Server-Header bleiben trotzdem Pflicht:
+   *      das Meta-Tag greift nur, wenn JavaScript läuft.
+   * Ohne data-stage oder mit data-stage="live" ist nichts davon sichtbar.
+   *
+   * CONTRACT (optional):
+   *   --draft-notice-bg   Hintergrund (default Warnfläche)
+   *   --draft-notice-fg   Textfarbe
+   *
+   * Struktur:
+   *   <html data-stage="entwurf">
+   *   <div class="draft-notice" role="note" data-draft-notice>
+   *     <div class="container draft-notice__inner">
+   *       <p class="draft-notice__text"><strong>Entwurf.</strong> Inhalte sind nicht freigegeben.</p>
+   *       <button class="draft-notice__close" type="button">Ausblenden</button>
+   *     </div>
+   *   </div>
+   *   <p class="draft-only">Entwurf, nicht freigegeben</p>
+   *
+   * Ausblenden gilt für die Sitzung (sessionStorage) und lässt sich mit
+   * ?entwurf=aus in der Adresse vorwegnehmen, etwa für Screenshots.
+   */
+  .draft-notice,
+  .draft-only {
+    display: none;
+  }
+
+  :root[data-stage="entwurf"] .draft-notice:not([hidden]) {
+    display: block;
+    background: var(--draft-notice-bg, var(--status-warning-bg));
+    color: var(--draft-notice-fg, var(--status-warning-fg));
+    border-block-end: 1px solid var(--status-warning-border);
+    font-size: var(--font-sm);
+  }
+
+  :root[data-stage="entwurf"] .draft-only {
+    display: revert;
+  }
+
+  .draft-notice__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8) var(--space-16);
+    padding-block: var(--space-8);
+  }
+
+  .draft-notice__text {
+    margin: 0;
+    max-inline-size: 70ch;
+  }
+
+  .draft-notice__close {
+    min-block-size: 2.75rem;
+    padding-inline: var(--space-12);
+    border: 1px solid currentColor;
+    border-radius: var(--btn-radius, var(--radius-8));
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+}

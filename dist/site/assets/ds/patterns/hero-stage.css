@@ -24,6 +24,11 @@
    *   --hero-stage-ratio-narrow  Bildformat unter 40rem (default auto: das
    *                        Bild behält sein eigenes Format); dort steht das
    *                        Bild oben und der Text darunter
+   *   --hero-head-min-h    Mindesthöhe des Textkopfs bei --head ab 800px
+   *                        Containerbreite (default auto). Auf gleichartigen
+   *                        Seiten denselben Wert setzen, dann liegt die
+   *                        Bildoberkante überall gleich hoch;
+   *                        check:examples misst das (data-hero-group).
    *
    * Struktur --stage:
    *   <section class="hero hero--stage">
@@ -172,6 +177,10 @@
   @container (min-width: 800px) {
     .hero--head .hero__inner {
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      /* Gleiche Bildoberkante auf gleichartigen Seiten: Der Textkopf
+         bekommt eine Mindesthöhe, damit ein- und zweizeilige Titel das
+         Bild nicht unterschiedlich weit nach unten schieben. */
+      min-block-size: var(--hero-head-min-h, auto);
     }
   }
 

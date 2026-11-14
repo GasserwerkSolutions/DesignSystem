@@ -16,26 +16,58 @@
  *   <dialog class="lightbox" [id="id"]>…</dialog>
  *
  * Ohne `data-lightbox` wird der nächste `dialog.lightbox` im Dokument genutzt.
+ *
+ * Übrige Bilder: `<li data-gallery-rest>` blendet das Setup aus und setzt
+ * einen Knopf `.gallery__more` hinter die Liste («3 weitere Bilder zeigen»,
+ * Text aus `data-more-label` oder planGallery().moreLabel). Ein Klick zeigt
+ * sie und setzt den Fokus auf das erste davon. Die Lightbox zeigt immer alle.
  */
-import { combineCleanups, noopCleanup } from "./lifecycle.js";
+import { combineCleanups } from "./lifecycle.js";
+import { galleryMoreLabel } from "./layout-rules.js";
+/** Blendet übrige Bilder hinter einen sichtbaren Knopf. Ohne Lightbox nutzbar. */
+function setupRest(gallery, signal) {
+    const rest = gallery.querySelectorAll(":scope > [data-gallery-rest]");
+    if (rest.length === 0)
+        return () => { };
+    const doc = gallery.ownerDocument;
+    const button = doc.createElement("button");
+    button.type = "button";
+    button.className = "gallery__more";
+    button.textContent = gallery.dataset.moreLabel ?? galleryMoreLabel(rest.length);
+    gallery.setAttribute("data-collapsed", "");
+    gallery.after(button);
+    button.addEventListener("click", () => {
+        gallery.removeAttribute("data-collapsed");
+        rest[0].querySelector("a, button")?.focus();
+        button.remove();
+    }, { signal });
+    return () => {
+        gallery.removeAttribute("data-collapsed");
+        button.remove();
+    };
+}
 const cleanups = new WeakMap();
 export function setupGallery(gallery) {
     const existing = cleanups.get(gallery);
     if (existing)
         return existing;
     const doc = gallery.ownerDocument;
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const undoRest = setupRest(gallery, signal);
     const dialog = gallery.dataset.lightbox
         ? doc.getElementById(gallery.dataset.lightbox)
         : doc.querySelector("dialog.lightbox");
     const image = dialog?.querySelector(".lightbox__image");
-    if (!dialog || !image || typeof dialog.showModal !== "function")
-        return noopCleanup;
+    if (!dialog || !image || typeof dialog.showModal !== "function") {
+        const restOnly = () => { controller.abort(); undoRest(); cleanups.delete(gallery); };
+        cleanups.set(gallery, restOnly);
+        return restOnly;
+    }
     const caption = dialog.querySelector(".lightbox__caption");
     const prev = dialog.querySelector(".lightbox__nav--prev");
     const next = dialog.querySelector(".lightbox__nav--next");
     const close = dialog.querySelector(".lightbox__close");
-    const controller = new AbortController();
-    const signal = controller.signal;
     const items = () => [...gallery.querySelectorAll("a.gallery__item")];
     let index = -1;
     /** Nur die Galerie, die den Dialog geöffnet hat, reagiert auf dessen Events. */
@@ -103,10 +135,18 @@ export function setupGallery(gallery) {
             return;
         owner = false;
         image.removeAttribute("src");
-        items()[index]?.focus();
+        const shown = items()[index];
+        // Ein ausgeblendetes übriges Bild kann keinen Fokus bekommen: dann der Knopf.
+        const more = gallery.nextElementSibling;
+        if (shown?.closest("[data-gallery-rest]") && gallery.hasAttribute("data-collapsed")
+            && more instanceof HTMLElement && more.matches(".gallery__more"))
+            more.focus();
+        else
+            shown?.focus();
     }, { signal });
     const cleanup = () => {
         controller.abort();
+        undoRest();
         if (owner && dialog.open)
             dialog.close();
         owner = false;

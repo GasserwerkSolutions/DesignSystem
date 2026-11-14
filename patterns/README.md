@@ -6,7 +6,10 @@ This layer sits above `components/`: components are reusable UI parts, patterns 
 
 ## Included patterns
 
-- `site-header` — brand, navigation, optional sticky header
+- `site-header` — brand, navigation, optional sticky header. `site-header--menu`
+  legt die Navigation hinter einen Menü-Knopf, sobald die Links nicht in eine
+  Zeile passen (gemessen von `setupSiteMenu`, kein fester Breakpoint; Escape
+  schliesst, Links im offenen Menü mindestens 48 px hoch)
 - `hero` — centered, split, soft, fullbleed landing sections
 - `section-head` — eyebrow, title, lead text for repeatable sections
 - `trustbar` — compact facts, signals, opening hours, review snippets
@@ -157,14 +160,24 @@ unverändert bleiben (18.9 KB roh, 5.2 KB gzip):
 - `hero--stage` / `hero--head` / `hero--dark`: drei Kopf-Varianten mit einer
   gemeinsamen Höhe `--hero-stage-h`. Unter 40rem steht das Bild oben im festen
   Format und der Text darunter, weil ein Querformat im hohen Rahmen bis auf
-  einen Streifen beschnitten würde.
+  einen Streifen beschnitten würde. `--hero-head-min-h` gibt dem Textkopf von
+  `hero--head` eine Mindesthöhe; mit demselben Wert auf gleichartigen Seiten
+  liegt die Bildoberkante überall gleich hoch. `check:examples` vergleicht
+  die Oberkante aller Seiten mit demselben `data-hero-group`.
 - `project-facts`: Eckdaten eines Leitprojekts.
 - `spec`: Bauteil-Spezifikation als Begriff/Wert-Zeilen pro Bauteil.
 - `legend-figure`: Bild mit nummerierten Marken und Legende (CSS-Counter).
 - `gallery` + `lightbox`: Raster mit 2 Spalten auf Telefonen und höchstens 4
   sonst. `gallery--lead` füllt lückenlos bei 5, 9, 13 Bildern, `gallery--fit`
   ist für 2–3 Bilder. Lightbox über `setupGallery` (in `setupAll` enthalten);
-  ohne JavaScript öffnet der Link das grosse Bild.
+  ohne JavaScript öffnet der Link das grosse Bild. Bilder, die nicht ins
+  lückenlose Raster passen, stehen als `<li data-gallery-rest>` in derselben
+  Liste; `setupGallery` zeigt sie hinter einem Knopf «3 weitere Bilder
+  zeigen». Kein Bild wird still weggelassen.
+- `draft-notice`: Entwurfshinweis für Vorschauen. `<html data-stage="entwurf">`
+  steuert an einer Stelle den Hinweis oben, Fusszeilen mit `.draft-only` und
+  (über `setupDraftNotice`) ein `robots`-Meta `noindex, nofollow`. Ersetzt
+  weder robots.txt noch einen `X-Robots-Tag`-Header.
 - `project-stages`: zwei benannte Projektstadien nebeneinander mit Textmarke.
   «Vorher/Nachher» nur bei gleichem Standpunkt; bewusst kein Schieberegler.
 
@@ -219,7 +232,8 @@ import { planGallery, fitImage, bestRatio, planHero, stageLabels, validatePage }
   from "@gasserwerksolutions/design-system/js/layout-rules";
 
 planGallery(7);
-// → { variant: "lead", className: "gallery gallery--lead", show: 5, rest: 2 }
+// → { variant: "lead", className: "gallery gallery--lead", show: 5, rest: 2,
+//     moreLabel: "2 weitere Bilder zeigen" }
 
 fitImage({ w: 1280, h: 615 }, 4 / 3, parseProtect("0.05 0.1 0.9 0.8"));
 // → { fit: "contain", reason: "Kein Ausschnitt in diesem Format hält den geschützten Bereich; …" }
@@ -231,7 +245,8 @@ validatePage([{ pattern: "hero", headingLevel: 1 }, { pattern: "gallery", headin
 - `fitImage` / `bestRatio`: füllen, Fokus verschieben oder ganz zeigen, je
   nachdem ob der geschützte Bereich hält. `bestRatio` gibt `null` zurück, wenn
   kein Raster-Format passt (dann `media--natural`).
-- `planGallery`: Variante und Bildzahl, die das Raster lückenlos füllt.
+- `planGallery`: Variante und Bildzahl, die das Raster lückenlos füllt, dazu
+  `rest` und `moreLabel` für den Knopf, der die übrigen Bilder zeigt.
 - `planHero`: wählt nie Text auf dem Foto; zu kleine Bilder und Hochformate
   ergeben einen Kopf ohne Bild.
 - `validatePage`: Abschnittsfolge (ein Kopf, ein Seitentitel, keine
