@@ -16,7 +16,7 @@
    *   <ul class="gallery" data-gallery>
    *     <li><a class="gallery__item" href="gross.jpg" data-caption="Laube von Süden">
    *       <img src="klein.jpg" alt="…" width="480" height="360" loading="lazy">
-   *     </a></li>
+   *     </a></li>           (statt <img> auch <picture> mit <source> und <img>)
    *   </ul>
    *   <dialog class="lightbox" aria-label="Bildansicht">
    *     <button class="lightbox__close" type="button" aria-label="Schliessen">×</button>
@@ -67,7 +67,8 @@
     background: var(--color-bg-tertiary);
   }
 
-  .gallery__item > img {
+  .gallery__item > img,
+  .gallery__item > picture > img {
     display: block;
     inline-size: 100%;
     block-size: 100%;
@@ -76,7 +77,14 @@
     transition: transform var(--motion-transition);
   }
 
-  .gallery__item:hover > img {
+  /* <picture> (z. B. WebP mit JPEG-Ersatz) füllt den Rahmen wie bei media. */
+  .gallery__item > picture {
+    display: block;
+    block-size: 100%;
+  }
+
+  .gallery__item:hover > img,
+  .gallery__item:hover > picture > img {
     transform: scale(1.03);
   }
 
@@ -190,8 +198,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .gallery__item > img { transition: none; }
-    .gallery__item:hover > img { transform: none; }
+    .gallery__item > img, .gallery__item > picture > img { transition: none; }
+    .gallery__item:hover > img, .gallery__item:hover > picture > img { transform: none; }
   }
 
   .gallery[data-collapsed] > [data-gallery-rest] {

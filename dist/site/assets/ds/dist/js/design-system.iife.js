@@ -879,6 +879,20 @@ var DS = (() => {
     dialog.addEventListener("keydown", (e) => {
       if (!owner) return;
       const last = items().length - 1;
+      if (e.key === "Tab") {
+        const stops = [...dialog.querySelectorAll("button")].filter((b) => !b.hidden && b.getClientRects().length > 0);
+        if (stops.length === 0) return;
+        const first = stops[0], last2 = stops[stops.length - 1];
+        const active = doc.activeElement;
+        if (e.shiftKey && (active === first || !dialog.contains(active))) {
+          last2.focus();
+          e.preventDefault();
+        } else if (!e.shiftKey && (active === last2 || !dialog.contains(active))) {
+          first.focus();
+          e.preventDefault();
+        }
+        return;
+      }
       if (e.key === "ArrowLeft") show(index - 1);
       else if (e.key === "ArrowRight") show(index + 1);
       else if (e.key === "Home") show(0);
@@ -935,8 +949,15 @@ var DS = (() => {
     const collapsed = () => header.getAttribute("data-menu") === "collapsed";
     const measure = () => {
       const wasOpen = isOpen();
+      header.setAttribute("data-menu-measuring", "");
       header.setAttribute("data-menu", "inline");
-      const overflow = nav.scrollWidth > nav.clientWidth + 1 || inner.scrollWidth > inner.clientWidth + 1;
+      const cs = view ? view.getComputedStyle(inner) : null;
+      const kids = [...inner.children].filter((el) => el.getClientRects().length > 0);
+      const gap = cs ? parseFloat(cs.columnGap) || 0 : 0;
+      const pad = cs ? (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0) : 0;
+      const need = kids.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0) + gap * Math.max(0, kids.length - 1) + pad;
+      const overflow = need > inner.clientWidth + 1;
+      header.removeAttribute("data-menu-measuring");
       const below = brand ? nav.getBoundingClientRect().top >= brand.getBoundingClientRect().bottom - 1 : false;
       if (overflow || below) {
         header.setAttribute("data-menu", "collapsed");
@@ -977,6 +998,7 @@ var DS = (() => {
       view?.cancelAnimationFrame(frame);
       header.removeAttribute("data-menu");
       header.removeAttribute("data-menu-open");
+      header.removeAttribute("data-menu-measuring");
       toggle.setAttribute("aria-expanded", "false");
       cleanups11.delete(header);
     };

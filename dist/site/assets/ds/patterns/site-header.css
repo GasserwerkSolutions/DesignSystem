@@ -99,6 +99,7 @@
    *       <nav class="site-header__nav" id="nav" aria-label="Hauptnavigation">
    *         <a class="site-header__link" href="…">…</a> …
    *       </nav>
+   *       <a class="btn site-header__action" href="tel:…">Anrufen</a>  (optional)
    *     </div>
    *   </header>
    */
@@ -117,13 +118,18 @@
   }
 
   .site-header--menu[data-menu="collapsed"] .site-header__inner {
+    display: flex;
     flex-wrap: wrap;
-    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-8) var(--space-12);
   }
+  /* Bedienteile (z. B. ein Anruf-Knopf) bleiben in der Kopfzeile neben dem
+     Menü-Knopf; die Navigation steht immer zuletzt in voller Breite. */
+  .site-header--menu[data-menu="collapsed"] .site-header__inner > .btn { inline-size: auto; }
   .site-header--menu[data-menu="collapsed"] .site-header__brand { margin-inline-end: auto; }
   .site-header--menu[data-menu="collapsed"] .site-header__toggle { display: inline-flex; }
   .site-header--menu[data-menu="collapsed"] .site-header__nav {
     display: none;
+    order: 1;
     flex-basis: 100%;
     flex-direction: column;
     align-items: stretch;
@@ -137,5 +143,13 @@
     min-block-size: var(--menu-link-min-h, 3rem);
     border-block-start: 1px solid var(--color-border-light);
   }
+  /* inline: Nichts darf schrumpfen oder umbrechen. Sonst weicht der Platzmangel
+     in ein gestauchtes Logo oder einen mehrzeiligen Knopf aus, statt als
+     Überlauf messbar zu werden, und das Menü klappt nie. */
+  .site-header--menu[data-menu="inline"] .site-header__inner > * { flex-shrink: 0; }
+  /* Während setupSiteMenu misst: keine Übergänge, sonst misst es Zwischenstände
+     (.btn hat transition: all). */
+  .site-header--menu[data-menu-measuring] * { transition: none !important; }
   .site-header--menu[data-menu="inline"] .site-header__nav { flex-wrap: nowrap; }
+  .site-header--menu[data-menu="inline"] :where(.site-header__link, .site-header__inner > .btn) { white-space: nowrap; }
 }
