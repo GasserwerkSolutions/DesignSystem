@@ -1,0 +1,83 @@
+@layer patterns {
+  /**
+   * Reveal — Einblenden beim Scrollen
+   *
+   * Elemente gleiten ein, während sie in den sichtbaren Bereich kommen. Die
+   * Bewegung hängt an der Scrollposition (Scroll-driven Animation), läuft
+   * also rückwärts, wenn zurückgescrollt wird, und braucht kein JavaScript.
+   *
+   * CONTRACT (optional):
+   *   --reveal-distance   Weg des Einschubs (default 1.5rem)
+   *   --reveal-stagger    Versatz pro Geschwister in .reveal-group (default 6%, höchstens 60%)
+   *
+   * Struktur:
+   *   <div class="section-head reveal">…</div>
+   *   <figure class="media reveal reveal--wipe">…</figure>
+   *   <div class="reference-grid reveal-group">…Karten…</div>
+   *
+   * Regeln:
+   *   - Ruhezustand ist sichtbar. Ohne Unterstützung, bei reduzierter
+   *     Bewegung und im Druck passiert nichts.
+   *   - Nicht auf das erste Bild der Seite (LCP) und nicht auf <main>,
+   *     <section> mit Hintergrund oder ganze Seiten: einzelne Blöcke.
+   *   - Die Animation endet, sobald das Element ganz im Bild ist
+   *     (entry 100%). Damit bleibt auch der letzte Block einer Seite nie
+   *     halb durchsichtig stehen.
+   */
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      @keyframes reveal-rise {
+        from {
+          opacity: 0;
+          translate: 0 var(--reveal-distance, 1.5rem);
+        }
+      }
+
+      @keyframes reveal-fade {
+        from {
+          opacity: 0;
+        }
+      }
+
+      @keyframes reveal-wipe {
+        from {
+          clip-path: inset(0 0 100% 0);
+        }
+        to {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      .reveal,
+      .reveal-group > * {
+        animation: reveal-rise auto linear backwards;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+
+      .reveal--fade {
+        animation-name: reveal-fade;
+      }
+
+      /* Bild wird von oben nach unten aufgedeckt. */
+      .reveal--wipe {
+        animation-name: reveal-wipe;
+      }
+
+      /* Geschwister nacheinander: jedes beginnt etwas später, alle sind
+         fertig, sobald sie ganz im Bild sind. animation-delay wirkt bei
+         Scroll-Zeitachsen nicht, darum wird der Beginn des Bereichs
+         verschoben (höchstens bis 60%, damit auch das zwölfte Geschwister
+         noch sichtbar einblendet). Ohne sibling-index() blenden alle
+         gleichzeitig. */
+      @supports (animation-range: entry calc(sibling-index() * 1%)) {
+        .reveal-group > * {
+          animation-range:
+            entry min(60%, calc((sibling-index() - 1) * var(--reveal-stagger, 6%)))
+            entry 100%;
+        }
+      }
+    }
+  }
+}

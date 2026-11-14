@@ -1,0 +1,48 @@
+@layer patterns {
+  /**
+   * Scroll Progress — Lesefortschritt
+   *
+   * Feine Linie am oberen Rand, die mit der Seite mitwächst. Für lange
+   * Projekt- und Leistungsseiten.
+   *
+   * CONTRACT (optional):
+   *   --scroll-progress-color   Farbe (default --color-interactive)
+   *   --scroll-progress-size    Stärke (default 3px)
+   *
+   * Struktur (leer, rein dekorativ, als erstes Kind von <body>):
+   *   <div class="scroll-progress"></div>
+   *
+   * Ohne Unterstützung und bei reduzierter Bewegung ist die Linie unsichtbar.
+   */
+
+  .scroll-progress {
+    display: none;
+  }
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      @keyframes scroll-progress-grow {
+        from {
+          scale: 0 1;
+        }
+      }
+
+      .scroll-progress {
+        display: block;
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: var(--z-toast, 1000);
+        block-size: var(--scroll-progress-size, 3px);
+        background: var(--scroll-progress-color, var(--color-interactive));
+        transform-origin: 0 50%;
+        pointer-events: none;
+        animation: scroll-progress-grow auto linear both;
+        animation-timeline: scroll(root block);
+      }
+
+      [dir="rtl"] .scroll-progress {
+        transform-origin: 100% 50%;
+      }
+    }
+  }
+}

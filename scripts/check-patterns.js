@@ -16,8 +16,9 @@ const ROOT = path.resolve(__dirname, "..");
 const PATTERN_DIR = path.join(ROOT, "patterns");
 // Packs: website.css ist Teil von main.css und des Builder-Profils;
 // project.css ist opt-in (Bildführung und Projektseiten). Jedes Modul
+// motion.css ist opt-in (Bewegung als reine Verbesserung). Jedes Modul
 // gehört zu genau einem Pack.
-const PACKS = ["website.css", "project.css"];
+const PACKS = ["website.css", "project.css", "motion.css"];
 const PACKAGE_JSON = path.join(ROOT, "package.json");
 
 const FORBIDDEN_SELECTOR_PATTERNS = [
@@ -153,6 +154,43 @@ function checkModules() {
   return errors;
 }
 
+/**
+ * Bewegungs-Pack: jede Animation, Transition und jeder Seitenübergang muss
+ * in `@media … (prefers-reduced-motion: no-preference)` stehen. Der
+ * Ruhezustand ausserhalb davon ist das fertige Layout.
+ */
+function checkMotionGate() {
+  const postcss = require("postcss");
+  const MOTION = /^(animation(-.+)?|transition(-.+)?|view-transition-(name|class)|scale|translate|rotate|clip-path)$/;
+  const packSource = read(path.join(PATTERN_DIR, "motion.css"));
+  let errors = 0;
+  for (const rel of extractAggregatorImports(packSource)) {
+    const root = postcss.parse(read(path.join(PATTERN_DIR, rel)));
+    let moduleErrors = 0;
+    const gated = (node) => {
+      for (let p = node.parent; p; p = p.parent) {
+        if (p.type === "atrule" && p.name === "media" && /prefers-reduced-motion:\s*no-preference/.test(p.params)) return true;
+      }
+      return false;
+    };
+    root.walkDecls((decl) => {
+      if (MOTION.test(decl.prop) && !gated(decl)) {
+        console.error(`[patterns] ${rel}:${decl.source.start.line}: ${decl.prop} outside prefers-reduced-motion: no-preference`);
+        moduleErrors++;
+      }
+    });
+    root.walkAtRules(/^(view-transition|keyframes)$/, (rule) => {
+      if (!gated(rule)) {
+        console.error(`[patterns] ${rel}:${rule.source.start.line}: @${rule.name} outside prefers-reduced-motion: no-preference`);
+        moduleErrors++;
+      }
+    });
+    console.log(`  [${moduleErrors ? "FAIL" : "ok"}] ${rel} motion is gated by reduced-motion`);
+    errors += moduleErrors;
+  }
+  return errors;
+}
+
 function checkPackageExports() {
   const pkg = JSON.parse(read(PACKAGE_JSON));
   let errors = 0;
@@ -177,6 +215,7 @@ function main() {
   console.log("");
   errors += checkAggregator();
   errors += checkModules();
+  errors += checkMotionGate();
   errors += checkPackageExports();
   console.log("");
 

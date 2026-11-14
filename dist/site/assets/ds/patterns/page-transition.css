@@ -1,0 +1,59 @@
+@layer patterns {
+  /**
+   * Page Transition — Übergang zwischen Seiten
+   *
+   * Beim Wechsel zwischen zwei Seiten derselben Website blendet der Browser
+   * weich über, statt hart zu springen (Cross-document View Transitions).
+   * Ein Bild kann von der Übersicht in die Detailseite «mitwandern».
+   *
+   * CONTRACT (optional):
+   *   --vt-name             eindeutiger Name eines mitwandernden Elements
+   *   --page-transition-duration   Dauer (default 280ms)
+   *
+   * Struktur (beide Seiten laden dieses Pack):
+   *   Übersicht:  <span class="reference-card__image vt-morph" style="--vt-name: projekt-hochstudhaus">…
+   *   Detail:     <div class="hero__backdrop vt-morph" style="--vt-name: projekt-hochstudhaus">…
+   *
+   * Regeln:
+   *   - Ein --vt-name darf pro Seite nur EINMAL vorkommen. Doppelte Namen
+   *     lassen den Browser den ganzen Übergang überspringen. Das CMS vergibt
+   *     den Namen aus dem Slug des Projekts.
+   *   - Der Kopf der Seite bleibt stehen (.site-header), nur der Inhalt blendet.
+   *   - Ohne Unterstützung (Firefox, Stand November 2026) wird normal navigiert.
+   */
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: var(--page-transition-duration, 280ms);
+      animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .site-header {
+      view-transition-name: site-header;
+    }
+
+    .vt-morph {
+      view-transition-name: var(--vt-name, none);
+      view-transition-class: vt-media;
+    }
+
+    ::view-transition-group(.vt-media) {
+      animation-duration: calc(var(--page-transition-duration, 280ms) * 1.5);
+      animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    /* Unterschiedliche Seitenverhältnisse (Karte 4:3, Hero 16:9): beide
+       Zustände füllen die Fläche, statt verzerrt zu werden. */
+    ::view-transition-old(.vt-media),
+    ::view-transition-new(.vt-media) {
+      block-size: 100%;
+      object-fit: cover;
+      overflow: clip;
+    }
+  }
+}

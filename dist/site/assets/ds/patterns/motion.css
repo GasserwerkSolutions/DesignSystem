@@ -1,0 +1,20 @@
+/**
+ * Bewegungs-Pack (opt-in)
+ * =======================
+ * Zurückhaltende Bewegung für Marketing- und Projektseiten: Einblenden
+ * beim Scrollen, Übergänge zwischen Seiten, Lesefortschritt und kleine
+ * Reaktionen auf Zeiger und Fokus. Nicht Teil von main.css — zusätzlich laden:
+ *
+ *   @import "@gasserwerksolutions/design-system";
+ *   @import "@gasserwerksolutions/design-system/patterns/motion.css";
+ *
+ * Grundsatz: Der Ruhezustand ist das fertige Layout. Alles hier ist reine
+ * Verbesserung — ohne Unterstützung im Browser, bei «Bewegung reduzieren»
+ * und im Druck bleibt die Seite vollständig und unbewegt. Kein JavaScript.
+ */
+@layer patterns;
+
+@import "./reveal.css" layer(patterns);
+@import "./page-transition.css" layer(patterns);
+@import "./scroll-progress.css" layer(patterns);
+@import "./motion-accents.css" layer(patterns);
