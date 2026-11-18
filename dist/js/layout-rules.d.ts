@@ -105,6 +105,47 @@ export declare function planHero(image: {
 }): HeroPlan;
 /** Marken für zwei Projektstadien. «Vorher/Nachher» nur bei gleichem Standpunkt. */
 export declare function stageLabels(sameViewpoint: boolean, states?: [string, string]): [string, string];
+export interface ReferenceGroup<T> {
+    /** Kategorie, «Weitere Projekte» für den Sammelrest, null ohne Gruppierung. */
+    label: string | null;
+    items: T[];
+}
+export interface ReferenceGroupPlan<T> {
+    /** Sprungleiste (reference-filter) zeigen: erst ab 2 Gruppen. */
+    filter: boolean;
+    groups: ReferenceGroup<T>[];
+}
+/**
+ * Gruppen für die Referenzübersicht. Eine Kategorie bekommt ein eigenes
+ * Raster ab `minPerGroup` Projekten (das Raster braucht mindestens 3 Karten).
+ * Kleinere Kategorien gehen in «Weitere Projekte» auf; ist dieser Rest selbst
+ * zu klein, wird die kleinste echte Gruppe dazugelegt. Mehr als `maxGroups`
+ * Einträge macht die Leiste unlesbar. Unter 2 Gruppen: ein Raster, keine Leiste.
+ * Die Reihenfolge der Projekte innerhalb einer Gruppe bleibt erhalten.
+ */
+export declare function planReferenceGroups<T extends {
+    category?: string | null;
+}>(items: T[], options?: {
+    minPerGroup?: number;
+    maxGroups?: number;
+    restLabel?: string;
+}): ReferenceGroupPlan<T>;
+export interface PersonGridPlan {
+    variant: "none" | "single" | "images" | "text";
+    /** CSS-Klassen für das Element; bei "single" ist es eine contact-person. */
+    className: string;
+    /** Indizes der Personen ohne Bild (Grund für "text"). */
+    missing: number[];
+    reason: string;
+}
+/**
+ * Darstellung einer Personengruppe. Bilder alle oder keine: ein Raster mit
+ * Lücken wirkt wie eine unvollständige Liste. Eine einzelne Person ist keine
+ * Gruppe, sondern eine Ansprechperson.
+ */
+export declare function planPersonGrid(people: {
+    image?: unknown;
+}[]): PersonGridPlan;
 /** Gewicht eines Abschnitts im Seitenrhythmus. */
 export type SectionWeight = "gross" | "mittel" | "ruhig";
 export interface SectionSummary {
@@ -115,6 +156,8 @@ export interface SectionSummary {
 }
 /** Gewicht je Pattern: wie viel Aufmerksamkeit ein Abschnitt beansprucht. */
 export declare const SECTION_WEIGHT: Record<string, SectionWeight>;
+/** Abschnitte, mit denen eine Seite enden darf: ein nächster Schritt. */
+export declare const NEXT_STEP_PATTERNS: readonly ["cta-band", "contact-section", "contact-person"];
 export interface PageIssue {
     rule: string;
     message: string;

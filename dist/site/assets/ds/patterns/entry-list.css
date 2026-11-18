@@ -1,0 +1,140 @@
+@layer patterns {
+  /**
+   * Entry List — Meldungen, offene Stellen, Downloads
+   *
+   * Eine ruhige Textliste für alles, was datiert, befristet oder abrufbar
+   * ist. Bewusst ohne Bilder: Meldungen und Stellen haben selten ein
+   * eigenes, freigegebenes Bild, und ein Platzhalterbild ist schlechter als
+   * keines.
+   *
+   *   <ul class="entry-list">
+   *     <li class="entry">
+   *       <p class="entry__meta"><time datetime="2026-10-03">3. Oktober 2026</time><span>Betrieb</span></p>
+   *       <h3 class="entry__title"><a href="…">Neue Abbundanlage in Betrieb</a></h3>
+   *       <p class="entry__text">Kurzer Anriss, höchstens zwei Sätze.</p>
+   *     </li>
+   *   </ul>
+   *
+   * Arten (gleiche Struktur, andere Pflichtfelder in der Meta-Zeile):
+   *   `.entry--news`  Meldung: genau ein <time datetime> zuerst
+   *   `.entry--job`   Stelle: Pensum und Eintritt («80–100 %», «ab sofort»)
+   *   `.entry--file`  Download: Format und Grösse («PDF», «1,2 MB») und ein
+   *                   `.entry__action`-Link mit download-Attribut
+   *
+   * Der Titel-Link deckt die ganze Zeile ab (eine Klickfläche, ein
+   * Tabulatorhalt). Bei `.entry--file` ist der Titel reiner Text und
+   * `.entry__action` trägt den einzigen Link.
+   *
+   * CONTRACT (optional):
+   *   --entry-list-gap   Abstand zwischen Einträgen (default --space-20)
+   *
+   * Schmal: Download-Aktion rutscht unter den Text (Container-Abfrage,
+   * braucht .cq am Elternelement).
+   */
+
+  .entry-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-block-start: var(--stroke-default) solid var(--color-border);
+  }
+
+  .entry-list > li::before {
+    content: none;
+  }
+
+  .entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    margin: 0;
+    padding-block: var(--entry-list-gap, var(--space-20));
+    border-block-end: var(--stroke-default) solid var(--color-border);
+  }
+
+  .entry__meta {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--space-8);
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .entry__meta > :not(:last-child)::after {
+    content: "·";
+    margin-inline-start: var(--space-8);
+  }
+
+  .entry__title {
+    margin: 0;
+    font-size: var(--font-lg);
+    line-height: var(--lh-tight);
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+
+  .entry__title > a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Ganze Zeile klickbar, ein Tabulatorhalt. */
+  .entry__title > a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .entry:hover .entry__title > a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .entry__title > a:focus-visible {
+    outline: none;
+  }
+
+  .entry:has(.entry__title > a:focus-visible) {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .entry__text {
+    margin: 0;
+    max-inline-size: 65ch;
+    color: var(--color-text-secondary);
+  }
+
+  /* Download: Aktion rechts, auf schmalen Flächen darunter. */
+  .entry--file {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--space-24);
+    align-items: center;
+  }
+
+  .entry--file > :not(.entry__action) {
+    grid-column: 1;
+  }
+
+  .entry__action {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+  }
+
+  @container (max-width: 32rem) {
+    .entry--file {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .entry__action {
+      grid-column: 1;
+      grid-row: auto;
+      justify-self: start;
+      margin-block-start: var(--space-8);
+    }
+  }
+}

@@ -2,7 +2,8 @@
  * Projektseiten-Pack (opt-in)
  * ===========================
  * Bildführung und Projektseiten für Betriebe mit Referenzobjekten
- * (Holzbau, Handwerk). Nicht Teil von main.css — zusätzlich laden:
+ * (Holzbau, Handwerk), dazu die Betriebsseiten: Team, Ansprechperson,
+ * Meldungen, Stellen, Downloads. Nicht Teil von main.css — zusätzlich laden:
  *
  *   @import "@gasserwerksolutions/design-system";
  *   @import "@gasserwerksolutions/design-system/patterns/project.css";
@@ -17,4 +18,7 @@
 @import "./gallery.css" layer(patterns);
 @import "./project-stages.css" layer(patterns);
 @import "./reference-grid.css" layer(patterns);
+@import "./reference-filter.css" layer(patterns);
+@import "./person.css" layer(patterns);
+@import "./entry-list.css" layer(patterns);
 @import "./texture.css" layer(patterns);

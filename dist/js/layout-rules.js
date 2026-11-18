@@ -173,6 +173,72 @@ export function planHero(image, options = {}) {
 export function stageLabels(sameViewpoint, states = ["Bestand", "Nach dem Umbau"]) {
     return sameViewpoint ? ["Vorher", "Nachher"] : states;
 }
+/**
+ * Gruppen für die Referenzübersicht. Eine Kategorie bekommt ein eigenes
+ * Raster ab `minPerGroup` Projekten (das Raster braucht mindestens 3 Karten).
+ * Kleinere Kategorien gehen in «Weitere Projekte» auf; ist dieser Rest selbst
+ * zu klein, wird die kleinste echte Gruppe dazugelegt. Mehr als `maxGroups`
+ * Einträge macht die Leiste unlesbar. Unter 2 Gruppen: ein Raster, keine Leiste.
+ * Die Reihenfolge der Projekte innerhalb einer Gruppe bleibt erhalten.
+ */
+export function planReferenceGroups(items, options = {}) {
+    const minPerGroup = Math.max(1, options.minPerGroup ?? 3);
+    const maxGroups = Math.max(2, options.maxGroups ?? 6);
+    const restLabel = options.restLabel ?? "Weitere Projekte";
+    const keyOf = (item) => item.category?.trim() ?? "";
+    const byCategory = new Map();
+    for (const item of items) {
+        const key = keyOf(item);
+        if (!key)
+            continue;
+        if (!byCategory.has(key))
+            byCategory.set(key, []);
+        byCategory.get(key).push(item);
+    }
+    // Grösste zuerst; bei Gleichstand gilt die erste Nennung (Map-Reihenfolge).
+    let proper = [...byCategory.entries()]
+        .filter(([, list]) => list.length >= minPerGroup)
+        .sort((a, b) => b[1].length - a[1].length);
+    const folded = new Set([...byCategory.keys()].filter((key) => byCategory.get(key).length < minPerGroup));
+    const inRest = (item) => !keyOf(item) || folded.has(keyOf(item));
+    const restSize = () => items.filter(inRest).length;
+    const slots = () => proper.length + (restSize() > 0 ? 1 : 0);
+    // Zu viele Gruppen oder zu kleiner Rest: kleinste echte Gruppe in den Rest.
+    while (proper.length > 0 && (slots() > maxGroups || (restSize() > 0 && restSize() < minPerGroup))) {
+        folded.add(proper[proper.length - 1][0]);
+        proper = proper.slice(0, -1);
+    }
+    const groups = proper.map(([label, list]) => ({ label, items: list }));
+    const restItems = items.filter(inRest);
+    if (restItems.length)
+        groups.push({ label: restLabel, items: restItems });
+    if (groups.length < 2)
+        return { filter: false, groups: items.length ? [{ label: null, items: [...items] }] : [] };
+    return { filter: true, groups };
+}
+/**
+ * Darstellung einer Personengruppe. Bilder alle oder keine: ein Raster mit
+ * Lücken wirkt wie eine unvollständige Liste. Eine einzelne Person ist keine
+ * Gruppe, sondern eine Ansprechperson.
+ */
+export function planPersonGrid(people) {
+    const missing = people.map((p, i) => (p.image ? -1 : i)).filter((i) => i >= 0);
+    if (people.length === 0)
+        return { variant: "none", className: "", missing, reason: "Keine Personen." };
+    if (people.length === 1) {
+        return { variant: "single", className: "contact-person", missing, reason: "Eine Person ist eine Ansprechperson, kein Raster." };
+    }
+    if (missing.length === 0)
+        return { variant: "images", className: "person-grid", missing, reason: "Alle Personen haben ein Bild." };
+    if (missing.length === people.length)
+        return { variant: "text", className: "person-grid person-grid--text", missing, reason: "Keine Bilder vorhanden." };
+    return {
+        variant: "text",
+        className: "person-grid person-grid--text",
+        missing,
+        reason: `${missing.length} von ${people.length} Personen ohne Bild; Bilder erst zeigen, wenn alle eines haben.`,
+    };
+}
 /** Gewicht je Pattern: wie viel Aufmerksamkeit ein Abschnitt beansprucht. */
 export const SECTION_WEIGHT = {
     "hero": "gross",
@@ -187,9 +253,15 @@ export const SECTION_WEIGHT = {
     "faq-section": "ruhig",
     "trustbar": "ruhig",
     "section-head": "ruhig",
+    "person-grid": "mittel",
+    "contact-person": "ruhig",
+    "entry-list": "ruhig",
+    "reference-filter": "ruhig",
     "cta-band": "mittel",
     "contact-section": "mittel",
 };
+/** Abschnitte, mit denen eine Seite enden darf: ein nächster Schritt. */
+export const NEXT_STEP_PATTERNS = ["cta-band", "contact-section", "contact-person"];
 /**
  * Prüft die Abschnittsfolge einer Seite. Die Regeln sichern Einstieg,
  * Rhythmus und nächsten Schritt; sie schreiben keine Seitenform vor.
@@ -229,8 +301,8 @@ export function validatePage(sections, options = {}) {
         }
     }
     const last = sections[sections.length - 1].pattern;
-    if (last !== "cta-band" && last !== "contact-section") {
-        issues.push({ rule: "naechster-schritt", message: "Die Seite endet ohne nächsten Schritt (cta-band oder contact-section).", index: sections.length - 1 });
+    if (!NEXT_STEP_PATTERNS.includes(last)) {
+        issues.push({ rule: "naechster-schritt", message: "Die Seite endet ohne nächsten Schritt (cta-band, contact-section oder contact-person).", index: sections.length - 1 });
     }
     return issues;
 }

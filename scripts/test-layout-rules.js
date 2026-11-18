@@ -110,4 +110,58 @@ test("validatePage meldet fehlenden Einstieg, Rhythmus, Galerien und nächsten S
     { pattern: "legend-figure", headingLevel: 2 }, { pattern: "cta-band" }]), ["rhythmus"]);
 });
 
+test("planReferenceGroups: Kategorien ab 3 Projekten, kleine gehen in «Weitere Projekte» auf", () => {
+  const refs = [
+    ..."UUUU".split("").map((_, i) => ({ id: `u${i}`, category: "Umbau" })),
+    ..."NNN".split("").map((_, i) => ({ id: `n${i}`, category: "Neubau" })),
+    { id: "h1", category: "Halle" }, { id: "h2", category: "Halle" }, { id: "x", category: "" }, { id: "t", category: "Treppe" },
+  ];
+  const plan = R.planReferenceGroups(refs);
+  assert.equal(plan.filter, true);
+  assert.deepEqual(plan.groups.map((g) => [g.label, g.items.length]), [["Umbau", 4], ["Neubau", 3], ["Weitere Projekte", 4]]);
+  assert.deepEqual(plan.groups[2].items.map((r) => r.id), ["h1", "h2", "x", "t"], "Reihenfolge bleibt erhalten");
+});
+
+test("planReferenceGroups: zu kleiner Rest nimmt die kleinste Gruppe auf; unter 2 Gruppen keine Leiste", () => {
+  const refs = [
+    ...Array.from({ length: 5 }, () => ({ category: "Umbau" })),
+    ...Array.from({ length: 3 }, () => ({ category: "Neubau" })),
+    { category: "Halle" },
+  ];
+  assert.deepEqual(R.planReferenceGroups(refs).groups.map((g) => [g.label, g.items.length]), [["Umbau", 5], ["Weitere Projekte", 4]]);
+  const single = R.planReferenceGroups([{ category: "Umbau" }, { category: "Umbau" }, { category: "Umbau" }, { category: "Halle" }]);
+  assert.equal(single.filter, false);
+  assert.deepEqual(single.groups.map((g) => [g.label, g.items.length]), [[null, 4]]);
+  assert.deepEqual(R.planReferenceGroups([]), { filter: false, groups: [] });
+});
+
+test("planReferenceGroups: höchstens maxGroups Einträge in der Leiste", () => {
+  const refs = ["A", "B", "C", "D", "E", "F", "G"].flatMap((c, i) => Array.from({ length: 3 + i }, () => ({ category: c })));
+  const plan = R.planReferenceGroups(refs, { maxGroups: 4 });
+  assert.equal(plan.groups.length, 4);
+  assert.deepEqual(plan.groups.slice(0, 3).map((g) => g.label), ["G", "F", "E"]);
+  assert.equal(plan.groups[3].label, "Weitere Projekte");
+  assert.equal(plan.groups.reduce((n, g) => n + g.items.length, 0), refs.length, "kein Projekt geht verloren");
+});
+
+test("planPersonGrid: Bilder alle oder keine, eine Person ist eine Ansprechperson", () => {
+  assert.equal(R.planPersonGrid([{ image: "a" }, { image: "b" }]).variant, "images");
+  const mixed = R.planPersonGrid([{ image: "a" }, {}, { image: "c" }]);
+  assert.equal(mixed.variant, "text");
+  assert.equal(mixed.className, "person-grid person-grid--text");
+  assert.deepEqual(mixed.missing, [1]);
+  assert.match(mixed.reason, /1 von 3/);
+  assert.equal(R.planPersonGrid([{}]).className, "contact-person");
+  assert.equal(R.planPersonGrid([]).variant, "none");
+});
+
+test("validatePage: Ansprechperson ist ein gültiger nächster Schritt, Listen sind ruhig", () => {
+  assert.deepEqual(R.validatePage([{ pattern: "hero", headingLevel: 1 }, { pattern: "person-grid", headingLevel: 2 },
+    { pattern: "entry-list", headingLevel: 2 }, { pattern: "contact-person", headingLevel: 2 }]), []);
+  assert.deepEqual(R.validatePage([{ pattern: "hero", headingLevel: 1 }, { pattern: "reference-filter" }, { pattern: "reference-grid", headingLevel: 2 },
+    { pattern: "reference-grid", headingLevel: 2 }, { pattern: "reference-grid", headingLevel: 2 }, { pattern: "cta-band", headingLevel: 2 }]), [],
+    "die Sprungleiste unterbricht die Folge bildschwerer Abschnitte");
+  assert.deepEqual(R.validatePage([{ pattern: "hero", headingLevel: 1 }, { pattern: "entry-list", headingLevel: 2 }]).map((i) => i.rule), ["naechster-schritt"]);
+});
+
 console.log(`\n${passed} bestanden${process.exitCode ? ", Fehler siehe oben" : ""}.`);

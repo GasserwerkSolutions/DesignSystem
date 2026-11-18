@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "project",
-  "label": "Projektseiten-Pack (Bildführung, Referenzen, Projektseiten)",
+  "label": "Projektseiten-Pack (Bildführung, Referenzen, Projekt- und Betriebsseiten)",
   "entry": "patterns/project.css",
   "requires": [
     "main.css",
@@ -9,7 +9,7 @@
   ],
   "javascript": {
     "gallery": "setupGallery",
-    "layoutRules": "js/layout-rules (planGallery, fitImage, bestRatio, planHero, stageLabels, validatePage)"
+    "layoutRules": "js/layout-rules (planGallery, fitImage, bestRatio, planHero, stageLabels, planReferenceGroups, planPersonGrid, validatePage)"
   },
   "grundsatz": "Jedes Muster hat einen Inhaltsvertrag: geeignete Aufgabe, Grenzen und ein Verhalten für schmale Ansichten. Eine zweite Person soll anhand des Inhalts entscheiden können, welches Muster passt.",
   "imageRatios": {
@@ -405,6 +405,219 @@
       }
     },
     {
+      "id": "reference-filter",
+      "css": "patterns/reference-filter.css",
+      "root": ".reference-filter",
+      "slots": {
+        "link": {
+          "required": true,
+          "maxChars": 28,
+          "hinweis": "Gruppenname; Anker auf die Gruppe"
+        },
+        "count": {
+          "hinweis": "optional: Zahl der Projekte der Gruppe"
+        }
+      },
+      "rules": [
+        {
+          "id": "reference-filter-links",
+          "selector": ".reference-filter",
+          "count": ".reference-filter__link",
+          "min": 2,
+          "max": 6
+        },
+        {
+          "id": "reference-filter-targets",
+          "selector": ".reference-filter",
+          "count": ".reference-filter__link",
+          "targets": true
+        }
+      ],
+      "aufgabe": "Weg zu einer Gruppe der Referenzübersicht abkürzen",
+      "geeignet": "Ab 2 Gruppen aus planReferenceGroups; alle Projekte bleiben sichtbar",
+      "unzulaessig": "Ausblenden per JavaScript; Kategorien mit weniger als 3 Projekten als eigener Eintrag",
+      "schmal": "Leiste bricht um, keine waagrechte Scrollleiste"
+    },
+    {
+      "id": "person-grid",
+      "css": "patterns/person.css",
+      "root": ".person-grid, .contact-person",
+      "slots": {
+        "card": {
+          "name": {
+            "required": true,
+            "maxChars": 40
+          },
+          "role": {
+            "maxChars": 48
+          },
+          "image": {
+            "alt": true,
+            "intrinsicSize": true,
+            "hinweis": "alle Karten mit Bild oder keine (planPersonGrid)"
+          },
+          "contact": {
+            "maxItems": 2,
+            "hinweis": "tel: und mailto: als Links"
+          }
+        },
+        "contactPerson": {
+          "title": {
+            "maxChars": 60
+          },
+          "name": {
+            "required": true,
+            "maxChars": 40
+          },
+          "role": {
+            "maxChars": 48
+          },
+          "contact": {
+            "required": true,
+            "maxItems": 3
+          }
+        }
+      },
+      "rules": [
+        {
+          "id": "person-count",
+          "selector": ".person-grid",
+          "count": ".person-card",
+          "min": 2,
+          "max": 24
+        },
+        {
+          "id": "person-name",
+          "selector": ".person-card",
+          "count": ".person-card__name",
+          "min": 1,
+          "max": 1
+        },
+        {
+          "id": "person-images",
+          "selector": ".person-grid",
+          "count": ".person-card__image",
+          "allOrNone": ".person-card"
+        },
+        {
+          "id": "person-text-variant",
+          "selector": ".person-grid--text",
+          "count": ".person-card__image",
+          "min": 0,
+          "max": 0
+        },
+        {
+          "id": "contact-person-name",
+          "selector": ".contact-person",
+          "count": ".contact-person__name",
+          "min": 1,
+          "max": 1
+        },
+        {
+          "id": "contact-person-channel",
+          "selector": ".contact-person",
+          "count": ".contact-person__contact a",
+          "min": 1,
+          "max": 3
+        }
+      ],
+      "aufgabe": "Menschen im Betrieb zeigen; zu einem Inhalt die zuständige Person nennen",
+      "geeignet": "Team, Geschäftsleitung, Lernende; eine Ansprechperson am Ende von Projekt-, Leistungs- und Stellenseiten",
+      "unzulaessig": "Raster mit Lücken (einige mit, andere ohne Bild); Kontaktangaben als reiner Text",
+      "schmal": "Raster mit Bildern zweispaltig, ohne Bilder einspaltig; Ansprechperson stellt das Bild über den Text",
+      "variants": {
+        "default": "Raster mit Bildern im Format 4:5",
+        "text": "Raster ohne Bilder",
+        "contact-person": "einzelne Ansprechperson, gilt als nächster Schritt"
+      }
+    },
+    {
+      "id": "entry-list",
+      "css": "patterns/entry-list.css",
+      "root": ".entry-list",
+      "slots": {
+        "entry": {
+          "meta": {
+            "required": true,
+            "maxItems": 3,
+            "itemMaxChars": 32
+          },
+          "title": {
+            "required": true,
+            "maxChars": 80
+          },
+          "text": {
+            "maxChars": 220
+          }
+        },
+        "arten": {
+          "meldung": "<time datetime> zuerst",
+          "stelle": "Pensum und Eintritt",
+          "download": ".entry--file: Format und Grösse, .entry__action mit download"
+        }
+      },
+      "rules": [
+        {
+          "id": "entry-count",
+          "selector": ".entry-list",
+          "count": ".entry",
+          "min": 1,
+          "max": 12
+        },
+        {
+          "id": "entry-title",
+          "selector": ".entry",
+          "count": ".entry__title",
+          "min": 1,
+          "max": 1
+        },
+        {
+          "id": "entry-meta",
+          "selector": ".entry__meta",
+          "count": ":scope > *",
+          "min": 1,
+          "max": 3
+        },
+        {
+          "id": "entry-news-date",
+          "selector": ".entry--news .entry__meta",
+          "count": "time[datetime]",
+          "min": 1,
+          "max": 1
+        },
+        {
+          "id": "entry-file-meta",
+          "selector": ".entry--file .entry__meta",
+          "count": ":scope > *",
+          "min": 2,
+          "max": 3
+        },
+        {
+          "id": "entry-file-action",
+          "selector": ".entry--file",
+          "count": ".entry__action[download]",
+          "min": 1,
+          "max": 1
+        },
+        {
+          "id": "entry-file-one-link",
+          "selector": ".entry--file",
+          "count": "a",
+          "min": 1,
+          "max": 1
+        }
+      ],
+      "aufgabe": "Datierte, befristete oder abrufbare Inhalte auflisten",
+      "geeignet": "Meldungen, offene Stellen, Downloads (Merkblätter, Preislisten, Pläne)",
+      "unzulaessig": "Platzhalterbilder; mehr als 12 Einträge ohne Archivseite",
+      "schmal": "Download-Aktion rutscht unter den Text",
+      "variants": {
+        "news": "Meldung mit Datum",
+        "job": "Stelle mit Pensum und Eintritt",
+        "file": "Download mit Format und Grösse"
+      }
+    },
+    {
       "id": "texture",
       "css": "patterns/texture.css",
       "root": ".texture-grain",
@@ -451,6 +664,34 @@
     {
       "selector": ".media__label",
       "maxChars": 24
+    },
+    {
+      "selector": ".reference-filter__link",
+      "maxChars": 28
+    },
+    {
+      "selector": ".person-card__name, .contact-person__name",
+      "maxChars": 40
+    },
+    {
+      "selector": ".person-card__role, .contact-person__role",
+      "maxChars": 48
+    },
+    {
+      "selector": ".contact-person__title",
+      "maxChars": 60
+    },
+    {
+      "selector": ".entry__title",
+      "maxChars": 80
+    },
+    {
+      "selector": ".entry__meta > *",
+      "maxChars": 32
+    },
+    {
+      "selector": ".entry__text",
+      "maxChars": 220
     }
   ],
   "seiten": {
@@ -489,6 +730,11 @@
         "bedingung": "jede weitere Galerie braucht eine eigene Überschrift"
       },
       {
+        "pattern": "contact-person",
+        "pflicht": false,
+        "bedingung": "zuständige Person bekannt; darf cta-band als letzten Abschnitt ersetzen"
+      },
+      {
         "pattern": "cta-band",
         "pflicht": true
       }
@@ -510,6 +756,11 @@
         "bedingung": "alle Bilder vom selben Leitprojekt"
       },
       {
+        "pattern": "contact-person",
+        "pflicht": false,
+        "bedingung": "zuständige Person bekannt; darf cta-band als letzten Abschnitt ersetzen"
+      },
+      {
         "pattern": "cta-band",
         "pflicht": true
       }
@@ -519,6 +770,12 @@
         "pattern": "hero",
         "pflicht": true,
         "variante": "planHero(null)"
+      },
+      {
+        "pattern": "reference-filter",
+        "pflicht": false,
+        "bedingung": "planReferenceGroups(projekte).filter",
+        "variante": "je Gruppe ein reference-grid mit eigener Überschrift und id"
       },
       {
         "pattern": "reference-grid",
@@ -532,6 +789,65 @@
         "pflicht": true
       }
     ],
+    "team": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(bild)"
+      },
+      {
+        "pattern": "person-grid",
+        "pflicht": true,
+        "wiederholbar": true,
+        "variante": "planPersonGrid(personen)",
+        "bedingung": "mindestens 2 Personen je Raster; jede weitere Gruppe mit eigener Überschrift"
+      },
+      {
+        "pattern": "cta-band",
+        "pflicht": true,
+        "bedingung": "oder contact-section"
+      }
+    ],
+    "aktuelles": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(null)"
+      },
+      {
+        "pattern": "entry-list",
+        "pflicht": true,
+        "variante": "news",
+        "bedingung": "neueste zuerst; höchstens 12, ältere auf eine Archivseite"
+      },
+      {
+        "pattern": "cta-band",
+        "pflicht": true
+      }
+    ],
+    "stellen": [
+      {
+        "pattern": "hero",
+        "pflicht": true,
+        "variante": "planHero(bild)"
+      },
+      {
+        "pattern": "entry-list",
+        "pflicht": true,
+        "variante": "job",
+        "bedingung": "ohne offene Stelle: Satz zur Spontanbewerbung statt leerer Liste"
+      },
+      {
+        "pattern": "entry-list",
+        "pflicht": false,
+        "variante": "file",
+        "bedingung": "Unterlagen zur Lehre oder zum Betrieb"
+      },
+      {
+        "pattern": "contact-person",
+        "pflicht": true
+      }
+    ],
     "abfolge": {
       "einstieg": "erster Abschnitt ist der Kopf",
       "ein-kopf": "genau ein Kopf",
@@ -539,7 +855,7 @@
       "ueberschriften": "keine übersprungene Ebene",
       "rhythmus": "höchstens 3 bildschwere Abschnitte in Folge",
       "galerien": "zwei Galerien nacheinander nur mit eigener Überschrift",
-      "naechster-schritt": "die Seite endet mit cta-band oder contact-section"
+      "naechster-schritt": "die Seite endet mit cta-band, contact-section oder contact-person"
     }
   }
 }
