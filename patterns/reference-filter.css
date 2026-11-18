@@ -1,0 +1,85 @@
+@layer patterns {
+  /**
+   * Reference Filter — Sprungleiste zu den Referenzgruppen
+   *
+   * Ersetzt den JavaScript-Filter vieler Betriebsseiten durch Anker auf die
+   * Gruppen (je ein reference-grid mit eigener Überschrift). Alle Projekte
+   * bleiben sichtbar, verlinkbar und für Suchmaschinen lesbar; die Leiste
+   * spart nur den Weg dorthin.
+   *
+   * Wann: erst ab 2 Gruppen. Welche Gruppen entstehen, entscheidet
+   * planReferenceGroups (js/layout-rules): Kategorien mit weniger als
+   * 3 Projekten gehen in «Weitere Projekte» auf. Höchstens 6 Einträge.
+   *
+   *   <nav class="reference-filter" aria-label="Referenzen nach Art">
+   *     <ul class="reference-filter__list">
+   *       <li><a class="reference-filter__link" href="#umbau">Umbau <span class="reference-filter__count">4</span></a></li>
+   *       …
+   *     </ul>
+   *   </nav>
+   *
+   * Die Zahl ist optional und zählt die Projekte der Gruppe. Jeder Anker
+   * muss auf ein vorhandenes Ziel zeigen (check:project-pack).
+   *
+   * CONTRACT (optional):
+   *   --reference-filter-gap
+   *
+   * Schmal: die Leiste bricht um; keine waagrechte Scrollleiste, damit kein
+   * Eintrag versteckt ist.
+   */
+
+  .reference-filter__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--reference-filter-gap, var(--space-8));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .reference-filter__list > li {
+    margin: 0;
+  }
+
+  .reference-filter__list > li::before {
+    content: none;
+  }
+
+  .reference-filter__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    min-block-size: 2.75rem;
+    padding: var(--space-8) var(--space-16);
+    border: var(--stroke-default) solid var(--color-border-dark);
+    border-radius: var(--shape-pill);
+    color: var(--color-text-primary);
+    font-size: var(--font-sm);
+    text-decoration: none;
+    transition: background-color var(--motion-transition), border-color var(--motion-transition);
+  }
+
+  .reference-filter__link:hover {
+    border-color: var(--color-interactive);
+    background: var(--color-bg-secondary);
+  }
+
+  .reference-filter__link:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .reference-filter__count {
+    color: var(--color-text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Sprungziel nicht unter einer klebenden Kopfzeile verstecken. */
+  section[id]:has(.reference-grid) {
+    scroll-margin-block-start: var(--site-header-h, 72px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reference-filter__link { transition: none; }
+  }
+}

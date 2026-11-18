@@ -47,6 +47,20 @@ function evaluateInPage({ rules, textLimits }) {
         const m = root.querySelectorAll(rule.equals).length;
         if (m !== n) issues.push(`${where}, aber ${rule.equals} = ${m}`);
       }
+      // Alle oder keine: n ist 0 oder gleich der Zahl der Vergleichselemente.
+      if (rule.allOrNone) {
+        const m = root.querySelectorAll(rule.allOrNone).length;
+        if (n !== 0 && n !== m) issues.push(`${where} bei ${m} × ${rule.allOrNone}: alle oder keine`);
+      }
+      // Anker müssen auf ein vorhandenes Ziel zeigen.
+      if (rule.targets) {
+        for (const link of root.querySelectorAll(rule.count)) {
+          const href = link.getAttribute("href") || "";
+          if (!href.startsWith("#") || !document.getElementById(decodeURIComponent(href.slice(1)))) {
+            issues.push(`${rule.id}: Anker «${href}» ohne Ziel auf der Seite`);
+          }
+        }
+      }
     }
   }
   for (const limit of textLimits) {
@@ -113,7 +127,8 @@ async function main() {
   //    Funktion, die das CMS nutzt).
   const { validatePage } = require("./_layout-rules");
   const roots = { "hero": ".hero", "project-facts": ".project-facts", "project-stages": ".project-stages", "legend-figure": ".legend-figure",
-    "spec": ".spec", "gallery": ".gallery", "reference-grid": ".reference-grid", "cta-band": ".cta-band", "contact-section": ".contact-section" };
+    "spec": ".spec", "gallery": ".gallery", "reference-grid": ".reference-grid", "cta-band": ".cta-band", "contact-section": ".contact-section",
+    "reference-filter": ".reference-filter", "person-grid": ".person-grid", "contact-person": ".contact-person", "entry-list": ".entry-list" };
   const browser2 = await puppeteer.launch({ headless: "new", args: ["--no-sandbox", "--disable-setuid-sandbox"] });
   try {
     for (const name of files) {

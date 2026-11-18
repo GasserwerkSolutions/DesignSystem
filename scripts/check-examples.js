@@ -45,7 +45,7 @@ async function inspect(browser, file, width) {
     // muss geladen sein, und Bilder im Projektseiten-Pack sitzen in einem
     // Rahmen des Formatrasters statt in freier Grösse.
     const usesProjectPack = !!document.querySelector('link[href$="patterns/project.css"]');
-    const framed = ".media__frame, .hero__backdrop, .gallery__item, .reference-card__image, .lightbox__figure";
+    const framed = ".media__frame, .hero__backdrop, .gallery__item, .reference-card__image, .person-card__image, .contact-person__image, .lightbox__figure";
     const images = [...document.querySelectorAll("img")].flatMap((img) => {
       const id = img.getAttribute("src")?.split("/").pop() || "(ohne src)";
       const found = [];
@@ -152,7 +152,7 @@ async function inspect(browser, file, width) {
         const doc = document.documentElement;
         const overflow = Math.max(doc.scrollWidth, document.body.scrollWidth) - doc.clientWidth;
         // Text, der aus seinem eigenen Kasten läuft und dort abgeschnitten wird.
-        const cut = [...document.querySelectorAll(".hero__title, .section-head__title, .project-facts__item > dd, .spec__row > dd, .reference-card__title, .media__label, .btn, .site-header__link")]
+        const cut = [...document.querySelectorAll(".hero__title, .section-head__title, .project-facts__item > dd, .spec__row > dd, .reference-card__title, .media__label, .btn, .site-header__link, .reference-filter__link, .person-card__name, .contact-person__name, .entry__title")]
           .filter((el) => el.scrollWidth > el.clientWidth + 2 && getComputedStyle(el).overflowX !== "visible")
           .map((el) => el.className.split(" ")[0]).slice(0, 5);
         style.remove();

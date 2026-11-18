@@ -1,0 +1,210 @@
+@layer patterns {
+  /**
+   * Person — Menschen im Betrieb und die zuständige Ansprechperson
+   *
+   * Zwei Muster, ein Inhaltsvertrag: Name ist Pflicht, Funktion und
+   * Kontaktwege sind optional. Kontaktwege sind echte Links (tel:, mailto:),
+   * nie nur Text.
+   *
+   * 1. person-grid — Team, Geschäftsleitung, Lernende. Bilder gelten für das
+   *    ganze Raster: alle Karten mit Bild oder keine (planPersonGrid). Ein
+   *    Raster mit Lücken wirkt wie eine unvollständige Liste.
+   *
+   *   <ul class="person-grid">
+   *     <li class="person-card">
+   *       <span class="person-card__image"><img src="…" alt="Porträt Anna Muster" width height loading="lazy"></span>
+   *       <h3 class="person-card__name">Anna Muster</h3>
+   *       <p class="person-card__role">Projektleiterin Umbau</p>
+   *       <p class="person-card__contact"><a href="tel:+41…">032 …</a><a href="mailto:…">E-Mail</a></p>
+   *     </li>
+   *   </ul>
+   *
+   *   Ohne Bilder: `.person-grid--text` (engere Spalten, Trennlinie statt Bild).
+   *
+   * 2. contact-person — die eine Person, die zu diesem Inhalt Auskunft gibt.
+   *    Steht am Ende einer Projekt-, Leistungs- oder Stellenseite und ist dort
+   *    ein gültiger nächster Schritt (wie cta-band). Bild optional.
+   *
+   *   <div class="container cq">   (Container-Abfrage am Elternteil)
+   *   <aside class="contact-person" aria-labelledby="cp-titel">
+   *     <span class="contact-person__image"><img …></span>
+   *     <div class="contact-person__body">
+   *       <h2 class="contact-person__title" id="cp-titel">Fragen zu diesem Projekt?</h2>
+   *       <p class="contact-person__name">Anna Muster</p>
+   *       <p class="contact-person__role">Projektleiterin Umbau</p>
+   *       <p class="contact-person__contact"><a class="btn" href="tel:…">032 …</a><a class="btn btn--secondary" href="mailto:…">E-Mail</a></p>
+   *     </div>
+   *   </aside>
+   *
+   * CONTRACT (optional):
+   *   --person-grid-min     Mindestbreite einer Karte (default 13rem; --text 15rem)
+   *   --person-grid-gap
+   *   --person-card-ratio   Bildformat (default 4 / 5)
+   *   --contact-person-image Bildgrösse in der Ansprechperson (default 7rem)
+   *
+   * Schmal: Raster mit Bildern zweispaltig, ohne Bilder einspaltig; die
+   * Ansprechperson stellt das Bild über den Text (Container-Abfrage, braucht .cq am Elternelement).
+   */
+
+  .person-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--person-grid-min, 13rem)), 1fr));
+    gap: var(--person-grid-gap, var(--space-32) var(--space-24));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .person-grid > li {
+    margin: 0;
+    min-inline-size: 0;
+  }
+
+  .person-grid > li::before {
+    content: none;
+  }
+
+  .person-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+  }
+
+  .person-card__image {
+    display: block;
+    aspect-ratio: var(--person-card-ratio, 4 / 5);
+    overflow: hidden;
+    margin-block-end: var(--space-8);
+    border-radius: var(--media-radius, var(--shape-media));
+    background: var(--color-bg-tertiary);
+  }
+
+  .person-card__image > img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--media-focus, 50% 30%);
+  }
+
+  .person-card__name,
+  .contact-person__name {
+    margin: 0;
+    font-family: var(--heading-font);
+    font-size: var(--font-lg);
+    font-weight: var(--heading-weight);
+    line-height: var(--lh-tight);
+    overflow-wrap: break-word;
+  }
+
+  .person-card__role,
+  .contact-person__role {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-sm);
+    overflow-wrap: break-word;
+  }
+
+  .person-card__contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-16);
+    margin: var(--space-4) 0 0;
+    font-size: var(--font-sm);
+  }
+
+  .person-card__contact > a,
+  .contact-person__contact > a:not(.btn) {
+    color: var(--color-interactive);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
+  }
+
+  /* Telefone: zwei Porträts nebeneinander statt je eines über die volle
+     Breite; sonst füllt ein Team von vier Personen vier Bildschirme. */
+  @media (max-width: 34rem) {
+    .person-grid:not(.person-grid--text) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-16);
+    }
+  }
+
+  /* Ohne Bilder: Linie statt Bild hält die Karten als Reihe zusammen. */
+  .person-grid--text {
+    --person-grid-min: 15rem;
+    row-gap: var(--space-24);
+  }
+
+  .person-grid--text .person-card {
+    padding-block-start: var(--space-12);
+    border-block-start: var(--stroke-default) solid var(--color-border);
+  }
+
+  /* Ansprechperson */
+  .contact-person {
+    display: grid;
+    grid-template-columns: var(--contact-person-image, 7rem) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-24);
+    padding: var(--space-24);
+    border: var(--stroke-default) solid var(--color-border);
+    border-radius: var(--shape-surface);
+    background: var(--color-bg-secondary);
+  }
+
+  .contact-person:not(:has(.contact-person__image)) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contact-person__image {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--color-bg-tertiary);
+  }
+
+  .contact-person__image > img {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--media-focus, 50% 30%);
+  }
+
+  .contact-person__body {
+    display: grid;
+    gap: var(--space-4);
+    min-inline-size: 0;
+  }
+
+  .contact-person__title {
+    margin: 0 0 var(--space-8);
+    font-size: var(--font-xl);
+    line-height: var(--lh-tight);
+    text-wrap: balance;
+  }
+
+  .contact-person__contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-12);
+    margin: var(--space-12) 0 0;
+  }
+
+  @container (max-width: 30rem) {
+    .contact-person {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .contact-person__image {
+      inline-size: var(--contact-person-image, 7rem);
+    }
+
+    .contact-person__contact > .btn {
+      flex: 1 1 100%;
+    }
+  }
+}

@@ -41,6 +41,40 @@
   Popover-Viewport-Verhalten, selector-sensitive Popover-IDs,
   Theme-Toggle-Labels und die Galerie-Lightbox ab.
 
+### Neu: Betriebsseiten im Projekt-Pack
+
+Aus der Auswertung von zehn Holzbau-Websites: Team, Ansprechperson,
+Referenzfilter, Meldungen, Stellen und Downloads kamen auf 5–9 von 10 Seiten
+vor und fehlten im Pack. Alle drei Module sind opt-in im Projekt-Pack;
+`main.css` und das Builder-Profil bleiben unverändert.
+
+- **`patterns/person.css`**: `person-grid` (Team) und `contact-person`
+  (die zuständige Person am Ende einer Projekt-, Leistungs- oder
+  Stellenseite). Bilder gelten fürs ganze Raster: alle oder keine,
+  sonst `person-grid--text`. Auf Telefonen zwei Porträts nebeneinander.
+  Kontaktwege sind `tel:`/`mailto:`-Links.
+- **`patterns/reference-filter.css`**: Sprungleiste zu den Referenzgruppen
+  statt Filter-JavaScript. Alle Projekte bleiben sichtbar und verlinkbar.
+- **`patterns/entry-list.css`**: ruhige Textliste für Meldungen
+  (`entry--news`, Pflicht `<time datetime>`), Stellen (`entry--job`) und
+  Downloads (`entry--file`, Format und Grösse, ein Link mit `download`).
+  Die ganze Zeile ist eine Klickfläche mit einem Tabulatorhalt.
+- **Layout-Regeln**: `planReferenceGroups` bildet Gruppen ab 3 Projekten
+  und legt kleinere in «Weitere Projekte» zusammen (höchstens 6, unter 2
+  Gruppen keine Leiste). `planPersonGrid` setzt «alle oder keine» durch und
+  macht aus einer einzelnen Person eine Ansprechperson. `validatePage`
+  akzeptiert `contact-person` als nächsten Schritt.
+- **Manifest**: 13 neue Regeln, 7 Textgrenzen, Seitenrezepte `team`,
+  `aktuelles` und `stellen`; `contact-person` optional in `projekt` und
+  `leistung`, `reference-filter` optional in `referenzen`.
+  `check:project-pack` kennt zwei neue Regelarten: `allOrNone` und
+  `targets` (jeder Anker braucht ein Ziel auf der Seite).
+- **Beispiele**: neu `examples/holzbau-betrieb.html`; die Referenzseite hat
+  die Sprungleiste, die Projektseite eine Ansprechperson. Porträts und PDFs
+  sind Platzhalter.
+- Bewusst nicht gebaut: ein Bild-Slider im Kopf. `planHero` wählt ein Bild;
+  mehrere wechselnde Einstiegsbilder widersprechen der Bildführung des Packs.
+
 ### Neu: Tone `earth` und Papierkörnung
 
 - **`themes/earth.css`**: Handwerks-Tone aus der Palette «Earth» des

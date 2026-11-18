@@ -829,9 +829,14 @@ var DS = (() => {
     "faq-section": "ruhig",
     "trustbar": "ruhig",
     "section-head": "ruhig",
+    "person-grid": "mittel",
+    "contact-person": "ruhig",
+    "entry-list": "ruhig",
+    "reference-filter": "ruhig",
     "cta-band": "mittel",
     "contact-section": "mittel"
   };
+  var NEXT_STEP_PATTERNS = ["cta-band", "contact-section", "contact-person"];
   function validatePage(sections, options = {}) {
     const issues = [];
     const maxHeavyRun = options.maxHeavyRun ?? 3;
@@ -862,8 +867,8 @@ var DS = (() => {
       }
     }
     const last = sections[sections.length - 1].pattern;
-    if (last !== "cta-band" && last !== "contact-section") {
-      issues.push({ rule: "naechster-schritt", message: "Die Seite endet ohne n\xE4chsten Schritt (cta-band oder contact-section).", index: sections.length - 1 });
+    if (!NEXT_STEP_PATTERNS.includes(last)) {
+      issues.push({ rule: "naechster-schritt", message: "Die Seite endet ohne n\xE4chsten Schritt (cta-band, contact-section oder contact-person).", index: sections.length - 1 });
     }
     return issues;
   }

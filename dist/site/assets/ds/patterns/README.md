@@ -190,6 +190,15 @@ eingehalten wird.
 - `reference-grid`: Übersicht der Referenzobjekte. Eckdaten sind pro Feld
   optional; fehlt Ort oder Jahr, bleibt keine Lücke.
   Beispiel: `examples/holzbau-referenzen.html`.
+- `reference-filter`: Sprungleiste zu den Referenzgruppen (Anker, kein
+  JavaScript). Erst ab 2 Gruppen; welche Gruppen entstehen, entscheidet
+  `planReferenceGroups`.
+- `person-grid` / `contact-person`: Team und zuständige Ansprechperson.
+  Bilder alle oder keine (`person-grid--text` ohne Bilder);
+  `contact-person` gilt als nächster Schritt am Seitenende.
+- `entry-list`: Meldungen (`entry--news`), Stellen (`entry--job`) und
+  Downloads (`entry--file`) als ruhige Textliste ohne Bilder.
+  Beispiel: `examples/holzbau-betrieb.html`.
 
 ### Geschützte Bildbereiche
 
@@ -215,7 +224,8 @@ DOM. Ein CMS füllt Slots und fragt die Funktionen; es erfindet keine
 Gestaltung und liest kein CSS.
 
 ```js
-import { planGallery, fitImage, bestRatio, planHero, stageLabels, validatePage }
+import { planGallery, fitImage, bestRatio, planHero, stageLabels,
+  planReferenceGroups, planPersonGrid, validatePage }
   from "@gasserwerksolutions/design-system/js/layout-rules";
 
 planGallery(7);
@@ -234,6 +244,10 @@ validatePage([{ pattern: "hero", headingLevel: 1 }, { pattern: "gallery", headin
 - `planGallery`: Variante und Bildzahl, die das Raster lückenlos füllt.
 - `planHero`: wählt nie Text auf dem Foto; zu kleine Bilder und Hochformate
   ergeben einen Kopf ohne Bild.
+- `planReferenceGroups`: Gruppen der Referenzübersicht; Kategorien unter 3
+  Projekten gehen in «Weitere Projekte» auf, höchstens 6 Gruppen.
+- `planPersonGrid`: Bilder alle oder keine; eine Person wird zur
+  Ansprechperson.
 - `validatePage`: Abschnittsfolge (ein Kopf, ein Seitentitel, keine
   übersprungene Überschriftenebene, höchstens drei bildschwere Abschnitte in
   Folge, nächster Schritt am Ende).
